@@ -1,7 +1,6 @@
 {
-	"compilerOptions": {
-		"outDir": "dist",
-		"strict": true,
-		"skipLibCheck": true
-	}
+    "compilerOptions": {
+        "outDir": "dist",
+        "strict": true
+    }
 }

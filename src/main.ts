@@ -8,7 +8,5 @@ import Tag from './ui/text/Tag.vue'
 import ContentContainer from './ui/layout/ContentContainer.vue'
 import ContentBlock from './ui/layout/ContentBlock.vue'
 import Surface from './ui/layout/Surface.vue'
-import Tabs from './ui/controls/Tabs/Tabs.vue'
-import Tab from './ui/controls/Tabs/Tab.vue'
 
-export { Btn, Icon, Property, Paragraph, Header, Tag, Pill, ContentContainer, ContentBlock, Surface, Tabs, Tab }
+export { Btn, Icon, Property, Paragraph, Header, Tag, Pill, ContentContainer, ContentBlock, Surface }

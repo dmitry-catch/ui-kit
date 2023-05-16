@@ -4,12 +4,12 @@
 	gap: var(--design-gap-unit);
 	border-radius: var(--design-border-radius-tag);
 	background: var(--design-background-color-secondary);
-	padding: 0 10px;
+	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 }
 </style>
 
 <template>
-	<div class="Tag text-medium">
+	<div class="Tag">
 		<slot name="before"></slot>
 		<slot></slot>
 		<slot name="after"></slot>

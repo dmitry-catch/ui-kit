@@ -3,10 +3,10 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'node:path'
 import dts from 'vite-plugin-dts'
 export default defineConfig({
-	plugins: [vue({}), { ...dts({ exclude: ['dist', 'node_modules'] }), apply: 'build' }],
+	plugins: [vue({}), dts({ exclude: ['dist', 'node_modules'] })],
+	assetsInclude: [],
 	server: {},
 	build: {
-		emptyOutDir: true,
 		target: ['es2020'],
 		lib: {
 			entry: resolve(__dirname, 'src/main.ts'),
@@ -19,6 +19,11 @@ export default defineConfig({
 			external: ['vue'],
 			output: {
 				preserveModules: true,
+				// Provide global variables to use in the UMD build
+				// for externalized deps
+				globals: {
+					vue: 'Vue',
+				},
 			},
 		},
 	},
