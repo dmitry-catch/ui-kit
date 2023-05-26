@@ -52,10 +52,6 @@
 	--design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
 }
 
-::backdrop {
-	--design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
-}
-
 /**
 	Additional colors
  */

@@ -13,7 +13,6 @@
 	color: var(--button-text-color-primary);
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	gap: var(--design-gap-unit);
 	min-width: 144px;
 	box-sizing: border-box;
@@ -73,70 +72,28 @@
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
 }
-
-.Btn.functional {
-	border: none;
-	padding: 0;
-	justify-content: start;
-}
-
-.Btn.icon .Btn__dropdownIcon {
-	display: none;
-}
-
-.Btn__dropdownItem {
-	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
-}
-.Btn__dropdownItem:hover {
-	background: var(--design-background-color-secondary);
-}
 </style>
 
 <template>
-	<div class="Btn__wrapper">
-		<button class="Btn" @click="toggleDropdown">
-			<slot name="before"></slot>
-			<slot></slot>
-			<slot name="after"></slot>
-			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
-		</button>
-		<Dropdown v-if="hasDropdown && dropdownOpened">
-			<slot name="dropdown">
-				<div v-for="option in dropdown" class="Btn__dropdownItem" @click="dropdownOptionClick(option.action)">
-					{{ option.name }}
-				</div>
-			</slot>
-		</Dropdown>
-	</div>
+	<button class="Btn">
+		<slot name="before"></slot>
+		<slot></slot>
+		<slot name="after"></slot>
+	</button>
 </template>
 <script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
-import Icon from '../../icons/Icon.vue'
-import Dropdown from '../../layout/Dropdown.vue'
+import { computed, toRefs } from 'vue'
 
 const props = defineProps({
 	accent: { default: () => false, type: Boolean },
 	minimal: { default: () => false, type: Boolean },
-	functional: { default: () => false, type: Boolean },
 	danger: { default: () => false, type: Boolean },
 	warning: { default: () => false, type: Boolean },
 	disabled: { default: () => false, type: Boolean },
 	pressed: { default: () => false, type: Boolean },
-	dropdown: { default: () => [], type: Array }
 })
 
-const { accent, minimal, danger, warning, disabled, pressed, dropdown } = toRefs(props)
+const { accent, minimal, danger, warning, disabled, pressed } = toRefs(props)
 
 const booleanAttribute = (value: any) => (value ? true : undefined)
-
-const hasDropdown = computed(() => !!dropdown?.value?.length)
-const dropdownOpened = ref(false)
-
-const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
-const dropdownOptionClick = async (action: Function) => {
-	let close = true
-	const preventDefault = () => (close = false)
-	if (typeof action === 'function') await action({ preventDefault })
-	if (close) toggleDropdown()
-}
 </script>

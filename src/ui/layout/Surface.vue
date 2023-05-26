@@ -11,10 +11,6 @@
 	max-width: 100%;
 	overflow: auto;
 }
-
-.Surface.square {
-	border-radius: 0;
-}
 </style>
 
 <template>
