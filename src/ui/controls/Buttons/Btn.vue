@@ -93,7 +93,7 @@
 </style>
 
 <template>
-	<div class="Btn" ref="root">
+	<div class="Btn">
 		<button class="Btn__actual" @click="toggleDropdown">
 			<slot name="before"></slot>
 			<slot></slot>
@@ -110,10 +110,10 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import Dropdown from '../../layout/Dropdown.vue'
-const root = ref()
+
 const props = defineProps({
 	accent: { default: () => false, type: Boolean },
 	minimal: { default: () => false, type: Boolean },
@@ -137,11 +137,6 @@ const dropdownOptionClick = async (action: Function) => {
 	let close = true
 	const preventDefault = () => (close = false)
 	if (typeof action === 'function') await action({ preventDefault })
-	if (close) dropdownOpened.value = false
+	if (close) toggleDropdown()
 }
-const clickOutside = (event) => {
-	if (!(event.path || event.composedPath()).includes(root.value)) dropdownOpened.value = false
-}
-onMounted(() => document.addEventListener('click', clickOutside))
-onUnmounted(() => document.removeEventListener('click', clickOutside))
 </script>
