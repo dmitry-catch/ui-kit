@@ -100,7 +100,7 @@
 			<slot name="after"></slot>
 			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
 		</button>
-		<Dropdown :open="hasDropdown && dropdownOpened">
+		<Dropdown v-if="hasDropdown && dropdownOpened">
 			<slot name="dropdown">
 				<div v-for="option in dropdown" class="Btn__dropdownItem" @click="dropdownOptionClick(option.action)">
 					{{ option.name }}
