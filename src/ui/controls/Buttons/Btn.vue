@@ -1,5 +1,5 @@
 <style>
-.Btn__actual {
+.Btn {
 	--button-background-color-primary: var(--design-background-color-primary);
 	--button-background-color-secondary: var(--design-background-color-secondary);
 	--button-text-color-primary: var(--design-text-color-primary);
@@ -20,18 +20,18 @@
 	height: min-content;
 	white-space: nowrap;
 }
-.Btn__actual:focus-visible {
+.Btn:focus-visible {
 	outline: var(--design-border-color-focus) 3px solid;
 }
-.Btn__actual:hover,
-.Btn__actual:active,
-.Btn.pressed .Btn__actual {
+.Btn:hover,
+.Btn:active,
+.Btn.pressed {
 	background: var(--button-background-color-secondary);
 	color: var(--button-text-color-secondary);
 	border-color: var(--button-border-color-secondary);
 }
 
-.Btn.accent .Btn__actual {
+.Btn.accent {
 	--button-background-color-primary: var(--design-background-color-accent-primary);
 	--button-background-color-secondary: var(--design-background-color-accent-secondary);
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
@@ -40,7 +40,7 @@
 	--button-border-color-secondary: var(--design-border-color-accent-secondary);
 }
 
-.Btn.minimal .Btn__actual {
+.Btn.minimal {
 	--button-background-color-primary: var(--design-background-color-primary);
 	--button-background-color-secondary: var(--design-background-color-secondary);
 	--button-text-color-primary: var(--design-text-color-accent);
@@ -48,7 +48,7 @@
 	border: none;
 }
 
-.Btn.warning .Btn__actual {
+.Btn.warning {
 	--button-background-color-primary: var(--design-background-color-warning-primary);
 	--button-background-color-secondary: var(--design-background-color-warning-secondary);
 	--button-text-color-primary: var(--design-text-color-warning);
@@ -56,12 +56,12 @@
 	--button-border-color-primary: var(--design-border-color-warning-primary);
 	--button-border-color-secondary: var(--design-border-color-warning-secondary);
 }
-.Btn.warning.accent .Btn__actual {
+.Btn.warning.accent {
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
 }
 
-.Btn.danger .Btn__actual {
+.Btn.danger {
 	--button-background-color-primary: var(--design-background-color-danger-primary);
 	--button-background-color-secondary: var(--design-background-color-danger-secondary);
 	--button-text-color-primary: var(--design-text-color-danger);
@@ -69,18 +69,18 @@
 	--button-border-color-primary: var(--design-border-color-danger-primary);
 	--button-border-color-secondary: var(--design-border-color-danger-secondary);
 }
-.Btn.danger.accent .Btn__actual {
+.Btn.danger.accent {
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
 }
 
-.Btn.functional .Btn__actual {
+.Btn.functional {
 	border: none;
 	padding: 0;
 	justify-content: start;
 }
 
-.Btn .Btn__actual.icon .Btn__dropdownIcon {
+.Btn.icon .Btn__dropdownIcon {
 	display: none;
 }
 
@@ -93,8 +93,8 @@
 </style>
 
 <template>
-	<div class="Btn">
-		<button class="Btn__actual" @click="toggleDropdown">
+	<div class="Btn__wrapper">
+		<button class="Btn" @click="toggleDropdown">
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
