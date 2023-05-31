@@ -26,7 +26,7 @@ const top = ref(0)
 const left = ref(0)
 
 watchEffect(() => {
-	if (open.value) {
+	if (!open.value) {
 		top.value = root.value?.clientTop + root.value?.clientHeight + 5
 		left.value = root.value?.clientLeft + 0
 	}
