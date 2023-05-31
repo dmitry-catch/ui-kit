@@ -22,17 +22,17 @@ body {
 		</template>
 		<template #validationHint> <span>validation hint</span> </template>
 	</TextField>
-	<!--	<Modal style="left: 0" :anchor="anchor">-->
-	<Surface class="square" style="display: flex; flex-flow: row-reverse; margin-top: 3000px">
-		<div style="left: 0">Tests e lsdf;glksd;fkg;lsdkfg;ksdf;lgk;sldfkglsdjfkg;lkjsrothjgklsfdklg</div>
-		<Btn class="functional" :dropdown="dropdown">
-			<template #before>
-				<Icon name="add"></Icon>
-			</template>
-			<span class="accent">Test btn</span>
-		</Btn>
-	</Surface>
-	<!--	</Modal>-->
+	<Modal style="left: 0" :anchor="anchor">
+		<Surface class="square" style="display: flex; flex-flow: row-reverse">
+			<div style="left: 0">Tests e lsdf;glksd;fkg;lsdkfg;ksdf;lgk;sldfkglsdjfkg;lkjsrothjgklsfdklg</div>
+			<Btn class="functional" :dropdown="dropdown">
+				<template #before>
+					<Icon name="add"></Icon>
+				</template>
+				<span class="accent">Test btn</span>
+			</Btn>
+		</Surface>
+	</Modal>
 </template>
 
 <script setup lang="ts">

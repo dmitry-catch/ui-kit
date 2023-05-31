@@ -22,14 +22,13 @@ const props = defineProps<{ open: boolean }>()
 const { open } = toRefs(props)
 
 const root = ref<HTMLElement>()
-const top = ref('0')
-const left = ref('0')
+const top = ref(0)
+const left = ref(0)
 
 watchEffect(() => {
 	if (open.value) {
-		const rect = root.value?.parentElement?.getBoundingClientRect()
-		top.value = rect?.bottom + 5 + 'px'
-		left.value = rect?.left + 0 + 'px'
+		top.value = root.value?.clientTop + root.value?.clientHeight + 5
+		left.value = root.value?.clientLeft + 0
 	}
 })
 </script>
