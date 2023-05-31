@@ -80,7 +80,7 @@
 	justify-content: start;
 }
 
-.Btn.icon .Btn__dropdownIcon {
+.Btn .Btn__actual.icon .Btn__dropdownIcon {
 	display: none;
 }
 
