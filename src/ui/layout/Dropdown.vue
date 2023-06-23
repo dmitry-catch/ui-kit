@@ -16,33 +16,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs, watchEffect, computed } from 'vue'
+import { onMounted, ref, toRefs, watchEffect } from 'vue'
 
 const props = defineProps<{ open: boolean }>()
 const { open } = toRefs(props)
 
 const root = ref<HTMLElement>()
+const top = ref('0')
 const left = ref('0')
-const upper = ref(0)
-const menuHeight = ref(0)
-
-const top = () => {
-  const screenHeight = window.innerHeight
-  const topBound = upper.value
-  const bottomBound = topBound + menuHeight.value
-  if (bottomBound > screenHeight) {
-    const newTop = screenHeight - menuHeight.value
-    return `${newTop}px`
-  }
-  return `${topBound}px`
-}
 
 watchEffect(() => {
 	if (open.value) {
 		const rect = root.value?.parentElement?.getBoundingClientRect()
+		top.value = rect?.bottom + 5 + 'px'
 		left.value = rect?.left + 0 + 'px'
-		upper.value = rect?.bottomBound + 0 + 'px'
-		menuHeight.value = root.value?.scrollHeight
 	}
 })
 </script>
