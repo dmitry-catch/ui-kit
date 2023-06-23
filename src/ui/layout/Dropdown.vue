@@ -26,23 +26,23 @@ const left = ref('0')
 const upper = ref(0)
 const menuHeight = ref(0)
 
-const top = computed(() => {
-	const screenHeight = window.innerHeight
-	const topBound = upper.value
-	const bottomBound = topBound + menuHeight.value
-	if (bottomBound > screenHeight) {
-		const newTop = screenHeight - menuHeight.value
-		return `${newTop}px`
-	}
-	return `${topBound}px`
-})
+const top = () => {
+  const screenHeight = window.innerHeight
+  const topBound = upper.value
+  const bottomBound = topBound + menuHeight.value
+  if (bottomBound > screenHeight) {
+    const newTop = screenHeight - menuHeight.value
+    return `${newTop}px`
+  }
+  return `${topBound}px`
+}
 
 watchEffect(() => {
 	if (open.value) {
 		const rect = root.value?.parentElement?.getBoundingClientRect()
 		left.value = rect?.left + 0 + 'px'
-		upper.value = rect?.bottom
-		menuHeight.value = root.value?.scrollHeight + 5
+		upper.value = rect?.bottomBound + 0 + 'px'
+		menuHeight.value = root.value?.scrollHeight
 	}
 })
 </script>
