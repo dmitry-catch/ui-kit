@@ -38,7 +38,7 @@ watchEffect(() => {
 	if (open.value) {
 		const rect = root.value?.parentElement?.getBoundingClientRect()
 		if (rect == null) return
-		baseTop.value = rect?.bottom + 5
+		baseTop.value = `${rect?.bottom + 5}px`
 		left.value = `${rect?.left + 0}px`
 	}
 })
