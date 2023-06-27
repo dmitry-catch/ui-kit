@@ -13,7 +13,7 @@ body {
 		label="Расследование"
 	>
 	</DropdownSelect>
-	<TextField v-model="test" label="Label" description="description" type="date">
+	<TextField v-model="test" label="Label" description="description" :maxLength="10" :invalid="true">
 		<template #before>
 			<Icon name="privacy"></Icon>
 		</template>
@@ -22,31 +22,30 @@ body {
 		</template>
 		<template #validationHint> <span>validation hint</span> </template>
 	</TextField>
-	<div aria-roledescription="date field">
-		<input aria-description="Day" type="number" min="0" max="30" />
-	</div>
-	<hr />
-	<label>
-		<span>Test</span>
-		<input type="date" />
-	</label>
-	<hr />
-	<div style="display: flex; gap: 16px; align-items: center">
-		<DateField v-model="date"></DateField>
-		<span>{{ new Date(date).toLocaleString('ru') }}</span>
-	</div>
+	<!--	<Modal style="left: 0" :anchor="anchor">-->
+	<Surface class="square" style="display: flex; flex-flow: row-reverse; margin-top: 3000px">
+		<div style="left: 0">Tests e lsdf;glksd;fkg;lsdkfg;ksdf;lgk;sldfkglsdjfkg;lkjsrothjgklsfdklg</div>
+		<Btn class="functional" :dropdown="dropdown">
+			<template #before>
+				<Icon name="add"></Icon>
+			</template>
+			<span class="accent">Test btn</span>
+		</Btn>
+	</Surface>
+	<!--	</Modal>-->
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 import TextField from '../src/ui/controls/Inputs/TextField.vue'
 import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
-import DateField from '../src/ui/controls/Inputs/Date/DateField.vue'
+import Modal from '../src/ui/layout/Modal.vue'
+import Surface from '../src/ui/layout/Surface.vue'
+import Btn from '../src/ui/controls/Buttons/Btn.vue'
 const tab = ref(null)
 const test = ref(null)
 const anchor = ref('center')
-const date = ref('2022-02-01')
 
 const options = [
 	{ name: 'name', value: 'value' },
