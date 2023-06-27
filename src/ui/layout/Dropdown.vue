@@ -1,9 +1,6 @@
 <style>
 .Dropdown {
 	position: fixed;
-	background: var(--design-background-color-primary);
-	border: 1px solid var(--design-border-color-primary);
-	border-radius: var(--design-border-radius-control);
 	top: v-bind(top);
 	left: v-bind(left);
 }
@@ -23,26 +20,26 @@ const { open } = toRefs(props)
 
 const root = ref<HTMLElement>()
 const left = ref('0')
-const upper = ref(0)
+const baseTop = ref(0)
 const menuHeight = ref(0)
 
-const top = () => {
-  const screenHeight = window.innerHeight
-  const topBound = upper.value
-  const bottomBound = topBound + menuHeight.value
-  if (bottomBound > screenHeight) {
-    const newTop = screenHeight - menuHeight.value
-    return `${newTop}px`
-  }
-  return `${topBound}px`
-}
+const top = computed(() => {
+	const screenHeight = window.innerHeight
+	const topBound = baseTop.value
+	const bottomBound = topBound + menuHeight.value
+	if (bottomBound > screenHeight) {
+		const newTop = screenHeight - menuHeight.value
+		return `${newTop}px`
+	}
+	return `${topBound}px`
+})
 
 watchEffect(() => {
 	if (open.value) {
 		const rect = root.value?.parentElement?.getBoundingClientRect()
-		left.value = rect?.left + 0 + 'px'
-		upper.value = rect?.bottomBound + 0 + 'px'
-		menuHeight.value = root.value?.scrollHeight
+		if (rect == null) return
+		baseTop.value = `${rect?.bottom + 5}px`
+		left.value = `${rect?.left + 0}px`
 	}
 })
 </script>

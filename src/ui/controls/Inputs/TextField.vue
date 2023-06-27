@@ -1,63 +1,9 @@
 <style>
-.Field {
-	display: flex;
-	flex-flow: column;
-	padding: 4px;
-}
-
-.Field__description {
-	color: var(--design-text-color-secondary);
-}
-.Field__input {
-	border: none;
-	width: 100%;
-}
-.Field__input:focus-visible {
-	outline: none;
-}
-.Field__visibleInput {
-	background: var(--design-background-color-primary);
-	border: var(--design-border-color-secondary) 1px solid;
-	border-radius: var(--design-border-radius-control);
-	box-sizing: border-box;
-	width: 100%;
-	overflow: hidden;
-	height: min-content;
-	max-height: 40px;
-	display: flex;
-	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
-}
-.Field--invalid .Field__visibleInput {
-	border-color: var(--design-border-color-danger-primary);
-}
-.Field__visibleInput {
-	outline: var(--forced-focus-outline, none);
-}
-.Field__visibleInput:focus-within {
-	outline: var(--design-focus-outline);
-}
-.Field__below {
-	display: flex;
-	flex-flow: row;
-}
-.Field__validationMessage {
-}
-.Field__counter {
-	margin-left: auto;
-}
-.Field__validationMessage.danger {
-	color: var(--design-text-color-danger);
-}
-
-.Field__beforeWrapper,
-.Field__afterWrapper {
-	width: min-content;
-	height: min-content;
-}
+@import 'field.css';
 </style>
 
 <template>
-	<label class="Field text-medium" :class="{ 'Field--invalid': invalid }">
+	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
 		<span class="Field__label">{{ label }}</span>
 		<span class="Field__description text-small">{{ description }}</span>
 		<span class="Field__visibleInput">
@@ -69,7 +15,6 @@
 				class="Field__input"
 				:type="type"
 				:placeholder="placeholder"
-				:readonly="readonly ? 'true' : 'false'"
 				:tabindex="tabindex"
 				v-bind="$attrs"
 			/>
@@ -110,7 +55,7 @@ const props = defineProps<{
 	tabindex: number
 }>()
 
-const { modelValue } = toRefs(props)
+const { modelValue, tabindex, min, max, minLength, maxLength, label, invalid, placeholder, description } = toRefs(props)
 const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
 const type = computed(() => 'text')
 </script>

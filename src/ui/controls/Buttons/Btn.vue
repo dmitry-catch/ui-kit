@@ -83,12 +83,20 @@
 .Btn.icon .Btn__dropdownIcon {
 	display: none;
 }
+.Btn.icon .Btn__actual {
+	min-width: min-content;
+}
 
 .Btn__dropdownItem {
 	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
 }
 .Btn__dropdownItem:hover {
 	background: var(--design-background-color-secondary);
+}
+.Btn__dropdownContent {
+	background: var(--design-background-color-primary);
+	border: 1px solid var(--design-border-color-primary);
+	border-radius: var(--design-border-radius-control);
 }
 </style>
 
@@ -102,8 +110,14 @@
 		</button>
 		<Dropdown :open="hasDropdown && dropdownOpened">
 			<slot name="dropdown">
-				<div v-for="option in dropdown" class="Btn__dropdownItem" @click="dropdownOptionClick(option.action)">
-					{{ option.name }}
+				<div class="Btn__dropdownContent">
+					<div
+						v-for="option in dropdown"
+						class="Btn__dropdownItem"
+						@click="dropdownOptionClick(option.action)"
+					>
+						{{ option.name }}
+					</div>
 				</div>
 			</slot>
 		</Dropdown>
@@ -113,6 +127,7 @@
 import { computed, onMounted, onUnmounted, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import Dropdown from '../../layout/Dropdown.vue'
+import { MouseEvent } from 'happy-dom'
 const root = ref()
 const props = defineProps({
 	accent: { default: () => false, type: Boolean },
@@ -139,8 +154,8 @@ const dropdownOptionClick = async (action: Function) => {
 	if (typeof action === 'function') await action({ preventDefault })
 	if (close) dropdownOpened.value = false
 }
-const clickOutside = (event) => {
-	if (!(event.path || event.composedPath()).includes(root.value)) dropdownOpened.value = false
+const clickOutside = (event: Event) => {
+	if (!event.composedPath().includes(root.value)) dropdownOpened.value = false
 }
 onMounted(() => document.addEventListener('click', clickOutside))
 onUnmounted(() => document.removeEventListener('click', clickOutside))
