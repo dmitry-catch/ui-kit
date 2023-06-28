@@ -3,7 +3,6 @@
 	position: fixed;
 	top: v-bind(top);
 	left: v-bind(left);
-	z-index: var(--dropdown-z-index, 1000);
 }
 </style>
 
