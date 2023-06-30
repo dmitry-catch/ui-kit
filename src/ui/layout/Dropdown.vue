@@ -41,7 +41,6 @@ watchEffect(() => {
 		if (rect == null) return
 		baseTop.value = rect?.bottom + 5
 		left.value = `${rect?.left + 0}px`
-		menuHeight.value = (root.value?.scrollHeight ?? 0) + 5
 	}
 })
 </script>
