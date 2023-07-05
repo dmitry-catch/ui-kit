@@ -11,22 +11,22 @@ h6 {
 h1 {
 	font-size: 24px;
 	line-height: 32px;
-	font-weight: 700;
+	font-weight: 600;
 }
 h2 {
 	font-size: 20px;
 	line-height: 28px;
-	font-weight: 700;
+	font-weight: 600;
 }
 h3 {
 	font-size: 28px;
 	line-height: 28px;
-	font-weight: 700;
+	font-weight: 600;
 }
 h4 {
 	font-size: 16px;
 	line-height: 24px;
-	font-weight: 700;
+	font-weight: 600;
 }
 </style>
 <template></template>
