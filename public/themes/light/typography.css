@@ -13,7 +13,7 @@
 :where(h1, h2, h3, h4) {
 	color: var(--design-text-color-primary);
 	font-family: var(--design-font-family);
-	font-weight: 600;
+	font-weight: 700;
 }
 
 :where(h1) {
