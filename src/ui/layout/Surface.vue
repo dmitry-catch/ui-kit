@@ -2,7 +2,7 @@
 .Surface {
 	background: var(--design-background-color-primary);
 	border-radius: var(--design-border-radius-surface);
-	border-color: var(--design-border-color-primary);
+	border-color: var(----design-border-color-baseline);
 	border-width: 1px;
 	border-style: solid;
 	box-sizing: border-box;
