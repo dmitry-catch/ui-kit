@@ -1,13 +1,11 @@
 <style>
-.Btn {
+.Btn__actual {
 	--button-background-color-primary: var(--design-background-color-primary);
 	--button-background-color-secondary: var(--design-background-color-secondary);
 	--button-text-color-primary: var(--design-text-color-primary);
 	--button-text-color-secondary: var(--design-text-color-secondary);
 	--button-border-color-primary: var(--design-border-color-primary);
 	--button-border-color-secondary: var(--design-border-color-secondary);
-}
-.Btn__actual {
 	border: 1px solid var(--button-text-color-primary);
 	border-radius: var(--design-border-radius-control);
 	background: var(--button-background-color-primary);
@@ -116,9 +114,9 @@
 					<div
 						v-for="option in dropdown"
 						class="Btn__dropdownItem"
-						@click="dropdownOptionClick(option.action, option)"
+						@click="dropdownOptionClick(option.action)"
 					>
-						<slot name="dropdownItem" :data="option">{{ option.name }}</slot>
+						{{ option.name }}
 					</div>
 				</div>
 			</slot>
@@ -129,21 +127,31 @@
 import { computed, onMounted, onUnmounted, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import Dropdown from '../../layout/Dropdown.vue'
+import { MouseEvent } from 'happy-dom'
 const root = ref()
 const props = defineProps({
+	accent: { default: () => false, type: Boolean },
+	minimal: { default: () => false, type: Boolean },
+	functional: { default: () => false, type: Boolean },
+	danger: { default: () => false, type: Boolean },
+	warning: { default: () => false, type: Boolean },
+	disabled: { default: () => false, type: Boolean },
+	pressed: { default: () => false, type: Boolean },
 	dropdown: { default: () => [], type: Array }
 })
 
-const { dropdown } = toRefs(props)
+const { accent, minimal, danger, warning, disabled, pressed, dropdown } = toRefs(props)
+
+const booleanAttribute = (value: any) => (value ? true : undefined)
 
 const hasDropdown = computed(() => !!dropdown?.value?.length)
 const dropdownOpened = ref(false)
 
 const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
-const dropdownOptionClick = async (action: Function, option: any) => {
+const dropdownOptionClick = async (action: Function) => {
 	let close = true
 	const preventDefault = () => (close = false)
-	if (typeof action === 'function') await action({ preventDefault, data: option })
+	if (typeof action === 'function') await action({ preventDefault })
 	if (close) dropdownOpened.value = false
 }
 const clickOutside = (event: Event) => {

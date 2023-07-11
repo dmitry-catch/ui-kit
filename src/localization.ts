@@ -1,6 +1,5 @@
 export interface Localization {
 	Date(): DateLocalization
-	Field(): FieldLocalization
 }
 
 /*
@@ -59,8 +58,4 @@ export interface DateLocalization {
 	SundayAbbr(): string
 
 	Calendar(): string
-}
-
-export interface FieldLocalization {
-	CountValues(count: number): string
 }

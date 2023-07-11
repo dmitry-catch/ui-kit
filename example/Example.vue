@@ -5,28 +5,35 @@ body {
 </style>
 
 <template>
-	<div style="max-width: 50%">
-		<!--		<Multiselect v-model="test" :options="options"></Multiselect>-->
-		<!--		<Btn :dropdown="options">-->
-		<!--			234567890234567890-->
-		<!--			<template #dropdownItem="{ data }">-->
-		<!--				<div style="display: flex; flex-flow: row; gap: var(&#45;&#45;design-gap-unit)">-->
-		<!--					<div>{{ data.name }}</div>-->
-		<!--					<Icon v-if="test.includes(data.value)" name="check" style="&#45;&#45;icon-color: red"></Icon>-->
-		<!--				</div>-->
-		<!--			</template>-->
-		<!--		</Btn>-->
-		<DataList :context-menu="options" :data-source="options">
-			<template #listItem="{ data }">
-				{{ data }}
-			</template>
-		</DataList>
-		<!--		<OrderableList v-model="options">-->
-		<!--			<template #itemTemplate="{ data }: { name: string, value: string }">-->
-		<!--				<Checkbox v-model="data.value"> {{ data.name }} </Checkbox>-->
-		<!--			</template>-->
-		<!--		</OrderableList>-->
-		<!--		<DropdownSelect :options="options" model-value="" placeholder="" label=""></DropdownSelect>-->
+	<DropdownSelect
+		v-model="test"
+		:options="options"
+		placeholder="Выберите из списка"
+		style="width: 400px"
+		label="Расследование"
+	>
+	</DropdownSelect>
+	<TextField v-model="test" label="Label" description="description" type="date">
+		<template #before>
+			<Icon name="privacy"></Icon>
+		</template>
+		<template #after>
+			<Icon name="privacy"></Icon>
+		</template>
+		<template #validationHint> <span>validation hint</span> </template>
+	</TextField>
+	<div aria-roledescription="date field">
+		<input aria-description="Day" type="number" min="0" max="30" />
+	</div>
+	<hr />
+	<label>
+		<span>Test</span>
+		<input type="date" />
+	</label>
+	<hr />
+	<div style="display: flex; gap: 16px; align-items: center">
+		<DateField v-model="date"></DateField>
+		<span>{{ new Date(date).toLocaleString('ru') }}</span>
 	</div>
 </template>
 
@@ -36,40 +43,23 @@ import TextField from '../src/ui/controls/Inputs/TextField.vue'
 import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
 import DateField from '../src/ui/controls/Inputs/Date/DateField.vue'
-import Checkbox from '../src/ui/controls/Inputs/Checkbox.vue'
-import OrderableList from '../src/ui/lists/OrderableList.vue'
-import Multiselect from '../src/ui/controls/Inputs/Multiselect.vue'
-import Btn from '../src/ui/controls/Buttons/Btn.vue'
-import DataList from '../src/ui/lists/DataList.vue'
-import { groupBy } from '@forecsys/collections'
-
 const tab = ref(null)
-const test = ref(['value 1'])
+const test = ref(null)
 const anchor = ref('center')
 const date = ref('2022-02-01')
 
-const addToList = ({ data }) => {
-	test.value.push(data.value)
-}
-const options = ref(
-	groupBy(
-		[
-			{ name: 'name', value: 'value', action: addToList },
-			{ name: 'name 1', value: 'value 1', action: addToList },
-			{ name: 'name 2', value: 'value 2', action: addToList },
-			{ name: 'name 3', value: 'value 3', action: addToList }
-		],
-		[
-			{ direction: 'asc', target: 'value' },
-			{ direction: 'asc', target: 'name' }
-		]
-	)
-)
+const options = [
+	{ name: 'name', value: 'value' },
+	{ name: 'name 1', value: 'value 1' },
+	{ name: 'name 2', value: 'value 2' },
+	{ name: 'name 3', value: 'value 3' }
+]
+
 const dropdown = [
 	{ name: 'test options', action: () => console.debug('test action') },
 	{
 		name: 'test options 2',
-		action: ({ preventDefault }: Event) => {
+		action: ({ preventDefault }) => {
 			console.debug('test action 2')
 
 			preventDefault()

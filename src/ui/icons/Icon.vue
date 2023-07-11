@@ -1,8 +1,8 @@
 <style>
 .Icon {
-	fill: var(--icon-color, currentColor);
-	width: var(--icon-size, var(--design-current-line-height, 1em));
-	height: var(--icon-size, var(--design-current-line-height, 1em));
+	fill: currentColor;
+	width: 1em;
+	height: 1em;
 }
 .Icon svg {
 	width: 100%;

@@ -12,10 +12,6 @@ import Tabs from './ui/controls/Tabs/Tabs.vue'
 import Tab from './ui/controls/Tabs/Tab.vue'
 import TextField from './ui/controls/Inputs/TextField.vue'
 import Modal from './ui/layout/Modal.vue'
-import Multiselect from './ui/controls/Inputs/Multiselect.vue'
-import Checkbox from './ui/controls/Inputs/Checkbox.vue'
-import type { Localization, FieldLocalization, DateLocalization } from './localization'
-
 export {
 	Btn,
 	Icon,
@@ -30,10 +26,5 @@ export {
 	Tabs,
 	Tab,
 	TextField,
-	Modal,
-	Multiselect,
-	Checkbox,
-	Localization,
-	FieldLocalization,
-	DateLocalization
+	Modal
 }

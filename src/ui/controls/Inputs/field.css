@@ -1,6 +1,7 @@
 .Field {
 	display: flex;
 	flex-flow: column;
+	padding: 4px;
 }
 
 .Field__description {
