@@ -34,7 +34,7 @@
 		</div>
 		<div class="DataListItem__contextMenu">
 			<Btn class="DataListItem__button icon functional" :dropdown="wrappedContextMenu">
-				<Icon name="more_vertical"></Icon>
+				<Icon name="arrow_down"></Icon>
 				<template #dropdownItem="{ data }">
 					<slot name="contextMenuItem" :data="data"></slot>
 				</template>

@@ -2,7 +2,7 @@
 
 <template>
 	<div class="DataList">
-		<DataListGroup v-for="item of dataSource" :data="item" :context-menu="contextMenu" @itemClick="itemClick">
+		<DataListGroup v-for="item of dataSource" :data="item" :context-menu="contextMenu">
 			<template #content="{ data }">
 				<slot name="listItem" :data="data"></slot>
 			</template>
@@ -21,7 +21,6 @@ const props = defineProps<{
 	dataSource: Grouped<any>
 	contextMenu: Array<{ name: string; action: (data: any) => any }>
 }>()
-const emit = defineEmits(['itemClick'])
+
 const { contextMenu, dataSource } = toRefs(props)
-const itemClick = (data: any) => emit('itemClick', data)
 </script>

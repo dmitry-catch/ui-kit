@@ -14,7 +14,7 @@
 </style>
 
 <template>
-	<DataListItem v-if="isItem" :data="data" :context-menu="contextMenu" @click="itemClick(data)">
+	<DataListItem v-if="isItem" :data="data" :context-menu="contextMenu">
 		<template #content="{ data }">
 			<slot name="content" :data="data"></slot>
 		</template>
@@ -33,7 +33,7 @@
 			<span>{{ group.data.length }}</span>
 		</div>
 		<template v-if="opened">
-			<DataListGroup v-for="item of group.data" :data="item" :context-menu="contextMenu" @itemClick="itemClick">
+			<DataListGroup v-for="item of group.data" :data="item" :context-menu="contextMenu">
 				<template #content="{ data }">
 					<slot name="content" :data="data"></slot>
 				</template>
@@ -52,7 +52,6 @@ import { computed, ref, toRefs } from 'vue'
 import DataListItem from './DataListItem.vue'
 import { Group, isGroup } from '@forecsys/collections'
 const props = defineProps<{ data: any; contextMenu: Array<any> }>()
-const emit = defineEmits(['itemClick'])
 const { data, contextMenu } = toRefs(props)
 
 const group = computed(() => data.value as Group<any>)
@@ -60,5 +59,4 @@ const isItem = computed(() => !isGroup(data.value))
 
 const opened = ref(true)
 const toggle = () => (opened.value = !opened.value)
-const itemClick = (data: any) => emit('itemClick', data)
 </script>
