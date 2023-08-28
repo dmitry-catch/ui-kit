@@ -70,7 +70,7 @@
 				</Btn>
 			</div>
 		</div>
-		<div v-show="dropdownOpened" class="Multiselect__dropdown" ref="dropdown" @focusout="close">
+		<div v-show="dropdownOpened" class="Multiselect__dropdown">
 			<div v-for="option of options" :key="option.value" class="Multiselect__dropdownItem">
 				<Checkbox v-model="selectedValue" :value="option.value">{{ option.name }}</Checkbox>
 			</div>
@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, toRefs } from 'vue'
+import { computed, inject, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import Pill from '../../text/Pill.vue'
 import Btn from '../Buttons/Btn.vue'
@@ -111,15 +111,6 @@ const clearSelection = () => emit('update:modelValue', [])
 const field = ref<HTMLElement>()
 const fieldWidth = computed(() => field.value?.clientWidth + 'px')
 
-const dropdown = ref<HTMLElement>()
 const dropdownOpened = ref(false)
 const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
-const close = () => (dropdownOpened.value = false)
-const clickOutsideDropdown = (event: MouseEvent) => {
-	if ((event.path || event.composedPath()).includes(dropdown.value)) return
-	close()
-}
-onMounted(() => {
-	document.addEventListener('click', clickOutsideDropdown)
-})
 </script>

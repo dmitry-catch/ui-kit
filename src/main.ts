@@ -14,11 +14,8 @@ import TextField from './ui/controls/Inputs/TextField.vue'
 import Modal from './ui/layout/Modal.vue'
 import Multiselect from './ui/controls/Inputs/Multiselect.vue'
 import Checkbox from './ui/controls/Inputs/Checkbox.vue'
-import DropdownSelectableOption from './ui/controls/Inputs/DropdownSelectableOption.vue'
-import DataList from './ui/lists/DataList.vue'
-import DataListGroup from './ui/lists/DataListGroup.vue'
-import DataListItem from './ui/lists/DataListItem.vue'
 import type { Localization, FieldLocalization, DateLocalization } from './localization'
+import DropdownSelectableOption from './ui/controls/Inputs/DropdownSelectableOption.vue'
 export {
 	Btn,
 	Icon,
@@ -39,8 +36,5 @@ export {
 	Localization,
 	FieldLocalization,
 	DateLocalization,
-	DropdownSelectableOption,
-	DataList,
-	DataListGroup,
-	DataListItem
+	DropdownSelectableOption
 }

@@ -3,8 +3,6 @@
 	display: flex;
 	flex-flow: row;
 	gap: var(--design-gap-unit);
-	align-items: center;
-	justify-content: space-between;
 }
 </style>
 
