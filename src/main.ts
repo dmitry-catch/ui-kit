@@ -15,7 +15,7 @@ import Modal from './ui/layout/Modal.vue'
 import Multiselect from './ui/controls/Inputs/Multiselect.vue'
 import Checkbox from './ui/controls/Inputs/Checkbox.vue'
 import type { Localization, FieldLocalization, DateLocalization } from './localization'
-import DropdownSelectableOption from './ui/controls/Inputs/DropdownSelectableOption.vue'
+
 export {
 	Btn,
 	Icon,
@@ -35,6 +35,5 @@ export {
 	Checkbox,
 	Localization,
 	FieldLocalization,
-	DateLocalization,
-	DropdownSelectableOption
+	DateLocalization
 }
