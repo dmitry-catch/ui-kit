@@ -45,7 +45,7 @@
 import Icon from '../../icons/Icon.vue'
 import { computed, toRefs } from 'vue'
 
-const props = withDefaults(defineProps<{ modelValue: boolean; value: any }>(), { value: true })
+const props = defineProps<{ modelValue: boolean; value: any }>()
 const emit = defineEmits(['update:modelValue'])
 const { modelValue } = toRefs(props)
 const internalValue = computed({
