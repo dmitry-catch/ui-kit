@@ -19,8 +19,6 @@ import DataList from './ui/lists/DataList.vue'
 import DataListGroup from './ui/lists/DataListGroup.vue'
 import DataListItem from './ui/lists/DataListItem.vue'
 import type { Localization, FieldLocalization, DateLocalization } from './localization'
-import OrderableList from './ui/lists/OrderableList.vue'
-
 export {
 	Btn,
 	Icon,
@@ -44,6 +42,5 @@ export {
 	DropdownSelectableOption,
 	DataList,
 	DataListGroup,
-	DataListItem,
-	OrderableList
+	DataListItem
 }
