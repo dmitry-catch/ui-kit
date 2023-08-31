@@ -48,7 +48,7 @@
 </style>
 
 <template>
-	<div class="Multiselect" @focusout="focusout" ref="root">
+	<div class="Multiselect">
 		<div class="Field" ref="field">
 			<div class="Multiselect__visibleInput Field__visibleInput">
 				<div v-if="hasSelectedValue">
@@ -70,7 +70,7 @@
 				</Btn>
 			</div>
 		</div>
-		<div v-show="dropdownOpened" class="Multiselect__dropdown" ref="dropdown">
+		<div v-show="dropdownOpened" class="Multiselect__dropdown" ref="dropdown" @focusout="close">
 			<div v-for="option of options" :key="option.value" class="Multiselect__dropdownItem">
 				<Checkbox v-model="selectedValue" :value="option.value">{{ option.name }}</Checkbox>
 			</div>
@@ -89,7 +89,7 @@ const localization = inject<FieldLocalization>('FieldLocalization')
 const props = defineProps<{ modelValue: Array<any>; options: Array<{ name: string; value: any }> }>()
 const emit = defineEmits(['update:modelValue'])
 const { modelValue, options } = toRefs(props)
-const root = ref<HTMLElement>()
+
 const selectedValue = computed({
 	get() {
 		return modelValue.value
@@ -109,31 +109,15 @@ const hasSelectedValue = computed(() => modelValue.value?.length != null && mode
 const clearSelection = () => emit('update:modelValue', [])
 
 const field = ref<HTMLElement>()
-const fieldWidth = ref(field.value?.clientWidth + 'px')
+const fieldWidth = computed(() => field.value?.clientWidth + 'px')
 
 const dropdown = ref<HTMLElement>()
 const dropdownOpened = ref(false)
-const toggleDropdown = () => {
-	dropdownOpened.value = !dropdownOpened.value
-	fieldWidth.value = field.value?.clientWidth + 'px'
-}
+const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
 const close = () => (dropdownOpened.value = false)
 const clickOutsideDropdown = (event: MouseEvent) => {
-	if ((event.path || event.composedPath()).includes(root.value)) return
-
+	if ((event.path || event.composedPath()).includes(dropdown.value)) return
 	close()
-}
-const focusout = (event: FocusEvent) => {
-	setTimeout(() => {
-		let el = document.activeElement
-		while (el != null) {
-			console.log(el)
-			if (el == (root.value as Element)) return
-			el = el.parentElement
-		}
-		console.log('focus close')
-		close()
-	}, 30)
 }
 onMounted(() => {
 	document.addEventListener('click', clickOutsideDropdown)

@@ -6,7 +6,7 @@ body {
 
 <template>
 	<div style="max-width: 50%">
-		<Multiselect v-model="test" :options="options"></Multiselect>
+		<!--		<Multiselect v-model="test" :options="options"></Multiselect>-->
 		<!--		<Btn :dropdown="options">-->
 		<!--			234567890234567890-->
 		<!--			<template #dropdownItem="{ data }">-->
