@@ -21,7 +21,6 @@
 			:key="item.name"
 			class="OrderableListItem"
 			@pointerdown.prevent="dragHandleMousedown"
-			@click.capture="cancelDragging = true"
 		>
 			<Icon class="OrderableListItem__dragDropHandle" name="drag-drop"></Icon>
 			<span>
@@ -68,7 +67,7 @@ const drag = (x: number, y: number) => {
 		return rectA.y - rectB.y
 	})
 }
-const dragEvent = (event: PointerEvent) => {
+const dragEvent = (event: MouseEvent) => {
 	drag(event.clientX, event.clientY)
 }
 const stopDragging = () => {
@@ -92,18 +91,7 @@ const startDragging = (element: HTMLElement) => {
 	document.addEventListener('pointermove', dragEvent)
 	document.addEventListener('pointerup', stopDragging)
 }
-const cancelDragging = ref<boolean>(true)
-const tryDragging = async (target: HTMLElement) => {
-	cancelDragging.value = false
-	await new Promise((resolve) => setTimeout(resolve, 50))
-	if (cancelDragging.value) {
-		cancelDragging.value = false
-		return
-	}
-
-	startDragging(target)
-}
-const dragHandleMousedown = (event: PointerEvent) => {
-	tryDragging(event.currentTarget as unknown as HTMLElement)
+const dragHandleMousedown = (event: MouseEvent) => {
+	startDragging(event.currentTarget as unknown as HTMLElement)
 }
 </script>
