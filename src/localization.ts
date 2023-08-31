@@ -18,7 +18,6 @@ export interface Localization {
  December - 31 days
  */
 export interface DateLocalization {
-	DateAbbr(): string
 	January(): string
 	February(): string
 	April(): string
@@ -58,8 +57,6 @@ export interface DateLocalization {
 	FridayAbbr(): string
 	SaturdayAbbr(): string
 	SundayAbbr(): string
-
-	WeekdayAbbrArray(): [string, string, string, string, string, string, string]
 
 	Calendar(): string
 }

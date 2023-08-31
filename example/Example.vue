@@ -27,15 +27,6 @@ body {
 			</template>
 		</OrderableList>
 		<!--		<DropdownSelect :options="options" model-value="" placeholder="" label=""></DropdownSelect>-->
-		<DatePicker
-		:label="'Заголовок'"
-		:disabled="false"
-		:required="false"
-		:hint="'Подсказка'"
-		:description="'Описание'"
-		:invalid="false"
-		/>
-		<input type="date" v-model="date" />
 	</div>
 </template>
 
@@ -45,7 +36,6 @@ import TextField from '../src/ui/controls/Inputs/TextField.vue'
 import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
 import DateField from '../src/ui/controls/Inputs/Date/DateField.vue'
-import DatePicker from '../src/ui/controls/Inputs/DatePicker.vue'
 import Checkbox from '../src/ui/controls/Inputs/Checkbox.vue'
 import OrderableList from '../src/ui/lists/OrderableList.vue'
 import Multiselect from '../src/ui/controls/Inputs/Multiselect.vue'
