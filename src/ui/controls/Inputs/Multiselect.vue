@@ -133,7 +133,7 @@ const focusout = (event: FocusEvent) => {
 		}
 		console.log('focus close')
 		close()
-	}, 150)
+	}, 30)
 }
 onMounted(() => {
 	document.addEventListener('click', clickOutsideDropdown)
