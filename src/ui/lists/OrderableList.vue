@@ -21,7 +21,7 @@
 			:key="item.name"
 			class="OrderableListItem"
 			@pointerdown.prevent="dragHandleMousedown"
-			@click="cancelDragging = true"
+			@click.capture="cancelDragging = true"
 		>
 			<Icon class="OrderableListItem__dragDropHandle" name="drag-drop"></Icon>
 			<span>
@@ -93,13 +93,11 @@ const startDragging = (element: HTMLElement) => {
 	document.addEventListener('pointerup', stopDragging)
 }
 const cancelDragging = ref<boolean>(true)
-watchEffect(() => {
-	console.log('cancelDragging', cancelDragging.value)
-})
 const tryDragging = async (target: HTMLElement) => {
 	cancelDragging.value = false
-	await new Promise((resolve) => setTimeout(resolve, 100))
+	await new Promise((resolve) => setTimeout(resolve, 50))
 	if (cancelDragging.value) {
+		cancelDragging.value = false
 		return
 	}
 
