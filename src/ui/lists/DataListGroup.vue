@@ -2,14 +2,13 @@
 .DataListGroup {
 	display: flex;
 	flex-flow: row;
-	align-items: center;
 	background: var(--design-background-color-secondary);
 	width: 100%;
 	height: min-content;
 	gap: var(--design-gap-unit);
 }
 
-.DataListGroup__button.icon.functional {
+.DataListGroup__button {
 	--button-background-color-primary: var(--design-background-color-secondary);
 }
 </style>

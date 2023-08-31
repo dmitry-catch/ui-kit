@@ -7,20 +7,20 @@ body {
 <template>
 	<div style="max-width: 50%">
 		<Multiselect v-model="test" :options="options"></Multiselect>
-		<Btn :dropdown="options">
-			234567890234567890
-			<template #dropdownItem="{ data }">
-				<div style="display: flex; flex-flow: row; gap: var(--design-gap-unit)">
-					<div>{{ data.name }}</div>
-					<Icon v-if="test.includes(data.value)" name="check" style="--icon-color: red"></Icon>
-				</div>
-			</template>
-		</Btn>
-		<DataList :context-menu="options" :data-source="grouped">
-			<template #listItem="{ data }">
-				{{ data }}
-			</template>
-		</DataList>
+		<!--		<Btn :dropdown="options">-->
+		<!--			234567890234567890-->
+		<!--			<template #dropdownItem="{ data }">-->
+		<!--				<div style="display: flex; flex-flow: row; gap: var(&#45;&#45;design-gap-unit)">-->
+		<!--					<div>{{ data.name }}</div>-->
+		<!--					<Icon v-if="test.includes(data.value)" name="check" style="&#45;&#45;icon-color: red"></Icon>-->
+		<!--				</div>-->
+		<!--			</template>-->
+		<!--		</Btn>-->
+		<!--		<DataList :context-menu="options" :data-source="options">-->
+		<!--			<template #listItem="{ data }">-->
+		<!--				{{ data }}-->
+		<!--			</template>-->
+		<!--		</DataList>-->
 		<OrderableList v-model="options">
 			<template #itemTemplate="{ data }: { data: { name: string, value: boolean } }">
 				<Checkbox v-model:model-value="data.value" :value="data.value"> {{ data.name }} </Checkbox>
@@ -31,7 +31,7 @@ body {
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import TextField from '../src/ui/controls/Inputs/TextField.vue'
 import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
@@ -41,7 +41,7 @@ import OrderableList from '../src/ui/lists/OrderableList.vue'
 import Multiselect from '../src/ui/controls/Inputs/Multiselect.vue'
 import Btn from '../src/ui/controls/Buttons/Btn.vue'
 import DataList from '../src/ui/lists/DataList.vue'
-import { comparator, groupBy } from '@forecsys/collections'
+import { groupBy } from '@forecsys/collections'
 
 const tab = ref(null)
 const test = ref(['value 1'])
@@ -57,8 +57,6 @@ const options = ref([
 	{ name: 'name 2', value: true, action: addToList },
 	{ name: 'name 3', value: false, action: addToList }
 ])
-
-const grouped = computed(() => groupBy(options.value, [{ direction: 'asc', target: 'name' }]))
 const dropdown = [
 	{ name: 'test options', action: () => console.debug('test action') },
 	{
