@@ -21,11 +21,11 @@ body {
 				{{ data }}
 			</template>
 		</DataList>
-		<OrderableList v-model="options">
-			<template #itemTemplate="{ data }: { data: { name: string, value: string } }">
-				<Checkbox v-model="data.value"> {{ data.name }} </Checkbox>
-			</template>
-		</OrderableList>
+		<!--		<OrderableList v-model="options">-->
+		<!--			<template #itemTemplate="{ data }: { name: string, value: string }">-->
+		<!--				<Checkbox v-model="data.value"> {{ data.name }} </Checkbox>-->
+		<!--			</template>-->
+		<!--		</OrderableList>-->
 		<!--		<DropdownSelect :options="options" model-value="" placeholder="" label=""></DropdownSelect>-->
 	</div>
 </template>
@@ -51,12 +51,20 @@ const date = ref('2022-02-01')
 const addToList = ({ data }) => {
 	test.value.push(data.value)
 }
-const options = ref([
-	{ name: 'name', value: 'value', action: addToList },
-	{ name: 'name 1', value: 'value 1', action: addToList },
-	{ name: 'name 2', value: 'value 2', action: addToList },
-	{ name: 'name 3', value: 'value 3', action: addToList }
-])
+const options = ref(
+	groupBy(
+		[
+			{ name: 'name', value: 'value', action: addToList },
+			{ name: 'name 1', value: 'value 1', action: addToList },
+			{ name: 'name 2', value: 'value 2', action: addToList },
+			{ name: 'name 3', value: 'value 3', action: addToList }
+		],
+		[
+			{ direction: 'asc', target: 'value' },
+			{ direction: 'asc', target: 'name' }
+		]
+	)
+)
 const dropdown = [
 	{ name: 'test options', action: () => console.debug('test action') },
 	{
