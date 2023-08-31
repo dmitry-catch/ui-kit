@@ -50,8 +50,6 @@
 <template>
 	<div class="Multiselect" @focusout="focusout" ref="root">
 		<div class="Field" ref="field">
-			<span class="Field__label"><slot name="label"></slot></span>
-			<span class="Field__description text-small"><slot name="description"></slot></span>
 			<div class="Multiselect__visibleInput Field__visibleInput">
 				<div v-if="hasSelectedValue">
 					<Pill class="control">
@@ -88,11 +86,7 @@ import Btn from '../Buttons/Btn.vue'
 import Checkbox from './Checkbox.vue'
 import { FieldLocalization } from '../../../localization'
 const localization = inject<FieldLocalization>('FieldLocalization')
-const props = defineProps<{
-	modelValue: Array<any>
-	options: Array<{ name: string; value: any }>
-}>()
-
+const props = defineProps<{ modelValue: Array<any>; options: Array<{ name: string; value: any }> }>()
 const emit = defineEmits(['update:modelValue'])
 const { modelValue, options } = toRefs(props)
 const root = ref<HTMLElement>()
