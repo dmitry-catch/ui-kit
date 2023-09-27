@@ -7,17 +7,6 @@ body {
 <template>
 	<div style="max-width: 50%">
 		<Multiselect v-model="test" :options="options"></Multiselect>
-		<DatePicker
-			:label="'Заголовок'"
-			:disabled="false"
-			:required="true"
-			:hint="'Подсказка'"
-			:description="'Описание'"
-			:invalid="false"
-			v-model="date"
-			:time="true"
-		/>
-		<input type="time" v-model="date" />
 		<Btn :dropdown="options">
 			234567890234567890
 			<template #dropdownItem="{ data }">
@@ -38,11 +27,20 @@ body {
 			</template>
 		</OrderableList>
 		<!--		<DropdownSelect :options="options" model-value="" placeholder="" label=""></DropdownSelect>-->
+		<DatePicker
+		:label="'Заголовок'"
+		:disabled="false"
+		:required="false"
+		:hint="'Подсказка'"
+		:description="'Описание'"
+		:invalid="false"
+		/>
+		<input type="date" v-model="date" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 import TextField from '../src/ui/controls/Inputs/TextField.vue'
 import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
@@ -82,8 +80,4 @@ const dropdown = [
 		}
 	}
 ]
-
-// watchEffect( () => {
-// 	console.log(date.value)
-// })
 </script>

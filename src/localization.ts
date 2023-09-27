@@ -61,10 +61,6 @@ export interface DateLocalization {
 
 	WeekdayAbbrArray(): [string, string, string, string, string, string, string]
 
-	Today(): string
-
-	TimeFrom(): string
-
 	Calendar(): string
 }
 
