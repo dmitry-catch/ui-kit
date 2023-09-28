@@ -2,26 +2,16 @@
 .calendar-time-control {
 	display: flex;
 	align-items: center;
+	height: 25px;
+	max-width: 130px;
 	justify-content: center;
 	border: 1px solid var(--design-border-color-primary);
 	border-radius: 4px;
-	min-width: 130px;
+	padding: 7px 14px;
 }
 .calendar-time-control__controls {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-	justify-content: center;
-	padding: 0px 10px;
-	border-left: 1px solid var(--design-border-color-primary);
-	height: 40px;
-}
-.calendar-time-control__time {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	padding: 7px 0;
 }
 .calendar-time-control__input {
 	font-size: 16px;
@@ -43,32 +33,38 @@
 	--icon-size: 16px;
 	cursor: pointer;
 }
+
+/* remove arrows */
+.calendar-time-control__input::-webkit-outer-spin-button,
+.calendar-time-control__input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+.calendar-time-control__input[type='number'] {
+	-moz-appearance: textfield;
+}
 </style>
 
 <template>
 	<div class="calendar-time-control">
-		<div class="calendar-time-control__time">
-			<span>{{ DateLocalization.TimeFrom() }}</span>
-			<span class="calendar-time-control__input" tabindex="0" @click="handleHoursClick">{{ hours }}</span>
-			<span>:</span>
-			<span class="calendar-time-control__input" tabindex="0" @click="handleMinutesClick">{{ minutes }}</span>
-			<input
-				type="number"
-				class="visually-hidden"
-				v-model="hours"
-				ref="hoursRef"
-				@input="handleHourChange"
-				@focus="handleInputFocus"
-			/>
-			<input
-				type="number"
-				class="visually-hidden"
-				v-model="minutes"
-				ref="minutesRef"
-				@input="handleMinuteChange"
-				@focus="handleInputFocus"
-			/>
-		</div>
+		<span>{{ DateLocalization.TimeFrom() }}</span>
+		<input
+			class="calendar-time-control__input"
+			type="number"
+			v-model="hours"
+			:maxlength="2"
+			@input="handleHourChange"
+		/>
+		:
+		<input
+			class="calendar-time-control__input"
+			type="number"
+			v-model="minutes"
+			:maxlength="2"
+			@input="handleMinuteChange"
+		/>
 		<div class="calendar-time-control__controls">
 			<span class="calendar-time-control__control">
 				<Icon name="chevron_up" class="calendar-time-control__control__icon" />
@@ -94,32 +90,31 @@ const DateLocalization = new DateLocalizationRu()
 const modelValue = toRefs(props).modelValue
 const emit = defineEmits(['update:modelValue'])
 
-const hours = ref(modelValue.value.split(':')[0] ? modelValue.value.split(':')[0] : '00')
-const minutes = ref(modelValue.value.split(':')[1] ? modelValue.value.split(':')[1] : '00')
-
-const hoursRef = ref()
-const minutesRef = ref()
-
-const handleHoursClick = () => hoursRef.value.focus()
-
-const handleMinutesClick = () => minutesRef.value.focus()
-
-const handleTimeChange = (event: any, maxValue: number, ref: any) => {
-	const value = Number(event.target.value)
-	if (value < 10) {
-		ref.value = '0' + value
-	} else if (value > maxValue) {
-		ref.value = String(maxValue)
+const handleHourChange = (event: any) => {
+	const value = event.target.value
+	if (value.length >= 2) {
+		if (Number(value) > 23) {
+			event.target.value = '23'
+		}
+		emit('update:modelValue', `${value}:${minutes.value}`)
 		event.target.nextElementSibling.focus()
-	} else {
-		ref.value = String(value)
-		event.target.nextElementSibling.focus()
+	} else if (value.length === 0) {
+		emit('update:modelValue', `00:${minutes.value}`)
 	}
 }
 
-const handleHourChange = (event: any) => handleTimeChange(event, 23, hours)
+const handleMinuteChange = (event: any) => {
+	if (event.target.value.length >= 2) {
+		if (Number(event.target.value) > 59) {
+			event.target.value = '59'
+		}
+		emit('update:modelValue', `${hours.value}:${event.target.value}`)
+		event.target.blur()
+	} else if (event.target.value.length === 0) {
+		emit('update:modelValue', `${hours.value}:00`)
+	}
+}
 
-const handleMinuteChange = (event: any) => handleTimeChange(event, 59, minutes)
-
-const handleInputFocus = (event: any) => event.target.select()
+const hours = ref(modelValue.value.split(':')[0] ? modelValue.value.split(':')[0] : '00')
+const minutes = ref(modelValue.value.split(':')[1] ? modelValue.value.split(':')[1] : '00')
 </script>

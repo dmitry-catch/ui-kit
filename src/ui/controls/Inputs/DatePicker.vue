@@ -113,11 +113,6 @@
 	background-color: var(--color-on-accent-primary);
 	cursor: not-allowed;
 }
-
-.highlight-text {
-	background-color: #3266d0;
-	color: var(--design-text-color-on-accent-primary);
-}
 </style>
 
 <template>
@@ -126,13 +121,9 @@
 		<span class="DatePicker__description">{{ description }}</span>
 		<div class="DatePicker__inputs-container" :class="(disabled ? 'disabled' : '') + (invalid ? 'invalid' : '')">
 			<div class="DatePicker__date-time" :class="dateTimeStyling(dateTimeValue, disabled)">
-				<span @click="handleDateTimeDayClick" v-on:focusout="onSpanBlur" tabindex="1">{{
-					dateTimeValue[0]
-				}}</span>
-				<span>.</span>
-				<span @click="handleDateTimeMonthClick" @blur="onSpanBlur" tabindex="2">{{ dateTimeValue[1] }}</span>
-				<span>.</span>
-				<span @click="handleDateTimeYearClick" @blur="onSpanBlur" tabindex="3">{{ dateTimeValue[2] }}</span>
+				<span @click="handleDateTimeDayClick">{{ dateTimeValue[0] }}.</span>
+				<span @click="handleDateTimeMonthClick">{{ dateTimeValue[1] }}.</span>
+				<span @click="handleDateTimeYearClick">{{ dateTimeValue[2] }}</span>
 			</div>
 
 			<input
@@ -239,19 +230,12 @@ const handleDayInput = (event: any) => {
 	handleTwoDigitsInput(maxPossibleValue.toString(), event, day)
 }
 
-const handleDateTimeDayClick = () => dayRef.value.focus()
-
-const handleDateTimeMonthClick = () => monthRef.value.focus()
-
-const handleDateTimeYearClick = () => yearRef.value.focus()
-
-const onSpanBlur = (event: any) => {
-	if (!event.target.classList.value.includes('highlight-text')) {
-		event.target.classList.add('highlight-text')
-	} else {
-		event.target.classList.remove('highlight-text')
-	}
+const handleDateTimeDayClick = (event: any) => {
+	// hightlight text inside of element
+	dayRef.value.focus()
 }
+const handleDateTimeMonthClick = () => monthRef.value.focus()
+const handleDateTimeYearClick = () => yearRef.value.focus()
 
 const handleMonthInput = (event: any) => {
 	handleTwoDigitsInput('12', event, month)
