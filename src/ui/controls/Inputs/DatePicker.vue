@@ -126,15 +126,13 @@
 		<span class="DatePicker__description">{{ description }}</span>
 		<div class="DatePicker__inputs-container" :class="(disabled ? 'disabled' : '') + (invalid ? 'invalid' : '')">
 			<div class="DatePicker__date-time" :class="dateTimeStyling(dateTimeValue, disabled)">
-				<span @click="handleDateTimeDayClick" ref="dayPlaceholderRef" tabindex="1">{{ dateTimeValue[0] }}</span>
-				<span>.</span>
-				<span @click="handleDateTimeMonthClick" ref="monthPlaceholderRef" tabindex="2">{{
-					dateTimeValue[1]
+				<span @click="handleDateTimeDayClick" v-on:focusout="onSpanBlur" tabindex="1">{{
+					dateTimeValue[0]
 				}}</span>
 				<span>.</span>
-				<span @click="handleDateTimeYearClick" ref="yearPlaceholderRef" tabindex="3">{{
-					dateTimeValue[2]
-				}}</span>
+				<span @click="handleDateTimeMonthClick" @blur="onSpanBlur" tabindex="2">{{ dateTimeValue[1] }}</span>
+				<span>.</span>
+				<span @click="handleDateTimeYearClick" @blur="onSpanBlur" tabindex="3">{{ dateTimeValue[2] }}</span>
 			</div>
 
 			<input
@@ -247,22 +245,13 @@ const handleDateTimeMonthClick = () => monthRef.value.focus()
 
 const handleDateTimeYearClick = () => yearRef.value.focus()
 
-const yearPlaceholderRef = ref()
-const monthPlaceholderRef = ref()
-const dayPlaceholderRef = ref()
-
-watch([dayRef, monthRef, yearRef], () => {
-	const refs = [dayPlaceholderRef, monthPlaceholderRef, yearPlaceholderRef]
-	const inputs = [dayRef, monthRef, yearRef]
-	refs.forEach((ref, index) => {
-		inputs[index].value.addEventListener('focus', () => {
-			ref.value.classList.add('highlight-text')
-		})
-		inputs[index].value.addEventListener('blur', () => {
-			ref.value.classList.remove('highlight-text')
-		})
-	})
-})
+const onSpanBlur = (event: any) => {
+	if (!event.target.classList.value.includes('highlight-text')) {
+		event.target.classList.add('highlight-text')
+	} else {
+		event.target.classList.remove('highlight-text')
+	}
+}
 
 const handleMonthInput = (event: any) => {
 	handleTwoDigitsInput('12', event, month)
