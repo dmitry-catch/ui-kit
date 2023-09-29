@@ -146,14 +146,6 @@ export class DateLocalizationRu implements DateLocalization {
 		return 'с'
 	}
 
-	Apply(): string {
-		return 'Применить'
-	}
-
-	Reset(): string {
-		return 'Сбросить'
-	}
-
 	Calendar(): string {
 		return 'Календарь'
 	}

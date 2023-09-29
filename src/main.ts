@@ -21,7 +21,6 @@ import DataListItem from './ui/lists/DataListItem.vue'
 import type { Localization, FieldLocalization, DateLocalization } from './localization'
 import OrderableList from './ui/lists/OrderableList.vue'
 import DatePicker from './ui/controls/Inputs/DatePicker.vue'
-import DateRangePicker from './ui/controls/Inputs/DateRangePicker.vue'
 
 export {
 	Btn,
@@ -48,6 +47,5 @@ export {
 	DataListGroup,
 	DataListItem,
 	OrderableList,
-	DatePicker,
-	DateRangePicker
+	DatePicker
 }

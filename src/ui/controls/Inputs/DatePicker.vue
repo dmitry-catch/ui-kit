@@ -178,9 +178,7 @@
 			v-model:month="month"
 			v-model:year="year"
 			:isTime="time"
-			:timeRef="timeRef"
 			:handleCalendarClose="handleCalendarClose"
-			:isWorkCalendar="isWorkCalendar"
 		/>
 	</div>
 	<span class="DatePicker__hint" :class="invalid ? 'invalid' : ''">{{ hint }}</span>
@@ -190,60 +188,33 @@ import Icon from '../../icons/Icon.vue'
 import { defineProps, toRefs, ref, watch, computed } from 'vue'
 import { DateLocalizationRu } from '../../../localization.ru'
 import CalendarPopup from './DataHelpers/CalendarPopup.vue'
-import {
-	handleTwoDigitsInput,
-	handleYearInputEvent,
-	handleDayInputEvent,
-	dateTimeStyling,
-	handleInputFocus,
-	formatToRequiredFormat,
-	formatToRequiredFormatRange
-} from './DataHelpers/DataHelper'
 
 const props = withDefaults(
 	defineProps<{
-		modelValue: string
-		label: string
-		disabled: boolean
-		required: boolean
-		hint: string
-		description: string
-		invalid: boolean
-		time: boolean
-		isWorkCalendar: boolean
+		modelValue: any
+		value?: any
+		disabled?: boolean
+		label?: string
+		required?: boolean
+		hint?: string
+		description?: string
+		invalid?: boolean
+		time?: boolean
 	}>(),
-	{
-		label: '',
-		disabled: false,
-		required: false,
-		hint: '',
-		description: '',
-		invalid: false,
-		time: false,
-		isWorkCalendar: false
-	}
+	{ value: new Date() }
 )
 
 const emit = defineEmits(['update:modelValue'])
 const { modelValue } = toRefs(props)
-
 const day = ref(modelValue.value.split('-')[2])
 const month = ref(modelValue.value.split('-')[1])
 const year = ref(modelValue.value.split('-')[0])
+const DateLocalization = new DateLocalizationRu()
+const isCalendarOpen = ref(false)
 
 const dayRef = ref()
 const monthRef = ref()
 const yearRef = ref()
-
-const timeRef = ref()
-
-const yearPlaceholderRef = ref()
-const monthPlaceholderRef = ref()
-const dayPlaceholderRef = ref()
-
-const DateLocalization = new DateLocalizationRu()
-
-const isCalendarOpen = ref(false)
 
 const dateTimeValue = computed(() => {
 	const dateAbbr = DateLocalization.DateAbbr().split('.')
@@ -260,22 +231,25 @@ const handleCalendarClick = () => {
 
 const handleCalendarClose = () => (isCalendarOpen.value = false)
 
+const dateTimeStyling = (values: Array<string>, disabled: boolean | undefined) => {
+	const isActive = values.some((value) => /\d/.test(value))
+	return `${isActive ? 'active' : ''} ${disabled ? 'disabled' : ''}`
+}
+
+const handleDayInput = (event: any) => {
+	const maxPossibleValue = new Date(Number(year.value), Number(month.value), 0).getDate()
+	handleTwoDigitsInput(maxPossibleValue.toString(), event, day)
+}
+
 const handleDateTimeDayClick = () => dayRef.value.focus()
 
 const handleDateTimeMonthClick = () => monthRef.value.focus()
 
 const handleDateTimeYearClick = () => yearRef.value.focus()
 
-const handleDayInput = (event: any) => handleDayInputEvent(event, year.value, month.value, day)
-
-const handleMonthInput = (event: any) => handleTwoDigitsInput('12', event, month)
-
-const handleYearInput = (event: any) => handleYearInputEvent(event, year)
-
-watch([day, month, year], () => {
-	const formattedDate = formatToRequiredFormat(day.value, month.value, year.value, props.time, timeRef.value)
-	emit('update:modelValue', formattedDate)
-})
+const yearPlaceholderRef = ref()
+const monthPlaceholderRef = ref()
+const dayPlaceholderRef = ref()
 
 watch([dayRef, monthRef, yearRef], () => {
 	const refs = [dayPlaceholderRef, monthPlaceholderRef, yearPlaceholderRef]
@@ -288,5 +262,60 @@ watch([dayRef, monthRef, yearRef], () => {
 			ref.value.classList.remove('highlight-text')
 		})
 	})
+})
+
+const handleMonthInput = (event: any) => {
+	handleTwoDigitsInput('12', event, month)
+}
+
+const handleTwoDigitsInput = (maxPossibleValue: string, event: any, ref: any) => {
+	const value = event.target.value
+	if (Number(value) > Number(maxPossibleValue)) {
+		ref.value = maxPossibleValue
+	} else if (Number(value) < 0) {
+		ref.value = '01'
+	} else if (value.length > 2) {
+		if (value.charAt(0) == '0') {
+			ref.value = value.slice(1)
+		} else {
+			ref.value = maxPossibleValue
+		}
+	} else if (value.length == 1) {
+		ref.value = '0' + value
+	} else if (value.length == 0 || value == '0') {
+		ref.value = '01'
+	}
+
+	if (!(ref.value.charAt(0) == '0')) {
+		event.target.nextElementSibling.focus()
+	}
+}
+
+const handleYearInput = (event: any) => {
+	const value = event.target.value
+	if (value.length > 4) {
+		year.value = value.slice(1)
+	} else if (value.length < 4) {
+		year.value = '0'.repeat(4 - value.length) + value
+	}
+	if (String(year.value).length >= 4 && !(String(year.value).charAt(0) == '0')) {
+		event.target.blur()
+	}
+}
+
+const handleInputFocus = (event: any) => {
+	event.target.select()
+}
+
+const formatToDDMMYY = (day: string, month: string, year: string) => {
+	day = day ? day : '00'
+	month = month ? month : '00'
+	year = year ? year : '0000'
+	return `${year}-${month}-${day}`
+}
+
+watch([day, month, year], () => {
+	const formattedDate = formatToDDMMYY(day.value, month.value, year.value)
+	emit('update:modelValue', formattedDate)
 })
 </script>

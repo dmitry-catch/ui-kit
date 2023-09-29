@@ -16,16 +16,6 @@ body {
 			:invalid="false"
 			v-model="date"
 			:time="true"
-			:isWorkCalendar="true"
-		/>
-		<DateRangePicker
-			:label="'Заголовок'"
-			:disabled="false"
-			:required="true"
-			:hint="'Подсказка'"
-			:description="'Описание'"
-			:invalid="false"
-			v-model="dateRange"
 		/>
 		<input type="time" v-model="date" />
 		<Btn :dropdown="options">
@@ -58,7 +48,6 @@ import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
 import DateField from '../src/ui/controls/Inputs/Date/DateField.vue'
 import DatePicker from '../src/ui/controls/Inputs/DatePicker.vue'
-import DateRangePicker from '../src/ui/controls/Inputs/DateRangePicker.vue'
 import Checkbox from '../src/ui/controls/Inputs/Checkbox.vue'
 import OrderableList from '../src/ui/lists/OrderableList.vue'
 import Multiselect from '../src/ui/controls/Inputs/Multiselect.vue'
@@ -70,7 +59,6 @@ const tab = ref(null)
 const test = ref(['value 1'])
 const anchor = ref('center')
 const date = ref('2022-02-01')
-const dateRange = ref('2022-02-01, 2022-02-02')
 
 const addToList = ({ data }) => {
 	test.value.push(data.value)

@@ -9,13 +9,7 @@
 
 .calendar-popup table {
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
-	border-spacing: 4px;
 }
-
-.calendar-popup .range {
-	border-spacing: 0 4px;
-}
-
 .calendar-popup__controls {
 	padding: 24px 0 16px 0;
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
@@ -34,9 +28,10 @@
 	font-weight: normal;
 	text-align: center;
 	cursor: pointer;
+	padding: 0;
+	margin: 4px;
 	position: relative;
 	border-radius: 4px;
-	padding: 0;
 }
 .calendar-popup__cell:hover {
 	background-color: var(--design-background-color-on-accent-primary);
@@ -107,89 +102,12 @@
 .calendar-popup__optional-control .calendar-popup__picker__chevron {
 	margin: 0 6px;
 }
-
-.calendar-popup__controls__set-range {
-	display: flex;
-	justify-content: start;
-	gap: 30px;
-	width: 100%;
-	padding-bottom: 8px;
-}
-
-.calendar-popup__holidays {
-	color: var(--design-text-color-accent);
-}
-
-.calendar-popup__holidays.picked {
-	color: var(--design-text-color-on-accent-primary);
-}
-
-.calendar-popup__controls__button {
-	font-weight: bold;
-	min-height: 40px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-}
-
-.calendar-popup__controls__button-apply {
-	border: 1px solid var(--design-border-color-primary);
-	border-radius: 4px;
-	padding: 0 25px;
-}
-
-.calendar-popup__controls__button-apply:hover {
-	background-color: var(--design-background-color-on-accent-primary);
-}
-
-.picked:hover {
-	color: var(--design-text-color-on-accent-primary);
-	background-color: var(--design-background-color-on-accent-secondary);
-	opacity: 0.9;
-}
-
-.inside {
-	background-color: var(--design-background-color-on-accent-primary);
-	color: var(--design-text-color-primary);
-	border-radius: 0px;
-}
-
-.picked.inside {
-	background-color: var(--design-background-color-on-accent-secondary);
-	color: var(--design-text-color-on-accent-primary);
-}
-
-.calendar-popup__day-another-month.inside {
-	color: var(--design-border-color-primary);
-}
-
-.inside.date-today::after {
-	bottom: 6%;
-}
-
-.picked-end {
-	border-top-right-radius: 4px;
-	border-bottom-right-radius: 4px;
-}
-
-.picked-start {
-	border-top-left-radius: 4px;
-	border-bottom-left-radius: 4px;
-}
 </style>
 
 <template>
 	<div class="calendar-popup">
 		<div class="calendar-popup__controls">
-			<span
-				v-if="isRange ? !isControlRange : true"
-				:class="!isRange && !isControlRange ? 'visually-hidden' : ''"
-			></span>
-			<span
-				class="calendar-popup__picker__chevron"
-				@click="handleChevronBackwardClick"
-				v-if="isRange ? isControlRange : true"
-			>
+			<span class="calendar-popup__picker__chevron" @click="handleChevronBackwardClick">
 				<Icon name="chevron_backward" class="calendar-popup__icon"></Icon>
 			</span>
 
@@ -217,20 +135,13 @@
 					{{ `${Number(year) - 10} - ${Number(year) + 7}` }}
 				</span>
 			</div>
-			<span
-				v-if="isRange ? isControlRange : true"
-				:class="!isRange && isControlRange ? 'visually-hidden' : ''"
-			></span>
-			<span
-				class="calendar-popup__picker__chevron"
-				@click="handleChevronForwardClick"
-				v-if="isRange ? !isControlRange : true"
-			>
+
+			<span class="calendar-popup__picker__chevron" @click="handleChevronForwardClick">
 				<Icon name="chevron_forward" class="calendar-popup__icon"></Icon>
 			</span>
 		</div>
 
-		<table class="calendar-popup__body" v-if="mode == 'calendar'" :class="isRange ? 'range' : ''">
+		<table class="calendar-popup__body" v-if="mode == 'calendar'">
 			<thead class="calendar-popup__head">
 				<tr>
 					<th v-for="day in DateLocalization.WeekdayAbbrArray()" class="calendar-popup__cell">
@@ -243,10 +154,7 @@
 					<td
 						v-for="(dayOfMonth, dayIndex) in week"
 						class="calendar-popup__cell"
-						:class="
-							getClassOfDay(dayOfMonth, weekIndex, dayIndex) +
-							getClassOfRangeDay(dayOfMonth, weekIndex, dayIndex)
-						"
+						:class="getClassOfDay(dayOfMonth, weekIndex, dayIndex)"
 					>
 						{{ dayOfMonth }}
 					</td>
@@ -288,22 +196,11 @@
 			<div class="calendar-popup__controls__time-control">
 				<CalendarTimeControl v-if="isTime" :time="'00:00'" />
 			</div>
-			<div class="calendar-popup__controls__go-to-today" v-if="!isRange">
+			<div class="calendar-popup__controls__go-to-today">
 				<span class="calendar-popup__controls__go-to-today__icon" @click="goToToday">
 					<Icon class="calendar-popup__icon" name="calendar"></Icon>
 				</span>
 				{{ DateLocalization.Today() }}
-			</div>
-			<div class="calendar-popup__controls__set-range" v-if="isRange && isControlRange">
-				<span
-					class="calendar-popup__controls__button calendar-popup__controls__button-apply"
-					@click="handleApply"
-				>
-					{{ DateLocalization.Apply() }}
-				</span>
-				<span class="calendar-popup__controls__button" @click="handleReset">
-					{{ DateLocalization.Reset() }}
-				</span>
 			</div>
 		</div>
 	</div>
@@ -331,27 +228,7 @@ const props = defineProps({
 		type: Boolean,
 		default: false
 	},
-	isRange: {
-		type: Boolean,
-		default: false
-	},
-	isControlRange: {
-		type: Boolean,
-		default: false
-	},
-	isWorkCalendar: {
-		type: Boolean,
-		default: false
-	},
 	handleCalendarClose: {
-		type: Function,
-		default: () => {}
-	},
-	handleReset: {
-		type: Function,
-		default: () => {}
-	},
-	getFullRange: {
 		type: Function,
 		default: () => {}
 	}
@@ -373,10 +250,9 @@ const handleMonthChange = () => (mode.value = 'month')
 const handleYearChange = () => (mode.value = 'year')
 
 const handleClose = () => {
-	if (!props.isRange) props.handleCalendarClose()
+	document.removeEventListener('click', handleOutsideClick)
+	props.handleCalendarClose()
 }
-const handleApply = () => props.handleCalendarClose()
-const handleReset = () => props.handleReset()
 
 const handleChevronBackwardClick = () => {
 	if (mode.value == 'calendar') {
@@ -508,43 +384,6 @@ const getClassOfDay = (dayOfMonth: number, weekIndex: number, dayIndex: number) 
 		if (dayOfMonth == Number(day.value)) {
 			classCss += 'picked '
 		}
-		if (props.isWorkCalendar && (dayIndex == 5 || dayIndex == 6)) {
-			classCss += ' calendar-popup__holidays'
-		}
-	}
-
-	return classCss
-}
-
-const getClassOfRangeDay = (dayOfMonth: number, weekIndex: number, dayIndex: number) => {
-	let classCss: string = ''
-
-	if (props.isRange) {
-		const dates = props.getFullRange()
-
-		// if not the same month & year
-		if (dates[0].split('-')[1] != dates[1].split('-')[1]) {
-			const rangeStartDate = new Date(dates[0])
-			const rangeEndDate = new Date(dates[1])
-			let currentDayMonth = month.value
-			if (weekIndex == 0 && dayOfMonth > 7) {
-				currentDayMonth = String(Number(month.value) - 1)
-			} else if (weekIndex > 3 && dayOfMonth < 14) {
-				currentDayMonth = String(Number(month.value) + 1)
-			}
-			const currentDate = new Date(`${year.value}-${currentDayMonth}-${dayOfMonth}`)
-			if (props.isControlRange) {
-				console.log(currentDate.toDateString(), rangeStartDate.toDateString(), rangeEndDate.toDateString())
-			}
-			if (currentDate >= rangeStartDate && currentDate <= rangeEndDate) {
-				classCss = 'inside'
-			}
-			if (currentDate.toDateString() == rangeStartDate.toDateString()) {
-				classCss += ' picked-start'
-			} else if (currentDate.toDateString() == rangeEndDate.toDateString()) {
-				classCss += ' picked-end'
-			}
-		}
 	}
 
 	return classCss
@@ -585,7 +424,7 @@ const handleOutsideClick = (event: any) => {
 	)
 	if (!event.target.closest('.calendar-popup') && !isClassInClassListIncludesCalendar) {
 		if (!event.target.parentElement?.classList.contains('calendar-popup__icon')) {
-			props.handleCalendarClose()
+			handleClose()
 		}
 	}
 }
@@ -597,37 +436,25 @@ onMounted(async () => {
 
 // handling keyboard control
 const handleArrowsClicks = (event: any) => {
-	if (!props.isRange) {
-		if (event.key == 'ArrowLeft') {
-			event.preventDefault()
-			handleChevronBackwardClick()
-		} else if (event.key == 'ArrowRight') {
-			event.preventDefault()
-			handleChevronForwardClick()
-		} else if (event.key == 'ArrowUp') {
-			event.preventDefault()
-			if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) - 1)))) {
-				emit('update:day', convertNumberToTwoDigits(String(Number(day.value) - 1)))
-			} else if (
-				mode.value == 'month' &&
-				isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))
-			) {
-				emit('update:month', convertNumberToTwoDigits(String(Number(month.value) - 1)))
-			} else if (mode.value == 'year') {
-				emit('update:year', String(Number(year.value) - 1))
-			}
-		} else if (event.key == 'ArrowDown') {
-			event.preventDefault()
-			if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) + 1)))) {
-				emit('update:day', convertNumberToTwoDigits(String(Number(day.value) + 1)))
-			} else if (
-				mode.value == 'month' &&
-				isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))
-			) {
-				emit('update:month', convertNumberToTwoDigits(String(Number(month.value) + 1)))
-			} else if (mode.value == 'year') {
-				emit('update:year', String(Number(year.value) + 1))
-			}
+	if (event.key == 'ArrowLeft') {
+		handleChevronBackwardClick()
+	} else if (event.key == 'ArrowRight') {
+		handleChevronForwardClick()
+	} else if (event.key == 'ArrowUp') {
+		if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) - 1)))) {
+			emit('update:day', convertNumberToTwoDigits(String(Number(day.value) - 1)))
+		} else if (mode.value == 'month' && isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))) {
+			emit('update:month', convertNumberToTwoDigits(String(Number(month.value) - 1)))
+		} else if (mode.value == 'year') {
+			emit('update:year', String(Number(year.value) - 1))
+		}
+	} else if (event.key == 'ArrowDown') {
+		if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) + 1)))) {
+			emit('update:day', convertNumberToTwoDigits(String(Number(day.value) + 1)))
+		} else if (mode.value == 'month' && isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))) {
+			emit('update:month', convertNumberToTwoDigits(String(Number(month.value) + 1)))
+		} else if (mode.value == 'year') {
+			emit('update:year', String(Number(year.value) + 1))
 		}
 	}
 }
@@ -645,6 +472,5 @@ document.addEventListener('keydown', handleArrowsClicks)
 
 onUnmounted(() => {
 	document.removeEventListener('keydown', handleArrowsClicks)
-	document.removeEventListener('click', handleOutsideClick)
 })
 </script>

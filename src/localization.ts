@@ -65,10 +65,6 @@ export interface DateLocalization {
 
 	TimeFrom(): string
 
-	Apply(): string
-
-	Reset(): string
-
 	Calendar(): string
 }
 
