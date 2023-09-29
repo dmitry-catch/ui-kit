@@ -32,6 +32,7 @@
 	border-radius: 4px;
 	border: 1px solid var(--design-border-color-primary);
 	margin: 8px 0;
+	/* cursor: pointer; */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -195,7 +196,8 @@ import {
 	handleDayInputEvent,
 	dateTimeStyling,
 	handleInputFocus,
-	formatToRequiredFormat
+	formatToRequiredFormat,
+	formatToRequiredFormatRange
 } from './DataHelpers/DataHelper'
 
 const props = withDefaults(

@@ -94,4 +94,8 @@ const dropdown = [
 		}
 	}
 ]
+
+// watchEffect( () => {
+// 	console.log(date.value)
+// })
 </script>

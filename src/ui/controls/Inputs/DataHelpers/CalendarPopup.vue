@@ -312,7 +312,6 @@
 <script setup lang="ts">
 import { DateLocalizationRu } from '../../../../localization.ru'
 import { defineProps, toRefs, computed, ref, onMounted, onUnmounted } from 'vue'
-import { getMonthArray, numberOfDaysInMonth } from '../DataHelpers/DataHelper'
 import { Icon } from '../../../../main'
 import CalendarTimeControl from './CalendarTimeControl.vue'
 const props = defineProps({
@@ -461,6 +460,39 @@ const convertNumberToTwoDigits = (number: string) => {
 
 const DateLocalization = new DateLocalizationRu()
 
+const numberOfDaysInMonth = (month: number, year: number) => {
+	return new Date(year, month + 1, 0).getDate()
+}
+
+const getFirstDayOfMonth = (month: number, year: number) => {
+	const firstDayOfMonth = new Date(year, month, 1).getDay()
+	return firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1
+}
+
+const getMonthArray = (month: number, year: number) => {
+	const monthArray = []
+	const firstDay = getFirstDayOfMonth(month, year)
+	const numberOfDays = numberOfDaysInMonth(month, year)
+	const numberOfDaysInPreviousMonth = numberOfDaysInMonth(month - 1, year)
+	let day = 1
+	for (let i = 0; i < 6; i++) {
+		const week = []
+		for (let j = 0; j < 7; j++) {
+			if (i === 0 && j < firstDay) {
+				week.push(numberOfDaysInPreviousMonth - firstDay + j + 1)
+			} else if (day > numberOfDays) {
+				week.push(day - numberOfDays)
+				day++
+			} else {
+				week.push(day)
+				day++
+			}
+		}
+		monthArray.push(week)
+	}
+	return monthArray
+}
+
 const getClassOfDay = (dayOfMonth: number, weekIndex: number, dayIndex: number) => {
 	let classCss: string = ''
 	if ((weekIndex == 0 && dayOfMonth > 7) || (weekIndex > 3 && dayOfMonth < 14)) {
@@ -489,6 +521,8 @@ const getClassOfRangeDay = (dayOfMonth: number, weekIndex: number, dayIndex: num
 
 	if (props.isRange) {
 		const dates = props.getFullRange()
+
+		// if not the same month & year
 		if (dates[0].split('-')[1] != dates[1].split('-')[1]) {
 			const rangeStartDate = new Date(dates[0])
 			const rangeEndDate = new Date(dates[1])
@@ -499,6 +533,9 @@ const getClassOfRangeDay = (dayOfMonth: number, weekIndex: number, dayIndex: num
 				currentDayMonth = String(Number(month.value) + 1)
 			}
 			const currentDate = new Date(`${year.value}-${currentDayMonth}-${dayOfMonth}`)
+			if (props.isControlRange) {
+				console.log(currentDate.toDateString(), rangeStartDate.toDateString(), rangeEndDate.toDateString())
+			}
 			if (currentDate >= rangeStartDate && currentDate <= rangeEndDate) {
 				classCss = 'inside'
 			}
@@ -558,6 +595,7 @@ onMounted(async () => {
 	document.addEventListener('click', handleOutsideClick)
 })
 
+// handling keyboard control
 const handleArrowsClicks = (event: any) => {
 	if (!props.isRange) {
 		if (event.key == 'ArrowLeft') {

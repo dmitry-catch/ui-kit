@@ -1,8 +1,20 @@
 export const handleTwoDigitsInput = (maxPossibleValue: string, event: any, ref: any) => {
-	let value = String(Math.max(0, Math.min(Number(event.target.value), Number(maxPossibleValue))))
-	ref.value = value.length === 1 ? '0' + value : value
+	const value = event.target.value
+	if (Number(value) > Number(maxPossibleValue)) {
+		ref.value = maxPossibleValue
+	} else if (Number(value) < 0) {
+		ref.value = '01'
+	} else if (value.length > 2) {
+		if (value.charAt(0) == '0') {
+			ref.value = value.slice(1)
+		} else {
+			ref.value = maxPossibleValue
+		}
+	} else if (value.length == 1) {
+		ref.value = '0' + value
+	}
 
-	if (ref.value.charAt(0) !== '0') {
+	if (!(String(ref.value).charAt(0) == '0')) {
 		event.target.nextElementSibling.focus()
 	}
 }
@@ -12,10 +24,13 @@ export const handleYearInputEvent = (
 	yearRef: any,
 	afterEffect: any = (event: any) => event.target.blur()
 ) => {
-	let value = String(event.target.value).padStart(4, '0')
-	yearRef.value = value.slice(-4)
-
-	if (yearRef.value.charAt(0) !== '0') {
+	const value = event.target.value
+	if (value.length > 4) {
+		yearRef.value = value.slice(1)
+	} else if (value.length < 4) {
+		yearRef.value = '0'.repeat(4 - value.length) + value
+	}
+	if (String(yearRef.value).length >= 4 && !(String(yearRef.value).charAt(0) == '0')) {
 		afterEffect(event)
 	}
 }
@@ -39,14 +54,12 @@ export const formatToRequiredFormat = (
 	isTime: boolean = false,
 	time?: string
 ) => {
-	day = String(day).padStart(2, '0')
-	month = String(month).padStart(2, '0')
-	year = String(year).padStart(4, '0')
-
+	day = day ? day : '00'
+	month = month ? month : '00'
+	year = year ? year : '0000'
 	if (isTime) {
-		return `${year}-${month}-${day} ${time || ''}`
+		return `${year}-${month}-${day} ${time}`
 	}
-
 	return `${year}-${month}-${day}`
 }
 
@@ -65,37 +78,4 @@ export const formatToRequiredFormatRange = (
 	monthTo = monthTo ? monthTo : '00'
 	yearTo = yearTo ? yearTo : '0000'
 	return `${yearFrom}-${monthFrom}-${dayFrom} , ${yearTo}-${monthTo}-${dayTo}`
-}
-
-export const getFirstDayOfMonth = (month: number, year: number) => {
-	const firstDayOfMonth = new Date(year, month, 1).getDay()
-	return firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1
-}
-
-export const getMonthArray = (month: number, year: number) => {
-	const monthArray = []
-	const firstDay = getFirstDayOfMonth(month, year)
-	const numberOfDays = numberOfDaysInMonth(month, year)
-	const numberOfDaysInPreviousMonth = numberOfDaysInMonth(month - 1, year)
-	let day = 1
-	for (let i = 0; i < 6; i++) {
-		const week = []
-		for (let j = 0; j < 7; j++) {
-			if (i === 0 && j < firstDay) {
-				week.push(numberOfDaysInPreviousMonth - firstDay + j + 1)
-			} else if (day > numberOfDays) {
-				week.push(day - numberOfDays)
-				day++
-			} else {
-				week.push(day)
-				day++
-			}
-		}
-		monthArray.push(week)
-	}
-	return monthArray
-}
-
-export const numberOfDaysInMonth = (month: number, year: number) => {
-	return new Date(year, month + 1, 0).getDate()
 }
