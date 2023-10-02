@@ -1,65 +1,130 @@
 <style>
-.CalendarPopup {
+.calendar-popup {
 	background: var(--design-background-color-primary);
 	width: fit-content;
+	box-shadow: 0px 32px 64px 0px #212c3a29;
 	padding: 0 24px;
 	border-radius: 4px;
 }
 
-.CalendarPopup_calendar {
-	padding: 16px 0;
+.calendar-popup table {
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
-	min-width: 304px;
+	border-spacing: 4px;
 }
 
-.CalendarPopup__controls {
+.calendar-popup .range {
+	border-spacing: 0 4px;
+}
+
+.calendar-popup__controls {
 	padding: 24px 0 16px 0;
+	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
 }
-.CalendarPopup__botomControls {
-	padding: 16px 0 24px 0;
-	justify-content: end;
+.botom-controls {
 	box-shadow: none;
 }
+.calendar-popup__cell {
+	font-size: 16px;
+	color: var(--design-text-color-primary);
+	height: 40px !important;
+	min-width: 40px;
+	font-weight: normal;
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	border-radius: 4px;
+	padding: 0;
+}
+.calendar-popup__cell:hover {
+	background-color: var(--design-background-color-on-accent-primary);
+	color: var(--design-text-color-primary);
+}
+.calendar-popup__day-another-month {
+	color: var(--design-border-color-primary);
+}
 
-.CalendarPopup__picker {
+.date-today {
+	color: var(--design-text-color-accent);
+}
+
+.date-today::after {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	content: '';
+	width: 6px;
+	height: 6px;
+	background-color: var(--design-background-color-on-accent-secondary);
+	border-radius: 50%;
+}
+
+.calendar-popup__week .date-today::after {
+	left: 40%;
+}
+
+.picked {
+	color: var(--design-text-color-on-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
+}
+
+.calendar-popup__month {
+	min-width: 139px;
+}
+
+.calendar-popup__year {
+	min-width: 92px;
+}
+
+.calendar-popup__picker {
 	font-weight: bold;
 }
 
-.CalendarPopup__pickerChevron {
+.calendar-popup__picker__chevron {
 	color: var(--design-text-color-primary);
 	display: inline-block;
 	cursor: pointer;
 }
 
-.CalendarPopup__goToToday {
+.calendar-popup__controls__go-to-today {
 	display: flex;
-	gap: 8px;
+	gap: 11px;
 	font-weight: bold;
 }
 
-.CalendarPopup__goToTodayIcon {
+.calendar-popup__controls__go-to-today__icon {
 	cursor: pointer;
 }
-.CalendarPopup__optionalControl {
+.calendar-popup__optional-control {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 6px;
+	gap: 10px;
 }
 
-.CalendarPopup__optionalControl .CalendarPopup__pickerChevron {
-	margin-right: 10px;
+.calendar-popup__optional-control .calendar-popup__picker__chevron {
+	margin: 0 6px;
 }
 
-.CalendarPopup__optionalControl .CalendarPopup__pickerChevron:last-of-type {
-	margin-right: 0;
+.calendar-popup__controls__set-range {
+	display: flex;
+	justify-content: start;
+	gap: 30px;
+	width: 100%;
+	padding-bottom: 8px;
 }
 
-.CalendarPopup__controlButton {
+.calendar-popup__holidays {
+	color: var(--design-text-color-accent);
+}
+
+.calendar-popup__holidays.picked {
+	color: var(--design-text-color-on-accent-primary);
+}
+
+.calendar-popup__controls__button {
 	font-weight: bold;
 	min-height: 40px;
 	cursor: pointer;
@@ -67,96 +132,176 @@
 	align-items: center;
 }
 
-.CalendarPopup__controlButtonApply {
+.calendar-popup__controls__button-apply {
 	border: 1px solid var(--design-border-color-primary);
 	border-radius: 4px;
 	padding: 0 25px;
 }
 
-.CalendarPopup__setRange {
-	display: flex;
-	justify-content: start;
-	gap: 32px;
-	width: 100%;
-	padding: 0;
+.calendar-popup__controls__button-apply:hover {
+	background-color: var(--design-background-color-on-accent-primary);
+}
+
+.picked:hover {
+	color: var(--design-text-color-on-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
+	opacity: 0.9;
+}
+
+.inside {
+	background-color: var(--design-background-color-on-accent-primary);
+	color: var(--design-text-color-primary);
+	border-radius: 0px;
+}
+
+.picked.inside {
+	background-color: var(--design-background-color-on-accent-secondary);
+	color: var(--design-text-color-on-accent-primary);
+}
+
+.calendar-popup__day-another-month.inside {
+	color: var(--design-border-color-primary);
+}
+
+.inside.date-today::after {
+	bottom: 6%;
+}
+
+.picked-end {
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+.picked-start {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
 }
 </style>
 
 <template>
-	<div class="CalendarPopup" ref="calendarPopupRef">
-		<div class="CalendarPopup__controls">
-			<span class="CalendarPopup__pickerChevron" @click="handleChevronBackwardClick">
-				<Icon name="chevron_backward" class="CalendarPopup__icon"></Icon>
+	<div class="calendar-popup">
+		<div class="calendar-popup__controls">
+			<span
+				v-if="isRange ? !isControlRange : true"
+				:class="!isRange && !isControlRange ? 'visually-hidden' : ''"
+			></span>
+			<span
+				class="calendar-popup__picker__chevron"
+				@click="handleChevronBackwardClick"
+				v-if="isRange ? isControlRange : true"
+			>
+				<Icon name="chevron_backward" class="calendar-popup__icon"></Icon>
 			</span>
 
-			<div v-if="mode == 'calendar'" class="CalendarPopup__optionalControl">
-				<span class="CalendarPopup__picker">
+			<div v-if="mode == 'calendar'" class="calendar-popup__optional-control">
+				<span class="calendar-popup__picker">
 					{{ new DateLocalizationRu().MonthArray()[Number(month) - 1] }}
 				</span>
-				<span class="CalendarPopup__pickerChevron" @click="handleMonthChange">
-					<Icon name="chevron_down" class="CalendarPopup__icon"></Icon>
+				<span class="calendar-popup__picker__chevron" @click="handleMonthChange">
+					<Icon name="chevron_down" class="calendar-popup__icon"></Icon>
 				</span>
-				<span class="CalendarPopup__picker">
+				<span class="calendar-popup__picker">
 					{{ year }}
 				</span>
-				<span class="CalendarPopup__pickerChevron" @click="handleYearChange">
-					<Icon name="chevron_down" class="CalendarPopup__icon"></Icon>
+				<span class="calendar-popup__picker__chevron" @click="handleYearChange">
+					<Icon name="chevron_down" class="calendar-popup__icon"></Icon>
 				</span>
 			</div>
-			<div v-if="mode == 'month'" class="CalendarPopup__optionalControl">
-				<span class="CalendarPopup__picker">
+			<div v-if="mode == 'month'" class="calendar-popup__optional-control">
+				<span class="calendar-popup__picker">
 					{{ year }}
 				</span>
 			</div>
-			<div v-if="mode == 'year'" class="CalendarPopup__optionalControl">
-				<span class="CalendarPopup__picker" @click="handleYearChange">
+			<div v-if="mode == 'year'" class="calendar-popup__optional-control">
+				<span class="calendar-popup__picker" @click="handleYearChange">
 					{{ `${Number(year) - 10} - ${Number(year) + 7}` }}
 				</span>
 			</div>
-			<span class="CalendarPopup__pickerChevron" @click="handleChevronForwardClick">
-				<Icon name="chevron_forward" class="CalendarPopup__icon"></Icon>
+			<span
+				v-if="isRange ? isControlRange : true"
+				:class="!isRange && isControlRange ? 'visually-hidden' : ''"
+			></span>
+			<span
+				class="calendar-popup__picker__chevron"
+				@click="handleChevronForwardClick"
+				v-if="isRange ? !isControlRange : true"
+			>
+				<Icon name="chevron_forward" class="calendar-popup__icon"></Icon>
 			</span>
 		</div>
 
-		<div v-if="mode == 'calendar'" :class="{ range: isRange }" class="CalendarPopup_calendar">
-			<CalendarPopupDayPicker
-				ref="CalendarPopupDayPickerRef"
-				:handleDayClick="handleDayClick"
-				:monthArray="monthArray"
-				:day="day"
-				:month="month"
-				:year="year"
-				:isRange="isRange"
-				:isWorkCalendar="isWorkCalendar"
-				:getFullRange="getFullRange"
-			/>
-		</div>
-		<div v-if="mode == 'month'" class="CalendarPopup__body CalendarPopup_calendar">
-			<CalendarPopupMonthPicker
-				:handleMonthClick="handleMonthClick"
-				:month="month"
-				:year="year"
-				ref="CalendarPopupMonthPickerRef"
-			/>
-		</div>
-		<div v-if="mode == 'year'" class="CalendarPopup__body CalendarPopup_calendar">
-			<CalendarPopupYearPicker :handleYearClick="handleYearClick" :year="year" ref="CalendarPopupYearPickerRef" />
-		</div>
-		<div class="CalendarPopup__controls CalendarPopup__botomControls">
-			<div class="CalendarPopup__goToToday" v-if="!isRange">
-				<span class="CalendarPopup__goToTodayIcon" @click="goToToday">
-					<Icon class="CalendarPopup__icon" name="calendar"></Icon>
+		<table class="calendar-popup__body" v-if="mode == 'calendar'" :class="isRange ? 'range' : ''">
+			<thead class="calendar-popup__head">
+				<tr>
+					<th v-for="day in DateLocalization.WeekdayAbbrArray()" class="calendar-popup__cell">
+						{{ day }}
+					</th>
+				</tr>
+			</thead>
+			<tbody class="calendar-popup__body">
+				<tr v-for="(week, weekIndex) in monthArray" class="calendar-popup__week" @click="handleDayClick">
+					<td
+						v-for="(dayOfMonth, dayIndex) in week"
+						class="calendar-popup__cell"
+						:class="
+							getClassOfDay(dayOfMonth, weekIndex, dayIndex) +
+							getClassOfRangeDay(dayOfMonth, weekIndex, dayIndex)
+						"
+					>
+						{{ dayOfMonth }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table v-if="mode == 'month'">
+			<tbody class="calendar-popup__body">
+				<tr
+					v-for="row in Array(DateLocalization.MonthArray().length / 2).keys()"
+					class="calendar-popup__month-row"
+				>
+					<td
+						v-for="element in Array(0, 1)"
+						class="calendar-popup__month calendar-popup__cell"
+						@click="handleMonthClick"
+						:class="getClassOfMonth(DateLocalization.MonthArray()[row * 2 + element])"
+					>
+						{{ DateLocalization.MonthArray()[row * 2 + element] }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table v-if="mode == 'year'">
+			<tbody class="calendar-popup__body">
+				<tr v-for="row in Array(6).keys()" class="calendar-popup__month-row">
+					<td
+						v-for="element in Array(0, 1, 2)"
+						class="calendar-popup__year calendar-popup__cell"
+						:class="getClassOfYear(String(Number(year) - 10 + row * 3 + element))"
+						@click="handleYearClick"
+					>
+						{{ Number(year) - 10 + row * 3 + element }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="calendar-popup__controls botom-controls">
+			<div class="calendar-popup__controls__time-control">
+				<CalendarTimeControl v-if="isTime" :time="'00:00'" />
+			</div>
+			<div class="calendar-popup__controls__go-to-today" v-if="!isRange">
+				<span class="calendar-popup__controls__go-to-today__icon" @click="goToToday">
+					<Icon class="calendar-popup__icon" name="calendar"></Icon>
 				</span>
 				{{ DateLocalization.Today() }}
 			</div>
-			<div
-				class="CalendarPopup__setRange CalendarPopup__controls CalendarPopup__botomControls"
-				v-if="isRange && isControlRange"
-			>
-				<span class="CalendarPopup__controlButton CalendarPopup__controlButtonApply" @click="handleApply">
+			<div class="calendar-popup__controls__set-range" v-if="isRange && isControlRange">
+				<span
+					class="calendar-popup__controls__button calendar-popup__controls__button-apply"
+					@click="handleApply"
+				>
 					{{ DateLocalization.Apply() }}
 				</span>
-				<span class="CalendarPopup__controlButton" @click="handleReset">
+				<span class="calendar-popup__controls__button" @click="handleReset">
 					{{ DateLocalization.Reset() }}
 				</span>
 			</div>
@@ -168,10 +313,8 @@
 import { DateLocalizationRu } from '../../../../localization.ru'
 import { defineProps, toRefs, computed, ref, onMounted, onUnmounted } from 'vue'
 import { getMonthArray, numberOfDaysInMonth } from '../DataHelpers/DataHelper'
-import CalendarPopupMonthPicker from './CalendarPopupMonthPicker.vue'
-import CalendarPopupYearPicker from './CalendarPopupYearPicker.vue'
-import CalendarPopupDayPicker from './CalendarPopupDayPicker.vue'
 import { Icon } from '../../../../main'
+import CalendarTimeControl from './CalendarTimeControl.vue'
 const props = defineProps({
 	day: {
 		type: String,
@@ -184,6 +327,10 @@ const props = defineProps({
 	year: {
 		type: String,
 		default: ''
+	},
+	isTime: {
+		type: Boolean,
+		default: false
 	},
 	isRange: {
 		type: Boolean,
@@ -207,19 +354,18 @@ const props = defineProps({
 	},
 	getFullRange: {
 		type: Function,
-		default: () => []
+		default: () => {}
 	}
 })
 
 const emit = defineEmits(['update:day', 'update:month', 'update:year'])
 const { day, month, year } = toRefs(props)
 
-const calendarPopupRef = ref()
-const CalendarPopupDayPickerRef = ref()
-const CalendarPopupMonthPickerRef = ref()
-const CalendarPopupYearPickerRef = ref()
+const isTime = ref(props.isTime)
 
 const mode = ref('calendar')
+
+const todayDay = computed(() => new Date().getDate())
 
 const monthArray = computed(() => getMonthArray(Number(month.value) - 1, Number(year.value)))
 
@@ -228,46 +374,38 @@ const handleMonthChange = () => (mode.value = 'month')
 const handleYearChange = () => (mode.value = 'year')
 
 const handleClose = () => {
-	props.handleCalendarClose()
+	if (!props.isRange) props.handleCalendarClose()
 }
 const handleApply = () => props.handleCalendarClose()
 const handleReset = () => props.handleReset()
 
 const handleChevronBackwardClick = () => {
-	switch (mode.value) {
-		case 'calendar':
-			if (Number(month.value) == 1) {
-				emit('update:year', String(Number(year.value) - 1))
-				emit('update:month', '12')
-			} else {
-				emit('update:month', convertNumberToTwoDigits(String(Number(month.value) - 1)))
-			}
-			break
-		case 'month':
+	if (mode.value == 'calendar') {
+		if (Number(month.value) == 1) {
 			emit('update:year', String(Number(year.value) - 1))
-			break
-		case 'year':
-			emit('update:year', String(Number(year.value) - 17))
-			break
+			emit('update:month', '12')
+		} else {
+			emit('update:month', convertNumberToTwoDigits(String(Number(month.value) - 1)))
+		}
+	} else if (mode.value == 'month') {
+		emit('update:year', String(Number(year.value) - 1))
+	} else if (mode.value == 'year') {
+		emit('update:year', String(Number(year.value) - 17))
 	}
 }
 
 const handleChevronForwardClick = () => {
-	switch (mode.value) {
-		case 'calendar':
-			if (Number(month.value) == 12) {
-				emit('update:year', String(Number(year.value) + 1))
-				emit('update:month', '01')
-			} else {
-				emit('update:month', convertNumberToTwoDigits(String(Number(month.value) + 1)))
-			}
-			break
-		case 'month':
+	if (mode.value == 'calendar') {
+		if (Number(month.value) == 12) {
 			emit('update:year', String(Number(year.value) + 1))
-			break
-		case 'year':
-			emit('update:year', String(Number(year.value) + 17))
-			break
+			emit('update:month', '01')
+		} else {
+			emit('update:month', convertNumberToTwoDigits(String(Number(month.value) + 1)))
+		}
+	} else if (mode.value == 'month') {
+		emit('update:year', String(Number(year.value) + 1))
+	} else if (mode.value == 'year') {
+		emit('update:year', String(Number(year.value) + 17))
 	}
 }
 
@@ -281,7 +419,7 @@ const goToToday = () => {
 }
 
 const handleDayClick = (event: any) => {
-	if (event.target.classList.contains('CalendarPopup__day-another-month')) {
+	if (event.target.classList.contains('calendar-popup__day-another-month')) {
 		if (event.target.innerText > 20) {
 			if (Number(month.value) == 1) {
 				emit('update:year', String(Number(year.value) - 1))
@@ -301,7 +439,7 @@ const handleDayClick = (event: any) => {
 	} else {
 		emit('update:day', convertNumberToTwoDigits(event.target.innerText))
 	}
-	if (!props.isRange) handleClose()
+	handleClose()
 }
 
 const handleMonthClick = (event: any) => {
@@ -323,14 +461,95 @@ const convertNumberToTwoDigits = (number: string) => {
 
 const DateLocalization = new DateLocalizationRu()
 
-const handleOutsideClick = (event: Event) => {
-	const target = event.target as HTMLElement
+const getClassOfDay = (dayOfMonth: number, weekIndex: number, dayIndex: number) => {
+	let classCss: string = ''
+	if ((weekIndex == 0 && dayOfMonth > 7) || (weekIndex > 3 && dayOfMonth < 14)) {
+		classCss += 'calendar-popup__day-another-month '
+	} else {
+		if (
+			dayOfMonth == Number(todayDay.value) &&
+			Number(month.value) - 1 == new Date().getMonth() &&
+			Number(year.value) == new Date().getFullYear()
+		) {
+			classCss += 'date-today '
+		}
+		if (dayOfMonth == Number(day.value)) {
+			classCss += 'picked '
+		}
+		if (props.isWorkCalendar && (dayIndex == 5 || dayIndex == 6)) {
+			classCss += ' calendar-popup__holidays'
+		}
+	}
+
+	return classCss
+}
+
+const getClassOfRangeDay = (dayOfMonth: number, weekIndex: number, dayIndex: number) => {
+	let classCss: string = ''
+
+	if (props.isRange) {
+		const dates = props.getFullRange()
+		if (dates[0].split('-')[1] != dates[1].split('-')[1]) {
+			const rangeStartDate = new Date(dates[0])
+			const rangeEndDate = new Date(dates[1])
+			let currentDayMonth = month.value
+			if (weekIndex == 0 && dayOfMonth > 7) {
+				currentDayMonth = String(Number(month.value) - 1)
+			} else if (weekIndex > 3 && dayOfMonth < 14) {
+				currentDayMonth = String(Number(month.value) + 1)
+			}
+			const currentDate = new Date(`${year.value}-${currentDayMonth}-${dayOfMonth}`)
+			if (currentDate >= rangeStartDate && currentDate <= rangeEndDate) {
+				classCss = 'inside'
+			}
+			if (currentDate.toDateString() == rangeStartDate.toDateString()) {
+				classCss += ' picked-start'
+			} else if (currentDate.toDateString() == rangeEndDate.toDateString()) {
+				classCss += ' picked-end'
+			}
+		}
+	}
+
+	return classCss
+}
+
+const getClassOfMonth = (currentMonth: string) => {
+	let classCss: string = ''
 	if (
-		!calendarPopupRef.value.contains(target) &&
-		!target.closest('.CalendarPopup__icon') &&
-		!target.className.includes('CalendarPopup')
+		Number(DateLocalization.MonthArray().indexOf(currentMonth)) == Number(month.value) - 1 &&
+		Number(year.value) == new Date().getFullYear()
 	) {
-		handleClose()
+		classCss += 'picked '
+	}
+	if (
+		Number(DateLocalization.MonthArray().indexOf(currentMonth)) == new Date().getMonth() &&
+		Number(year.value) == new Date().getFullYear()
+	) {
+		classCss += 'date-today '
+	}
+	return classCss
+}
+
+const getClassOfYear = (currentYear: string) => {
+	let classCss: string = ''
+	if (Number(currentYear) == Number(year.value)) {
+		classCss += 'picked '
+	}
+	if (Number(currentYear) == new Date().getFullYear()) {
+		classCss += 'date-today '
+	}
+	return classCss
+}
+
+const handleOutsideClick = (event: any) => {
+	const classList = event.target.classList ? event.target.classList : []
+	const isClassInClassListIncludesCalendar = Array(classList).some((className: string) =>
+		String(className).includes('calendar-popup')
+	)
+	if (!event.target.closest('.calendar-popup') && !isClassInClassListIncludesCalendar) {
+		if (!event.target.parentElement?.classList.contains('calendar-popup__icon')) {
+			props.handleCalendarClose()
+		}
 	}
 }
 

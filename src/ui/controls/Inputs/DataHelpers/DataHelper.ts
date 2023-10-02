@@ -1,11 +1,71 @@
-export const handleTwoDigitsInput = (maxPossibleValue: string, value: string) => {
-	let newValue = String(Math.max(0, Math.min(Number(value), Number(maxPossibleValue))))
-	return newValue.length === 1 ? '0' + newValue : newValue
+export const handleTwoDigitsInput = (maxPossibleValue: string, event: any, ref: any) => {
+	let value = String(Math.max(0, Math.min(Number(event.target.value), Number(maxPossibleValue))))
+	ref.value = value.length === 1 ? '0' + value : value
+
+	if (ref.value.charAt(0) !== '0') {
+		event.target.nextElementSibling.focus()
+	}
 }
 
-export const handleYearInputEvent = (value: string) => value.padStart(4, '0').slice(-4)
+export const handleYearInputEvent = (
+	event: any,
+	yearRef: any,
+	afterEffect: any = (event: any) => event.target.blur()
+) => {
+	let value = String(event.target.value).padStart(4, '0')
+	yearRef.value = value.slice(-4)
 
-export const isInputEventTriggersEffect = (value: string) => (value.charAt(0) !== '0' ? true : false)
+	if (yearRef.value.charAt(0) !== '0') {
+		afterEffect(event)
+	}
+}
+
+export const handleDayInputEvent = (event: any, yearValue: string, monthValue: string, dayRef: any) => {
+	const maxPossibleValue = new Date(Number(yearValue), Number(monthValue), 0).getDate()
+	handleTwoDigitsInput(maxPossibleValue.toString(), event, dayRef)
+}
+
+export const dateTimeStyling = (values: Array<string>, disabled: boolean | undefined) => {
+	const isActive = values.some((value) => /\d/.test(value))
+	return `${isActive ? 'active' : ''} ${disabled ? 'disabled' : ''}`
+}
+
+export const handleInputFocus = (event: any) => event.target.select()
+
+export const formatToRequiredFormat = (
+	day: string,
+	month: string,
+	year: string,
+	isTime: boolean = false,
+	time?: string
+) => {
+	day = String(day).padStart(2, '0')
+	month = String(month).padStart(2, '0')
+	year = String(year).padStart(4, '0')
+
+	if (isTime) {
+		return `${year}-${month}-${day} ${time || ''}`
+	}
+
+	return `${year}-${month}-${day}`
+}
+
+export const formatToRequiredFormatRange = (
+	dayFrom: string,
+	monthFrom: string,
+	yearFrom: string,
+	dayTo: string,
+	monthTo: string,
+	yearTo: string
+) => {
+	dayFrom = dayFrom ? dayFrom : '00'
+	monthFrom = monthFrom ? monthFrom : '00'
+	yearFrom = yearFrom ? yearFrom : '0000'
+	dayTo = dayTo ? dayTo : '00'
+	monthTo = monthTo ? monthTo : '00'
+	yearTo = yearTo ? yearTo : '0000'
+	return `${yearFrom}-${monthFrom}-${dayFrom} , ${yearTo}-${monthTo}-${dayTo}`
+}
 
 export const getFirstDayOfMonth = (month: number, year: number) => {
 	const firstDayOfMonth = new Date(year, month, 1).getDay()

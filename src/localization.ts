@@ -63,6 +63,8 @@ export interface DateLocalization {
 
 	Today(): string
 
+	TimeFrom(): string
+
 	Apply(): string
 
 	Reset(): string

@@ -142,6 +142,10 @@ export class DateLocalizationRu implements DateLocalization {
 		return 'Сегодня'
 	}
 
+	TimeFrom(): string {
+		return 'с'
+	}
+
 	Apply(): string {
 		return 'Применить'
 	}

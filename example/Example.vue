@@ -15,6 +15,7 @@ body {
 			:description="'Описание'"
 			:invalid="false"
 			v-model="date"
+			:time="true"
 			:isWorkCalendar="true"
 		/>
 		<DateRangePicker
@@ -24,9 +25,9 @@ body {
 			:hint="'Подсказка'"
 			:description="'Описание'"
 			:invalid="false"
-			v-model:from="dateRangeFrom"
-			v-model:to="dateRangeTo"
+			v-model="dateRange"
 		/>
+		<input type="time" v-model="date" />
 		<Btn :dropdown="options">
 			234567890234567890
 			<template #dropdownItem="{ data }">
@@ -68,9 +69,8 @@ import { comparator, groupBy } from '@forecsys/collections'
 const tab = ref(null)
 const test = ref(['value 1'])
 const anchor = ref('center')
-const date = ref()
-const dateRangeFrom = ref('')
-const dateRangeTo = ref('')
+const date = ref('2022-02-01')
+const dateRange = ref('2022-02-01, 2022-02-02')
 
 const addToList = ({ data }) => {
 	test.value.push(data.value)
