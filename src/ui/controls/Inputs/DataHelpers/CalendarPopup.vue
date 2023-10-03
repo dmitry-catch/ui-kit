@@ -10,7 +10,6 @@
 	padding: 16px 0;
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
 	min-width: 304px;
-	min-height: 304px;
 }
 
 .CalendarPopup__controls {
