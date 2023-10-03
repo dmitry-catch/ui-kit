@@ -3,25 +3,25 @@
 	background: var(--design-background-color-primary);
 	width: fit-content;
 	padding: 0 24px;
-	border-radius: var(--design-border-radius-control);
+	border-radius: 4px;
 }
 
 .CalendarPopup_calendar {
-	padding: calc(2 * var(--design-gap-unit)) 0;
+	padding: 16px 0;
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
 	min-width: 304px;
 	min-height: 304px;
 }
 
 .CalendarPopup__controls {
-	padding: calc(3 * var(--design-gap-unit)) 0 calc(2 * var(--design-gap-unit)) 0;
+	padding: 24px 0 16px 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
 }
 .CalendarPopup__botomControls {
-	padding: calc(2 * var(--design-gap-unit)) 0 calc(3 * var(--design-gap-unit)) 0;
+	padding: 16px 0 24px 0;
 	justify-content: end;
 	box-shadow: none;
 }
@@ -38,7 +38,7 @@
 
 .CalendarPopup__goToToday {
 	display: flex;
-	gap: var(--design-gap-unit);
+	gap: 8px;
 	font-weight: bold;
 }
 
@@ -49,11 +49,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: calc(0.75 * var(--design-gap-unit));
+	gap: 6px;
 }
 
 .CalendarPopup__optionalControl .CalendarPopup__pickerChevron {
-	margin-right: calc(1.25 * var(--design-gap-unit));
+	margin-right: 10px;
 }
 
 .CalendarPopup__optionalControl .CalendarPopup__pickerChevron:last-of-type {
@@ -70,14 +70,14 @@
 
 .CalendarPopup__controlButtonApply {
 	border: 1px solid var(--design-border-color-primary);
-	border-radius: var(--design-border-radius-control);
-	padding: 0 calc(3.125 * var(--design-gap-unit));
+	border-radius: 4px;
+	padding: 0 25px;
 }
 
 .CalendarPopup__setRange {
 	display: flex;
 	justify-content: start;
-	gap: calc(4 * var(--design-gap-unit));
+	gap: 32px;
 	width: 100%;
 	padding: 0;
 }
@@ -128,6 +128,7 @@
 				:month="month"
 				:year="year"
 				:isRange="isRange"
+				:isWorkCalendar="isWorkCalendar"
 				:getFullRange="getFullRange"
 			/>
 		</div>
@@ -190,6 +191,10 @@ const props = defineProps({
 		default: false
 	},
 	isControlRange: {
+		type: Boolean,
+		default: false
+	},
+	isWorkCalendar: {
 		type: Boolean,
 		default: false
 	},

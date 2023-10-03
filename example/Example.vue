@@ -13,13 +13,14 @@ body {
 			:required="true"
 			:hint="'Подсказка'"
 			:description="'Описание'"
-			:invalid="true"
+			:invalid="false"
 			v-model="date"
+			:isWorkCalendar="true"
 		/>
 		<DateRangePicker
 			:label="'Заголовок'"
 			:disabled="false"
-			:required="false"
+			:required="true"
 			:hint="'Подсказка'"
 			:description="'Описание'"
 			:invalid="false"

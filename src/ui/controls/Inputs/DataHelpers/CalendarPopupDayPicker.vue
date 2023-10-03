@@ -1,8 +1,9 @@
 <style>
 .CalendarPopupDayPicker__body {
+	border-spacing: 4px;
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
-	gap: calc(0.5 * var(--design-gap-unit));
+	gap: 4px;
 	position: relative;
 }
 .CalendarPopupDayPicker__tableRow {
@@ -10,41 +11,41 @@
 }
 .CalendarPopupDayPicker_cell:hover {
 	background-color: var(--design-background-color-on-accent-primary);
+	color: var(--design-text-color-primary);
 }
 .CalendarPopupDayPicker__dayOfAnotherMonth {
-	color: var(--design-text-color-secondary);
+	color: var(--design-border-color-primary);
 	cursor: default;
 	pointer-events: none;
+}
+.CalendarPopupDayPicker__cellDateToday {
+	color: var(--design-text-color-accent);
 }
 
 .CalendarPopupDayPicker__headCell {
 	color: var(--design-text-color-secondary);
 }
 
-.CalendarPopupDayPicker__cellDateToday{
-	color: var(--design-text-color-accent);
-}
-
 .CalendarPopupDayPicker__cellDateToday::after {
 	position: absolute;
 	bottom: 5%;
-	left: 42%;
+	left: 40%;
 	content: '';
 	width: 6px;
 	height: 6px;
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
 	border-radius: 50%;
 }
 .CalendarPopupDayPicker__setRange {
 	display: flex;
 	justify-content: start;
-	gap: calc(3.75 * var(--design-gap-unit));
+	gap: 30px;
 	width: 100%;
-	padding-bottom: var(--design-gap-unit);
+	padding-bottom: 8px;
 }
 
 .CalendarPopupDayPicker__holidays {
-	color: var(--design-text-color-danger);
+	color: var(--design-text-color-accent);
 }
 
 .CalendarPopupDayPicker__holidays.picked {
@@ -53,50 +54,56 @@
 
 .CalendarPopupDayPicker__cell.inside {
 	background-color: var(--design-background-color-on-accent-primary);
+	color: var(--design-text-color-primary);
 	border-radius: 0px;
 }
 
 .CalendarPopupDayPicker__cell.picked.inside {
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
+	color: var(--design-text-color-on-accent-primary);
 }
 
 .CalendarPopupDayPicker__cell {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 40px;
-	width: 40px;
+	font-size: 16px;
+	height: 40px !important;
+	min-width: 40px;
+	font-weight: normal;
+	text-align: center;
 	cursor: pointer;
 	position: relative;
-	border-radius: var(--design-border-radius-control);
+	border-radius: 4px;
 	padding: 0;
 }
 
 .CalendarPopupDayPicker__cell:hover {
 	background-color: var(--design-background-color-on-accent-primary);
+	color: var(--design-text-color-primary);
 }
 
 .CalendarPopupDayPicker__cell.picked:hover {
 	color: var(--design-text-color-on-accent-primary);
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
 	opacity: 0.9;
 }
 
 .CalendarPopupDayPicker__cell.picked {
 	color: var(--design-text-color-on-accent-primary);
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
 }
 
 .CalendarPopupDayPicker__cell.pickedEnd {
 	border-radius: 0px;
-	border-top-right-radius: var(--design-border-radius-control);
-	border-bottom-right-radius: var(--design-border-radius-control);
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
 }
 
 .CalendarPopupDayPicker__cell.pickedStart {
 	border-radius: 0px;
-	border-top-left-radius: var(--design-border-radius-control);
-	border-bottom-left-radius: var(--design-border-radius-control);
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
 }
 
 .CalendarPopupDayPicker__rowInRange {
@@ -116,7 +123,7 @@
 		<div class="CalendarPopupDayPicker__tableRow">
 			<span
 				v-for="day in DateLocalization.WeekdayAbbrArray()"
-				class="CalendarPopupDayPicker__cell CalendarPopupDayPicker__headCell text-medium"
+				class="CalendarPopupDayPicker__cell CalendarPopupDayPicker__headCell"
 			>
 				{{ day }}
 			</span>
@@ -132,21 +139,17 @@
 		<div v-for="(week, weekIndex) in monthArray" class="CalendarPopupDayPicker__tableRow" @click="handleDayClick">
 			<span
 				v-for="(dayOfMonth, dayIndex) in week"
-				class="CalendarPopupDayPicker__cell text-medium"
+				class="CalendarPopupDayPicker__cell"
 				:class="{
 					CalendarPopupDayPicker__cellDateToday:
 						isDayToday(dayOfMonth, month, year) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
-					'accent':isDayToday(dayOfMonth, month, year) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
-					'on-accent':
-						((dayIndex == 5 || dayIndex == 6) &&
-							!isDayToday(dayOfMonth, month, year) &&
-							!isDayOfAnotherMonth(dayOfMonth, weekIndex)),
+					picked: dayOfMonth == Number(day) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
+					CalendarPopupDayPicker__dayOfAnotherMonth: isDayOfAnotherMonth(dayOfMonth, weekIndex),
 					CalendarPopupDayPicker__holidays:
+						isWorkCalendar &&
 						(dayIndex == 5 || dayIndex == 6) &&
 						!isDayToday(dayOfMonth, month, year) &&
 						!isDayOfAnotherMonth(dayOfMonth, weekIndex),
-					picked: dayOfMonth == Number(day) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
-					CalendarPopupDayPicker__dayOfAnotherMonth: isDayOfAnotherMonth(dayOfMonth, weekIndex),
 					inside: isRange && isInside(getFullRange(), dayOfMonth, weekIndex, month, year),
 					pickedStart: isRange && isPickedStart(getFullRange(), dayOfMonth, month, year),
 					pickedEnd: isRange && isPickedEnd(getFullRange(), dayOfMonth, month, year)
@@ -170,6 +173,7 @@ defineProps<{
 	month: string
 	year: string
 	isRange: boolean
+	isWorkCalendar: boolean
 	getFullRange: Function
 }>()
 

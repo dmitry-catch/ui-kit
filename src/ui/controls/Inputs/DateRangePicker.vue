@@ -22,17 +22,17 @@
 }
 
 .DateRangePicker__description {
+	font-size: 14px;
 	color: var(--design-text-color-secondary);
 	display: block;
 }
 
 .DateRangePicker__inputsContainer {
 	background-color: var(--design-background-color-primary);
-	padding: var(--design-gap-unit) calc(1.75 * var(--design-gap-unit)) var(--design-gap-unit)
-		calc(2 * var(--design-gap-unit));
-	border-radius: var(--design-border-radius-control);
+	padding: 8px 14px 8px 16px;
+	border-radius: 4px;
 	border: 1px solid var(--design-border-color-primary);
-	margin: var(--design-gap-unit) 0;
+	margin: 8px 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -40,7 +40,7 @@
 }
 
 .DateRangePicker__inputsContainer:focus-within {
-	border-color: var(--design-border-color-primary);
+	border-color: var(--design-border-color-secondary);
 }
 
 .DateRangePicker__dateTime {
@@ -49,7 +49,7 @@
 }
 
 .DateRangePicker__dateTime.disabled {
-	border: none;
+	border: none !important;
 	color: var(--design-text-color-secondary);
 }
 
@@ -60,7 +60,7 @@
 .DateRangePicker__visible {
 	box-sizing: border-box;
 	display: inline-block;
-	margin-left: calc(0.75 * var(--design-gap-unit));
+	margin-left: 6px;
 	width: var(--design-current-line-height);
 	height: var(--design-current-line-height);
 	cursor: pointer;
@@ -83,17 +83,8 @@
 	color: var(--design-text-color-danger);
 }
 
-.DateRangePicker__inputsContainer.invalid {
-	border: 1px solid var(--design-border-color-accent-primary);
-}
-
-.DateRangePicker__inputsContainer.invalid:focus-within,
-.DateRangePicker__inputsContainer.invalid:focus {
-	box-shadow: 0px 0px 0px 3px #d2283533;
-	border: 1px solid var(--design-border-color-accent-primary);
-}
-
 .DateRangePicker__hint {
+	font-size: 14px;
 	color: var(--design-text-color-secondary);
 	display: block;
 }
@@ -102,47 +93,16 @@
 	width: fit-content;
 	display: inline-block;
 }
-
 .DateRangePicker__dateTimeInputContainer:focus-within {
-	background-color: var(--design-background-color-accent-primary);
+	background-color: #3266d0;
 	color: var(--design-text-color-on-accent-primary);
-}
-
-.DateRangePicker__dateTimeInputContainer.disabled {
-	background-color: transparent;
-	border: none;
-	color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__icon.calendarIcon {
-	--icon-color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__inputsContainer:focus-within.disabled {
-	border-color: var(--design-border-color-primary);
-}
-
-.DateRangePicker__inputsContainer.disabled {
-	background-color: var(--design-background-color-on-accent-primary);
-	border: 1px solid var(--design-border-color-primary);
-	cursor: not-allowed;
-}
-
-.DateRangePicker__dateTimeInputContainer span:focus {
-	outline: none;
-}
-
-.DateRangePicker__label.required::after {
-	content: '*';
-	color: var(--design-text-color-danger);
-	margin-left: 4px;
 }
 </style>
 
 <template>
 	<div class="DateRangePicker">
 		<span class="DateRangePicker__label" :class="{ required: required }">{{ label }}</span>
-		<span class="DateRangePicker__description text-small">{{ description }}</span>
+		<span class="DateRangePicker__description">{{ description }}</span>
 		<div
 			class="DateRangePicker__inputsContainer"
 			:class="{
@@ -159,33 +119,31 @@
 					disabled: disabled
 				}"
 			>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DateRangePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeDayFromClick" tabindex="1">{{ dateTimeFromValue[0] }}</span>
 					<input
 						type="number"
 						class="visually-hidden"
 						v-model="dayFrom"
 						ref="dayFromRef"
-						:disabled="disabled"
 						@input="handleDayFromInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DateRangePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeMonthFromClick" tabindex="2">{{ dateTimeFromValue[1] }}</span>
 					<input
 						type="number"
 						class="visually-hidden"
 						v-model="monthFrom"
 						ref="monthFromRef"
-						:disabled="disabled"
 						@input="handleMonthFromInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DateRangePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeYearFromClick" tabindex="3">{{ dateTimeFromValue[2] }}</span>
 
 					<input
@@ -193,13 +151,12 @@
 						class="visually-hidden"
 						v-model="yearFrom"
 						ref="yearFromRef"
-						:disabled="disabled"
 						@input="handleYearFromInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 				<span> &mdash; </span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DateRangePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeDayToClick" tabindex="1">{{ dateTimeToValue[0] }}</span>
 
 					<input
@@ -207,33 +164,30 @@
 						class="visually-hidden"
 						v-model="dayTo"
 						ref="dayToRef"
-						:disabled="disabled"
 						@input="handleDayToInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DateRangePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeMonthToClick" tabindex="2">{{ dateTimeToValue[1] }}</span>
 					<input
 						type="number"
 						class="visually-hidden"
 						v-model="monthTo"
 						ref="monthToRef"
-						:disabled="disabled"
 						@input="handleMonthToInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DateRangePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeYearToClick" tabindex="3">{{ dateTimeToValue[2] }}</span>
 					<input
 						type="number"
 						class="visually-hidden"
 						v-model="yearTo"
 						ref="yearToRef"
-						:disabled="disabled"
 						@input="handleYearToInput"
 						@focus="handleInputFocus"
 					/>
@@ -246,7 +200,7 @@
 				tabindex="0"
 				@click="handleCalendarClick"
 			>
-				<Icon class="DateRangePicker__icon calendarIcon" name="calendar"></Icon>
+				<Icon class="DateRangePicker__icon" name="calendar"></Icon>
 			</span>
 		</div>
 	</div>
@@ -270,7 +224,7 @@
 			:getFullRange="getRange"
 		/>
 	</div>
-	<span class="DateRangePicker__hint text-small" :class="invalid ? 'invalid' : ''">{{ hint }}</span>
+	<span class="DateRangePicker__hint" :class="invalid ? 'invalid' : ''">{{ hint }}</span>
 </template>
 
 <script setup lang="ts">

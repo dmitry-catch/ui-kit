@@ -1,8 +1,9 @@
 <style>
 .CalendarPopupMonthPicker__body {
+	border-spacing: 4px;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: calc(0.5 * var(--design-gap-unit));
+	gap: 4px;
 }
 .CalendarPopupMonthPicker__tableRow {
 	display: contents;
@@ -11,27 +12,31 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	height: 40px;
+	font-size: 16px;
+	height: 40px !important;
 	min-width: 40px;
+	font-weight: normal;
+	text-align: center;
 	cursor: pointer;
 	position: relative;
-	border-radius: var(--design-border-radius-control);
+	border-radius: 4px;
 	padding: 0;
 }
 
 .CalendarPopupMonthPicker__cell:hover {
 	background-color: var(--design-background-color-on-accent-primary);
+	color: var(--design-text-color-primary);
 }
 
 .CalendarPopupMonthPicker__cell.picked:hover {
 	color: var(--design-text-color-on-accent-primary);
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
 	opacity: 0.9;
 }
 
 .CalendarPopupMonthPicker__cell.picked {
 	color: var(--design-text-color-on-accent-primary);
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
 }
 
 .CalendarPopupMonthPicker__cellDateToday {
@@ -45,7 +50,7 @@
 	content: '';
 	width: 6px;
 	height: 6px;
-	background-color: var(--design-background-color-accent-primary);
+	background-color: var(--design-background-color-on-accent-secondary);
 	border-radius: 50%;
 }
 </style>
@@ -53,7 +58,7 @@
 	<div class="CalendarPopupMonthPicker__body">
 		<span
 			v-for="(monthOfTheYear, index) in DateLocalization.MonthArray()"
-			class="CalendarPopupMonthPicker__cell text-medium"
+			class="CalendarPopupMonthPicker__cell"
 			:class="{
 				picked: isPicked(index + 1, Number(month), Number(year)),
 				CalendarPopupMonthPicker__cellDateToday: isDateToday(index, Number(year))

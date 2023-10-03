@@ -8,7 +8,7 @@
 .DatePicker__visible {
 	box-sizing: border-box;
 	display: inline-block;
-	margin-left: calc(0.75 * var(--design-gap-unit));
+	margin-left: 6px;
 	width: var(--design-current-line-height);
 	height: var(--design-current-line-height);
 	cursor: pointer;
@@ -18,13 +18,16 @@
 	outline: none;
 }
 
+.DatePicker__icon {
+	--icon-color: var(--design-text-color-secondary);
+}
+
 .DatePicker__inputsContainer {
 	background-color: var(--design-background-color-primary);
-	padding: var(--design-gap-unit) calc(1.75 * var(--design-gap-unit)) var(--design-gap-unit)
-		calc(2 * var(--design-gap-unit));
-	border-radius: var(--design-border-radius-control);
+	padding: 8px 14px 8px 16px;
+	border-radius: 4px;
 	border: 1px solid var(--design-border-color-primary);
-	margin: var(--design-gap-unit) 0;
+	margin: 8px 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -32,19 +35,16 @@
 }
 
 .DatePicker__inputsContainer:focus-within {
-	border-color: var(--design-border-color-primary);
+	border-color: var(--design-border-color-secondary);
 }
 
-.DatePicker__inputsContainer:focus-within.disabled {
-	border-color: var(--design-border-color-primary);
-}
 .DatePicker__dateTime {
 	text-align: center;
 	color: var(--design-text-color-secondary);
 }
 
 .DatePicker__dateTime.disabled {
-	border: none;
+	border: none !important;
 	color: var(--design-text-color-secondary);
 }
 
@@ -53,11 +53,13 @@
 }
 
 .DatePicker__hint {
+	font-size: 14px;
 	color: var(--design-text-color-secondary);
 	display: block;
 }
 
 .DatePicker__description {
+	font-size: 14px;
 	color: var(--design-text-color-secondary);
 	display: block;
 }
@@ -82,30 +84,30 @@
 	color: var(--design-text-color-danger);
 }
 
-.DatePicker__inputsContainer.invalid {
+.invalid {
 	border: 1px solid var(--design-border-color-accent-primary);
 }
 
-.DatePicker__inputsContainer.invalid:focus-within,
-.DatePicker__inputsContainer.invalid:focus {
+.invalid:focus-within,
+.invalid:focus {
 	box-shadow: 0px 0px 0px 3px #d2283533;
 	border: 1px solid var(--design-border-color-accent-primary);
 }
 
-.DatePicker__label.required::after {
+.required::after {
 	content: '*';
 	color: var(--design-text-color-danger);
 	margin-left: 4px;
 }
 
-.DatePicker__inputsContainer.disabled {
-	background-color: var(--design-background-color-on-accent-primary);
+.disabled {
+	background-color: var(--color-on-accent-primary);
 	border: 1px solid var(--design-border-color-primary);
 	cursor: not-allowed;
 }
 
-.DatePicker__visible.disabled__input {
-	background-color: var(--design-background-color-on-accent-primary);
+.disabled__input {
+	background-color: var(--color-on-accent-primary);
 	cursor: not-allowed;
 }
 
@@ -113,27 +115,16 @@
 	width: fit-content;
 	display: inline-block;
 }
-.DatePicker__dateTimeInputContainer span:focus {
-	outline: none;
-}
 .DatePicker__dateTimeInputContainer:focus-within {
-	background-color: var(--design-background-color-accent-primary);
+	background-color: #3266d0;
 	color: var(--design-text-color-on-accent-primary);
-}
-.DatePicker__dateTimeInputContainer.disabled {
-	background-color: transparent;
-	border: none;
-	color: var(--design-text-color-secondary);
-}
-.DatePicker__icon.calendarIcon {
-	--icon-color: var(--design-text-color-secondary);
 }
 </style>
 
 <template>
 	<div class="DatePicker">
 		<span class="DatePicker__label" :class="{ required: required }">{{ label }}</span>
-		<span class="DatePicker__description text-small">{{ description }}</span>
+		<span class="DatePicker__description">{{ description }}</span>
 		<div class="DatePicker__inputsContainer" :class="{ disabled: disabled, invalid: invalid }">
 			<div
 				class="DatePicker__dateTime"
@@ -142,41 +133,38 @@
 					disabled: disabled
 				}"
 			>
-				<div class="DatePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DatePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeDayClick" tabindex="1">{{ dateTimeValue[0] }}</span>
 					<input
 						type="number"
 						class="visually-hidden"
 						v-model="day"
 						ref="dayRef"
-						:disabled="disabled"
 						@input="handleDayInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 
 				<span>.</span>
-				<div class="DatePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DatePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeMonthClick" tabindex="2">{{ dateTimeValue[1] }}</span>
 					<input
 						type="number"
 						class="visually-hidden"
 						v-model="month"
 						ref="monthRef"
-						:disabled="disabled"
 						@input="handleMonthInput"
 						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
-				<div class="DatePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+				<div class="DatePicker__dateTimeInputContainer">
 					<span @click="handleDateTimeYearClick" tabindex="3">{{ dateTimeValue[2] }}</span>
 					<input
 						type="number"
 						class="DatePicker__input visually-hidden"
 						v-model="year"
 						ref="yearRef"
-						:disabled="disabled"
 						@input="handleYearInput"
 						@focus="handleInputFocus"
 					/>
@@ -191,7 +179,7 @@
 				tabindex="0"
 				@click="handleCalendarClick"
 			>
-				<Icon class="DatePicker__icon calendarIcon" name="calendar"></Icon>
+				<Icon class="DatePicker__icon" name="calendar"></Icon>
 			</span>
 		</div>
 	</div>
@@ -201,9 +189,10 @@
 			v-model:month="month"
 			v-model:year="year"
 			:handleCalendarClose="handleCalendarClose"
+			:isWorkCalendar="isWorkCalendar"
 		/>
 	</div>
-	<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
+	<span class="DatePicker__hint" :class="{ invalid: invalid }">{{ hint }}</span>
 </template>
 <script setup lang="ts">
 import Icon from '../../icons/Icon.vue'
@@ -222,6 +211,7 @@ const props = withDefaults(
 		hint: string
 		description: string
 		invalid: boolean
+		isWorkCalendar: boolean
 	}>(),
 	{
 		label: '',
@@ -229,7 +219,8 @@ const props = withDefaults(
 		required: false,
 		hint: '',
 		description: '',
-		invalid: false
+		invalid: false,
+		isWorkCalendar: false
 	}
 )
 
