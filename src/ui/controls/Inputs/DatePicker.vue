@@ -251,12 +251,7 @@ const dateTimeValue = computed(() => {
 })
 
 const handleCalendarClick = () => {
-	if (!props.disabled) {
-		if (!day.value) day.value = handleTwoDigitsInput('31', String(new Date().getDate()))
-		if (!month.value) month.value = handleTwoDigitsInput('12', String(new Date().getMonth() + 1))
-		if (!year.value) year.value = String(new Date().getFullYear())
-		isCalendarOpen.value = !isCalendarOpen.value
-	}
+	if (!props.disabled) isCalendarOpen.value = !isCalendarOpen.value
 }
 
 const handleCalendarClose = () => (isCalendarOpen.value = false)
