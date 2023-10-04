@@ -22,6 +22,8 @@
 	box-sizing: border-box;
 	width: 100%;
 	overflow: hidden;
+	height: min-content;
+	max-height: 40px;
 	display: flex;
 	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 }
@@ -51,22 +53,4 @@
 .Field__afterWrapper {
 	width: min-content;
 	height: min-content;
-}
-.Field.dense {
-	--icon-size: 16px;
-}
-.Field.dense .Field__label,
-.Field.dense .Field__description,
-.Field.dense .Field__below {
-	position: fixed;
-	transform: scale(0);
-}
-
-.Field.dense .Field__visibleInput,
-.Field.dense .Field__input {
-	--design-current-font-size: var(--design-font-size-footnote);
-	--design-current-line-height: var(--design-line-height-footnote);
-}
-.Field.dense .Field__visibleInput {
-	padding: calc(0.25 * var(--design-gap-unit)) calc(var(--design-gap-unit));
 }

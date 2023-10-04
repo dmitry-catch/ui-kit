@@ -1,11 +1,14 @@
 <style>
 @import '/public/visually-hidden.css';
 .DatePicker {
+	box-sizing: border-box;
+	width: fit-content;
 }
 
 .DatePicker__visible {
 	box-sizing: border-box;
 	display: inline-block;
+	margin-left: calc(0.75 * var(--design-gap-unit));
 	width: var(--design-current-line-height);
 	height: var(--design-current-line-height);
 	cursor: pointer;
@@ -16,11 +19,16 @@
 }
 
 .DatePicker__inputsContainer {
+	background-color: var(--design-background-color-primary);
+	padding: var(--design-gap-unit) calc(1.75 * var(--design-gap-unit)) var(--design-gap-unit)
+		calc(2 * var(--design-gap-unit));
+	border-radius: var(--design-border-radius-control);
+	border: 1px solid var(--design-border-color-primary);
+	margin: var(--design-gap-unit) 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	min-width: min-content;
-	gap: var(--design-gap-unit);
+	min-width: 240px;
 }
 
 .DatePicker__inputsContainer:focus-within {
@@ -31,7 +39,6 @@
 	border-color: var(--design-border-color-primary);
 }
 .DatePicker__dateTime {
-	display: flex;
 	text-align: center;
 	color: var(--design-text-color-secondary);
 }
@@ -102,58 +109,57 @@
 	cursor: not-allowed;
 }
 
+.DatePicker__dateTimeInputContainer {
+	width: fit-content;
+	display: inline-block;
+}
 .DatePicker__dateTimeInputContainer span:focus {
 	outline: none;
+}
+.DatePicker__dateTimeInputContainer:focus-within {
+	background-color: var(--design-background-color-accent-primary);
+	color: var(--design-text-color-on-accent-primary);
+}
+.DatePicker__dateTimeInputContainer.disabled {
+	background-color: transparent;
+	border: none;
+	color: var(--design-text-color-secondary);
 }
 .DatePicker__icon.calendarIcon {
 	--icon-color: var(--design-text-color-secondary);
 }
-:focus + .DatePicker__dateValue {
-	background-color: var(--design-background-color-info);
-	color: var(--design-text-color-on-accent-primary);
-}
-
-.DatePicker.dense .DatePicker__dateValue,
-.DatePicker.dense .DatePicker__dateSplitter {
-	--design-current-font-size: var(--design-font-size-footnote);
-	--design-current-line-height: var(--design-line-height-footnote);
-}
 </style>
 
 <template>
-	<div class="DatePicker Field" ref="root">
-		<span class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
-		<span class="Field__description text-small">{{ description }}</span>
-		<div class="DatePicker__inputsContainer Field__visibleInput" :class="{ disabled: disabled, invalid: invalid }">
+	<div class="DatePicker">
+		<span class="DatePicker__label" :class="{ required: required }">{{ label }}</span>
+		<span class="DatePicker__description text-small">{{ description }}</span>
+		<div class="DatePicker__inputsContainer" :class="{ disabled: disabled, invalid: invalid }">
 			<div
-				class="DatePicker__dateTime text-medium"
+				class="DatePicker__dateTime"
 				:class="{
 					active: dateTimeValue.some((value) => /\d/.test(value)),
 					disabled: disabled
 				}"
 			>
-				<label class="Field__input" :class="{ disabled: disabled }">
+				<div class="DatePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span @click="handleDateTimeDayClick" tabindex="1">{{ dateTimeValue[0] }}</span>
 					<input
 						type="number"
-						min="1"
-						max="31"
 						class="visually-hidden"
 						v-model="day"
 						ref="dayRef"
 						:disabled="disabled"
 						@input="handleDayInput"
 						@focus="handleInputFocus"
-						:autofocus="autofocus"
 					/>
-					<span class="DatePicker__dateValue">{{ day?.padStart(2, '0').slice(-2) || 'ДД' }}</span>
-				</label>
+				</div>
 
-				<span class="DatePicker__dateSplitter">.</span>
-				<label class="Field__input" :class="{ disabled: disabled }">
+				<span>.</span>
+				<div class="DatePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span @click="handleDateTimeMonthClick" tabindex="2">{{ dateTimeValue[1] }}</span>
 					<input
 						type="number"
-						min="1"
-						max="12"
 						class="visually-hidden"
 						v-model="month"
 						ref="monthRef"
@@ -161,14 +167,12 @@
 						@input="handleMonthInput"
 						@focus="handleInputFocus"
 					/>
-					<span class="DatePicker__dateValue">{{ month?.padStart(2, '0').slice(-2) || 'ММ' }}</span>
-				</label>
-				<span class="DatePicker__dateSplitter">.</span>
-				<label class="Field__input" :class="{ disabled: disabled }">
+				</div>
+				<span>.</span>
+				<div class="DatePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span @click="handleDateTimeYearClick" tabindex="3">{{ dateTimeValue[2] }}</span>
 					<input
 						type="number"
-						min="1"
-						max="9999"
 						class="DatePicker__input visually-hidden"
 						v-model="year"
 						ref="yearRef"
@@ -176,40 +180,38 @@
 						@input="handleYearInput"
 						@focus="handleInputFocus"
 					/>
-					<span class="DatePicker__dateValue">{{ year?.padStart(4, '0').slice(-4) || 'ГГГГ' }}</span>
-				</label>
+				</div>
 			</div>
 
-			<Btn
-				class="DatePicker__visible icon functional"
+			<span
+				class="DatePicker__visible"
 				:class="{
 					disabled__input: disabled
 				}"
+				tabindex="0"
 				@click="handleCalendarClick"
 			>
 				<Icon class="DatePicker__icon calendarIcon" name="calendar"></Icon>
-			</Btn>
+			</span>
 		</div>
-		<Dropdown v-if="isCalendarOpen" tabindex="0">
-			<CalendarPopup
-				v-model:day="day"
-				v-model:month="month"
-				v-model:year="year"
-				:handleCalendarClose="handleCalendarClose"
-			/>
-		</Dropdown>
-		<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
 	</div>
+	<div class="DatePicker__calendarPopup" v-if="isCalendarOpen" tabindex="0">
+		<CalendarPopup
+			v-model:day="day"
+			v-model:month="month"
+			v-model:year="year"
+			:handleCalendarClose="handleCalendarClose"
+		/>
+	</div>
+	<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
 </template>
 <script setup lang="ts">
-import Dropdown from '../../layout/Dropdown.vue'
 import Icon from '../../icons/Icon.vue'
-import Btn from '../Buttons/Btn.vue'
-import { defineProps, toRefs, ref, watch, computed, onMounted, provide } from 'vue'
+import { defineProps, toRefs, ref, watch, computed } from 'vue'
 import { DateLocalizationRu } from '../../../localization.ru'
 import CalendarPopup from './DataHelpers/CalendarPopup.vue'
 import { handleInputFocus, handleNextInputFocus } from './DataHelpers/DataEventHelper'
-import { handleYearInputEvent, isInputEventTriggersEffect } from './DataHelpers/DataHelper'
+import { handleTwoDigitsInput, handleYearInputEvent, isInputEventTriggersEffect } from './DataHelpers/DataHelper'
 
 const props = withDefaults(
 	defineProps<{
@@ -220,7 +222,6 @@ const props = withDefaults(
 		hint: string
 		description: string
 		invalid: boolean
-		autofocus: boolean
 	}>(),
 	{
 		label: '',
@@ -233,7 +234,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['update:modelValue'])
-const { modelValue, autofocus } = toRefs(props)
+const { modelValue } = toRefs(props)
 
 const day = ref(modelValue.value?.split('-')[2])
 const month = ref(modelValue.value?.split('-')[1])
@@ -260,22 +261,20 @@ const dateTimeValue = computed(() => {
 
 const handleCalendarClick = () => {
 	if (!props.disabled) {
-		if (!day.value) day.value = String(new Date().getDate())
-		if (!month.value) month.value = String(new Date().getMonth() + 1)
+		if (!day.value) day.value = handleTwoDigitsInput('31', String(new Date().getDate()))
+		if (!month.value) month.value = handleTwoDigitsInput('12', String(new Date().getMonth() + 1))
 		if (!year.value) year.value = String(new Date().getFullYear())
 		isCalendarOpen.value = !isCalendarOpen.value
 	}
 }
 
-const focus = () => dayRef.value.focus()
+const handleCalendarClose = () => (isCalendarOpen.value = false)
 
-onMounted(() => {
-	if (autofocus.value) focus()
-})
-const handleCalendarClose = () => {
-	focus()
-	isCalendarOpen.value = false
-}
+const handleDateTimeDayClick = () => dayRef.value.focus()
+
+const handleDateTimeMonthClick = () => monthRef.value.focus()
+
+const handleDateTimeYearClick = () => yearRef.value.focus()
 
 const handleDayInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
@@ -284,24 +283,23 @@ const handleDayInput = (event: Event) => {
 		Number(month.value ? month.value : new Date().getMonth()) + 1,
 		0
 	).getDate()
-	day.value = target.value
-	if (day.value.length == 2) handleNextInputFocus(refsArray, refsArray.indexOf(dayRef))
+	day.value = handleTwoDigitsInput(String(maxPossibleValue), String(target.value))
+	if (isInputEventTriggersEffect(day.value)) handleNextInputFocus(refsArray, refsArray.indexOf(dayRef))
 }
 
 const handleMonthInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
-	month.value = String(target.value)
-	if (month.value.length == 2) handleNextInputFocus(refsArray, refsArray.indexOf(monthRef))
+	month.value = handleTwoDigitsInput('12', String(target.value))
+	if (isInputEventTriggersEffect(month.value)) handleNextInputFocus(refsArray, refsArray.indexOf(monthRef))
 }
 
 const handleYearInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	year.value = handleYearInputEvent(target.value)
+	if (isInputEventTriggersEffect(year.value)) target.blur()
 }
 
 watch([day, month, year], () => {
 	emit('update:modelValue', `${year.value}-${month.value}-${day.value}`)
 })
-const root = ref()
-provide('datepicker-root', root.value)
 </script>

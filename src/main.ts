@@ -15,12 +15,11 @@ import Modal from './ui/layout/Modal.vue'
 import Multiselect from './ui/controls/Inputs/Multiselect.vue'
 import Checkbox from './ui/controls/Inputs/Checkbox.vue'
 import DropdownSelectableOption from './ui/controls/Inputs/DropdownSelectableOption.vue'
-import DataList from './ui/lists/DataList/DataList.vue'
-import DataListGroup from './ui/lists/DataList/DataListGroup.vue'
-import DataListItem from './ui/lists/DataList/DataListItem.vue'
+import DataList from './ui/lists/DataList.vue'
+import DataListGroup from './ui/lists/DataListGroup.vue'
+import DataListItem from './ui/lists/DataListItem.vue'
 import type { Localization, FieldLocalization, DateLocalization } from './localization'
-import OrderableList from './ui/lists/OrderableList/OrderableList.vue'
-import DataGrid from './ui/lists/DataGrid/DataGrid.vue'
+import OrderableList from './ui/lists/OrderableList.vue'
 import DatePicker from './ui/controls/Inputs/DatePicker.vue'
 import DateRangePicker from './ui/controls/Inputs/DateRangePicker.vue'
 
@@ -50,6 +49,5 @@ export {
 	DataListItem,
 	OrderableList,
 	DatePicker,
-	DateRangePicker,
-	DataGrid
+	DateRangePicker
 }

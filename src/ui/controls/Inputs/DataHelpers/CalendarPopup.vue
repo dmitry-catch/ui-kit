@@ -166,7 +166,7 @@
 
 <script setup lang="ts">
 import { DateLocalizationRu } from '../../../../localization.ru'
-import { defineProps, toRefs, computed, ref, onMounted, onUnmounted, nextTick, inject } from 'vue'
+import { defineProps, toRefs, computed, ref, onMounted, onUnmounted } from 'vue'
 import { getMonthArray, numberOfDaysInMonth } from '../DataHelpers/DataHelper'
 import CalendarPopupMonthPicker from './CalendarPopupMonthPicker.vue'
 import CalendarPopupYearPicker from './CalendarPopupYearPicker.vue'
@@ -214,7 +214,6 @@ const calendarPopupRef = ref()
 const CalendarPopupDayPickerRef = ref()
 const CalendarPopupMonthPickerRef = ref()
 const CalendarPopupYearPickerRef = ref()
-const datepickerRef = inject<HTMLElement>('datepicker-root')
 
 const mode = ref('calendar')
 
@@ -321,13 +320,18 @@ const convertNumberToTwoDigits = (number: string) => {
 const DateLocalization = new DateLocalizationRu()
 
 const handleOutsideClick = (event: Event) => {
-	if (!event.composedPath().includes(calendarPopupRef.value) && !event.composedPath().includes(datepickerRef.value)) {
+	const target = event.target as HTMLElement
+	if (
+		!calendarPopupRef.value.contains(target) &&
+		!target.closest('.CalendarPopup__icon') &&
+		!target.className.includes('CalendarPopup')
+	) {
 		handleClose()
 	}
 }
 
 onMounted(async () => {
-	await nextTick()
+	await new Promise((resolve) => setTimeout(resolve, 1))
 	document.addEventListener('click', handleOutsideClick)
 })
 

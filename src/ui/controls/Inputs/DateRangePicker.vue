@@ -280,7 +280,7 @@ import Icon from '../../icons/Icon.vue'
 import { DateLocalizationRu } from '../../../localization.ru'
 import { ref, watch, computed, toRefs } from 'vue'
 import { handleInputFocus, handleNextInputFocus } from './DataHelpers/DataEventHelper'
-import { handleYearInputEvent } from './DataHelpers/DataHelper'
+import { handleTwoDigitsInput, handleYearInputEvent } from './DataHelpers/DataHelper'
 import { isInputEventTriggersEffect } from './DataHelpers/DataHelper'
 
 const props = withDefaults(
@@ -330,14 +330,22 @@ const DateLocalization = new DateLocalizationRu()
 
 const isCalendarOpen = ref(false)
 
+const handleDateTimeDayFromClick = () => dayFromRef.value.focus()
+const handleDateTimeMonthFromClick = () => monthFromRef.value.focus()
+const handleDateTimeYearFromClick = () => yearFromRef.value.focus()
+
+const handleDateTimeDayToClick = () => dayToRef.value.focus()
+const handleDateTimeMonthToClick = () => monthToRef.value.focus()
+const handleDateTimeYearToClick = () => yearToRef.value.focus()
+
 const handleDayFromInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
-	dayFrom.value = target.value
+	dayFrom.value = handleTwoDigitsInput('31', target.value)
 	if (isInputEventTriggersEffect(dayFrom.value)) handleNextInputFocus(refsArray, refsArray.indexOf(dayFromRef))
 }
 const handleMonthFromInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
-	monthFrom.value = target.value
+	monthFrom.value = handleTwoDigitsInput('12', target.value)
 	if (isInputEventTriggersEffect(monthFrom.value)) handleNextInputFocus(refsArray, refsArray.indexOf(monthFromRef))
 }
 const handleYearFromInput = (event: Event) => {
@@ -348,12 +356,12 @@ const handleYearFromInput = (event: Event) => {
 
 const handleDayToInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
-	dayTo.value = target.value
+	dayTo.value = handleTwoDigitsInput('31', target.value)
 	if (isInputEventTriggersEffect(dayTo.value)) handleNextInputFocus(refsArray, refsArray.indexOf(dayToRef))
 }
 const handleMonthToInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
-	monthTo.value = target.value
+	monthTo.value = handleTwoDigitsInput('12', target.value)
 	if (isInputEventTriggersEffect(monthTo.value)) handleNextInputFocus(refsArray, refsArray.indexOf(monthToRef))
 }
 const handleYearToInput = (event: Event) => {

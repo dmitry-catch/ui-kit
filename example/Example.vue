@@ -5,17 +5,47 @@ body {
 </style>
 
 <template>
-	<input type="date" />
-	<input type="number" />
-	<div style="width: 90vw; height: 90vh">
-		<DataGrid
-			:columns="options"
-			:data-source="grouped"
-			:row-key="(data) => data.id"
-			v-model:filters="filters"
-			v-model:sort="sort"
-		>
-		</DataGrid>
+	<div style="max-width: 50%">
+		<Multiselect v-model="test" :options="options"></Multiselect>
+		<DatePicker
+			:label="'Заголовок'"
+			:disabled="false"
+			:required="true"
+			:hint="'Подсказка'"
+			:description="'Описание'"
+			:invalid="true"
+			v-model="date"
+		/>
+		<DateRangePicker
+			:label="'Заголовок'"
+			:disabled="false"
+			:required="false"
+			:hint="'Подсказка'"
+			:description="'Описание'"
+			:invalid="false"
+			v-model:from="dateRangeFrom"
+			v-model:to="dateRangeTo"
+		/>
+		<Btn :dropdown="options">
+			234567890234567890
+			<template #dropdownItem="{ data }">
+				<div style="display: flex; flex-flow: row; gap: var(--design-gap-unit)">
+					<div>{{ data.name }}</div>
+					<Icon v-if="test.includes(data.value)" name="check" style="--icon-color: red"></Icon>
+				</div>
+			</template>
+		</Btn>
+		<DataList :context-menu="options" :data-source="grouped">
+			<template #listItem="{ data }">
+				{{ data }}
+			</template>
+		</DataList>
+		<OrderableList v-model="options">
+			<template #itemTemplate="{ data }: { data: { name: string, value: boolean } }">
+				<Checkbox v-model:model-value="data.value" :value="data.value"> {{ data.name }} </Checkbox>
+			</template>
+		</OrderableList>
+		<!--		<DropdownSelect :options="options" model-value="" placeholder="" label=""></DropdownSelect>-->
 	</div>
 </template>
 
@@ -25,64 +55,33 @@ import TextField from '../src/ui/controls/Inputs/TextField.vue'
 import Icon from '../src/ui/icons/Icon.vue'
 import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
 import DateField from '../src/ui/controls/Inputs/Date/DateField.vue'
+import DatePicker from '../src/ui/controls/Inputs/DatePicker.vue'
+import DateRangePicker from '../src/ui/controls/Inputs/DateRangePicker.vue'
 import Checkbox from '../src/ui/controls/Inputs/Checkbox.vue'
-import OrderableList from '../src/ui/lists/OrderableList/OrderableList.vue'
+import OrderableList from '../src/ui/lists/OrderableList.vue'
 import Multiselect from '../src/ui/controls/Inputs/Multiselect.vue'
 import Btn from '../src/ui/controls/Buttons/Btn.vue'
-import DataList from '../src/ui/lists/DataList/DataList.vue'
-import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
-import DataGrid from '../src/ui/lists/DataGrid/DataGrid.vue'
-const filters = ref(value(true))
-watchEffect(() => console.log('filters', filters.value))
+import DataList from '../src/ui/lists/DataList.vue'
+import { comparator, groupBy } from '@forecsys/collections'
+
 const tab = ref(null)
 const test = ref(['value 1'])
 const anchor = ref('center')
-const date = ref('2022-02-01')
+const date = ref()
+const dateRangeFrom = ref('')
+const dateRangeTo = ref('')
 
 const addToList = ({ data }) => {
 	test.value.push(data.value)
 }
 const options = ref([
-	{ name: 'name', field: 'name', value: false, action: addToList, date: new Date(2023, 3, 3) },
-	{ name: 'field', field: 'field', value: true, action: addToList, date: new Date(2023, 3, 3) },
-	{
-		name: 'value',
-		field: 'value',
-		type: 'enum',
-		filterEnum: {
-			ok: true,
-			fail: false
-		},
-		template: (it: boolean) => (it ? 'ok' : 'fail'),
-		value: true,
-		action: addToList,
-		date: new Date(2023, 3, 2)
-	},
-	{ name: 'action', field: 'action', value: false, action: addToList, date: new Date(2023, 3, 2) },
-	{ name: 'date', field: 'date', value: false, action: addToList, date: new Date(2023, 3, 2), type: 'date' }
+	{ name: 'name', value: false, action: addToList },
+	{ name: 'name 1', value: true, action: addToList },
+	{ name: 'name 2', value: true, action: addToList },
+	{ name: 'name 3', value: false, action: addToList }
 ])
 
-const range = ref<Array<number>>([])
-for (let i = 0; i < 100; i++) range.value.push(i)
-const dataSource = computed<Array<any>>(() =>
-	range.value.map((i) => ({
-		id: i,
-		name: 'name ' + i,
-		field: options.value[i % 4].field,
-		value: Boolean(i % 2),
-		action: addToList,
-		date: options.value[i % 4].date
-	}))
-)
-const filterPredicate = ref(predicate(filters.value))
-watchEffect(() => {
-	filterPredicate.value = predicate(filters.value)
-})
-const sort = ref([])
-const filtered = computed(() => dataSource.value.filter(filterPredicate.value).sort(comparator(sort.value)), {
-	onTrigger: console.log
-})
-const grouped = computed(() => groupBy(filtered.value, [{ direction: 'asc', target: 'field' }]))
+const grouped = computed(() => groupBy(options.value, [{ direction: 'asc', target: 'name' }]))
 const dropdown = [
 	{ name: 'test options', action: () => console.debug('test action') },
 	{
@@ -94,11 +93,4 @@ const dropdown = [
 		}
 	}
 ]
-
-watchEffect(() => {
-	console.log(linqFilter(filters.value))
-})
-watchEffect(() => {
-	console.log(linqSort(sort.value))
-})
 </script>

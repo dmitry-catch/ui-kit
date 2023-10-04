@@ -6,21 +6,12 @@
 	align-items: center;
 	justify-content: space-between;
 }
-.DropdownSelectableOption__selected.hidden {
-	visibility: hidden;
-}
 </style>
 
 <template>
-	<div class="DropdownSelectableOption text-medium">
+	<div class="DropdownSelectableOption">
 		<div class="DropdownSelectableOption__name">{{ option.name }}</div>
-		<Icon
-			name="check"
-			class="DropdownSelectableOption__selected accent"
-			:class="{
-				hidden: !selected
-			}"
-		></Icon>
+		<Icon v-if="selected" name="check" style="--icon-color: red"></Icon>
 	</div>
 </template>
 

@@ -1,6 +1,11 @@
+export const handleTwoDigitsInput = (maxPossibleValue: string, value: string) => {
+	let newValue = String(Math.max(0, Math.min(Number(value), Number(maxPossibleValue))))
+	return newValue.length === 1 ? '0' + newValue : newValue
+}
+
 export const handleYearInputEvent = (value: string) => value.padStart(4, '0').slice(-4)
 
-export const isInputEventTriggersEffect = (value: string) => value.charAt(0) !== '0'
+export const isInputEventTriggersEffect = (value: string) => (value.charAt(0) !== '0' ? true : false)
 
 export const getFirstDayOfMonth = (month: number, year: number) => {
 	const firstDayOfMonth = new Date(year, month, 1).getDay()

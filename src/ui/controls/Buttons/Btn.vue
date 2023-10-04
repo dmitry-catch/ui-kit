@@ -89,6 +89,12 @@
 	min-width: min-content;
 }
 
+.Btn__dropdownItem {
+	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
+}
+.Btn__dropdownItem:hover {
+	background: var(--design-background-color-secondary);
+}
 .Btn__dropdownContent {
 	background: var(--design-background-color-primary);
 	border: 1px solid var(--design-border-color-primary);
@@ -104,20 +110,29 @@
 			<slot name="after"></slot>
 			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
 		</button>
-		<ListBox :options="dropdown" :opened="hasDropdown && dropdownOpened" @close-request="clickOutside">
-			<template #item="{ data }">
-				<slot name="dropdownItem" :data="data">{{ data.name }}</slot>
-			</template>
-		</ListBox>
+		<Dropdown :open="hasDropdown && dropdownOpened">
+			<slot name="dropdown">
+				<div class="Btn__dropdownContent">
+					<div
+						v-for="option in dropdown"
+						class="Btn__dropdownItem"
+						@click="dropdownOptionClick(option.action, option)"
+					>
+						<slot name="dropdownItem" :data="option">{{ option.name }}</slot>
+					</div>
+				</div>
+			</slot>
+		</Dropdown>
 	</div>
 </template>
 <script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
+import { computed, onMounted, onUnmounted, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
-import ListBox from '../Inputs/ListBox.vue'
-import type { ListBoxOption } from '../Inputs/ListBoxOption'
+import Dropdown from '../../layout/Dropdown.vue'
 const root = ref()
-const props = withDefaults(defineProps<{ dropdown: Array<ListBoxOption> }>(), { dropdown: () => [] })
+const props = defineProps({
+	dropdown: { default: () => [], type: Array }
+})
 
 const { dropdown } = toRefs(props)
 
@@ -125,7 +140,15 @@ const hasDropdown = computed(() => !!dropdown?.value?.length)
 const dropdownOpened = ref(false)
 
 const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
+const dropdownOptionClick = async (action: Function, option: any) => {
+	let close = true
+	const preventDefault = () => (close = false)
+	if (typeof action === 'function') await action({ preventDefault, data: option })
+	if (close) dropdownOpened.value = false
+}
 const clickOutside = (event: Event) => {
 	if (!event.composedPath().includes(root.value)) dropdownOpened.value = false
 }
+onMounted(() => document.addEventListener('click', clickOutside))
+onUnmounted(() => document.removeEventListener('click', clickOutside))
 </script>

@@ -17,8 +17,6 @@
 				:placeholder="placeholder"
 				:tabindex="tabindex"
 				v-bind="$attrs"
-				:autofocus="autofocus"
-				ref="inputElement"
 			/>
 			<span class="Field__afterWrapper">
 				<slot name="after"></slot>
@@ -40,7 +38,7 @@
 
 <script setup lang="ts">
 import CharCounter from './CharCounter.vue'
-import { computed, toRefs, defineEmits, ref, onMounted } from 'vue'
+import { computed, toRefs, defineEmits } from 'vue'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps<{
@@ -55,17 +53,9 @@ const props = defineProps<{
 	placeholder: string
 	readonly: boolean
 	tabindex: number
-	autofocus: boolean
 }>()
 
-const { modelValue, tabindex, min, max, minLength, maxLength, label, invalid, placeholder, description, autofocus } =
-	toRefs(props)
+const { modelValue, tabindex, min, max, minLength, maxLength, label, invalid, placeholder, description } = toRefs(props)
 const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
 const type = computed(() => 'text')
-const inputElement = ref()
-const focus = () => inputElement.value.focus()
-
-onMounted(() => {
-	if (autofocus.value) focus()
-})
 </script>
