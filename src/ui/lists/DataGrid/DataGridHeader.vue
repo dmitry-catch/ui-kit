@@ -26,9 +26,6 @@
 .DataGridHeader__eventInterceptor {
 	display: contents;
 }
-.DataGridHeader__search {
-	min-width: 100px;
-}
 </style>
 
 <template>
@@ -40,7 +37,7 @@
 			@focusout="searchOpened = isDateColumn(column) ? searchOpened : false"
 		>
 			<TextField
-				class="DataGridHeader__search dense"
+				class="dense"
 				v-if="!isDateColumn(column)"
 				v-model="search"
 				:placeholder="column.name"
