@@ -141,9 +141,7 @@ const getDate = () => {
 }
 const date = ref(getDate())
 watchEffect(() => {
-	const val = value(date.value) as ValueExpression
-	val.type = 'date'
-	setFilter(dateId.value, date.value ? equals(field(column.value.field, null), val) : value(true))
+	setFilter(dateId.value, date.value ? equals(field(column.value.field, null), value(date.value)) : value(true))
 })
 
 const filterListId = ref(column.value.field + '-enum')
