@@ -47,13 +47,7 @@
 				@focusout="searchOpened = false"
 				autofocus
 			></TextField>
-			<DatePicker v-else class="dense" v-model="date" autofocus>
-				<template #after>
-					<Btn class="icon functional">
-						<Icon name="close" @click="date = null"></Icon>
-					</Btn>
-				</template>
-			</DatePicker>
+			<DatePicker v-else class="dense" v-model="date" autofocus> </DatePicker>
 		</div>
 		<div class="DataGridHeader__actions">
 			<Btn

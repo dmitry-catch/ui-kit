@@ -45,7 +45,7 @@ import { ListBoxAction, ListBoxOption } from './ListBoxOption'
 import DropdownSelectableOption from './DropdownSelectableOption.vue'
 import { useClickOutside } from '../../../utils/useClickOutside'
 const root = ref()
-const props = withDefaults(defineProps<{ modelValue: Array<any>; options: Array<ListBoxOption> }>(), {
+const props = withDefaults(defineProps<{ modelValue: Array<any>; opened: boolean; options: Array<ListBoxOption> }>(), {
 	options: () => [],
 	modelValue: () => []
 })

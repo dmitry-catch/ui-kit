@@ -92,7 +92,7 @@
 
 			<div v-if="mode == 'calendar'" class="CalendarPopup__optionalControl">
 				<span class="CalendarPopup__picker">
-					{{ DateLocalization.MonthArray()[Number(month) - 1] }}
+					{{ new DateLocalizationRu().MonthArray()[Number(month) - 1] }}
 				</span>
 				<span class="CalendarPopup__pickerChevron" @click="handleMonthChange">
 					<Icon name="chevron_down" class="CalendarPopup__icon"></Icon>
@@ -215,6 +215,7 @@ const CalendarPopupDayPickerRef = ref()
 const CalendarPopupMonthPickerRef = ref()
 const CalendarPopupYearPickerRef = ref()
 const datepickerRef = inject<Ref<HTMLElement>>('datepicker-root')
+
 const mode = ref('calendar')
 
 const monthArray = computed(() => getMonthArray(Number(month.value) - 1, Number(year.value)))

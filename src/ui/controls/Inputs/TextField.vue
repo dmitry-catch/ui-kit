@@ -4,13 +4,8 @@
 
 <template>
 	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
-		<span class="Field__label">
-			<slot name="label">{{ label }}</slot>
-			<span v-if="required" class="Field__requiredStar">*</span>
-		</span>
-		<span class="Field__description text-small">
-			<slot name="description">{{ description }}</slot>
-		</span>
+		<span class="Field__label">{{ label }}</span>
+		<span class="Field__description text-small">{{ description }}</span>
 		<span class="Field__visibleInput">
 			<span class="Field__beforeWrapper">
 				<slot name="before"></slot>
@@ -48,51 +43,23 @@ import CharCounter from './CharCounter.vue'
 import { computed, toRefs, defineEmits, ref, onMounted } from 'vue'
 
 const emit = defineEmits(['update:modelValue'])
-const props = withDefaults(
-	defineProps<{
-		label: string
-		description: string
-		modelValue: string
-		maxLength: number | null
-		minLength: number | null
-		max: number | null
-		min: number | null
-		invalid: boolean
-		placeholder: string | null
-		readonly: boolean
-		tabindex: '0' | '1' | 0 | 1 | null
-		autofocus: boolean
-		required: boolean
-	}>(),
-	{
-		autofocus: false,
-		label: '',
-		description: '',
-		minLength: null,
-		maxLength: null,
-		min: null,
-		max: null,
-		invalid: false,
-		placeholder: null,
-		tabindex: null,
-		required: false
-	}
-)
+const props = defineProps<{
+	label: any
+	description: any
+	modelValue: string
+	maxLength: any
+	minLength: any
+	max: any
+	min: any
+	invalid: boolean
+	placeholder: string
+	readonly: boolean
+	tabindex: number
+	autofocus: boolean
+}>()
 
-const {
-	modelValue,
-	tabindex,
-	min,
-	max,
-	minLength,
-	maxLength,
-	label,
-	invalid,
-	placeholder,
-	description,
-	autofocus,
-	required
-} = toRefs(props)
+const { modelValue, tabindex, min, max, minLength, maxLength, label, invalid, placeholder, description, autofocus } =
+	toRefs(props)
 const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
 const type = computed(() => 'text')
 const inputElement = ref()

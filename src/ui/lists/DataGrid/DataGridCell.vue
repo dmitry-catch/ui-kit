@@ -5,7 +5,6 @@
 	-webkit-line-clamp: 3;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	border-bottom: var(--design-border-color-primary) 1px solid;
 }
 </style>
 

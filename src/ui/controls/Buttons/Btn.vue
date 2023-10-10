@@ -7,9 +7,6 @@
 	--button-border-color-primary: var(--design-border-color-primary);
 	--button-border-color-secondary: var(--design-border-color-secondary);
 }
-.Btn.noBackground {
-	--button-background-color-primary: transparent;
-}
 .Btn__actual {
 	border: 1px solid var(--button-text-color-primary);
 	border-radius: var(--design-border-radius-control);
@@ -107,7 +104,7 @@
 			<slot name="after"></slot>
 			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
 		</button>
-		<ListBox v-if="hasDropdown && dropdownOpened" :options="dropdown" @close-request="clickOutside">
+		<ListBox :options="dropdown" :opened="hasDropdown && dropdownOpened" @close-request="clickOutside">
 			<template #item="{ data }">
 				<slot name="dropdownItem" :data="data">{{ data.name }}</slot>
 			</template>

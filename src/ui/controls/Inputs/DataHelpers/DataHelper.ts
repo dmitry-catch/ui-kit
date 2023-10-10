@@ -32,5 +32,5 @@ export const getMonthArray = (month: number, year: number) => {
 }
 
 export const numberOfDaysInMonth = (month: number, year: number) => {
-	return new Date(year, month + 2, 0).getDate()
+	return new Date(year, month + 1, 0).getDate()
 }

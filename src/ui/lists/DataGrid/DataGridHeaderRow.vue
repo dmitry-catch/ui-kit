@@ -13,8 +13,6 @@
 
 <template>
 	<tr class="DataGridHeaderRow" ref="root">
-		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
-		<td v-if="selectColumn" class="DataGridHeaderRow__cell"></td>
 		<DataGridHeader
 			class="DataGridHeaderRow__cell"
 			v-for="column of columns"
@@ -32,10 +30,10 @@ import DataGridHeader from './DataGridHeader.vue'
 import { ref, toRefs, watch } from 'vue'
 import { DragEvent, useDragging } from '../../../utils/useDragging'
 
-const props = defineProps<{ columns: Array<DataGridColumn>; detailsColumn: boolean; selectColumn: boolean }>()
+const props = defineProps<{ columns: Array<DataGridColumn> }>()
 const emit = defineEmits(['update:columns'])
 
-const { columns, detailsColumn } = toRefs(props)
+const { columns } = toRefs(props)
 
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))

@@ -6,23 +6,15 @@
 .Field__description {
 	color: var(--design-text-color-secondary);
 }
-
-.Field__label {
-	display: flex;
-	gap: var(--design-gap-unit)
-}
-
 .Field__input {
 	border: none;
 	width: 100%;
 	display: block;
 	padding: 0;
-	background: var(--design-background-color-primary);
 }
 .Field__input:focus-visible {
 	outline: none;
 }
-
 .Field__visibleInput {
 	background: var(--design-background-color-primary);
 	border: var(--design-border-color-secondary) 1px solid;
@@ -33,8 +25,7 @@
 	display: flex;
 	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 }
-.Field--invalid .Field__visibleInput,
-.Field.invalid .Field__visibleInput{
+.Field--invalid .Field__visibleInput {
 	border-color: var(--design-border-color-danger-primary);
 }
 .Field__visibleInput {
@@ -78,7 +69,4 @@
 }
 .Field.dense .Field__visibleInput {
 	padding: calc(0.25 * var(--design-gap-unit)) calc(var(--design-gap-unit));
-}
-.Field__requiredStar {
-	color: var(--design-text-color-danger)
 }
