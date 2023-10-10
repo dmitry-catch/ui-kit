@@ -9,16 +9,16 @@ export default defineConfig({
 		emptyOutDir: true,
 		target: ['es2020'],
 		lib: {
-			entry: resolve(__dirname, '/src/main.ts'),
+			entry: resolve(__dirname, 'src/main.ts'),
 			formats: ['es'],
 			fileName: '[name]'
 		},
 		rollupOptions: {
 			// make sure to externalize deps that shouldn't be bundled
 			// into your library
-			external: ['vue', '@forecsys/collections'],
+			external: ['vue'],
 			output: {
-				preserveModules: false
+				preserveModules: true
 			}
 		}
 	}
