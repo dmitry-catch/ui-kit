@@ -26,6 +26,19 @@ import { ref, toRefs, watchEffect, computed, watch, onMounted } from 'vue'
 const root = ref<HTMLElement>()
 const left = ref('0')
 const top = ref('0')
+const menuHeight = ref(0)
+
+// const top = computed(() => {
+// 	const screenHeight = window.innerHeight
+// 	const topBound = baseTop.value
+// 	const bottomBound = topBound + menuHeight.value
+// 	if (bottomBound > screenHeight) {
+// 		const newTop = screenHeight - menuHeight.value
+// 		return `${newTop}px`
+// 	}
+// 	return `${topBound}px`
+// })
+let recalculateStyle = null
 onMounted(() => {
 	if (root.value) {
 		const rect = root.value!.parentElement!.getBoundingClientRect()

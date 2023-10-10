@@ -303,5 +303,5 @@ watch([day, month, year], () => {
 	emit('update:modelValue', `${year.value}-${month.value}-${day.value}`)
 })
 const root = ref()
-provide('datepicker-root', root)
+provide('datepicker-root', root.value)
 </script>

@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import { DataGridColumn } from './DataGridColumn'
+import type { DataGridCellContentProps } from './DataGridCellContentProps'
 
-const props = defineProps<{ column: DataGridColumn; item: any }>()
+const props = defineProps<DataGridCellContentProps>()
 const { item, column } = toRefs(props)
 </script>

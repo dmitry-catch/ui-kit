@@ -105,8 +105,7 @@ const selectedValue = computed({
 	}
 })
 const selectedText = computed(() => {
-	if (modelValue.value.length === 1)
-		return options.value.find((it: { name: string; value: any }) => modelValue.value.includes(it.value))?.name
+	if (modelValue.value.length === 1) return options.value.find((it) => modelValue.value.includes(it.value))?.name
 	if (localization?.CountValues != null) return localization.CountValues(modelValue.value.length)
 	return `${modelValue.value.length} значения`
 })
@@ -126,9 +125,7 @@ const toggleDropdown = () => {
 }
 const close = () => (dropdownOpened.value = false)
 const clickOutsideDropdown = (event: MouseEvent) => {
-	// @ts-ignore old browser compatability
-	const path = event.path || event.composedPath()
-	if (path.includes(root.value)) return
+	if ((event.path || event.composedPath()).includes(root.value)) return
 
 	close()
 }
