@@ -300,9 +300,6 @@ const handleYearInput = (event: Event) => {
 }
 
 watch([day, month, year], () => {
-	year.value = year.value.slice(-4)
-	month.value = month.value.slice(-2)
-	day.value = day.value.slice(-2)
 	emit('update:modelValue', `${year.value}-${month.value}-${day.value}`)
 })
 const root = ref()
