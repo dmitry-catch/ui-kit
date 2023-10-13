@@ -7,12 +7,12 @@
 	);
 	width: 100%;
 	height: 100%;
-	overflow: auto;
 }
 
 .DataGrid__table {
 	width: 100%;
 	height: 100%;
+
 	display: grid;
 	--datagrid-rows-count: v-bind(rowsCount);
 	--datagrid-columns-count: v-bind(columnsCount);
@@ -21,8 +21,8 @@
 	--datagrid-template-details-column: v-bind(detailsColumn);
 	--datagrid-template-select-column: v-bind(selectColumn);
 	grid-template-columns:
-		var(--datagrid-template-details-column, minmax(min-content, auto))
-		var(--datagrid-template-select-column, minmax(min-content, auto))
+		var(--datagrid-template-details-column)
+		var(--datagrid-template-select-column)
 		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
 	background: var(--design-background-color-primary);
 	overflow: auto;
@@ -96,10 +96,8 @@ const emit = defineEmits(['update:filters', 'update:sort', 'update:group', 'upda
 const slots = useSlots()
 const { columns, dataSource, rowKey, allowSelection, selectedRows } = toRefs(props)
 const hasDetails = computed(() => Boolean(slots.rowDetails))
-const contentColumnsCount = computed(
-	() => columns.value.length - Number(!hasDetails.value) - Number(!allowSelection.value)
-)
-const columnsCount = computed(() => columns.value.length + Number(allowSelection.value) + Number(hasDetails.value))
+const contentColumnsCount = computed(() => columns.value.length)
+const columnsCount = computed(() => contentColumnsCount.value + Number(allowSelection.value) + Number(hasDetails.value))
 const rowsCount = computed(() => dataSource.value.length)
 const detailsColumn = computed(() => (hasDetails.value ? 'min-content' : null))
 const selectColumn = computed(() => (allowSelection.value ? 'min-content' : null))

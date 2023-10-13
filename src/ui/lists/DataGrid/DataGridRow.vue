@@ -27,7 +27,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding-inline: var(--design-gap-unit);
+	padding-inline: ;
+	:var(--design-gap-unit) ;
 }
 </style>
 
