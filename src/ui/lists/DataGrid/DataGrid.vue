@@ -104,7 +104,7 @@ const rowsCount = computed(() => dataSource.value.length)
 const detailsColumn = computed(() => (hasDetails.value ? 'min-content' : null))
 const selectColumn = computed(() => (allowSelection.value ? 'min-content' : null))
 provide('datagrid-selectedRows', selectedRows)
-const { filters } = useFilterContext({ forceId: true })
+const { filters } = useFilterContext()
 
 watch(
 	() => [filters],
@@ -119,7 +119,7 @@ watch(
 	{ deep: true }
 )
 
-const { sorting } = useSortingContext({ forceId: true })
+const { sorting } = useSortingContext()
 watch(
 	() => [sorting],
 	() => emit('update:sort', sorting.value),

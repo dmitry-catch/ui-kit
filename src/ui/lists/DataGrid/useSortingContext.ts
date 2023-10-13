@@ -2,10 +2,10 @@ import { computed, inject, provide, reactive } from 'vue'
 import { SortExpression } from '../../../../../Compliance.CollectionUtils/js'
 
 const contexts: { [key: string]: Array<SortExpression> } = reactive({})
-export const useSortingContext = (options?: { forceId: boolean } | undefined) => {
+export const useSortingContext = () => {
 	const injectedId = inject<string>('useSortingContext.Id')
 	const newId = 'useSortingContext.Id-' + Math.random()
-	const id = computed(() => (options?.forceId ? newId : injectedId || newId))
+	const id = computed(() => injectedId || newId)
 	provide('useSortingContext.Id', id.value)
 	contexts[id.value] = reactive([])
 

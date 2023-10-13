@@ -2,10 +2,10 @@ import { FilterExpression, value } from '@forecsys/collections'
 import { computed, inject, provide, reactive } from 'vue'
 
 const contexts: { [key: string]: { [key: string]: FilterExpression } } = reactive({})
-export const useFilterContext = (options?: { forceId: boolean }) => {
+export const useFilterContext = () => {
 	const injectedId = inject<string>('useFilterContext.Id')
 	const newId = 'useFilterContext.Id-' + Math.random()
-	const id = computed(() => (options?.forceId ? newId : injectedId || newId))
+	const id = computed(() => injectedId || newId)
 	provide('useFilterContext.Id', id.value)
 	contexts[id.value] = reactive({})
 
