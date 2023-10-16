@@ -26,6 +26,10 @@
 	box-shadow: none;
 }
 
+.CalendarPopup__picker {
+	font-weight: bold;
+}
+
 .CalendarPopup__pickerChevron {
 	color: var(--design-text-color-primary);
 	display: inline-block;
@@ -35,6 +39,7 @@
 .CalendarPopup__goToToday {
 	display: flex;
 	gap: var(--design-gap-unit);
+	font-weight: bold;
 }
 
 .CalendarPopup__goToTodayIcon {
@@ -86,13 +91,13 @@
 			</span>
 
 			<div v-if="mode == 'calendar'" class="CalendarPopup__optionalControl">
-				<span class="CalendarPopup__picker accent">
+				<span class="CalendarPopup__picker">
 					{{ DateLocalization.MonthArray()[Number(month) - 1] }}
 				</span>
 				<span class="CalendarPopup__pickerChevron" @click="handleMonthChange">
 					<Icon name="chevron_down" class="CalendarPopup__icon"></Icon>
 				</span>
-				<span class="CalendarPopup__picker accent">
+				<span class="CalendarPopup__picker">
 					{{ year }}
 				</span>
 				<span class="CalendarPopup__pickerChevron" @click="handleYearChange">
@@ -100,12 +105,12 @@
 				</span>
 			</div>
 			<div v-if="mode == 'month'" class="CalendarPopup__optionalControl">
-				<span class="CalendarPopup__picker accent">
+				<span class="CalendarPopup__picker">
 					{{ year }}
 				</span>
 			</div>
 			<div v-if="mode == 'year'" class="CalendarPopup__optionalControl">
-				<span class="CalendarPopup__picker accent" @click="handleYearChange">
+				<span class="CalendarPopup__picker" @click="handleYearChange">
 					{{ `${Number(year) - 10} - ${Number(year) + 7}` }}
 				</span>
 			</div>
@@ -138,7 +143,7 @@
 			<CalendarPopupYearPicker :handleYearClick="handleYearClick" :year="year" ref="CalendarPopupYearPickerRef" />
 		</div>
 		<div class="CalendarPopup__controls CalendarPopup__botomControls">
-			<div class="CalendarPopup__goToToday accent" v-if="!isRange">
+			<div class="CalendarPopup__goToToday" v-if="!isRange">
 				<span class="CalendarPopup__goToTodayIcon" @click="goToToday">
 					<Icon class="CalendarPopup__icon" name="calendar"></Icon>
 				</span>
