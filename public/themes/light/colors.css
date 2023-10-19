@@ -7,7 +7,7 @@
 	--design-text-color-on-accent-primary: #f6f7f7;
 	--design-text-color-on-accent-secondary: #a6abb0;
 	--design-text-color-on-accent-tertiary: #212c3a;
-	--design-text-color-accent: #00A7E5;
+	--design-text-color-accent: #00a7e5;
 	--design-text-color-warning: #f3b216;
 	--design-text-color-danger: #f12828;
 	--design-text-color-success: #2c9468;
@@ -29,7 +29,7 @@
 	--design-border-color-success: #2c9468;
 	--design-border-color-info: #3e8af0;
 	--design-border-color-baseline: #e9eaec;
-	--design-border-color-focus: rgba(210, 40, 53, 0.2);
+	--design-border-color-focus: rgba(0, 167, 229, 0.2);
 }
 
 /**
@@ -50,7 +50,7 @@
 	--design-background-color-danger-secondary: #f43f3f;
 	--design-background-color-inverted: #212c3a;
 	--design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
-	--design-background-color-info: #00A7E5;
+	--design-background-color-info: #00a7e5;
 }
 
 ::backdrop {

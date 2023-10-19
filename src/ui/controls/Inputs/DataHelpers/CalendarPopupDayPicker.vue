@@ -12,19 +12,16 @@
 	background-color: var(--design-background-color-on-accent-primary);
 }
 .CalendarPopupDayPicker__dayOfAnotherMonth {
-	color: var(--design-text-color-secondary);
 	cursor: default;
 	pointer-events: none;
 }
 
-.CalendarPopupDayPicker__headCell {
-	color: var(--design-text-color-secondary);
-}
-
-.CalendarPopupDayPicker__cellDateToday{
+.CalendarPopupDayPicker__cellDateToday {
 	color: var(--design-text-color-accent);
 }
-
+.CalendarPopupDayPicker__cellDateToday.picked {
+	color: var(--design-text-color-on-accent-primary);
+}
 .CalendarPopupDayPicker__cellDateToday::after {
 	position: absolute;
 	bottom: 5%;
@@ -41,10 +38,6 @@
 	gap: calc(3.75 * var(--design-gap-unit));
 	width: 100%;
 	padding-bottom: var(--design-gap-unit);
-}
-
-.CalendarPopupDayPicker__holidays {
-	color: var(--design-text-color-danger);
 }
 
 .CalendarPopupDayPicker__holidays.picked {
@@ -77,13 +70,11 @@
 }
 
 .CalendarPopupDayPicker__cell.picked:hover {
-	color: var(--design-text-color-on-accent-primary);
 	background-color: var(--design-background-color-accent-primary);
 	opacity: 0.9;
 }
 
 .CalendarPopupDayPicker__cell.picked {
-	color: var(--design-text-color-on-accent-primary);
 	background-color: var(--design-background-color-accent-primary);
 }
 
@@ -105,10 +96,6 @@
 	width: 100%;
 	height: 40px;
 }
-
-.CalendarPopupDayPicker__dayOfAnotherMonth.inside {
-	color: var(--design-border-color-primary);
-}
 </style>
 
 <template>
@@ -116,7 +103,7 @@
 		<div class="CalendarPopupDayPicker__tableRow">
 			<span
 				v-for="day in DateLocalization.WeekdayAbbrArray()"
-				class="CalendarPopupDayPicker__cell CalendarPopupDayPicker__headCell text-medium"
+				class="CalendarPopupDayPicker__cell secondary text-medium"
 			>
 				{{ day }}
 			</span>
@@ -136,17 +123,20 @@
 				:class="{
 					CalendarPopupDayPicker__cellDateToday:
 						isDayToday(dayOfMonth, month, year) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
-					'accent':isDayToday(dayOfMonth, month, year) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
+					accent: isDayToday(dayOfMonth, month, year) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
 					'on-accent':
-						((dayIndex == 5 || dayIndex == 6) &&
-							!isDayToday(dayOfMonth, month, year) &&
-							!isDayOfAnotherMonth(dayOfMonth, weekIndex)),
-					CalendarPopupDayPicker__holidays:
 						(dayIndex == 5 || dayIndex == 6) &&
 						!isDayToday(dayOfMonth, month, year) &&
 						!isDayOfAnotherMonth(dayOfMonth, weekIndex),
+					danger:
+						(dayIndex == 5 || dayIndex == 6) &&
+						!isDayToday(dayOfMonth, month, year) &&
+						!isDayOfAnotherMonth(dayOfMonth, weekIndex) &&
+						!(dayOfMonth == Number(day) && !isDayOfAnotherMonth(dayOfMonth, weekIndex)),
 					picked: dayOfMonth == Number(day) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
+					'on-accent-primary': dayOfMonth == Number(day) && !isDayOfAnotherMonth(dayOfMonth, weekIndex),
 					CalendarPopupDayPicker__dayOfAnotherMonth: isDayOfAnotherMonth(dayOfMonth, weekIndex),
+					secondary: isDayOfAnotherMonth(dayOfMonth, weekIndex),
 					inside: isRange && isInside(getFullRange(), dayOfMonth, weekIndex, month, year),
 					pickedStart: isRange && isPickedStart(getFullRange(), dayOfMonth, month, year),
 					pickedEnd: isRange && isPickedEnd(getFullRange(), dayOfMonth, month, year)

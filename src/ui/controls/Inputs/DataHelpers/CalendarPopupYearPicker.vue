@@ -30,7 +30,6 @@
 }
 
 .CalendarPopupYearPicker__cell.picked {
-	color: var(--design-text-color-on-accent-primary);
 	background-color: var(--design-background-color-accent-primary);
 }
 
@@ -57,7 +56,9 @@
 			class="CalendarPopupYearPicker__cell text-medium"
 			:class="{
 				picked: String(yearOfYears) == year,
-				CalendarPopupYearPicker__cellDateToday: yearOfYears == currentYear
+				'on-accent-primary': String(yearOfYears) == year,
+				accent: yearOfYears == currentYear,
+				CalendarPopupYearPicker__cellDateToday: yearOfYears == currentYear && !(String(yearOfYears) == year)
 			}"
 			@click="handleYearClick"
 		>

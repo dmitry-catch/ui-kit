@@ -1,21 +1,25 @@
 <style>
 body {
-	background: var(--design-background-color-secondary);
+	background: lightgray;
 }
 </style>
 
 <template>
 	<input type="date" />
 	<input type="number" />
-	<div style="width: 90vw; height: 90vh">
-		<DataGrid
+	<div style="width: 468px">
+		<DatePicker v-model="date" :hint="'string'" :description="'string'" :invalid="false" />
+	</div>
+
+	<div>
+		<!-- <DataGrid
 			:columns="options"
 			:data-source="grouped"
 			:row-key="(data) => data.id"
 			v-model:filters="filters"
 			v-model:sort="sort"
 		>
-		</DataGrid>
+		</DataGrid> -->
 	</div>
 </template>
 
@@ -32,13 +36,13 @@ import Btn from '../src/ui/controls/Buttons/Btn.vue'
 import DataList from '../src/ui/lists/DataList/DataList.vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
 import DataGrid from '../src/ui/lists/DataGrid/DataGrid.vue'
+import { DatePicker } from '../src/main'
 const filters = ref(value(true))
 watchEffect(() => console.log('filters', filters.value))
 const tab = ref(null)
-const test = ref(['value 1'])
+const test = ref([])
 const anchor = ref('center')
-const date = ref('2022-02-01')
-
+const date = ref(null)
 const addToList = ({ data }) => {
 	test.value.push(data.value)
 }
