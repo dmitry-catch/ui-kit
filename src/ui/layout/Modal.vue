@@ -40,9 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, Ref, ref, toRefs } from 'vue'
+import { computed, onMounted, ref, toRefs } from 'vue'
 import { ModalAnchor } from './ModalAnchor'
-import { useModalContext } from '../../utils/useModalContext'
 
 const root = ref<HTMLDialogElement>()
 onMounted(() => root.value?.showModal())
@@ -50,6 +49,4 @@ const props = defineProps<{ anchor: ModalAnchor }>()
 const { anchor } = toRefs(props)
 
 const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
-
-useModalContext(root)
 </script>
