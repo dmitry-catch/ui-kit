@@ -1,17 +1,14 @@
 <style>
 body {
-	background: lightgray;
+	background: white;
 }
 </style>
 
 <template>
+	<ButtonStand />
 	<input type="date" />
 	<input type="number" />
-	<div style="width: 468px">
-		<DatePicker v-model="date" :hint="'string'" :description="'string'" :invalid="false" :disabled="true" />
-	</div>
-
-	<div>
+	<div style="width: 90vw; height: 90vh">
 		<DataGrid
 			:columns="options"
 			:data-source="grouped"
@@ -36,13 +33,14 @@ import Btn from '../src/ui/controls/Buttons/Btn.vue'
 import DataList from '../src/ui/lists/DataList/DataList.vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
 import DataGrid from '../src/ui/lists/DataGrid/DataGrid.vue'
-import { DatePicker } from '../src/main'
+import ButtonStand from './ButtonStand.vue'
 const filters = ref(value(true))
 watchEffect(() => console.log('filters', filters.value))
 const tab = ref(null)
-const test = ref([])
+const test = ref(['value 1'])
 const anchor = ref('center')
-const date = ref(new Date())
+const date = ref('2022-02-01')
+
 const addToList = ({ data }) => {
 	test.value.push(data.value)
 }

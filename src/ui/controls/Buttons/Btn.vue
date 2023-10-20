@@ -3,7 +3,7 @@
 	--button-background-color-primary: var(--design-background-color-primary);
 	--button-background-color-secondary: var(--design-background-color-secondary);
 	--button-text-color-primary: var(--design-text-color-primary);
-	--button-text-color-secondary: var(--design-text-color-secondary);
+	--button-text-color-secondary: var(--design-text-color-primary);
 	--button-border-color-primary: var(--design-border-color-primary);
 	--button-border-color-secondary: var(--design-border-color-secondary);
 }
@@ -11,7 +11,7 @@
 	--button-background-color-primary: transparent;
 }
 .Btn__actual {
-	border: 1px solid var(--button-text-color-primary);
+	border: 1px solid var(--button-border-color-primary);
 	border-radius: var(--design-border-radius-control);
 	background: var(--button-background-color-primary);
 	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
@@ -31,37 +31,66 @@
 .Btn__actual:hover,
 .Btn__actual:active,
 .Btn.pressed .Btn__actual {
-	background: var(--button-background-color-secondary);
 	color: var(--button-text-color-secondary);
+	background-color: var(--button-background-color-secondary);
 	border-color: var(--button-border-color-secondary);
 }
 
-.Btn.accent .Btn__actual {
-	--button-background-color-primary: var(--design-background-color-accent-primary);
-	--button-background-color-secondary: var(--design-background-color-accent-secondary);
-	--button-text-color-primary: var(--design-text-color-on-accent-primary);
+.Btn.disabled .Btn__actual,
+.Btn.accent.disabled .Btn__actual,
+.Btn.minimal.disabled .Btn__actual,
+.Btn.Icon.disabled .Btn__actual {
+	--button-text-color-primary: var(--design-text-color-on-accent-secondary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
+
+	--button-background-color-primary: var(--design-background-color-disabled-primary);
+	--button-background-color-secondary: var(--design-background-color-disabled-primary);
+
+	--button-border-color-primary: var(--design-border-color-primary);
+	--button-border-color-secondary: var(--design-border-color-primary);
+
+	--icon-color: var(--design-text-color-secondary);
+	cursor: not-allowed;
+}
+
+.Btn.accent .Btn__actual {
 	--button-border-color-primary: var(--design-border-color-accent-primary);
 	--button-border-color-secondary: var(--design-border-color-accent-secondary);
+
+	--button-background-color-primary: var(--design-background-color-accent-primary);
+	--button-background-color-secondary: var(--design-background-color-accent-secondary);
+
+	--button-text-color-primary: var(--design-text-color-on-accent-primary);
+	--button-text-color-secondary: var(--design-text-color-on-accent-primary);
 }
 
 .Btn.minimal .Btn__actual {
 	--button-background-color-primary: var(--design-background-color-primary);
 	--button-background-color-secondary: var(--design-background-color-secondary);
+
 	--button-text-color-primary: var(--design-text-color-accent);
-	--button-text-color-secondary: var(--design-text-color-accent);
+	--button-text-color-secondary: var(--design-text-color-accent-secondary);
 	border: none;
 }
 
 .Btn.warning .Btn__actual {
 	--button-background-color-primary: var(--design-background-color-warning-primary);
 	--button-background-color-secondary: var(--design-background-color-warning-secondary);
+
 	--button-text-color-primary: var(--design-text-color-warning);
 	--button-text-color-secondary: var(--design-text-color-warning);
+
 	--button-border-color-primary: var(--design-border-color-warning-primary);
 	--button-border-color-secondary: var(--design-border-color-warning-secondary);
 }
 .Btn.warning.accent .Btn__actual {
+	--button-text-color-primary: var(--design-text-color-on-accent-primary);
+	--button-text-color-secondary: var(--design-text-color-on-accent-primary);
+}
+
+.Btn.warning:not(.minimal, .functional),
+.Btn.danger:not(.minimal, .functional),
+.Btn.info:not(.minimal, .functional) {
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
 }
@@ -69,20 +98,30 @@
 .Btn.danger .Btn__actual {
 	--button-background-color-primary: var(--design-background-color-danger-primary);
 	--button-background-color-secondary: var(--design-background-color-danger-secondary);
+
 	--button-text-color-primary: var(--design-text-color-danger);
 	--button-text-color-secondary: var(--design-text-color-danger);
+
 	--button-border-color-primary: var(--design-border-color-danger-primary);
 	--button-border-color-secondary: var(--design-border-color-danger-secondary);
 }
 .Btn.danger.accent .Btn__actual {
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
-	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
+	--button-text-color-secondary: var(--design-text-color-on-accent-primary);
 }
 
 .Btn.functional .Btn__actual {
+	--button-background-color-primary: transparent;
+	--button-background-color-secondary: transparent;
+	--button-text-color-secondary: var(--design-text-color-hover-secondary);
 	border: none;
 	padding: 0;
 	justify-content: start;
+}
+
+.Btn.functional.disabled .Btn__actual {
+	--button-text-color-secondary: var(--design-text-color-secondary);
+	--button-text-color-primary: var(--design-text-color-secondary);
 }
 
 .Btn.icon .Btn__dropdownIcon {
@@ -100,8 +139,8 @@
 </style>
 
 <template>
-	<div class="Btn" ref="root">
-		<button class="Btn__actual" @click="toggleDropdown">
+	<div class="Btn" ref="root" :class="{ disabled: disabled }">
+		<button class="Btn__actual accent" :disabled="disabled" @click="toggleDropdown">
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
@@ -120,9 +159,11 @@ import Icon from '../../icons/Icon.vue'
 import ListBox from '../Inputs/ListBox.vue'
 import type { ListBoxOption } from '../Inputs/ListBoxOption'
 const root = ref()
-const props = withDefaults(defineProps<{ dropdown: Array<ListBoxOption> }>(), { dropdown: () => [] })
+const props = withDefaults(defineProps<{ dropdown: Array<ListBoxOption>; disabled?: Boolean }>(), {
+	dropdown: () => []
+})
 
-const { dropdown } = toRefs(props)
+const { dropdown, disabled } = toRefs(props)
 
 const hasDropdown = computed(() => !!dropdown?.value?.length)
 const dropdownOpened = ref(false)

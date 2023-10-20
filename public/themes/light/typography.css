@@ -95,9 +95,6 @@ body {
 .accent:not(h1, h2, h3, h4, h5, h6) {
 	font-weight: 600;
 }
-.text-on-accent {
-	color: var(--design-text-color-on-accent-primary);
-}
 .secondary {
 	color: var(--design-text-color-secondary);
 }
@@ -107,3 +104,4 @@ body {
 .danger {
 	color: var(--design-text-color-danger);
 }
+

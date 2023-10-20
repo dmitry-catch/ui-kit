@@ -1,7 +1,5 @@
 <style>
 @import '/public/visually-hidden.css';
-@import '/src/ui/controls/Inputs/field.css';
-
 .DatePicker {
 }
 
@@ -11,7 +9,6 @@
 	width: var(--design-current-line-height);
 	height: var(--design-current-line-height);
 	cursor: pointer;
-	margin-left: auto;
 }
 
 .DatePicker__visible:focus {
@@ -39,23 +36,13 @@
 	color: var(--design-text-color-secondary);
 }
 
-.DatePicker.disabled .DatePicker__dateTime {
+.DatePicker__dateTime.disabled {
 	border: none;
 	color: var(--design-text-color-secondary);
 }
 
-.DatePicker.disabled .DatePicker__icon {
-	background-color: var(--design-background-color-secondary);
-	cursor: not-allowed;
-}
-.DatePicker.disabled .DatePicker__dateValue {
-	color: var(--design-text-color-secondary);
-}
 .DatePicker__dateTime.active {
 	color: var(--design-text-color-primary);
-}
-.DatePicker .Field__visibleInput {
-	margin-top: var(--design-gap-unit);
 }
 
 .DatePicker__hint {
@@ -106,6 +93,7 @@
 
 .DatePicker__inputsContainer.disabled {
 	background-color: var(--design-background-color-on-accent-primary);
+	border: 1px solid var(--design-border-color-primary);
 	cursor: not-allowed;
 }
 
@@ -133,10 +121,10 @@
 </style>
 
 <template>
-	<div class="DatePicker Field" ref="root" :class="{ disabled: disabled, invalid: invalid }">
+	<div class="DatePicker Field" ref="root">
 		<span class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
 		<span class="Field__description text-small">{{ description }}</span>
-		<div class="Field__visibleInput">
+		<div class="Field__visibleInput" :class="{ disabled: disabled, invalid: invalid }">
 			<div class="Field__beforeWrapper">
 				<slot name="before"></slot>
 			</div>
@@ -256,11 +244,11 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['update:modelValue'])
-const { autofocus } = toRefs(props)
-const modelValue = ref(props.modelValue ? JSON.stringify(new Date(props.modelValue)).split('T')[0] : null)
-const day = ref<string | null | undefined>(modelValue.value?.split('-')[2])
-const month = ref<string | null | undefined>(modelValue.value?.split('-')[1])
-const year = ref<string | null | undefined>(modelValue.value?.split('-')[0])
+const { modelValue, autofocus } = toRefs(props)
+
+const day = ref<string | null>(modelValue.value?.split('-')[2])
+const month = ref<string | null>(modelValue.value?.split('-')[1])
+const year = ref<string | null>(modelValue.value?.split('-')[0])
 
 watchEffect(() => {
 	year.value = modelValue != null ? modelValue.value?.split('-')[0] : null

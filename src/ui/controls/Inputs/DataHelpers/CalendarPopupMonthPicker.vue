@@ -24,11 +24,13 @@
 }
 
 .CalendarPopupMonthPicker__cell.picked:hover {
+	color: var(--design-text-color-on-accent-primary);
 	background-color: var(--design-background-color-accent-primary);
 	opacity: 0.9;
 }
 
 .CalendarPopupMonthPicker__cell.picked {
+	color: var(--design-text-color-on-accent-primary);
 	background-color: var(--design-background-color-accent-primary);
 }
 
@@ -54,10 +56,7 @@
 			class="CalendarPopupMonthPicker__cell text-medium"
 			:class="{
 				picked: isPicked(index + 1, Number(month), Number(year)),
-				'text-on-accent': isPicked(index + 1, Number(month), Number(year)),
-				accent: isDateToday(index, Number(year)),
-				CalendarPopupMonthPicker__cellDateToday:
-					isDateToday(index, Number(year)) && !isPicked(index + 1, Number(month), Number(year))
+				CalendarPopupMonthPicker__cellDateToday: isDateToday(index, Number(year))
 			}"
 			@click="handleMonthClick"
 			>{{ monthOfTheYear }}</span
