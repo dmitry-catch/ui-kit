@@ -1,7 +1,7 @@
 <style></style>
 
 <template>
-	{{ item[column.field] ? new Date(item[column.field]).toLocaleDateString() : '---' }}
+	{{ new Date(item[column.field]).toLocaleDateString() }}
 </template>
 
 <script setup lang="ts">
