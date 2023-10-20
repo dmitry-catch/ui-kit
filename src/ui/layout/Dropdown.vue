@@ -12,7 +12,7 @@
 
 <template>
 	<div class="Dropdown" ref="root">
-		<teleport to="body">
+		<teleport :to="teleportTarget">
 			<div class="Dropdown__content">
 				<slot></slot>
 			</div>
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { ref, toRefs, watchEffect, computed, watch, onMounted } from 'vue'
+import { useModalContext } from '../../utils/useModalContext'
 
 const root = ref<HTMLElement>()
 const left = ref('0')
@@ -33,4 +34,6 @@ onMounted(() => {
 		left.value = rect!.left + 'px'
 	}
 })
+
+const { element: teleportTarget } = useModalContext()
 </script>
