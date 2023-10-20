@@ -1,11 +1,10 @@
 <style>
 body {
-	background: white;
+	background: lightgray;
 }
 </style>
 
 <template>
-	<ButtonStand />
 	<input type="date" />
 	<input type="number" />
 	<div style="width: 468px">
@@ -37,7 +36,7 @@ import Btn from '../src/ui/controls/Buttons/Btn.vue'
 import DataList from '../src/ui/lists/DataList/DataList.vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
 import DataGrid from '../src/ui/lists/DataGrid/DataGrid.vue'
-import ButtonStand from './ButtonStand.vue'
+import { DatePicker } from '../src/main'
 const filters = ref(value(true))
 watchEffect(() => console.log('filters', filters.value))
 const tab = ref(null)
