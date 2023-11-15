@@ -158,22 +158,10 @@ import { computed, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import ListBox from '../Inputs/ListBox.vue'
 import type { ListBoxOption } from '../Inputs/ListBoxOption'
-
-//TODO move from the 'class' prop predefined classes
-interface Props {
-	/**
-	* Массив значений для выпадающего списка.
-	*/
-	dropdown?: ListBoxOption[]
-	disabled?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
-	dropdown: () => [],
-	disabled: false,
-})
-
 const root = ref()
+const props = withDefaults(defineProps<{ dropdown: Array<ListBoxOption>; disabled?: Boolean }>(), {
+	dropdown: () => []
+})
 
 const { dropdown, disabled } = toRefs(props)
 
