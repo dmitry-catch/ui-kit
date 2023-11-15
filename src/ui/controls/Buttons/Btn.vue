@@ -160,7 +160,7 @@ import ListBox from '../Inputs/ListBox.vue'
 import type { ListBoxOption } from '../Inputs/ListBoxOption'
 
 //TODO move from the 'class' prop predefined classes
-interface BtnProps {
+interface Props {
 	/**
 	* Массив значений для выпадающего списка.
 	*/
@@ -168,7 +168,7 @@ interface BtnProps {
 	disabled?: boolean
 }
 
-const props = withDefaults(defineProps<BtnProps>(), {
+const props = withDefaults(defineProps<Props>(), {
 	dropdown: () => [],
 	disabled: false,
 })

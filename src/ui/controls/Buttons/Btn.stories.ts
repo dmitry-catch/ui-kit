@@ -3,6 +3,7 @@ import Btn from './Btn.vue'
 import Icon from '../../icons/Icon.vue'
 
 export default {
+	title: 'Base/Button',
 	component: Btn,
 	args: {
 		default: 'Кнопка',
@@ -19,7 +20,7 @@ export default {
 
 type Story = StoryObj<typeof Btn>;
 
-export const Default: Story = {}
+export const Base: Story = {}
 
 export const Disabled: Story = {
 	args: {
