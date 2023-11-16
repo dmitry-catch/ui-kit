@@ -71,7 +71,7 @@ export const icon: Story = {
 	render: (args) => ({
 		components: { Btn, Icon },
 		setup: () => ({ args }),
-		template: `<Btn v-bind="args"><Icon name="inbox" /></Btn>`
+		template: '<Btn v-bind="args"><Icon name="inbox" /></Btn>'
 	}),
 	args: {
 		class: 'icon',
