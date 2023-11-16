@@ -45,14 +45,8 @@
 import Icon from '../../icons/Icon.vue'
 import { computed, toRefs } from 'vue'
 
-interface CheckboxProps {
-	modelValue: boolean
-	value: any
-}
-
-const props = withDefaults(defineProps<CheckboxProps>(), { value: true })
+const props = withDefaults(defineProps<{ modelValue: boolean; value: any }>(), { value: true })
 const emit = defineEmits(['update:modelValue'])
-
 const { modelValue } = toRefs(props)
 const internalValue = computed({
 	get() {

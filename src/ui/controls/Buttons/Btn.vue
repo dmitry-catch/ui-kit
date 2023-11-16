@@ -161,7 +161,9 @@ import type { ListBoxOption } from '../Inputs/ListBoxOption'
 
 //TODO move from the 'class' prop predefined classes
 interface BtnProps {
-	/** Массив значений для выпадающего списка. */
+	/**
+	* Массив значений для выпадающего списка.
+	*/
 	dropdown?: ListBoxOption[]
 	disabled?: boolean
 }

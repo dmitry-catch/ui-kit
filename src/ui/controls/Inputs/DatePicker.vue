@@ -234,28 +234,28 @@ import {
 	numberOfDaysInMonth
 } from './DataHelpers/DataHelper'
 
-interface DatePickerProps {
-	disabled?: boolean
-	required?: boolean
-	invalid?: boolean
-	autofocus?: boolean
-	label?: string
-	hint?: string
-	description?: string
-	modelValue?: string
-}
+const props = withDefaults(
+	defineProps<{
+		modelValue: string
+		label: string
+		disabled: boolean
+		required: boolean
+		hint: string
+		description: string
+		invalid: boolean
+		autofocus: boolean
+	}>(),
+	{
+		label: '',
+		disabled: false,
+		required: false,
+		hint: '',
+		description: '',
+		invalid: false
+	}
+)
 
-const props = withDefaults(defineProps<DatePickerProps>(), {
-	disabled: false,
-	required: false,
-	invalid: false,
-	autofocus: false,
-	label: '',
-	hint: '',
-	description: '',
-})
 const emit = defineEmits(['update:modelValue'])
-
 const { autofocus } = toRefs(props)
 const modelValue = ref(props.modelValue ? JSON.stringify(new Date(props.modelValue)).split('T')[0] : null)
 const day = ref<string | null | undefined>(modelValue.value?.split('-')[2])
