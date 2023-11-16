@@ -44,21 +44,15 @@ import {
 import { ListBoxAction, ListBoxOption } from './ListBoxOption'
 import DropdownSelectableOption from './DropdownSelectableOption.vue'
 import { useClickOutside } from '../../../utils/useClickOutside'
-
-interface ListBoxProps {
-	modelValue?: Array<any>
-	options?: Array<ListBoxOption>
-}
-
-const props = withDefaults(defineProps<ListBoxProps>(), {
+const root = ref()
+const props = withDefaults(defineProps<{ modelValue: Array<any>; options: Array<ListBoxOption> }>(), {
 	options: () => [],
 	modelValue: () => []
 })
-const emit = defineEmits(['update:modelValue', 'closeRequest'])
 
-const root = ref()
 const { options, modelValue } = toRefs(props)
 
+const emit = defineEmits(['update:modelValue', 'closeRequest'])
 const dropdownOptionClick = async (event: MouseEvent, option: ListBoxOption) => {
 	let defaultPrevented = false
 	const preventDefault = () => (defaultPrevented = true)

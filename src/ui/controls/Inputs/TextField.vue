@@ -47,37 +47,37 @@
 import CharCounter from './CharCounter.vue'
 import { computed, toRefs, defineEmits, ref, onMounted } from 'vue'
 
-interface TextFieldProps {
-	autofocus?: boolean
-	required?: boolean
-	invalid?: boolean
-	readonly?: boolean
-	label?: string
-	description?: string
-	minLength?: number | null
-	maxLength?: number | null
-	min?: number | null
-	max?: number | null
-	placeholder?: string | null
-	tabindex?: '0' | '1' | 0 | 1 | null
-	modelValue: string
-}
-
-const props = withDefaults(defineProps<TextFieldProps>(), {
-	autofocus: false,
-	required: false,
-	invalid: false,
-	readonly: false,
-	label: '',
-	description: '',
-	minLength: null,
-	maxLength: null,
-	min: null,
-	max: null,
-	placeholder: null,
-	tabindex: null,
-})
 const emit = defineEmits(['update:modelValue'])
+const props = withDefaults(
+	defineProps<{
+		label?: string
+		description: string
+		modelValue: string
+		maxLength: number | null
+		minLength: number | null
+		max: number | null
+		min: number | null
+		invalid: boolean
+		placeholder: string | null
+		readonly: boolean
+		tabindex: '0' | '1' | 0 | 1 | null
+		autofocus: boolean
+		required: boolean
+	}>(),
+	{
+		autofocus: false,
+		label: '',
+		description: '',
+		minLength: null,
+		maxLength: null,
+		min: null,
+		max: null,
+		invalid: false,
+		placeholder: null,
+		tabindex: null,
+		required: false
+	}
+)
 
 const {
 	modelValue,

@@ -87,16 +87,13 @@ import Pill from '../../text/Pill.vue'
 import Btn from '../Buttons/Btn.vue'
 import Checkbox from './Checkbox.vue'
 import { FieldLocalization } from '../../../localization'
-
-interface MultiselectProps {
+const localization = inject<FieldLocalization>('FieldLocalization')
+const props = defineProps<{
 	modelValue: Array<any>
 	options: Array<{ name: string; value: any }>
-}
+}>()
 
-const props = defineProps<MultiselectProps>()
 const emit = defineEmits(['update:modelValue'])
-
-const localization = inject<FieldLocalization>('FieldLocalization')
 const { modelValue, options } = toRefs(props)
 const root = ref<HTMLElement>()
 const selectedValue = computed({

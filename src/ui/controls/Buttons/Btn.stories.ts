@@ -142,27 +142,31 @@ export const dropdown: Story = {
 	args: {
 		onClick: undefined,
 		default: undefined,
-		dropdown: [{
-			name: 'Option 1',
-			value: 1,
-			action(e: any) {
-				action('On option click')(e)
-				alert(`Clicked by ${e.data.name}`)
+		dropdown: [
+			{
+				name: 'Option 1',
+				value: 1,
+				action(e: any) {
+					action('On option click')(e)
+					alert(`Clicked by ${e.data.name}`)
+				}
+			},
+			{
+				name: 'Option 2',
+				value: 2,
+				action(e: any) {
+					action('On option click')(e)
+					alert(`Clicked by ${e.data.name}`)
+				}
+			},
+			{
+				name: 'Option 3',
+				value: 3,
+				action(e: any) {
+					action('On option click')(e)
+					alert(`Clicked by ${e.data.name}`)
+				}
 			}
-		}, {
-			name: 'Option 2',
-			value: 2,
-			action(e: any) {
-				action('On option click')(e)
-				alert(`Clicked by ${e.data.name}`)
-			}
-		}, {
-			name: 'Option 3',
-			value: 3,
-			action(e: any) {
-				action('On option click')(e)
-				alert(`Clicked by ${e.data.name}`)
-			}
-		}]
+		]
 	}
 }
