@@ -27,7 +27,7 @@ const selectedValue = computed({
 	},
 	set(value) {
 		emit('update:modelValue', value)
-	}
+	},
 })
 provide(TabsProvide.selectedTab, selectedValue)
 provide(TabsProvide.selectTab, (value: any) => {

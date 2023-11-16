@@ -19,13 +19,13 @@ export default {
 	},
 	argTypes: {
 		tabindex: {
-			options: ['0', '1', 0, 1, null]
+			options: ['0' , '1' , 0 , 1 , null]
 		}
 	},
 	component: TextField
 } satisfies Meta<typeof TextField>
 
-type Story = StoryObj<typeof TextField>
+type Story = StoryObj<typeof TextField>;
 
 export const Default: Story = {}
 

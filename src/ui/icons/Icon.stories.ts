@@ -5,10 +5,10 @@ export default {
 	component: Icon,
 	args: {
 		name: 'inbox'
-	}
+	},
 } satisfies Meta<typeof Icon>
 
-type Story = StoryObj<typeof Icon>
+type Story = StoryObj<typeof Icon>;
 
 export const Default: Story = {}
 
@@ -326,8 +326,7 @@ const IconNames: string[] = [
 	'youtube',
 	'zap',
 	'zoom_in',
-	'zoom_out'
-]
+	'zoom_out']
 
 export const AllIcons: Story = {
 	render: (args) => ({
@@ -343,5 +342,5 @@ export const AllIcons: Story = {
 					<Icon :name='name' />
 				</div>
 			</div>`
-	})
+	}),
 }

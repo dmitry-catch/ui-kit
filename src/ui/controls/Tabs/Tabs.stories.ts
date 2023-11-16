@@ -17,9 +17,9 @@ export default {
 				<Tab :value='3'>Tab 3</Tab>
 			</Tabs>
 		`
-	})
+	}),
 } satisfies Meta<typeof Tabs>
 
-type Story = StoryObj<typeof Tabs>
+type Story = StoryObj<typeof Tabs>;
 
 export const Default: Story = {}

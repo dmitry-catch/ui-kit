@@ -34,7 +34,7 @@ interface DropdownSelectableOptionProps {
 }
 
 const props = withDefaults(defineProps<DropdownSelectableOptionProps>(), {
-	selected: false
+	selected: false,
 })
 
 const { option, selected } = toRefs(props)

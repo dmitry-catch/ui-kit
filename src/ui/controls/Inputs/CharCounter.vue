@@ -5,10 +5,10 @@
 </style>
 
 <template>
-	<div class="CharCounter" :class="{ danger: isOverflow }">{{ `${current} / ${max}` }}</div>
+	<div class='CharCounter' :class='{ danger: isOverflow }'>{{ `${current} / ${max}` }}</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { computed, toRefs } from 'vue'
 
 interface CharCounterProps {

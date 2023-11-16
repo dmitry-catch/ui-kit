@@ -15,7 +15,7 @@ export default {
 	}
 } satisfies Meta<typeof DatePicker>
 
-type Story = StoryObj<typeof DatePicker>
+type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {}
 

@@ -1,5 +1,5 @@
 import { computed, inject, provide, reactive } from 'vue'
-import { SortExpression } from '@forecsys/collections'
+import { SortExpression } from '../../../../../Compliance.CollectionUtils/js'
 
 const contexts: { [key: string]: Array<SortExpression> } = reactive({})
 export const useSortingContext = (options?: { forceId: boolean } | undefined) => {

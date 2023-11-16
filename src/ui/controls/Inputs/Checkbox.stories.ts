@@ -8,7 +8,7 @@ export default {
 	}
 } satisfies Meta<typeof Checkbox>
 
-type Story = StoryObj<typeof Checkbox>
+type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {}
 

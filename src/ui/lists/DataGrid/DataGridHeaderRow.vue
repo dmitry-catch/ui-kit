@@ -32,13 +32,7 @@ import DataGridHeader from './DataGridHeader.vue'
 import { ref, toRefs, watch } from 'vue'
 import { DragEvent, useDragging } from '../../../utils/useDragging'
 
-interface DataGridHeaderRowProps {
-	columns: Array<DataGridColumn>
-	detailsColumn?: boolean
-	selectColumn?: boolean
-}
-
-const props = defineProps<DataGridHeaderRowProps>()
+const props = defineProps<{ columns: Array<DataGridColumn>; detailsColumn: boolean; selectColumn: boolean }>()
 const emit = defineEmits(['update:columns'])
 
 const { columns, detailsColumn } = toRefs(props)

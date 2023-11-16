@@ -21,12 +21,7 @@ import { toRefs } from 'vue'
 import DataGridCellContent from './DataGridCellContent.vue'
 import DataGridDateCellContent from './DataGridDateCellContent.vue'
 
-interface DataGridCellProps {
-	column: DataGridColumn
-	item: any
-}
-
-const props = defineProps<DataGridCellProps>()
+const props = defineProps<{ column: DataGridColumn; item: any }>()
 const { item, column } = toRefs(props)
 
 const cellComponent = (item: any, column: DataGridColumn) => {

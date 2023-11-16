@@ -9,6 +9,6 @@ export default {
 	}
 } satisfies Meta<typeof CharCounter>
 
-type Story = StoryObj<typeof CharCounter>
+type Story = StoryObj<typeof CharCounter>;
 
 export const Default: Story = {}

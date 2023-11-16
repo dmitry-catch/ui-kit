@@ -12,10 +12,10 @@ export default {
 		description: '',
 		value: '',
 		from: new Date().toDateString(),
-		to: new Date(new Date().setMonth(new Date().getMonth() + 8)).toDateString()
+		to: new Date(new Date().setMonth(new Date().getMonth()+8)).toDateString(),
 	}
 } satisfies Meta<typeof DateRangePicker>
 
-type Story = StoryObj<typeof DateRangePicker>
+type Story = StoryObj<typeof DateRangePicker>;
 
 export const Default: Story = {}

@@ -75,7 +75,7 @@ const props = withDefaults(defineProps<TextFieldProps>(), {
 	min: null,
 	max: null,
 	placeholder: null,
-	tabindex: null
+	tabindex: null,
 })
 const emit = defineEmits(['update:modelValue'])
 

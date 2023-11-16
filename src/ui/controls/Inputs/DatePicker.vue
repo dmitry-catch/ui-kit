@@ -252,7 +252,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 	autofocus: false,
 	label: '',
 	hint: '',
-	description: ''
+	description: '',
 })
 const emit = defineEmits(['update:modelValue'])
 

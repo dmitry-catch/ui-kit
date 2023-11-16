@@ -5,15 +5,11 @@ import DropdownSelectableOption from './DropdownSelectableOption.vue'
 export default {
 	component: DropdownSelect,
 	args: {
-		options: [
-			{ name: 'Option 1', value: 1 },
-			{ name: 'Option 2', value: 2 },
-			{ name: 'Option 3', value: 3 }
-		]
+		options: [{ name: 'Option 1', value: 1 }, { name: 'Option 2', value: 2 }, { name: 'Option 3', value: 3 }]
 	}
 } satisfies Meta<typeof DropdownSelect>
 
-type Story = StoryObj<typeof DropdownSelect>
+type Story = StoryObj<typeof DropdownSelect>;
 
 export const Default: Story = {}
 

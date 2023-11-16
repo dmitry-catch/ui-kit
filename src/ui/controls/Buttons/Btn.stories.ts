@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Btn from './Btn.vue'
 import Icon from '../../icons/Icon.vue'
-import { action } from '@storybook/addon-actions'
+import { action } from '@storybook/addon-actions';
 
 export default {
 	component: Btn,
@@ -13,25 +13,12 @@ export default {
 		onClick: {},
 		class: {
 			control: 'select',
-			options: [
-				'',
-				'accent',
-				'minimal',
-				'functional',
-				'icon',
-				'icon functional',
-				'warning',
-				'warning accent',
-				'danger',
-				'danger accent',
-				'info',
-				'info accent'
-			]
-		}
+			options: ['', 'accent', 'minimal', 'functional', 'icon', 'icon functional', 'warning', 'warning accent', 'danger', 'danger accent', 'info', 'info accent']
+		},
 	}
 } satisfies Meta<typeof Btn>
 
-type Story = StoryObj<typeof Btn>
+type Story = StoryObj<typeof Btn>;
 
 export const Default: Story = {}
 
@@ -155,31 +142,27 @@ export const dropdown: Story = {
 	args: {
 		onClick: undefined,
 		default: undefined,
-		dropdown: [
-			{
-				name: 'Option 1',
-				value: 1,
-				action(e: any) {
-					action('On option click')(e)
-					alert(`Clicked by ${e.data.name}`)
-				}
-			},
-			{
-				name: 'Option 2',
-				value: 2,
-				action(e: any) {
-					action('On option click')(e)
-					alert(`Clicked by ${e.data.name}`)
-				}
-			},
-			{
-				name: 'Option 3',
-				value: 3,
-				action(e: any) {
-					action('On option click')(e)
-					alert(`Clicked by ${e.data.name}`)
-				}
+		dropdown: [{
+			name: 'Option 1',
+			value: 1,
+			action(e: any) {
+				action('On option click')(e)
+				alert(`Clicked by ${e.data.name}`)
 			}
-		]
+		}, {
+			name: 'Option 2',
+			value: 2,
+			action(e: any) {
+				action('On option click')(e)
+				alert(`Clicked by ${e.data.name}`)
+			}
+		}, {
+			name: 'Option 3',
+			value: 3,
+			action(e: any) {
+				action('On option click')(e)
+				alert(`Clicked by ${e.data.name}`)
+			}
+		}]
 	}
 }

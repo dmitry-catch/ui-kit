@@ -168,7 +168,7 @@ interface BtnProps {
 
 const props = withDefaults(defineProps<BtnProps>(), {
 	dropdown: () => [],
-	disabled: false
+	disabled: false,
 })
 
 const root = ref()

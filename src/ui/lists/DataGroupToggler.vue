@@ -29,23 +29,11 @@
 <script setup lang="ts">
 import Icon from '../icons/Icon.vue'
 import Btn from '../controls/Buttons/Btn.vue'
-import { Group } from '@forecsys/collections'
+import { Group } from '../../../../Compliance.CollectionUtils/js'
 import { toRefs } from 'vue'
 
-interface DataGroupTogglerProps {
-	/**
-	 * Выводит `key | data.length` переданные в group
-	 */
-	group: Group<any>
-	/**
-	 * Определяет направление шеврона
-	 */
-	modelValue?: boolean
-}
-
-const props = defineProps<DataGroupTogglerProps>()
+const props = defineProps<{ group: Group<any>; modelValue: boolean }>()
 const emit = defineEmits(['update:modelValue'])
-
 const { group, modelValue } = toRefs(props)
 
 const toggle = () => {

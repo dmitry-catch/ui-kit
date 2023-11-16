@@ -36,14 +36,9 @@ import Icon from '../../icons/Icon.vue'
 import { ref, toRefs, watchEffect } from 'vue'
 import { DragEvent, useDragging } from '../../../utils/useDragging'
 
-interface OrderableListProps {
-	modelValue: Array<any>
-}
-
-const props = defineProps<OrderableListProps>()
-const emit = defineEmits(['update:modelValue'])
-
+const props = defineProps<{ modelValue: Array<any> }>()
 const { modelValue } = toRefs(props)
+const emit = defineEmits(['update:modelValue'])
 
 const root = ref<HTMLElement>()
 // Dragging

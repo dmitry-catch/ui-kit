@@ -9,6 +9,6 @@ export default {
 	}
 } satisfies Meta<typeof Property>
 
-type Story = StoryObj<typeof Property>
+type Story = StoryObj<typeof Property>;
 
 export const Default: Story = {}

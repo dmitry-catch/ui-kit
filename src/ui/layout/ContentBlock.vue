@@ -1,5 +1,5 @@
 <template>
-	<div class="ContentBlock">
-		<slot></slot>
-	</div>
+    <div class="ContentBlock">
+        <slot></slot>
+    </div>
 </template>

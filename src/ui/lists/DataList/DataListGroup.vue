@@ -29,13 +29,7 @@ import { computed, ref, toRefs } from 'vue'
 import DataListItem from './DataListItem.vue'
 import { Group, isGroup } from '@forecsys/collections'
 import DataGroupToggler from '../DataGroupToggler.vue'
-
-interface DataListGroup {
-	data: any
-	contextMenu: Array<any>
-}
-
-const props = defineProps<DataListGroup>()
+const props = defineProps<{ data: any; contextMenu: Array<any> }>()
 const emit = defineEmits(['itemClick'])
 const { data, contextMenu } = toRefs(props)
 

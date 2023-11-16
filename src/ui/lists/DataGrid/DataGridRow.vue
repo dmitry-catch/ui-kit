@@ -65,15 +65,12 @@ import Btn from '../../controls/Buttons/Btn.vue'
 import Icon from '../../icons/Icon.vue'
 import Checkbox from '../../controls/Inputs/Checkbox.vue'
 
-interface DataGridRowProps {
+const props = defineProps<{
 	columns: Array<DataGridColumn>
 	item: any
-	detailsColumn?: boolean
-	selectColumn?: boolean
-}
-
-const props = defineProps<DataGridRowProps>()
-
+	detailsColumn: boolean
+	selectColumn: boolean
+}>()
 const { item, columns, detailsColumn, selectColumn } = toRefs(props)
 const detailsVisible = ref(false)
 const selectedRows = inject('datagrid-selectedRows') as Ref<Array<any>>

@@ -28,7 +28,8 @@ const svgContent = ref<string>('')
 watchEffect(async () => {
 	try {
 		svgContent.value = (await import(`./icons/${name?.value}-24px.svg?raw`)).default
-	} catch (e) {
+	}
+	catch (e){
 		svgContent.value = ''
 	}
 })

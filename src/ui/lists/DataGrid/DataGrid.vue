@@ -87,14 +87,12 @@ export interface Props {
 	allowSelection: boolean
 	selectedRows: Array<any>
 }
-
 const props = withDefaults(defineProps<Props>(), {
 	rowKey: (item: any) => item.id,
 	allowSelection: false,
 	selectedRows: () => []
 })
 const emit = defineEmits(['update:filters', 'update:sort', 'update:group', 'update:order', 'update:settings'])
-
 const slots = useSlots()
 const { columns, dataSource, rowKey, allowSelection, selectedRows } = toRefs(props)
 const hasDetails = computed(() => Boolean(slots.rowDetails))

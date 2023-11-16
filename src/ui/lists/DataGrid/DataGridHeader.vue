@@ -116,11 +116,7 @@ import { useSortingContext } from './useSortingContext'
 import { MouseEvent } from 'happy-dom'
 import DatePicker from '../../controls/Inputs/DatePicker.vue'
 
-interface DataGridHeaderProps {
-	column: DataGridColumn
-}
-
-const props = defineProps<DataGridHeaderProps>()
+const props = defineProps<{ column: DataGridColumn }>()
 const { column } = toRefs(props)
 
 const { getFilter, setFilter } = useFilterContext()

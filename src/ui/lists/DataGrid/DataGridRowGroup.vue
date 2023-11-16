@@ -44,17 +44,13 @@ import { Group, isGroup } from '@forecsys/collections'
 import DataGroupTogler from '../DataGroupToggler.vue'
 import DataGridRow from './DataGridRow.vue'
 import { DataGridColumn } from './DataGridColumn'
-
-interface DataGridRowGroupProps {
+const emit = defineEmits(['itemClick'])
+const props = defineProps<{
 	columns: Array<DataGridColumn>
 	item: any
-	detailsColumn?: boolean
-	selectColumn?: boolean
-}
-
-const props = defineProps<DataGridRowGroupProps>()
-const emit = defineEmits(['itemClick'])
-
+	detailsColumn: boolean
+	selectColumn: boolean
+}>()
 const { item, columns, detailsColumn } = toRefs(props)
 const group = computed(() => item.value as Group<any>)
 const isItem = computed(() => !isGroup(item.value))

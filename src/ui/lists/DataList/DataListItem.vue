@@ -47,15 +47,8 @@
 import Icon from '../../icons/Icon.vue'
 import Btn from '../../controls/Buttons/Btn.vue'
 import { computed, toRefs } from 'vue'
-
-interface DataListItemProps {
-	data: any
-	contextMenu: Array<any>
-}
-
-const props = defineProps<DataListItemProps>()
+const props = defineProps<{ data: any; contextMenu: Array<any> }>()
 const { data, contextMenu } = toRefs(props)
-
 const wrappedContextMenu = computed(() =>
 	contextMenu.value.map((it: any) => ({ ...it, action: () => it.action(data) }))
 )
