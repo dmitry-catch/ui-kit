@@ -283,31 +283,30 @@ import { handleInputFocus, handleNextInputFocus } from './DataHelpers/DataEventH
 import { handleYearInputEvent } from './DataHelpers/DataHelper'
 import { isInputEventTriggersEffect } from './DataHelpers/DataHelper'
 
-interface DateRangePickerProps {
-	disabled?: boolean
-	required?: boolean
-	invalid?: boolean
-	hint?: string
-	label?: string
-	description?: string
-	from: String
-	to: String
-	value?: string
-}
-
-//TODO Fix runtime and type errors
-const props = withDefaults(defineProps<DateRangePickerProps>(), {
-	disabled: false,
-	required: false,
-	invalid: false,
-	hint: '',
-	label: '',
-	description: '',
-	value: ''
-})
-const emit = defineEmits(['update:from', 'update:to'])
+const props = withDefaults(
+	defineProps<{
+		from: String
+		to: String
+		value?: string
+		disabled?: boolean
+		required?: boolean
+		hint?: string
+		label?: string
+		description?: string
+		invalid?: boolean
+	}>(),
+	{
+		disabled: false,
+		required: false,
+		hint: '',
+		label: '',
+		description: '',
+		invalid: false
+	}
+)
 
 const { from, to } = toRefs(props)
+const emit = defineEmits(['update:from', 'update:to'])
 
 const dayFrom = ref(from.value?.split('-')[2])
 const monthFrom = ref(from.value?.split('-')[1])

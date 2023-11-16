@@ -28,14 +28,6 @@
 import Icon from '../../icons/Icon.vue'
 import { toRefs } from 'vue'
 
-interface DropdownSelectableOptionProps {
-	option: { name: string; value: any }
-	selected?: boolean
-}
-
-const props = withDefaults(defineProps<DropdownSelectableOptionProps>(), {
-	selected: false,
-})
-
+const props = defineProps<{ option: { name: string; value: any }; selected: boolean }>()
 const { option, selected } = toRefs(props)
 </script>

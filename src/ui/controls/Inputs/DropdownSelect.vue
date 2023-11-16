@@ -114,28 +114,23 @@
 
 <script setup lang="ts">
 import Icon from '../../icons/Icon.vue'
-import { computed, ref, toRefs } from 'vue'
+import { computed, ref, toRefs, watchEffect } from 'vue'
 import TextField from './TextField.vue'
+import { Nullable } from 'vitest'
 import { useUniqueId } from '../../../utils/useUniqueId'
-
-interface DropdownSelectProps {
-	placeholder?: string
-	label?: string
-	options: Array<{ name: string; value: any }>
-	modelValue: any
-}
-
-const props = withDefaults(defineProps<DropdownSelectProps>(), {
-	options: () => []
-})
-const emit = defineEmits(['update:model-value'])
-
 const { getRandomId } = useUniqueId('DropdownSelect')
 const root = ref<HTMLElement>()
 const listId = getRandomId()
 const optionId = (option) => `${listId}-option-${option.value}`
+const props = defineProps<{
+	placeholder: string
+	label: string
+	options: Array<{ name: string; value: any }>
+	modelValue: any
+}>()
 
 const { modelValue, options } = toRefs(props)
+const emit = defineEmits(['update:model-value'])
 const opened = ref(false)
 const value = computed({ get: () => modelValue.value, set: (value) => emit('update:model-value', value) })
 const name = computed(() => options.value.find((it) => it.value === modelValue.value)?.name)

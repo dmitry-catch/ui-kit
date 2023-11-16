@@ -50,7 +50,7 @@ import { computed, toRefs, defineEmits, ref, onMounted } from 'vue'
 const emit = defineEmits(['update:modelValue'])
 const props = withDefaults(
 	defineProps<{
-		label?: string
+		label: string
 		description: string
 		modelValue: string
 		maxLength: number | null

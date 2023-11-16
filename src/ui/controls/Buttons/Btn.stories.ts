@@ -70,7 +70,9 @@ export const functionalDisabled: Story = {
 export const icon: Story = {
 	render: (args) => ({
 		components: { Btn, Icon },
-		setup: () => ({ args }),
+		setup() {
+			return { args }
+		},
 		template: '<Btn v-bind="args"><Icon name="inbox" /></Btn>'
 	}),
 	args: {
