@@ -25,12 +25,5 @@ const { name } = toRefs(props)
 
 const svgContent = ref<string>('')
 
-watchEffect(async () => {
-	try {
-		svgContent.value = (await import(`./icons/${name?.value}-24px.svg?raw`)).default
-	}
-	catch (e){
-		svgContent.value = ''
-	}
-})
+watchEffect(async () => (svgContent.value = (await import(`./icons/${name?.value}-24px.svg?raw`)).default))
 </script>

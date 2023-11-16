@@ -36,9 +36,7 @@
 <script setup lang="ts">
 import { computed, inject, Ref, ref, toRefs } from 'vue'
 import { TabsProvide } from './tabs.provide'
-
 const props = defineProps({ value: { default: () => null } })
-
 const { value } = toRefs(props)
 const selectedValue = computed(() => (inject(TabsProvide.selectedTab) as Ref<any>).value)
 const selectValue =

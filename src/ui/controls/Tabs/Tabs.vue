@@ -16,10 +16,8 @@
 <script setup lang="ts">
 import { provide, toRefs, computed, toRef, Ref } from 'vue'
 import { TabsProvide } from './tabs.provide'
-
 const props = defineProps({ modelValue: { required: true } })
 const emit = defineEmits(['update:modelValue'])
-
 const modelValue: Ref<any> = toRef(props, 'modelValue')
 const selectedValue = computed({
 	get() {
