@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, toRefs } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
-import Pill from '../../data-display/Pill/Pill.vue'
+import Pill from '../../text/Pill/Pill.vue'
 import Btn from '../../general/Button/Button.vue'
 import Checkbox from '../Checkbox/Checkbox.vue'
 import { FieldLocalization } from '../../../localization.js'
