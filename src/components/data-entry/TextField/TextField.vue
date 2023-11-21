@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import CharCounter from '../../data-display/CharCounter/CharCounter.vue'
+import CharCounter from '../CharCounter/CharCounter.vue'
 import { computed, defineEmits, onMounted, ref, toRefs } from 'vue'
 
 interface TextFieldProps {
