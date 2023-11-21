@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
 import { Group, isGroup } from '@forecsys/collections'
-import DataGroupTogler from '../DataGroupToggler/DataGroupToggler.vue'
+import DataGroupTogler from '../DataGroupToggler.vue'
 import DataGridRow from './DataGridRow.vue'
 import { DataGridColumn } from './DataGridColumn.js'
 
