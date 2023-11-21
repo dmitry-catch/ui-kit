@@ -1,5 +1,5 @@
 <style>
-@import '/public/visually-hidden.css';
+@import '/visually-hidden.css';
 @import '/src/components/data-entry/field.css';
 
 .DatePicker {

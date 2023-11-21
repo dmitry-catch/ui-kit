@@ -113,8 +113,8 @@ import {
 	ValueExpression
 } from '@forecsys/collections'
 import { useFilterContext } from './useFilterContext.js'
-import ListBox from '../ListBox/ListBox.vue'
-import { ListBoxOption } from '../ListBox/ListBoxOption.js'
+import ListBox from '../../data-entry/ListBox/ListBox.vue'
+import { ListBoxOption } from '../../data-entry/ListBox/ListBoxOption.js'
 import { useClickOutside } from '../../../utils/useClickOutside.js'
 import { useSortingContext } from './useSortingContext.js'
 import { MouseEvent } from 'happy-dom'
