@@ -5,9 +5,14 @@
 		"ecmaVersion": 13,
 		"sourceType": "module",
 		"project": true,
-		"extraFileExtensions": [".vue"]
+		"extraFileExtensions": [
+			".vue"
+		]
 	},
-	"plugins": ["@typescript-eslint", "sonarjs"],
+	"plugins": [
+		"@typescript-eslint",
+		"sonarjs"
+	],
 	"extends": [
 		"eslint:recommended",
 		"plugin:sonarjs/recommended",
@@ -23,7 +28,11 @@
 		"vue/component-tags-order": [
 			"error",
 			{
-				"order": ["style", "template", "script"]
+				"order": [
+					"style",
+					"template",
+					"script"
+				]
 			}
 		]
 	},
@@ -37,7 +46,10 @@
 					{
 						"patterns": [
 							{
-								"group": ["*.stories.*", "*.spec.*"],
+								"group": [
+									"*.stories.*",
+									"*.spec.*"
+								],
 								"message": "Import from .spec. and .stories. no allowed for UI KIT."
 							}
 						]
