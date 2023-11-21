@@ -1,4 +1,4 @@
-import { DateLocalization } from './localization'
+import { DateLocalization } from './localization.js'
 
 export class DateLocalizationRu implements DateLocalization {
 	DateAbbr(): string {
