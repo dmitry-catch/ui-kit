@@ -20,7 +20,6 @@
 	justify-content: space-between;
 	box-shadow: 0px -0.5px 0px 0px #e4e5e7 inset;
 }
-
 .CalendarPopup__botomControls {
 	padding: calc(2 * var(--design-gap-unit)) 0 calc(3 * var(--design-gap-unit)) 0;
 	justify-content: end;
@@ -41,7 +40,6 @@
 .CalendarPopup__goToTodayIcon {
 	cursor: pointer;
 }
-
 .CalendarPopup__optionalControl {
 	display: flex;
 	align-items: center;
@@ -162,14 +160,13 @@
 </template>
 
 <script setup lang="ts">
-import { DateLocalizationRu } from '../../../../localization.ru.js'
-import { computed, defineProps, inject, nextTick, onMounted, onUnmounted, ref, Ref, toRefs } from 'vue'
-import { getMonthArray, numberOfDaysInMonth } from './DataHelper.js'
+import { DateLocalizationRu } from '../../../../localization.ru'
+import { defineProps, toRefs, computed, ref, onMounted, onUnmounted, nextTick, inject, Ref } from 'vue'
+import { getMonthArray, numberOfDaysInMonth } from '../DataHelpers/DataHelper'
 import CalendarPopupMonthPicker from './CalendarPopupMonthPicker.vue'
 import CalendarPopupYearPicker from './CalendarPopupYearPicker.vue'
 import CalendarPopupDayPicker from './CalendarPopupDayPicker.vue'
-import { Icon } from '../../../../main.js'
-
+import { Icon } from '../../../../main'
 const props = defineProps({
 	day: {
 		type: String,

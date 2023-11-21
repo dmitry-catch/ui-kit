@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, provide, Ref, toRef } from 'vue'
+import { provide, toRefs, computed, toRef, Ref } from 'vue'
 import { TabsProvide } from './tabs.provide'
 
 const props = defineProps({ modelValue: { required: true } })

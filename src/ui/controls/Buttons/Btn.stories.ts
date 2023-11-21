@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Btn from './Btn.vue'
 import Icon from '../../icons/Icon.vue'
-import { OptionList } from 'storybook/consts.js'
+import { action } from '@storybook/addon-actions'
 
 export default {
 	component: Btn,
@@ -84,10 +84,7 @@ export const icon: Story = {
 	render: (args) => ({
 		components: { Btn, Icon },
 		setup: () => ({ args }),
-		template: `
-			<Btn v-bind='args'>
-				<Icon name='inbox' />
-			</Btn>`
+		template: `<Btn v-bind="args"><Icon name="inbox" /></Btn>`
 	}),
 	args: {
 		class: 'icon',
@@ -158,6 +155,31 @@ export const dropdown: Story = {
 	args: {
 		onClick: undefined,
 		default: undefined,
-		dropdown: OptionList
+		dropdown: [
+			{
+				name: 'Option 1',
+				value: 1,
+				action(e: any) {
+					action('On option click')(e)
+					alert(`Clicked by ${e.data.name}`)
+				}
+			},
+			{
+				name: 'Option 2',
+				value: 2,
+				action(e: any) {
+					action('On option click')(e)
+					alert(`Clicked by ${e.data.name}`)
+				}
+			},
+			{
+				name: 'Option 3',
+				value: 3,
+				action(e: any) {
+					action('On option click')(e)
+					alert(`Clicked by ${e.data.name}`)
+				}
+			}
+		]
 	}
 }

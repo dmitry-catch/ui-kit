@@ -7,11 +7,9 @@
 	--button-border-color-primary: var(--design-border-color-primary);
 	--button-border-color-secondary: var(--design-border-color-secondary);
 }
-
 .Btn.noBackground {
 	--button-background-color-primary: transparent;
 }
-
 .Btn__actual {
 	border: 1px solid var(--button-border-color-primary);
 	border-radius: var(--design-border-radius-control);
@@ -27,11 +25,9 @@
 	height: min-content;
 	white-space: nowrap;
 }
-
 .Btn__actual:focus-visible {
 	outline: var(--design-border-color-focus) 3px solid;
 }
-
 .Btn__actual:hover,
 .Btn__actual:active,
 .Btn.pressed .Btn__actual {
@@ -87,7 +83,6 @@
 	--button-border-color-primary: var(--design-border-color-warning-primary);
 	--button-border-color-secondary: var(--design-border-color-warning-secondary);
 }
-
 .Btn.warning.accent .Btn__actual {
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-primary);
@@ -110,7 +105,6 @@
 	--button-border-color-primary: var(--design-border-color-danger-primary);
 	--button-border-color-secondary: var(--design-border-color-danger-secondary);
 }
-
 .Btn.danger.accent .Btn__actual {
 	--button-text-color-primary: var(--design-text-color-on-accent-primary);
 	--button-text-color-secondary: var(--design-text-color-on-accent-primary);
@@ -133,7 +127,6 @@
 .Btn.icon .Btn__dropdownIcon {
 	display: none;
 }
-
 .Btn.icon .Btn__actual {
 	min-width: min-content;
 }
@@ -164,7 +157,7 @@
 import { computed, ref, toRefs } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import ListBox from '../Inputs/ListBox.vue'
-import type { ListBoxOption } from '../Inputs/ListBoxOption.js'
+import type { ListBoxOption } from '../Inputs/ListBoxOption'
 
 //TODO move from the 'class' prop predefined classes
 interface BtnProps {

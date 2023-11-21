@@ -2,7 +2,6 @@
 .Dropdown {
 	display: none;
 }
-
 .Dropdown__content {
 	position: fixed;
 	top: v-bind(top);
@@ -22,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useModalContext } from '../../utils/useModalContext.js'
+import { ref, toRefs, watchEffect, computed, watch, onMounted } from 'vue'
+import { useModalContext } from '../../utils/useModalContext'
 
 const root = ref<HTMLElement>()
 const left = ref('0')

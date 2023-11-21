@@ -1,5 +1,4 @@
-import { Ref, ref } from 'vue'
-
+import { Ref, ref, watchEffect } from 'vue'
 export type DragEvent = {
 	shadow: HTMLElement
 	element: HTMLElement
@@ -19,6 +18,7 @@ export const useDragging = ({
 	const shadow = ref<HTMLElement>()
 
 	const drag = (x: number, y: number) => {
+		const rect = dragged.value!.getBoundingClientRect()
 		const offset = {
 			x: x - shadow.value!.offsetLeft,
 			y: y - shadow.value!.offsetTop

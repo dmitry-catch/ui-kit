@@ -14,11 +14,11 @@ body {
 
 	<div>
 		<DataGrid
-			v-model:filters="filters"
-			v-model:sort="sort"
 			:columns="options"
 			:data-source="grouped"
-			:rowKey="(data: any) => data.id"
+			:row-key="(data) => data.id"
+			v-model:filters="filters"
+			v-model:sort="sort"
 		>
 		</DataGrid>
 	</div>
@@ -26,15 +26,26 @@ body {
 
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
+import TextField from '../src/ui/controls/Inputs/TextField.vue'
+import Icon from '../src/ui/icons/Icon.vue'
+import DropdownSelect from '../src/ui/controls/Inputs/DropdownSelect.vue'
+import DateField from '../src/ui/controls/Inputs/Date/DateField.vue'
+import Checkbox from '../src/ui/controls/Inputs/Checkbox.vue'
+import OrderableList from '../src/ui/lists/OrderableList/OrderableList.vue'
+import Multiselect from '../src/ui/controls/Inputs/Multiselect.vue'
+import Btn from '../src/ui/controls/Buttons/Btn.vue'
+import DataList from '../src/ui/lists/DataList/DataList.vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
-import DataGrid from '../src/components/data-display/DataGrid/DataGrid.vue'
+import DataGrid from '../src/ui/lists/DataGrid/DataGrid.vue'
 import ButtonStand from './ButtonStand.vue'
 
 const filters = ref(value(true))
 watchEffect(() => console.log('filters', filters.value))
-const test = ref<any[]>([])
+const tab = ref(null)
+const test = ref([])
+const anchor = ref('center')
 const date = ref(new Date())
-const addToList = ({ data }: any) => {
+const addToList = ({ data }) => {
 	test.value.push(data.value)
 }
 const options = ref([
@@ -78,6 +89,17 @@ const filtered = computed(() => dataSource.value.filter(filterPredicate.value).s
 	onTrigger: console.log
 })
 const grouped = computed(() => groupBy(filtered.value, [{ direction: 'asc', target: 'field' }]))
+const dropdown = [
+	{ name: 'test options', action: () => console.debug('test action') },
+	{
+		name: 'test options 2',
+		action: ({ preventDefault }: Event) => {
+			console.debug('test action 2')
+
+			preventDefault()
+		}
+	}
+]
 
 watchEffect(() => {
 	console.log(linqFilter(filters.value))

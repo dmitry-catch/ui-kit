@@ -1,11 +1,9 @@
 <style>
 .ListBox {
 }
-
 .ListBox__dropdownItem {
 	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
 }
-
 .ListBox__dropdownItem:hover {
 	background: var(--design-background-color-secondary);
 }
@@ -32,8 +30,18 @@
 
 <script setup lang="ts">
 import Dropdown from '../../layout/Dropdown.vue'
-import { ref, toRefs } from 'vue'
-import { ListBoxOption } from './ListBoxOption'
+import {
+	onActivated,
+	onBeforeUnmount,
+	onDeactivated,
+	onMounted,
+	onUnmounted,
+	ref,
+	toRef,
+	toRefs,
+	watchEffect
+} from 'vue'
+import { ListBoxAction, ListBoxOption } from './ListBoxOption'
 import DropdownSelectableOption from './DropdownSelectableOption.vue'
 import { useClickOutside } from '../../../utils/useClickOutside'
 

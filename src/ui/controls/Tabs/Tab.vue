@@ -9,15 +9,12 @@
 	box-sizing: border-box;
 	align-content: center;
 }
-
 .Tab:hover {
 	color: var(--design-text-color-primary);
 }
-
 .Tab:disabled {
 	color: var(--design-text-color-secondary);
 }
-
 .Tab:focus-visible {
 	outline: var(--design-focus-outline);
 	color: var(--design-text-color-primary);
@@ -37,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, Ref, toRefs } from 'vue'
+import { computed, inject, Ref, ref, toRefs } from 'vue'
 import { TabsProvide } from './tabs.provide'
 
 const props = defineProps({ value: { default: () => null } })

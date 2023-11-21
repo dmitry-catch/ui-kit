@@ -11,26 +11,21 @@
 	gap: calc(1.5 * var(--design-gap-unit));
 	align-items: center;
 }
-
 .DataGridHeader__name {
 	margin-inline-end: auto;
 }
-
 .DataGridHeader__actions {
 	display: flex;
 	flex-flow: row;
 	gap: var(--design-gap-unit);
 	align-items: center;
 }
-
 .DataGridHeader__action {
 	--icon-size: var(--design-current-font-size);
 }
-
 .DataGridHeader__eventInterceptor {
 	display: contents;
 }
-
 .DataGridHeader__search {
 	min-width: 100px;
 }
@@ -98,7 +93,7 @@
 
 <script setup lang="ts">
 import { DataGridColumn, isDateColumn, isEnumColumn, isTypedColumn } from './DataGridColumn'
-import { computed, ref, toRefs, watchEffect } from 'vue'
+import { computed, inject, nextTick, ref, toRefs, watch, watchEffect } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import Btn from '../../controls/Buttons/Btn.vue'
 import TextField from '../../controls/Inputs/TextField.vue'
@@ -106,6 +101,7 @@ import {
 	BinaryFilterExpression,
 	equals,
 	field,
+	FilterExpression,
 	includes,
 	or,
 	SortExpression,

@@ -33,7 +33,6 @@
 .DatePicker__inputsContainer:focus-within.disabled {
 	border-color: var(--design-border-color-primary);
 }
-
 .DatePicker__dateTime {
 	display: flex;
 	text-align: center;
@@ -49,15 +48,12 @@
 	background-color: var(--design-background-color-secondary);
 	cursor: not-allowed;
 }
-
 .DatePicker.disabled .DatePicker__dateValue {
 	color: var(--design-text-color-secondary);
 }
-
 .DatePicker__dateTime.active {
 	color: var(--design-text-color-primary);
 }
-
 .DatePicker .Field__visibleInput {
 	margin-top: var(--design-gap-unit);
 }
@@ -121,11 +117,9 @@
 .DatePicker__dateTimeInputContainer span:focus {
 	outline: none;
 }
-
 .DatePicker__icon.calendarIcon {
 	--icon-color: var(--design-text-color-secondary);
 }
-
 :focus + .DatePicker__dateValue {
 	background-color: var(--design-background-color-info);
 	color: var(--design-text-color-on-accent-primary);
@@ -229,11 +223,16 @@
 import Dropdown from '../../layout/Dropdown.vue'
 import Icon from '../../icons/Icon.vue'
 import Btn from '../Buttons/Btn.vue'
-import { computed, defineProps, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
+import { defineProps, toRefs, ref, watch, computed, onMounted, provide, watchEffect } from 'vue'
 import { DateLocalizationRu } from '../../../localization.ru'
 import CalendarPopup from './DataHelpers/CalendarPopup.vue'
-import { handleInputFocus } from './DataHelpers/DataEventHelper'
-import { handleYearInputEvent, numberOfDaysInMonth } from './DataHelpers/DataHelper'
+import { handleInputFocus, handleNextInputFocus } from './DataHelpers/DataEventHelper'
+import {
+	getMonthArray,
+	handleYearInputEvent,
+	isInputEventTriggersEffect,
+	numberOfDaysInMonth
+} from './DataHelpers/DataHelper'
 
 interface DatePickerProps {
 	disabled?: boolean
