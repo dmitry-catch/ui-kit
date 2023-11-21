@@ -41,7 +41,7 @@
 </style>
 
 <template>
-	<dialog ref="root" class="Modal" :class="anchorClass">
+	<dialog class="Modal" :class="anchorClass" ref="root">
 		<slot></slot>
 	</dialog>
 </template>

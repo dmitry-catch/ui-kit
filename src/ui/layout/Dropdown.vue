@@ -12,7 +12,7 @@
 </style>
 
 <template>
-	<div ref="root" class="Dropdown">
+	<div class="Dropdown" ref="root">
 		<teleport :to="teleportTarget">
 			<div class="Dropdown__content">
 				<slot></slot>

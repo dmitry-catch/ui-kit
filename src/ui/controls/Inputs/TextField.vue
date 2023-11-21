@@ -16,14 +16,14 @@
 				<slot name="before"></slot>
 			</span>
 			<input
-				v-bind="$attrs"
-				ref="inputElement"
 				v-model="internalValue"
 				class="Field__input"
 				:type="type"
 				:placeholder="placeholder"
 				:tabindex="tabindex"
+				v-bind="$attrs"
 				:autofocus="autofocus"
+				ref="inputElement"
 			/>
 			<span class="Field__afterWrapper">
 				<slot name="after"></slot>
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import CharCounter from './CharCounter.vue'
-import { computed, defineEmits, onMounted, ref, toRefs } from 'vue'
+import { computed, toRefs, defineEmits, ref, onMounted } from 'vue'
 
 interface TextFieldProps {
 	autofocus?: boolean
@@ -54,12 +54,12 @@ interface TextFieldProps {
 	readonly?: boolean
 	label?: string
 	description?: string
-	minLength?: number
-	maxLength?: number
-	min?: number
-	max?: number
-	placeholder?: string
-	tabindex?: '0' | '1' | 0 | 1
+	minLength?: number | null
+	maxLength?: number | null
+	min?: number | null
+	max?: number | null
+	placeholder?: string | null
+	tabindex?: '0' | '1' | 0 | 1 | null
 	modelValue: string
 }
 
@@ -69,11 +69,30 @@ const props = withDefaults(defineProps<TextFieldProps>(), {
 	invalid: false,
 	readonly: false,
 	label: '',
-	description: ''
+	description: '',
+	minLength: null,
+	maxLength: null,
+	min: null,
+	max: null,
+	placeholder: null,
+	tabindex: null
 })
 const emit = defineEmits(['update:modelValue'])
 
-const { modelValue, tabindex, maxLength, label, invalid, placeholder, description, autofocus, required } = toRefs(props)
+const {
+	modelValue,
+	tabindex,
+	min,
+	max,
+	minLength,
+	maxLength,
+	label,
+	invalid,
+	placeholder,
+	description,
+	autofocus,
+	required
+} = toRefs(props)
 const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
 const type = computed(() => 'text')
 const inputElement = ref()

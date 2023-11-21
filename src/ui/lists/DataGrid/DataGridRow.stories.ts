@@ -13,7 +13,7 @@ export default {
 		],
 		item: { name: 'name', value: false }
 	},
-	render: (args) => ({
+	render: (args: any) => ({
 		components: { DataGridRow },
 		setup: () => {
 			const selectedColumns = ref([false])

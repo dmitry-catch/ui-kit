@@ -81,7 +81,7 @@
 </style>
 
 <template>
-	<div ref="calendarPopupRef" class="CalendarPopup">
+	<div class="CalendarPopup" ref="calendarPopupRef">
 		<div class="CalendarPopup__controls">
 			<span class="CalendarPopup__pickerChevron" @click="handleChevronBackwardClick">
 				<Icon name="chevron_backward" class="CalendarPopup__icon"></Icon>
@@ -130,25 +130,25 @@
 		</div>
 		<div v-if="mode == 'month'" class="CalendarPopup__body CalendarPopup_calendar">
 			<CalendarPopupMonthPicker
-				ref="CalendarPopupMonthPickerRef"
 				:handleMonthClick="handleMonthClick"
 				:month="month"
 				:year="year"
+				ref="CalendarPopupMonthPickerRef"
 			/>
 		</div>
 		<div v-if="mode == 'year'" class="CalendarPopup__body CalendarPopup_calendar">
-			<CalendarPopupYearPicker ref="CalendarPopupYearPickerRef" :handleYearClick="handleYearClick" :year="year" />
+			<CalendarPopupYearPicker :handleYearClick="handleYearClick" :year="year" ref="CalendarPopupYearPickerRef" />
 		</div>
 		<div class="CalendarPopup__controls CalendarPopup__botomControls">
-			<div v-if="!isRange" class="CalendarPopup__goToToday accent">
+			<div class="CalendarPopup__goToToday accent" v-if="!isRange">
 				<span class="CalendarPopup__goToTodayIcon" @click="goToToday">
 					<Icon class="CalendarPopup__icon" name="calendar"></Icon>
 				</span>
 				{{ DateLocalization.Today() }}
 			</div>
 			<div
-				v-if="isRange && isControlRange"
 				class="CalendarPopup__setRange CalendarPopup__controls CalendarPopup__botomControls"
+				v-if="isRange && isControlRange"
 			>
 				<span class="CalendarPopup__controlButton CalendarPopup__controlButtonApply" @click="handleApply">
 					{{ DateLocalization.Apply() }}
@@ -163,7 +163,7 @@
 
 <script setup lang="ts">
 import { DateLocalizationRu } from '../../../../localization.ru.js'
-import { computed, inject, nextTick, onMounted, onUnmounted, ref, Ref, toRefs } from 'vue'
+import { computed, defineProps, inject, nextTick, onMounted, onUnmounted, ref, Ref, toRefs } from 'vue'
 import { getMonthArray, numberOfDaysInMonth } from './DataHelper.js'
 import CalendarPopupMonthPicker from './CalendarPopupMonthPicker.vue'
 import CalendarPopupYearPicker from './CalendarPopupYearPicker.vue'
@@ -331,43 +331,39 @@ onMounted(async () => {
 	document.addEventListener('click', handleOutsideClick)
 })
 
-const handleArrowsClicks = (event: KeyboardEvent) => {
+const handleArrowsClicks = (event: any) => {
 	if (!props.isRange) {
-		event.preventDefault()
-		switch (event.key) {
-			case 'ArrowLeft':
-				handleChevronBackwardClick()
-				break
-			case 'ArrowRight':
-				handleChevronForwardClick()
-				break
-			case 'ArrowUp':
-				handleArrowUpClick()
-				break
-			case 'ArrowDown':
-				handleArrowDownClick()
-				break
+		if (event.key == 'ArrowLeft') {
+			event.preventDefault()
+			handleChevronBackwardClick()
+		} else if (event.key == 'ArrowRight') {
+			event.preventDefault()
+			handleChevronForwardClick()
+		} else if (event.key == 'ArrowUp') {
+			event.preventDefault()
+			if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) - 1)))) {
+				emit('update:day', convertNumberToTwoDigits(String(Number(day.value) - 1)))
+			} else if (
+				mode.value == 'month' &&
+				isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))
+			) {
+				emit('update:month', convertNumberToTwoDigits(String(Number(month.value) - 1)))
+			} else if (mode.value == 'year') {
+				emit('update:year', String(Number(year.value) - 1))
+			}
+		} else if (event.key == 'ArrowDown') {
+			event.preventDefault()
+			if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) + 1)))) {
+				emit('update:day', convertNumberToTwoDigits(String(Number(day.value) + 1)))
+			} else if (
+				mode.value == 'month' &&
+				isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))
+			) {
+				emit('update:month', convertNumberToTwoDigits(String(Number(month.value) + 1)))
+			} else if (mode.value == 'year') {
+				emit('update:year', String(Number(year.value) + 1))
+			}
 		}
-	}
-}
-
-const handleArrowUpClick = () => {
-	if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) - 1)))) {
-		emit('update:day', convertNumberToTwoDigits(String(Number(day.value) - 1)))
-	} else if (mode.value == 'month' && isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))) {
-		emit('update:month', convertNumberToTwoDigits(String(Number(month.value) - 1)))
-	} else if (mode.value == 'year') {
-		emit('update:year', String(Number(year.value) - 1))
-	}
-}
-
-const handleArrowDownClick = () => {
-	if (mode.value == 'calendar' && isValidDay(convertNumberToTwoDigits(String(Number(day.value) + 1)))) {
-		emit('update:day', convertNumberToTwoDigits(String(Number(day.value) + 1)))
-	} else if (mode.value == 'month' && isValidMonth(convertNumberToTwoDigits(String(Number(month.value) - 1)))) {
-		emit('update:month', convertNumberToTwoDigits(String(Number(month.value) + 1)))
-	} else if (mode.value == 'year') {
-		emit('update:year', String(Number(year.value) + 1))
 	}
 }
 

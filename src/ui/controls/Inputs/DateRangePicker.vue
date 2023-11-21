@@ -9,16 +9,13 @@
 	box-shadow: 0px 32px 64px 0px #212c3a29;
 	width: fit-content;
 }
-
 .DateRangePicker__calendarPopup .calendarPopup {
 	box-shadow: none;
 }
-
 .DateRangePicker__calendarPopup .calendarPopup:first-of-type {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
-
 .DateRangePicker__calendarPopup .calendarPopup:last-of-type {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
@@ -163,12 +160,12 @@
 				}"
 			>
 				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="1" @click="handleDateTimeDayFromClick">{{ dateTimeFromValue[0] }}</span>
+					<span @click="handleDateTimeDayFromClick" tabindex="1">{{ dateTimeFromValue[0] }}</span>
 					<input
-						ref="dayFromRef"
-						v-model="dayFrom"
 						type="number"
 						class="visually-hidden"
+						v-model="dayFrom"
+						ref="dayFromRef"
 						:disabled="disabled"
 						@input="handleDayFromInput"
 						@focus="handleInputFocus"
@@ -176,12 +173,12 @@
 				</div>
 				<span>.</span>
 				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="2" @click="handleDateTimeMonthFromClick">{{ dateTimeFromValue[1] }}</span>
+					<span @click="handleDateTimeMonthFromClick" tabindex="2">{{ dateTimeFromValue[1] }}</span>
 					<input
-						ref="monthFromRef"
-						v-model="monthFrom"
 						type="number"
 						class="visually-hidden"
+						v-model="monthFrom"
+						ref="monthFromRef"
 						:disabled="disabled"
 						@input="handleMonthFromInput"
 						@focus="handleInputFocus"
@@ -189,13 +186,13 @@
 				</div>
 				<span>.</span>
 				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="3" @click="handleDateTimeYearFromClick">{{ dateTimeFromValue[2] }}</span>
+					<span @click="handleDateTimeYearFromClick" tabindex="3">{{ dateTimeFromValue[2] }}</span>
 
 					<input
-						ref="yearFromRef"
-						v-model="yearFrom"
 						type="number"
 						class="visually-hidden"
+						v-model="yearFrom"
+						ref="yearFromRef"
 						:disabled="disabled"
 						@input="handleYearFromInput"
 						@focus="handleInputFocus"
@@ -203,13 +200,13 @@
 				</div>
 				<span> &mdash; </span>
 				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="1" @click="handleDateTimeDayToClick">{{ dateTimeToValue[0] }}</span>
+					<span @click="handleDateTimeDayToClick" tabindex="1">{{ dateTimeToValue[0] }}</span>
 
 					<input
-						ref="dayToRef"
-						v-model="dayTo"
 						type="number"
 						class="visually-hidden"
+						v-model="dayTo"
+						ref="dayToRef"
 						:disabled="disabled"
 						@input="handleDayToInput"
 						@focus="handleInputFocus"
@@ -217,12 +214,12 @@
 				</div>
 				<span>.</span>
 				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="2" @click="handleDateTimeMonthToClick">{{ dateTimeToValue[1] }}</span>
+					<span @click="handleDateTimeMonthToClick" tabindex="2">{{ dateTimeToValue[1] }}</span>
 					<input
-						ref="monthToRef"
-						v-model="monthTo"
 						type="number"
 						class="visually-hidden"
+						v-model="monthTo"
+						ref="monthToRef"
 						:disabled="disabled"
 						@input="handleMonthToInput"
 						@focus="handleInputFocus"
@@ -230,12 +227,12 @@
 				</div>
 				<span>.</span>
 				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="3" @click="handleDateTimeYearToClick">{{ dateTimeToValue[2] }}</span>
+					<span @click="handleDateTimeYearToClick" tabindex="3">{{ dateTimeToValue[2] }}</span>
 					<input
-						ref="yearToRef"
-						v-model="yearTo"
 						type="number"
 						class="visually-hidden"
+						v-model="yearTo"
+						ref="yearToRef"
 						:disabled="disabled"
 						@input="handleYearToInput"
 						@focus="handleInputFocus"
@@ -253,7 +250,7 @@
 			</span>
 		</div>
 	</div>
-	<div v-if="isCalendarOpen" class="DateRangePicker__calendarPopup" tabindex="0">
+	<div class="DateRangePicker__calendarPopup" v-if="isCalendarOpen" tabindex="0">
 		<CalendarPopup
 			v-model:day="dayFrom"
 			v-model:month="monthFrom"
@@ -277,12 +274,14 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps } from 'vue'
 import CalendarPopup from './DataHelpers/CalendarPopup.vue'
 import Icon from '../../icons/Icon.vue'
-import { DateLocalizationRu } from '../../../localization.ru.js'
-import { computed, ref, toRefs, watch } from 'vue'
-import { handleInputFocus, handleNextInputFocus } from './DataHelpers/DataEventHelper.js'
-import { handleYearInputEvent, isInputEventTriggersEffect } from './DataHelpers/DataHelper.js'
+import { DateLocalizationRu } from '../../../localization.ru'
+import { ref, watch, computed, toRefs } from 'vue'
+import { handleInputFocus, handleNextInputFocus } from './DataHelpers/DataEventHelper'
+import { handleYearInputEvent } from './DataHelpers/DataHelper'
+import { isInputEventTriggersEffect } from './DataHelpers/DataHelper'
 
 interface DateRangePickerProps {
 	disabled?: boolean
@@ -291,8 +290,8 @@ interface DateRangePickerProps {
 	hint?: string
 	label?: string
 	description?: string
-	from: string
-	to: string
+	from: String
+	to: String
 	value?: string
 }
 

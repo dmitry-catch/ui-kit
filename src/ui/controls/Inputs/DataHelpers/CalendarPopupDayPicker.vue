@@ -5,15 +5,12 @@
 	gap: calc(0.5 * var(--design-gap-unit));
 	position: relative;
 }
-
 .CalendarPopupDayPicker__tableRow {
 	display: contents;
 }
-
 .CalendarPopupDayPicker_cell:hover {
 	background-color: var(--design-background-color-on-accent-primary);
 }
-
 .CalendarPopupDayPicker__dayOfAnotherMonth {
 	cursor: default;
 	pointer-events: none;
@@ -22,11 +19,9 @@
 .CalendarPopupDayPicker__cellDateToday {
 	color: var(--design-text-color-accent);
 }
-
 .CalendarPopupDayPicker__cellDateToday.picked {
 	color: var(--design-text-color-on-accent-primary);
 }
-
 .CalendarPopupDayPicker__cellDateToday::after {
 	position: absolute;
 	bottom: 5%;
@@ -37,7 +32,6 @@
 	background-color: var(--design-background-color-accent-primary);
 	border-radius: 50%;
 }
-
 .CalendarPopupDayPicker__setRange {
 	display: flex;
 	justify-content: start;
@@ -109,27 +103,20 @@
 		<div class="CalendarPopupDayPicker__tableRow">
 			<span
 				v-for="day in DateLocalization.WeekdayAbbrArray()"
-				:key="day"
 				class="CalendarPopupDayPicker__cell secondary text-medium"
 			>
 				{{ day }}
 			</span>
 		</div>
 		<div
-			v-for="(week, weekIndex) in monthArray"
-			:key="weekIndex"
 			class="CalendarPopupDayPicker__rowInRange"
+			v-for="(week, weekIndex) in monthArray"
 			:style="{
 				'grid-row': `${weekIndex + 2}/${weekIndex + 3}`,
 				'grid-column': rowInRangeGridColumn(week, weekIndex, month, year, getFullRange())
 			}"
 		></div>
-		<div
-			v-for="(week, weekIndex) in monthArray"
-			:key="weekIndex"
-			class="CalendarPopupDayPicker__tableRow"
-			@click="handleDayClick"
-		>
+		<div v-for="(week, weekIndex) in monthArray" class="CalendarPopupDayPicker__tableRow" @click="handleDayClick">
 			<span
 				v-for="(dayOfMonth, dayIndex) in week"
 				class="CalendarPopupDayPicker__cell text-medium"
@@ -162,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { DateLocalizationRu } from '../../../../localization.ru.js'
+import { DateLocalizationRu } from '../../../../localization.ru'
 
 const DateLocalization = new DateLocalizationRu()
 
@@ -173,13 +160,16 @@ defineProps<{
 	month: string
 	year: string
 	isRange: boolean
-	//TODO fix type
-	// eslint-disable-next-line @typescript-eslint/ban-types
 	getFullRange: Function
 }>()
 
 const rowInRangeGridColumn = (week: number[], weekIndex: number, month: string, year: string, fullRange: string[]) => {
-	const rowArray = week.map((dayOfMonth) => isInside(fullRange, dayOfMonth, weekIndex, month, year))
+	const rowArray = week.map((dayOfMonth) => {
+		if (isInside(fullRange, dayOfMonth, weekIndex, month, year)) {
+			return true
+		}
+		return false
+	})
 	const lastInRangeCell = rowArray.lastIndexOf(true)
 	switch (lastInRangeCell) {
 		case -1:
@@ -204,19 +194,28 @@ const isInside = (fullRange: string[], dayOfMonth: number, weekIndex: number, mo
 		currentDayMonth = String(Number(month) + 1)
 	}
 	const currentDate = new Date(`${year}-${currentDayMonth}-${dayOfMonth}`)
-	return currentDate >= rangeStartDate && currentDate <= rangeEndDate
+	if (currentDate >= rangeStartDate && currentDate <= rangeEndDate) {
+		return true
+	}
+	return false
 }
 
 const isPickedStart = (FullRange: string[], dayOfMonth: number, month: string, year: string) => {
 	const rangeStartDate = new Date(FullRange[0])
 	const currentDate = new Date(`${year}-${month}-${dayOfMonth}`)
-	return currentDate.toDateString() == rangeStartDate.toDateString()
+	if (currentDate.toDateString() == rangeStartDate.toDateString()) {
+		return true
+	}
+	return false
 }
 
 const isPickedEnd = (FullRange: string[], dayOfMonth: number, month: string, year: string) => {
 	const rangeEndDate = new Date(FullRange[1])
 	const currentDate = new Date(`${year}-${month}-${dayOfMonth}`)
-	return currentDate.toDateString() == rangeEndDate.toDateString()
+	if (currentDate.toDateString() == rangeEndDate.toDateString()) {
+		return true
+	}
+	return false
 }
 
 const isDayToday = (dayOfMonth: number, month: string, year: string) => {

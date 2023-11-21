@@ -13,31 +13,26 @@ h1 {
 	line-height: 32px;
 	font-weight: 600;
 }
-
 h2 {
 	font-size: 20px;
 	line-height: 28px;
 	font-weight: 600;
 }
-
 h3 {
 	font-size: 28px;
 	line-height: 28px;
 	font-weight: 600;
 }
-
 h4 {
 	font-size: 16px;
 	line-height: 24px;
 	font-weight: 600;
 }
 </style>
-<template>
-	<template />
-</template>
+<template></template>
 
 <script lang="ts">
-import { computed, defineComponent, h, toRef } from 'vue'
+import { computed, h, toRef, defineComponent } from 'vue'
 
 export default defineComponent({
 	props: {

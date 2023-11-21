@@ -4,11 +4,9 @@
 	grid-template-columns: repeat(2, 1fr);
 	gap: calc(0.5 * var(--design-gap-unit));
 }
-
 .CalendarPopupMonthPicker__tableRow {
 	display: contents;
 }
-
 .CalendarPopupMonthPicker__cell {
 	display: flex;
 	align-items: center;
@@ -69,7 +67,7 @@
 
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import { DateLocalizationRu } from '../../../../localization.ru.js'
+import { DateLocalizationRu } from '../../../../localization.ru'
 
 const DateLocalization = new DateLocalizationRu()
 

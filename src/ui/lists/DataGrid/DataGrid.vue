@@ -42,12 +42,12 @@
 </style>
 
 <template>
-	<div ref="root" class="DataGrid">
+	<div class="DataGrid" ref="root">
 		<table class="DataGrid__table">
 			<thead class="DataGrid__thead">
 				<DataGridHeaderRow
-					v-model:columns="internalColumns"
 					class="DataGrid__header"
+					v-model:columns="internalColumns"
 					:detailsColumn="hasDetails"
 					:selectColumn="allowSelection"
 				>
@@ -56,8 +56,8 @@
 			<tbody class="DataGrid__tbody">
 				<DataGridRowGroup
 					v-for="item in dataSource"
-					:key="rowKey(item)"
 					:item="item"
+					:key="rowKey(item)"
 					:columns="internalColumns"
 					:detailsColumn="hasDetails"
 					:selectColumn="allowSelection"

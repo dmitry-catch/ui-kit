@@ -14,7 +14,7 @@
 </style>
 
 <template>
-	<div class="Icon" v-html="svgContent"></div>
+	<div v-html="svgContent" class="Icon"></div>
 </template>
 
 <script setup lang="ts">

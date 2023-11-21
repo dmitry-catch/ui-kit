@@ -139,7 +139,7 @@
 </style>
 
 <template>
-	<div ref="root" class="DatePicker Field" :class="{ disabled: disabled, invalid: invalid }">
+	<div class="DatePicker Field" ref="root" :class="{ disabled: disabled, invalid: invalid }">
 		<span class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
 		<span class="Field__description text-small">{{ description }}</span>
 		<div class="Field__visibleInput">
@@ -155,16 +155,16 @@
 			>
 				<label class="Field__input" :class="{ disabled: disabled }">
 					<input
-						ref="dayRef"
 						type="number"
 						min="1"
 						max="31"
 						class="visually-hidden"
 						:value="day"
+						ref="dayRef"
 						:disabled="disabled"
-						:autofocus="autofocus"
 						@input="handleDayInput"
 						@focus="handleInputFocus"
+						:autofocus="autofocus"
 					/>
 					<span class="DatePicker__dateValue">{{ day?.padStart(2, '0').slice(-2) || 'ДД' }}</span>
 				</label>
@@ -172,12 +172,12 @@
 				<span class="DatePicker__dateSplitter">.</span>
 				<label class="Field__input" :class="{ disabled: disabled }">
 					<input
-						ref="monthRef"
 						type="number"
 						min="1"
 						max="12"
 						class="visually-hidden"
 						:valuel="month"
+						ref="monthRef"
 						:disabled="disabled"
 						@input="handleMonthInput"
 						@focus="handleInputFocus"
@@ -187,12 +187,12 @@
 				<span class="DatePicker__dateSplitter">.</span>
 				<label class="Field__input" :class="{ disabled: disabled }">
 					<input
-						ref="yearRef"
 						type="number"
 						min="1"
 						max="9999"
 						class="DatePicker__input visually-hidden"
 						:value="year"
+						ref="yearRef"
 						:disabled="disabled"
 						@input="handleYearInput"
 						@focus="handleInputFocus"
@@ -229,11 +229,11 @@
 import Dropdown from '../../layout/Dropdown.vue'
 import Icon from '../../icons/Icon.vue'
 import Btn from '../Buttons/Btn.vue'
-import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
-import { DateLocalizationRu } from '../../../localization.ru.js'
+import { computed, defineProps, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
+import { DateLocalizationRu } from '../../../localization.ru'
 import CalendarPopup from './DataHelpers/CalendarPopup.vue'
-import { handleInputFocus } from './DataHelpers/DataEventHelper.js'
-import { handleYearInputEvent, numberOfDaysInMonth } from './DataHelpers/DataHelper.js'
+import { handleInputFocus } from './DataHelpers/DataEventHelper'
+import { handleYearInputEvent, numberOfDaysInMonth } from './DataHelpers/DataHelper'
 
 interface DatePickerProps {
 	disabled?: boolean
@@ -264,9 +264,9 @@ const month = ref<string | null | undefined>(modelValue.value?.split('-')[1])
 const year = ref<string | null | undefined>(modelValue.value?.split('-')[0])
 
 watchEffect(() => {
-	year.value = modelValue.value != null ? modelValue.value?.split('-')[0] : null
-	month.value = modelValue.value != null ? modelValue.value?.split('-')[1] : null
-	day.value = modelValue.value != null ? modelValue.value?.split('-')[2] : null
+	year.value = modelValue != null ? modelValue.value?.split('-')[0] : null
+	month.value = modelValue != null ? modelValue.value?.split('-')[1] : null
+	day.value = modelValue != null ? modelValue.value?.split('-')[2] : null
 })
 
 const dayRef = ref()
@@ -321,8 +321,6 @@ const handleYearInput = (event: Event) => {
 	year.value = handleYearInputEvent(target.value)
 }
 
-//TODO Refact it to decrease cognitive complexity
-// eslint-disable-next-line sonarjs/cognitive-complexity
 watch([day, month, year], () => {
 	if (month.value) {
 		if (Number(month.value) > 12) month.value = '12'

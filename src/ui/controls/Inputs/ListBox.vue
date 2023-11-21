@@ -12,7 +12,7 @@
 </style>
 
 <template>
-	<Dropdown ref="root" class="ListBox">
+	<Dropdown class="ListBox" ref="root">
 		<div class="Btn__dropdownContent">
 			<div
 				v-for="option in options"

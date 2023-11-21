@@ -40,19 +40,19 @@
 	<th class="DataGridHeader">
 		<div v-if="!searchOpened" class="DataGridHeader__name accent">{{ column.name }}</div>
 		<div
-			v-if="searchOpened"
 			class="DataGridHeader__eventInterceptor"
+			v-if="searchOpened"
 			@focusout="searchOpened = isDateColumn(column) ? searchOpened : false"
 		>
 			<TextField
+				class="DataGridHeader__search dense"
 				v-if="!isDateColumn(column)"
 				v-model="search"
-				class="DataGridHeader__search dense"
 				:placeholder="column.name"
-				autofocus
 				@focusout="searchOpened = false"
+				autofocus
 			></TextField>
-			<DatePicker v-else v-model="date" class="dense" autofocus>
+			<DatePicker v-else class="dense" v-model="date" autofocus>
 				<template #after>
 					<Btn class="icon functional">
 						<Icon name="close" @click="date = null"></Icon>
@@ -71,8 +71,8 @@
 			</Btn>
 			<div
 				v-if="isEnumColumn(column)"
-				:ref="(element) => (filterListButton = element)"
 				class="DataGridHeader__eventInterceptor"
+				:ref="(element) => (filterListButton = element)"
 			>
 				<Btn
 					class="DataGridHeader__action DataGridHeader__actionFilter icon functional"
@@ -90,14 +90,14 @@
 		<ListBox
 			v-if="filterListOpened"
 			v-model="filterListSelected"
-			:options="filterListOptions"
 			@update:modelValue="filterListOpened = false"
+			:options="filterListOptions"
 		></ListBox>
 	</th>
 </template>
 
 <script setup lang="ts">
-import { DataGridColumn, isDateColumn, isEnumColumn, isTypedColumn } from './DataGridColumn.js'
+import { DataGridColumn, isDateColumn, isEnumColumn, isTypedColumn } from './DataGridColumn'
 import { computed, ref, toRefs, watchEffect } from 'vue'
 import Icon from '../../icons/Icon.vue'
 import Btn from '../../controls/Buttons/Btn.vue'
@@ -112,11 +112,11 @@ import {
 	value,
 	ValueExpression
 } from '@forecsys/collections'
-import { useFilterContext } from './useFilterContext.js'
+import { useFilterContext } from './useFilterContext'
 import ListBox from '../../controls/Inputs/ListBox.vue'
-import { ListBoxOption } from '../../controls/Inputs/ListBoxOption.js'
-import { useClickOutside } from '../../../utils/useClickOutside.js'
-import { useSortingContext } from './useSortingContext.js'
+import { ListBoxOption } from '../../controls/Inputs/ListBoxOption'
+import { useClickOutside } from '../../../utils/useClickOutside'
+import { useSortingContext } from './useSortingContext'
 import { MouseEvent } from 'happy-dom'
 import DatePicker from '../../controls/Inputs/DatePicker.vue'
 
@@ -135,12 +135,11 @@ const searchable = computed(() => {
 	if (!isTypedColumn(column.value)) return true
 	return ['string'].includes(column.value.type)
 })
-const getFilterValue = () => {
+const getSearch = () => {
 	const filter = getFilter(searchId.value) as BinaryFilterExpression
 	const filterValue = filter?.right as ValueExpression
 	return filterValue?.value
 }
-const getSearch = () => getFilterValue()
 const search = ref(getSearch())
 watchEffect(() => {
 	setFilter(
@@ -149,7 +148,11 @@ watchEffect(() => {
 	)
 })
 const dateId = ref(column.value.field + '-date')
-const getDate = () => getFilterValue()
+const getDate = () => {
+	const filter = getFilter(searchId.value) as BinaryFilterExpression
+	const filterValue = filter?.right as ValueExpression
+	return filterValue?.value
+}
 const date = ref(getDate())
 watchEffect(() => {
 	const val = value(date.value) as ValueExpression
@@ -177,7 +180,7 @@ const filterListOptions = computed<Array<ListBoxOption>>(() => {
 const openFilterList = async () => {
 	filterListOpened.value = true
 }
-useClickOutside(filterListButton, () => {
+useClickOutside(filterListButton, (event: Event) => {
 	filterListOpened.value = false
 })
 
@@ -200,7 +203,7 @@ const clickSort = (event: MouseEvent) => {
 	console.log('clickSort', event)
 	if (sort.value == null) sort.value = { target: column.value.field, direction: 'asc' }
 
-	if (!event.shiftKey) {
+	if (event.shiftKey === false) {
 		if (existingSort.value) changeDirection()
 		setSorting([sort.value])
 	} else if (!existingSort.value) {

@@ -2,7 +2,7 @@
 
 <template>
 	<div class="DataList">
-		<DataListGroup v-for="item of dataSource" :data="item" :contextMenu="contextMenu" @itemClick="itemClick">
+		<DataListGroup v-for="item of dataSource" :data="item" :context-menu="contextMenu" @itemClick="itemClick">
 			<template #content="{ data }">
 				<slot name="listItem" :data="data"></slot>
 			</template>

@@ -45,9 +45,9 @@
 			<Checkbox v-model="selected"></Checkbox>
 		</td>
 		<DataGridCell
+			class="DataGridRow__cell"
 			v-for="column of columns"
 			:key="column.field"
-			class="DataGridRow__cell"
 			:item="item"
 			:column="column"
 		></DataGridCell>

@@ -2,20 +2,16 @@
 .DropdownSelect {
 	position: relative;
 }
-
 .DropdownSelect:focus {
 	outline: none;
 }
-
 .DropdownSelect:focus-within {
 	outline: none;
 	--forced-focus-outline: var(--design-focus-outline);
 }
-
 .DropdownSelect__field {
 	display: flex;
 }
-
 .DropdownSelect__openButton {
 	margin-inline-start: auto;
 }
@@ -28,15 +24,12 @@
 	z-index: var(--dropdown-z-index, 1000);
 	padding-top: var(--design-gap-unit);
 }
-
 .DropdownSelect__value {
 	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
 }
-
 .DropdownSelect__value:is(:hover, .active, :focus, :focus-visible) {
 	background: var(--design-background-color-secondary);
 }
-
 .DropdownSelect__values {
 	display: flex;
 	flex-flow: column;
@@ -45,7 +38,6 @@
 .DropdownSelect__searchFieldWrapper {
 	padding: calc(var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
 }
-
 .DropdownSelect__dropdownSurface {
 	background: var(--design-background-color-primary);
 	border-color: var(--design-border-color-primary);
@@ -61,12 +53,12 @@
 
 <template>
 	<div
-		ref="root"
 		class="DropdownSelect"
 		@keydown.down.prevent="downHandler"
 		@keydown.up.prevent="upHandler"
 		@keydown.enter="enterHandler"
 		@keydown.esc="escapeHandler"
+		ref="root"
 	>
 		<TextField
 			:modelValue="name"
@@ -92,27 +84,27 @@
 				</div>
 			</template>
 		</TextField>
-		<div v-if="opened" :id="listId" class="DropdownSelect__dropdown" role="listbox">
+		<div v-if="opened" class="DropdownSelect__dropdown" role="listbox" :id="listId">
 			<div class="DropdownSelect__dropdownSurface">
 				<div class="DropdownSelect__searchFieldWrapper"></div>
 				<div class="DropdownSelect__values">
 					<div
 						v-for="option of options"
-						:id="optionId(option)"
 						:key="option.name"
 						class="DropdownSelect__value"
 						:class="{ selected: isSelected(option), active: isActive(option) }"
-						role="option"
-						:aria-selected="isSelected(option)"
 						@click="itemClickHandler(option)"
+						role="option"
+						:id="optionId(option)"
+						:aria-selected="isSelected(option)"
 					>
 						<slot
 							name="dropdownItem"
 							:option="option"
 							:selected="isSelected(option)"
 							:active="isActive(option)"
-							>{{ option.name }}
-						</slot>
+							>{{ option.name }}</slot
+						>
 					</div>
 				</div>
 			</div>
@@ -124,7 +116,7 @@
 import Icon from '../../icons/Icon.vue'
 import { computed, ref, toRefs } from 'vue'
 import TextField from './TextField.vue'
-import { useUniqueId } from '../../../utils/useUniqueId.js'
+import { useUniqueId } from '../../../utils/useUniqueId'
 
 interface DropdownSelectProps {
 	placeholder?: string
@@ -141,7 +133,7 @@ const emit = defineEmits(['update:model-value'])
 const { getRandomId } = useUniqueId('DropdownSelect')
 const root = ref<HTMLElement>()
 const listId = getRandomId()
-const optionId = (option: any) => `${listId}-option-${option.value}`
+const optionId = (option) => `${listId}-option-${option.value}`
 
 const { modelValue, options } = toRefs(props)
 const opened = ref(false)
@@ -156,10 +148,10 @@ const open = () => (opened.value = true)
 const close = () => ((opened.value = false), root.value!.focus())
 const toggle = () => (opened.value ? close() : open())
 
-const select = (option: any) => (value.value = option.value)
-const isSelected = (option: any) => value.value === option.value
-const isActive = (option: any) => active.value === options.value.indexOf(option)
-const lastIndex = (array: any) => Math.max(array.length - 1, 0)
+const select = (option) => (value.value = option.value)
+const isSelected = (option) => value.value === option.value
+const isActive = (option) => active.value === options.value.indexOf(option)
+const lastIndex = (array) => Math.max(array.length - 1, 0)
 const nextActive = () => {
 	active.value++
 	if (active.value >= options.value.length) active.value = 0
@@ -195,7 +187,7 @@ const escapeHandler = () => {
 	close()
 }
 
-const itemClickHandler = (option: any) => {
+const itemClickHandler = (option) => {
 	select(option)
 	close()
 }

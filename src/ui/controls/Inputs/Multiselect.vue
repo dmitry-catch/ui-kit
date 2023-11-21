@@ -1,28 +1,22 @@
 <style>
 @import 'field.css';
-
 .Multiselect {
 	--icon-size: var(--design-current-line-height);
 }
-
 .Multiselect__visibleInput.Field__visibleInput {
 	height: 40px;
 	display: flex;
 	padding: calc(0.5 * var(--design-gap-unit)) var(--design-gap-unit);
 	align-items: center;
 }
-
 .Multiselect__clearHandle {
 	margin-inline-start: auto;
 }
-
 .Multiselect__removeVariant {
 }
-
 .Multiselect__clearHandle.hidden {
 	visibility: hidden;
 }
-
 .Multiselect__dropdown {
 	position: fixed;
 	width: 100%;
@@ -45,19 +39,17 @@
 	width: calc(v-bind(fieldWidth));
 	transform: translateY(calc(var(--design-gap-unit) / 2));
 }
-
 .Multiselect__dropdownItem {
 	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
 }
-
 .Multiselect__dropdownItem:is(:hover, :focus, :focus-visible) {
 	background: var(--design-background-color-secondary);
 }
 </style>
 
 <template>
-	<div ref="root" class="Multiselect" @focusout="focusout">
-		<div ref="field" class="Field">
+	<div class="Multiselect" @focusout="focusout" ref="root">
+		<div class="Field" ref="field">
 			<span class="Field__label"><slot name="label"></slot></span>
 			<span class="Field__description text-small"><slot name="description"></slot></span>
 			<div class="Multiselect__visibleInput Field__visibleInput">
@@ -80,7 +72,7 @@
 				</Btn>
 			</div>
 		</div>
-		<div v-show="dropdownOpened" ref="dropdown" class="Multiselect__dropdown">
+		<div v-show="dropdownOpened" class="Multiselect__dropdown" ref="dropdown">
 			<div v-for="option of options" :key="option.value" class="Multiselect__dropdownItem">
 				<Checkbox v-model="selectedValue" :value="option.value">{{ option.name }}</Checkbox>
 			</div>
@@ -94,7 +86,7 @@ import Icon from '../../icons/Icon.vue'
 import Pill from '../../text/Pill.vue'
 import Btn from '../Buttons/Btn.vue'
 import Checkbox from './Checkbox.vue'
-import { FieldLocalization } from '../../../localization.js'
+import { FieldLocalization } from '../../../localization'
 
 interface MultiselectProps {
 	modelValue: Array<any>
@@ -137,13 +129,13 @@ const toggleDropdown = () => {
 }
 const close = () => (dropdownOpened.value = false)
 const clickOutsideDropdown = (event: MouseEvent) => {
-	// @ts-expect-error old browser compatability
+	// @ts-ignore old browser compatability
 	const path = event.path || event.composedPath()
 	if (path.includes(root.value)) return
 
 	close()
 }
-const focusout = () => {
+const focusout = (event: FocusEvent) => {
 	setTimeout(() => {
 		let el = document.activeElement
 		while (el != null) {

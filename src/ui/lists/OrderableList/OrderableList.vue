@@ -4,20 +4,18 @@
 	flex-flow: column;
 	gap: calc(1.5 * var(--design-gap-unit));
 }
-
 .OrderableListItem {
 	display: flex;
 	gap: calc(0.5 * var(--design-gap-unit));
 	align-content: center;
 }
-
 .OrderableListItem__dragDropHandle {
 	--icon-size: var(--design-current-line-height);
 }
 </style>
 
 <template>
-	<div ref="root" class="OrderableList">
+	<div class="OrderableList" ref="root">
 		<div
 			v-for="item of internalItems"
 			:key="item.name"
@@ -36,7 +34,7 @@
 <script setup lang="ts">
 import Icon from '../../icons/Icon.vue'
 import { ref, toRefs, watchEffect } from 'vue'
-import { DragEvent, useDragging } from '../../../utils/useDragging.js'
+import { DragEvent, useDragging } from '../../../utils/useDragging'
 
 interface OrderableListProps {
 	modelValue: Array<any>
@@ -52,7 +50,7 @@ const root = ref<HTMLElement>()
 const internalItems = ref(modelValue.value)
 watchEffect(() => (internalItems.value = modelValue.value))
 
-const onDrag = ({ shadow, element }: DragEvent) => {
+const onDrag = ({ shadow, element, x, y }: DragEvent) => {
 	internalItems.value = [...internalItems.value].sort((a, b) => {
 		const indexA = internalItems.value.indexOf(a)
 		const indexB = internalItems.value.indexOf(b)

@@ -1,7 +1,6 @@
 <style>
 .DataGridRowGroup {
 }
-
 .DataGridRowGroup__toggler {
 	grid-column: span var(--datagrid-columns-count);
 }
@@ -12,24 +11,24 @@
 		v-if="isItem"
 		:item="item"
 		:columns="columns"
+		@click="itemClick(item)"
 		:detailsColumn="detailsColumn"
 		:selectColumn="selectColumn"
-		@click="itemClick(item)"
 	>
 		<template #rowDetails="{ item }">
 			<slot name="rowDetails" :item="item"></slot>
 		</template>
 	</DataGridRow>
 	<template v-else>
-		<DataGroupTogler v-model="opened" class="DataGridRowGroup__toggler" :group="group"></DataGroupTogler>
+		<DataGroupTogler class="DataGridRowGroup__toggler" v-model="opened" :group="group"></DataGroupTogler>
 		<template v-if="opened">
 			<DataGridRowGroup
 				v-for="item of group.data"
 				:item="item"
 				:columns="columns"
+				@itemClick="itemClick"
 				:detailsColumn="detailsColumn"
 				:selectColumn="selectColumn"
-				@itemClick="itemClick"
 			>
 				<template #rowDetails="{ item }">
 					<slot name="rowDetails" :item="item"></slot>
@@ -44,7 +43,7 @@ import { computed, ref, toRefs } from 'vue'
 import { Group, isGroup } from '@forecsys/collections'
 import DataGroupTogler from '../DataGroupToggler.vue'
 import DataGridRow from './DataGridRow.vue'
-import { DataGridColumn } from './DataGridColumn.js'
+import { DataGridColumn } from './DataGridColumn'
 
 interface DataGridRowGroupProps {
 	columns: Array<DataGridColumn>

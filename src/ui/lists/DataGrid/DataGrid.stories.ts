@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import DataGrid from './DataGrid.vue'
+import { action } from '@storybook/addon-actions'
 import { computed, ref, watchEffect } from 'vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
 
@@ -9,8 +10,10 @@ export default {
 
 type Story = StoryObj<typeof DataGrid>
 
+const addToList = action('Add to list')
+
 export const Default: Story = {
-	render: () => ({
+	render: (args) => ({
 		components: { DataGrid },
 		setup: () => {
 			const filters = ref(value(true))

@@ -146,14 +146,14 @@
 </style>
 
 <template>
-	<div ref="root" class="Btn" :class="{ disabled: disabled }">
+	<div class="Btn" ref="root" :class="{ disabled: disabled }">
 		<button class="Btn__actual accent" :disabled="disabled" @click="toggleDropdown">
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
 			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
 		</button>
-		<ListBox v-if="hasDropdown && dropdownOpened" :options="dropdown" @closeRequest="clickOutside">
+		<ListBox v-if="hasDropdown && dropdownOpened" :options="dropdown" @close-request="clickOutside">
 			<template #item="{ data }">
 				<slot name="dropdownItem" :data="data">{{ data.name }}</slot>
 			</template>

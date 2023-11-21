@@ -2,7 +2,6 @@
 .DataGridHeaderRow {
 	display: contents;
 }
-
 .DataGridHeaderRow__cell {
 	position: sticky;
 	top: 0;
@@ -13,14 +12,14 @@
 </style>
 
 <template>
-	<tr ref="root" class="DataGridHeaderRow">
+	<tr class="DataGridHeaderRow" ref="root">
 		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
 		<td v-if="selectColumn" class="DataGridHeaderRow__cell"></td>
 		<DataGridHeader
-			v-for="column of columns"
-			:key="column.field"
 			class="DataGridHeaderRow__cell"
+			v-for="column of columns"
 			:column="column"
+			:key="column.field"
 			@pointerdown.prevent="dragHandleMousedown"
 			@click="clickHandler"
 		></DataGridHeader>
@@ -28,10 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import { DataGridColumn } from './DataGridColumn.js'
+import { DataGridColumn } from './DataGridColumn'
 import DataGridHeader from './DataGridHeader.vue'
 import { ref, toRefs, watch } from 'vue'
-import { DragEvent, useDragging } from '../../../utils/useDragging.js'
+import { DragEvent, useDragging } from '../../../utils/useDragging'
 
 interface DataGridHeaderRowProps {
 	columns: Array<DataGridColumn>
@@ -47,7 +46,7 @@ const { columns, detailsColumn } = toRefs(props)
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
 const root = ref<HTMLElement>()
-const onDrag = ({ shadow, element }: DragEvent) => {
+const onDrag = ({ shadow, element, x, y }: DragEvent) => {
 	internalColumns.value = [...internalColumns.value].sort((a, b) => {
 		const indexA = internalColumns.value.indexOf(a)
 		const indexB = internalColumns.value.indexOf(b)

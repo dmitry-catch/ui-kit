@@ -1,7 +1,7 @@
 <style></style>
 
 <template>
-	<DataListItem v-if="isItem" :data="data" :contextMenu="contextMenu" @click="itemClick(data)">
+	<DataListItem v-if="isItem" :data="data" :context-menu="contextMenu" @click="itemClick(data)">
 		<template #content="{ data }">
 			<slot name="content" :data="data"></slot>
 		</template>
@@ -12,7 +12,7 @@
 	<template v-else>
 		<DataGroupToggler v-model="opened" :group="group"></DataGroupToggler>
 		<template v-if="opened">
-			<DataListGroup v-for="item of group.data" :data="item" :contextMenu="contextMenu" @itemClick="itemClick">
+			<DataListGroup v-for="item of group.data" :data="item" :context-menu="contextMenu" @itemClick="itemClick">
 				<template #content="{ data }">
 					<slot name="content" :data="data"></slot>
 				</template>
@@ -43,5 +43,6 @@ const group = computed(() => data.value as Group<any>)
 const isItem = computed(() => !isGroup(data.value))
 
 const opened = ref(true)
+const toggle = () => (opened.value = !opened.value)
 const itemClick = (data: any) => emit('itemClick', data)
 </script>
