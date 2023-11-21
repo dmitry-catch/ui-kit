@@ -4,11 +4,13 @@
 	flex-direction: column;
 	margin: 100px 0px;
 }
+
 .ButtonStand__ButtonStand__currentButtonsContainer {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	width: 100%;
 }
+
 .ButtonStand__currentButton {
 	display: flex;
 	flex-direction: column;
@@ -54,19 +56,27 @@
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon</p>
-				<Btn class="icon"><Icon name="inbox" /></Btn>
+				<Btn class="icon">
+					<Icon name="inbox" />
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon functional</p>
-				<Btn class="icon functional"><Icon name="inbox" /></Btn>
+				<Btn class="icon functional">
+					<Icon name="inbox" />
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon disabled</p>
-				<Btn class="icon" :disabled="true"><Icon name="inbox" /></Btn>
+				<Btn class="icon" :disabled="true">
+					<Icon name="inbox" />
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon functional disabled</p>
-				<Btn class="icon functional" :disabled="true"><Icon name="inbox" /></Btn>
+				<Btn class="icon functional" :disabled="true">
+					<Icon name="inbox" />
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>warning</p>
@@ -119,8 +129,8 @@
 						}
 					]"
 					class="dropdown"
-					>{{ value }}</Btn
-				>
+					>{{ value }}
+				</Btn>
 			</div>
 		</div>
 	</div>
@@ -128,7 +138,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Btn, Icon } from '../src/main'
+import { Btn, Icon } from '../src/main.js'
+
 const onClick = () => {
 	alert('CLICK')
 }
