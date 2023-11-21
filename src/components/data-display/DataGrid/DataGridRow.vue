@@ -68,7 +68,7 @@ import { DataGridColumn } from './DataGridColumn'
 import DataGridCell from './DataGridCell.vue'
 import Btn from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
-import Checkbox from '../../data-entry/Checkbox/Checkbox.vue'
+import Checkbox from '../../data-entry/Checkbox.vue'
 
 interface DataGridRowProps {
 	columns: Array<DataGridColumn>

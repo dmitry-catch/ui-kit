@@ -101,7 +101,7 @@ import { DataGridColumn, isDateColumn, isEnumColumn, isTypedColumn } from './Dat
 import { computed, ref, toRefs, watchEffect } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Btn from '../../general/Button/Button.vue'
-import TextField from '../../data-entry/TextField/TextField.vue'
+import TextField from '../../data-entry/TextField.vue'
 import {
 	BinaryFilterExpression,
 	equals,
@@ -113,12 +113,12 @@ import {
 	ValueExpression
 } from '@forecsys/collections'
 import { useFilterContext } from './useFilterContext.js'
-import ListBox from '../../data-entry/ListBox/ListBox.vue'
-import { ListBoxOption } from '../../data-entry/ListBox/ListBoxOption.js'
+import ListBox from '../../data-entry/ListBox.vue'
+import { ListBoxOption } from '../../data-entry/ListBoxOption.js'
 import { useClickOutside } from '../../../utils/useClickOutside.js'
 import { useSortingContext } from './useSortingContext.js'
 import { MouseEvent } from 'happy-dom'
-import DatePicker from '../../data-entry/DatePicker/DatePicker.vue'
+import DatePicker from '../../data-entry/DatePicker.vue'
 
 interface DataGridHeaderProps {
 	column: DataGridColumn

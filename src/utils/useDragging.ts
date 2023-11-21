@@ -19,7 +19,6 @@ export const useDragging = ({
 	const shadow = ref<HTMLElement>()
 
 	const drag = (x: number, y: number) => {
-		const rect = dragged.value!.getBoundingClientRect()
 		const offset = {
 			x: x - shadow.value!.offsetLeft,
 			y: y - shadow.value!.offsetTop

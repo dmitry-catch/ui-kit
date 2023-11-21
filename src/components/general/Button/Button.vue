@@ -163,8 +163,8 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
 import Icon from '../Icon/Icon.vue'
-import ListBox from '../../data-entry/ListBox/ListBox.vue'
-import type { ListBoxOption } from '../../data-entry/ListBox/ListBoxOption.js'
+import ListBox from '../../data-entry/ListBox.vue'
+import type { ListBoxOption } from '../../data-entry/ListBoxOption.js'
 
 //TODO move from the 'class' prop predefined classes
 interface BtnProps {

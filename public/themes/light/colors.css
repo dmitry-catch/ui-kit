@@ -2,75 +2,77 @@
 	Text colors
  */
 :root {
-	--design-text-color-secondary: #626974;
-	--design-text-color-hover-secondary: #cacdd0;
-	--design-text-color-primary: #212c3a;
-	--design-text-color-on-accent-primary: #f6f7f7;
-	--design-text-color-on-accent-secondary: #a6abb0;
-	--design-text-color-on-accent-tertiary: #212c3a;
-	--design-text-color-accent: #00a7e5;
-	--design-text-color-accent-secondary: #006a91;
-	--design-text-color-warning: #f3b216;
-	--design-text-color-danger: #f12828;
-	--design-text-color-success: #2c9468;
-	--design-text-color-info: #00a7e5;
-	--design-text-color-inverted: #f6f7f7;
+    --design-text-color-secondary: #626974;
+    --design-text-color-hover-secondary: #cacdd0;
+    --design-text-color-primary: #212c3a;
+    --design-text-color-on-accent-primary: #f6f7f7;
+    --design-text-color-on-accent-secondary: #a6abb0;
+    --design-text-color-on-accent-tertiary: #212c3a;
+    --design-text-color-accent: #00a7e5;
+    --design-text-color-accent-secondary: #006a91;
+    --design-text-color-warning: #f3b216;
+    --design-text-color-danger: #f12828;
+    --design-text-color-success: #2c9468;
+    --design-text-color-info: #00a7e5;
+    --design-text-color-inverted: #f6f7f7;
 }
+
 /**
 	Borders
  */
 :root {
-	--design-border-color-primary: #cacdd0;
-	--design-border-color-secondary: #a6abb0;
-	--design-border-color-accent-primary: #00a7e5;
-	--design-border-color-accent-secondary: #006a91;
-	--design-border-color-warning-primary: #f3b216;
-	--design-border-color-warning-secondary: #f2994a;
-	--design-border-color-danger-primary: #f12828;
-	--design-border-color-danger-secondary: #f43f3f;
-	--design-border-color-success: #2c9468;
-	--design-border-color-info: #3e8af0;
-	--design-border-color-baseline: #e9eaec;
-	--design-border-color-focus: rgba(0, 167, 229, 0.2);
+    --design-border-color-primary: #cacdd0;
+    --design-border-color-secondary: #a6abb0;
+    --design-border-color-accent-primary: #00a7e5;
+    --design-border-color-accent-secondary: #006a91;
+    --design-border-color-warning-primary: #f3b216;
+    --design-border-color-warning-secondary: #f2994a;
+    --design-border-color-danger-primary: #f12828;
+    --design-border-color-danger-secondary: #f43f3f;
+    --design-border-color-success: #2c9468;
+    --design-border-color-info: #3e8af0;
+    --design-border-color-baseline: #e9eaec;
+    --design-border-color-focus: rgba(0, 167, 229, 0.2);
 }
 
 /**
 	Backgrounds
  */
 :root {
-	--design-background-color-disabled-primary: #cacdd0;
-	--design-background-color-primary: #fafafa;
-	--design-background-color-secondary: #fafafa;
-	--design-background-color-tertiary: #f5f5f6;
-	--design-background-color-on-accent-primary: #e9eaec;
-	--design-background-color-disabled-secondary: #212c3a;
-	--design-background-color-on-accent-secondary: #d22835;
-	--design-background-color-accent-primary: #00a7e5;
-	--design-background-color-accent-secondary: #006a91;
-	--design-background-color-warning-primary: #f3b216;
-	--design-background-color-warning-secondary: #fabc29;
-	--design-background-color-danger-primary: #f12828;
-	--design-background-color-danger-secondary: #f43f3f;
-	--design-background-color-inverted: #212c3a;
-	--design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
-	--design-background-color-info: #00a7e5;
+    --design-background-color-disabled-primary: #cacdd0;
+    --design-background-color-primary: #fafafa;
+    --design-background-color-secondary: #fafafa;
+    --design-background-color-tertiary: #f5f5f6;
+    --design-background-color-on-accent-primary: #e9eaec;
+    --design-background-color-disabled-secondary: #212c3a;
+    --design-background-color-on-accent-secondary: #d22835;
+    --design-background-color-accent-primary: #00a7e5;
+    --design-background-color-accent-secondary: #006a91;
+    --design-background-color-warning-primary: #f3b216;
+    --design-background-color-warning-secondary: #fabc29;
+    --design-background-color-danger-primary: #f12828;
+    --design-background-color-danger-secondary: #f43f3f;
+    --design-background-color-inverted: #212c3a;
+    --design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
+    --design-background-color-info: #00a7e5;
+    --dropdown-z-index: 1000
 }
 
 ::backdrop {
-	--design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
+    --design-background-color-modal-shadow: rgba(228, 229, 231, 0.8);
 }
 
 /**
 	Additional colors
  */
 :root {
-	--design-additional-color-1: #39b3ef;
-	--design-additional-color-2: #3e8af0;
-	--design-additional-color-3: #6b7af6;
-	--design-additional-color-4: #c6698b;
-	--design-additional-color-5: #fa7454;
-	--design-additional-color-6: #e1be51;
-	--design-additional-color-7: #0ccca5;
+    --design-additional-color-1: #39b3ef;
+    --design-additional-color-2: #3e8af0;
+    --design-additional-color-3: #6b7af6;
+    --design-additional-color-4: #c6698b;
+    --design-additional-color-5: #fa7454;
+    --design-additional-color-6: #e1be51;
+    --design-additional-color-7: #0ccca5;
 }
 
 /**

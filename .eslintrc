@@ -23,8 +23,21 @@
 	],
 	"rules": {
 		"vue/multi-word-component-names": "off",
+		"vue/attribute-hyphenation": [
+			"error",
+			"never"
+		],
+		"vue/v-on-event-hyphenation": [
+			"error",
+			"never"
+		],
 		"@typescript-eslint/no-explicit-any": "warn",
 		"sonarjs/no-duplicate-string": "warn",
+		"vue/require-v-for-key": "warn",
+		"vue/valid-v-for": "warn",
+		"vue/no-template-shadow": "warn",
+		"vue/require-default-prop": "off",
+		"vue/return-in-computed-property": "warn",
 		"vue/component-tags-order": [
 			"error",
 			{
