@@ -11,8 +11,7 @@
 	},
 	"plugins": [
 		"@typescript-eslint",
-		"sonarjs",
-		"import"
+		"sonarjs"
 	],
 	"extends": [
 		"eslint:recommended",
@@ -23,10 +22,6 @@
 		"prettier"
 	],
 	"rules": {
-		"import/extensions": [
-			"warn",
-			"always"
-		],
 		"vue/multi-word-component-names": "off",
 		"vue/attribute-hyphenation": [
 			"error",
