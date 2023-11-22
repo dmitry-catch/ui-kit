@@ -214,19 +214,19 @@
 				<Icon class="DatePicker__icon calendarIcon" name="calendar"></Icon>
 			</Btn>
 		</div>
-		<Popover v-if="isCalendarOpen" tabindex="0">
+		<Dropdown v-if="isCalendarOpen" tabindex="0">
 			<CalendarPopup
 				v-model:day="day"
 				v-model:month="month"
 				v-model:year="year"
 				:handleCalendarClose="handleCalendarClose"
 			/>
-		</Popover>
+		</Dropdown>
 		<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
 	</div>
 </template>
 <script setup lang="ts">
-import Popover from '../../layout/Popover/Popover.vue'
+import Dropdown from '../../layout/Dropdown/Dropdown.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Btn from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'

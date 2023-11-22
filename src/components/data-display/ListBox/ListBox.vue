@@ -12,7 +12,7 @@
 </style>
 
 <template>
-	<Popover ref="root" class="ListBox">
+	<Dropdown ref="root" class="ListBox">
 		<div class="Btn__dropdownContent">
 			<div
 				v-for="option in options"
@@ -27,11 +27,11 @@
 				</slot>
 			</div>
 		</div>
-	</Popover>
+	</Dropdown>
 </template>
 
 <script setup lang="ts">
-import Popover from '../../layout/Popover/Popover.vue'
+import Dropdown from '../../layout/Dropdown/Dropdown.vue'
 import { ref, toRefs } from 'vue'
 import { ListBoxOption } from './ListBoxOption.js'
 import DropdownSelectableOption from '../../data-entry/DropdownSelectableOption/DropdownSelectableOption.vue'
