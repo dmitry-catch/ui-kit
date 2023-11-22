@@ -11,7 +11,7 @@ export default {
 		description: '',
 		invalid: false,
 		autofocus: false,
-		modelValue: new Date().toDateString()
+		modelValue: new Date()
 	}
 } satisfies Meta<typeof DatePicker>
 
