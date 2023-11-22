@@ -5,9 +5,15 @@
 		"ecmaVersion": 13,
 		"sourceType": "module",
 		"project": true,
-		"extraFileExtensions": [".vue"]
+		"extraFileExtensions": [
+			".vue"
+		]
 	},
-	"plugins": ["@typescript-eslint", "sonarjs"],
+	"plugins": [
+		"@typescript-eslint",
+		"sonarjs",
+		"import"
+	],
 	"extends": [
 		"eslint:recommended",
 		"plugin:sonarjs/recommended",
@@ -17,9 +23,19 @@
 		"prettier"
 	],
 	"rules": {
+		"import/extensions": [
+			"warn",
+			"always"
+		],
 		"vue/multi-word-component-names": "off",
-		"vue/attribute-hyphenation": ["error", "never"],
-		"vue/v-on-event-hyphenation": ["error", "never"],
+		"vue/attribute-hyphenation": [
+			"error",
+			"never"
+		],
+		"vue/v-on-event-hyphenation": [
+			"error",
+			"never"
+		],
 		"@typescript-eslint/no-explicit-any": "warn",
 		"sonarjs/no-duplicate-string": "warn",
 		"vue/require-v-for-key": "warn",
@@ -30,7 +46,11 @@
 		"vue/component-tags-order": [
 			"error",
 			{
-				"order": ["style", "template", "script"]
+				"order": [
+					"style",
+					"template",
+					"script"
+				]
 			}
 		]
 	},
@@ -44,7 +64,10 @@
 					{
 						"patterns": [
 							{
-								"group": ["*.stories.*", "*.spec.*"],
+								"group": [
+									"*.stories.*",
+									"*.spec.*"
+								],
 								"message": "Import from .spec. and .stories. no allowed for UI KIT."
 							}
 						]

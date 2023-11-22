@@ -27,7 +27,7 @@ body {
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
-import DataGrid from '../src/ui/lists/DataGrid/DataGrid.vue'
+import DataGrid from '../src/components/data-display/DataGrid/DataGrid.vue'
 import ButtonStand from './ButtonStand.vue'
 
 const filters = ref(value(true))

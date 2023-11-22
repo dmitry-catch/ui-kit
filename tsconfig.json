@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
+		"moduleResolution": "bundler",
 		"outDir": "dist",
 		"strict": true,
 		"skipLibCheck": true,

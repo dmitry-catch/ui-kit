@@ -1,21 +1,13 @@
 import { Meta, StoryObj } from '@storybook/vue3'
-import Popover from './Popover.vue'
-import Readme from './Popover.md?raw'
+import Dropdown from './Popover.vue'
 
 export default {
-	component: Popover,
+	component: Dropdown,
 	args: {
-		default: 'I am popover content'
-	},
-	parameters: {
-		docs: {
-			description: {
-				component: Readme
-			}
-		}
+		default: 'I am content'
 	}
-} satisfies Meta<typeof Popover>
+} satisfies Meta<typeof Dropdown>
 
-type Story = StoryObj<typeof Popover>
+type Story = StoryObj<typeof Dropdown>
 
 export const Default: Story = {}

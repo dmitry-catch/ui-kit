@@ -83,12 +83,12 @@ export const functionalDisabled: Story = {
 
 export const icon: Story = {
 	render: (args) => ({
-		components: { Button, Icon },
+		components: { Btn: Button, Icon },
 		setup: () => ({ args }),
 		template: `
-      <Button v-bind="args">
+      <Btn v-bind="args">
         <Icon name="inbox" />
-      </Button>`
+      </Btn>`
 	}),
 	args: {
 		class: 'icon',
