@@ -1,9 +1,9 @@
-import Package from '../../package.json'
+import Package from "../../package.json";
 
 <h3>Current Version of UI-KIT is {Package.version}</h3>
 
-### New stories
 
+### New stories
 Для добавления нового стори используйте базовый шаблон:
 
 ```typescript
@@ -13,7 +13,7 @@ import { Meta, StoryObj } from '@storybook/vue3'
 import NewComponent from './NewComponent.vue'
 
 export default {
-	component: NewComponent
+	component: NewComponent,
 } satisfies Meta<typeof NewComponent>
 
 type Story = StoryObj<typeof NewComponent>
@@ -28,26 +28,24 @@ export const AnotherStory: Story = {
 ```
 
 Рассмотрим более подробный пример:
-
 ```typescript
-import { Meta, StoryObj } from '@storybook/vue3'
+import { Meta, StoryObj } from "@storybook/vue3";
 // Импорт интересующего нас компонента
-import NewComponent from './NewComponent.vue'
+import NewComponent from "./NewComponent.vue";
 // Импорт документации по компоненту в формате raw. Пишется по необходимости. Заменяет описание [1].
-import Readme from './NewComponent.md?raw'
+import Readme from "./NewComponent.md?raw";
 
 /**
- * [1] В формате markdown можно писать здесь комментарии-описание об компоненте.
- */
-export default {
-	// Объявление мета-информации по компоненту из которого сторбук генерирует документацию.
+* [1] В формате markdown можно писать здесь комментарии-описание об компоненте.
+*/
+export default { // Объявление мета-информации по компоненту из которого сторбук генерирует документацию.
 	component: NewComponent,
 	// Содержит общие для всех сторисов аргументы
-	args: {
-		// название обычного слота
-		default: 'I am default slot'
+  args: {
+    // название обычного слота
+		default: "I am default slot"
 	},
-	// Этот блок может пригодиться в случае добавление readme описания
+  // Этот блок может пригодиться в случае добавление readme описания
 	parameters: {
 		docs: {
 			description: {
@@ -55,14 +53,14 @@ export default {
 			}
 		}
 	}
-	// Чтобы мета-информация была типизированна, используется конструкция ниже
-} satisfies Meta<typeof NewComponent>
+// Чтобы мета-информация была типизированна, используется конструкция ниже
+} satisfies Meta<typeof NewComponent>;
 
 // Тип для последующих сторисов
 type Story = StoryObj<typeof NewComponent>
 
 // Обычная история, в котором компонент инициализируется без передачи аргументов
-export const Default: Story = {}
+export const Default: Story = {};
 
 // История, в котором передаются аргументы
 export const AnotherStory: Story = {
@@ -83,7 +81,7 @@ export const icon: Story = {
       </NewComponent>`
 	}),
 	args: {
-		class: 'icon',
+		class: "icon",
 		default: undefined
 	}
 }

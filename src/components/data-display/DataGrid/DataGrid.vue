@@ -27,7 +27,6 @@
 	background: var(--design-background-color-primary);
 	overflow: auto;
 }
-
 .DataGrid__header {
 	position: sticky;
 	top: 0;
@@ -37,7 +36,6 @@
 .DataGrid__tbody {
 	display: contents;
 }
-
 .DataGrid__eventInterceptor {
 	display: contents;
 }

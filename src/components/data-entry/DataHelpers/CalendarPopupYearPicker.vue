@@ -4,11 +4,9 @@
 	grid-template-columns: repeat(3, 1fr);
 	gap: calc(0.5 * var(--design-gap-unit));
 }
-
 .CalendarPopupYearPicker__tableRow {
 	display: contents;
 }
-
 .CalendarPopupYearPicker__cell {
 	display: flex;
 	align-items: center;

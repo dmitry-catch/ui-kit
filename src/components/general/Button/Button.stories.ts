@@ -86,9 +86,9 @@ export const icon: Story = {
 		components: { Button, Icon },
 		setup: () => ({ args }),
 		template: `
-			<Button v-bind='args'>
-				<Icon name='inbox' />
-			</Button>`
+      <Button v-bind="args">
+        <Icon name="inbox" />
+      </Button>`
 	}),
 	args: {
 		class: 'icon',

@@ -7,7 +7,11 @@
 		"project": true,
 		"extraFileExtensions": [".vue"]
 	},
-	"plugins": ["@typescript-eslint", "sonarjs", "import"],
+	"plugins": [
+		"@typescript-eslint",
+		"sonarjs",
+		"import"
+	],
 	"extends": [
 		"eslint:recommended",
 		"plugin:sonarjs/recommended",
@@ -17,7 +21,10 @@
 		"prettier"
 	],
 	"rules": {
-		"import/extensions": ["warn", "always"],
+		"import/extensions": [
+			"warn",
+			"always"
+		],
 		"vue/multi-word-component-names": "off",
 		"vue/attribute-hyphenation": ["error", "never"],
 		"vue/v-on-event-hyphenation": ["error", "never"],

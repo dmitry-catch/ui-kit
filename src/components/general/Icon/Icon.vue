@@ -4,11 +4,9 @@
 	width: var(--icon-size, var(--design-current-line-height, 1em));
 	height: var(--icon-size, var(--design-current-line-height, 1em));
 }
-
 .Icon.accent {
 	fill: var(--icon-color, var(--design-text-color-accent, currentColor));
 }
-
 .Icon svg {
 	width: 100%;
 	height: 100%;

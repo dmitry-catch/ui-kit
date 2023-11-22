@@ -35,7 +35,6 @@
 	padding: 0;
 	background: var(--design-background-color-primary);
 }
-
 .Field__input:focus-visible {
 	outline: none;
 }
@@ -50,32 +49,25 @@
 	display: flex;
 	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 }
-
 .Field--invalid .Field__visibleInput,
 .Field.invalid .Field__visibleInput {
 	border-color: var(--design-border-color-danger-primary);
 }
-
 .Field__visibleInput {
 	outline: var(--forced-focus-outline, none);
 }
-
 .Field__visibleInput:focus-within {
 	outline: var(--design-focus-outline);
 }
-
 .Field__below {
 	display: flex;
 	flex-flow: row;
 }
-
 .Field__validationMessage {
 }
-
 .Field__counter {
 	margin-left: auto;
 }
-
 .Field__validationMessage.danger {
 	color: var(--design-text-color-danger);
 }
@@ -85,11 +77,9 @@
 	width: min-content;
 	height: min-content;
 }
-
 .Field.dense {
 	--icon-size: 16px;
 }
-
 .Field.dense .Field__label,
 .Field.dense .Field__description,
 .Field.dense .Field__below {
@@ -102,11 +92,9 @@
 	--design-current-font-size: var(--design-font-size-footnote);
 	--design-current-line-height: var(--design-line-height-footnote);
 }
-
 .Field.dense .Field__visibleInput {
 	padding: calc(0.25 * var(--design-gap-unit)) calc(var(--design-gap-unit));
 }
-
 .Field__requiredStar {
 	color: var(--design-text-color-danger);
 }
