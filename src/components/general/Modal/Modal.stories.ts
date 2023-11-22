@@ -4,9 +4,8 @@ import Modal from './Modal.vue'
 export default {
 	component: Modal,
 	args: {
-		default: 'Press "Esc" to exit',
+		default: 'I am content',
 		anchor: 'center',
-		//@ts-expect-error argument for wrapper
 		show: false
 	},
 	argTypes: {
@@ -18,12 +17,7 @@ export default {
 	render: (args) => ({
 		components: { Modal },
 		setup: () => ({ args }),
-		template: `
-      <div>
-        Set the <u>show</u> prop to true
-        <Modal v-if="args.show" v-bind="args"> {{ args.default }}</Modal>
-      </div>
-    `
+		template: `<Modal v-if='args.show' v-bind="args"> {{args.default}} </Modal>`
 	})
 } satisfies Meta<typeof Modal>
 

@@ -26,38 +26,35 @@ import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
 
 export {
-	//General category
-	/** @deprecated use Button instead */
+	/**
+	 * @deprecated use Button instead
+	 */
 	Btn,
 	Button,
 	Icon,
-	Modal,
-	Tabs,
-	Tab,
-	//Layout category
+	Property,
+	Paragraph,
+	Header,
+	Tag,
+	Pill,
 	ContentContainer,
 	ContentBlock,
 	Surface,
-	//Data entry category
-	Checkbox,
-	DatePicker,
-	DateRangePicker,
-	DropdownSelectableOption,
-	Multiselect,
+	Tabs,
+	Tab,
 	TextField,
-	//Data display category
-	DataGrid,
+	Modal,
+	Multiselect,
+	Checkbox,
+	Localization,
+	FieldLocalization,
+	DateLocalization,
+	DropdownSelectableOption,
 	DataList,
 	DataListGroup,
 	DataListItem,
-	Header,
 	OrderableList,
-	Paragraph,
-	Pill,
-	Property,
-	Tag,
-	//Other
-	Localization,
-	FieldLocalization,
-	DateLocalization
+	DatePicker,
+	DateRangePicker,
+	DataGrid
 }

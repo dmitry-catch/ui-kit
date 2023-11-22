@@ -1,16 +1,15 @@
 import { Meta, StoryObj } from '@storybook/vue3'
-import Button from './Button.vue'
+import Btn from './Button.vue'
 import Icon from '../Icon/Icon.vue'
 import { OptionList } from 'storybook/consts.js'
 
 export default {
-	component: Button,
+	component: Btn,
 	args: {
 		default: 'Кнопка',
 		disabled: false
 	},
 	argTypes: {
-		//@ts-expect-error it doesn't pick up types for native events
 		onClick: {},
 		class: {
 			control: 'select',
@@ -30,9 +29,9 @@ export default {
 			]
 		}
 	}
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof Btn>
 
-type Story = StoryObj<typeof Button>
+type Story = StoryObj<typeof Btn>
 
 export const Default: Story = {}
 
@@ -83,12 +82,12 @@ export const functionalDisabled: Story = {
 
 export const icon: Story = {
 	render: (args) => ({
-		components: { Btn: Button, Icon },
+		components: { Btn, Icon },
 		setup: () => ({ args }),
 		template: `
-      <Btn v-bind="args">
-        <Icon name="inbox" />
-      </Btn>`
+			<Btn v-bind='args'>
+				<Icon name='inbox' />
+			</Btn>`
 	}),
 	args: {
 		class: 'icon',
@@ -157,7 +156,6 @@ export const infoAccent: Story = {
 
 export const dropdown: Story = {
 	args: {
-		//@ts-expect-error it doesn't pick up types for native events
 		onClick: undefined,
 		default: undefined,
 		dropdown: OptionList
