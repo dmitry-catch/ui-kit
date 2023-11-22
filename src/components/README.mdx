@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/blocks'
+import Package from '../../package.json'
+
+<Meta title="Introduction" />
+
+<h3>Current Version of UI-KIT is {Package.version}</h3>
+
+
+### New stories
+Для добавления нового стори используйте следующий шаблон:
+
+```typescript
+//./NewComponent.stories.ts
+
+import { Meta, StoryObj } from '@storybook/vue3'
+import NewComponent from './NewComponent.vue'
+
+export default {
+	component: NewComponent,
+} satisfies Meta<typeof NewComponent>
+
+type Story = StoryObj<typeof NewComponent>
+
+export const Default: Story = {}
+
+export const AnotherStory: Story = {
+	args: {
+		//...
+	}
+}
+```
