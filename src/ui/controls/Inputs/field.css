@@ -1,0 +1,100 @@
+.Field {
+	display: flex;
+	flex-flow: column;
+}
+
+.Field.disabled {
+	cursor: not-allowed;
+	color: var(--design-text-color-secondary);
+}
+
+.Field.disabled .Field__visibleInput {
+	background-color: var(--design-background-color-secondary);
+}
+
+.Field.disabled .Field__input {
+	background-color: var(--design-background-color-secondary);
+	color: var(--design-text-color-secondary);
+	cursor: not-allowed;
+}
+
+.Field__description {
+	color: var(--design-text-color-secondary);
+}
+
+.Field__label {
+	display: flex;
+	gap: var(--design-gap-unit);
+	background-color: var(--design-background-color-primary);
+}
+
+.Field__input {
+	border: none;
+	width: 100%;
+	display: block;
+	padding: 0;
+	background: var(--design-background-color-primary);
+}
+.Field__input:focus-visible {
+	outline: none;
+}
+
+.Field__visibleInput {
+	background: var(--design-background-color-primary);
+	border: var(--design-border-color-secondary) 1px solid;
+	border-radius: var(--design-border-radius-control);
+	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
+}
+.Field--invalid .Field__visibleInput,
+.Field.invalid .Field__visibleInput {
+	border-color: var(--design-border-color-danger-primary);
+}
+.Field__visibleInput {
+	outline: var(--forced-focus-outline, none);
+}
+.Field__visibleInput:focus-within {
+	outline: var(--design-focus-outline);
+}
+.Field__below {
+	display: flex;
+	flex-flow: row;
+}
+.Field__validationMessage {
+}
+.Field__counter {
+	margin-left: auto;
+}
+.Field__validationMessage.danger {
+	color: var(--design-text-color-danger);
+}
+
+.Field__beforeWrapper,
+.Field__afterWrapper {
+	width: min-content;
+	height: min-content;
+}
+.Field.dense {
+	--icon-size: 16px;
+}
+.Field.dense .Field__label,
+.Field.dense .Field__description,
+.Field.dense .Field__below {
+	position: fixed;
+	transform: scale(0);
+}
+
+.Field.dense .Field__visibleInput,
+.Field.dense .Field__input {
+	--design-current-font-size: var(--design-font-size-footnote);
+	--design-current-line-height: var(--design-line-height-footnote);
+}
+.Field.dense .Field__visibleInput {
+	padding: calc(0.25 * var(--design-gap-unit)) calc(var(--design-gap-unit));
+}
+.Field__requiredStar {
+	color: var(--design-text-color-danger);
+}
