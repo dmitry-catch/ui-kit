@@ -1,12 +1,13 @@
-*::-webkit-scrollbar {
-	width: 12px;
+::-webkit-scrollbar-track {
+	border-radius: 8px;
 }
-*::-webkit-scrollbar-thumb {
-	min-height: 35px;
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+::-webkit-scrollbar-thumb {
+	min-height: 16px;
+	min-width: 16px;
+	border-radius: 8px;
 	background: var(--design-border-color-secondary);
-	border-color: rgba(255, 255, 255, 0);
-	border-style: solid;
-	border-width: 12px 4px;
-	background-clip: padding-box;
-	border-radius: 50% / 15px;
 }
