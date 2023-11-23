@@ -75,12 +75,12 @@
 
 <script setup lang="ts">
 import { computed, provide, ref, toRefs, useSlots, watch } from 'vue'
+import { DataGridColumn } from './DataGridColumn'
+import DataGridHeaderRow from './DataGridHeaderRow.vue'
+import { useFilterContext } from './useFilterContext'
 import { and, FilterExpression } from '@forecsys/collections'
-import DataGridHeaderRow from './components/DataGridHeaderRow.vue'
-import DataGridRowGroup from './components/DataGridRowGroup.vue'
-import { useFilterContext } from './utils/useFilterContext.js'
-import { useSortingContext } from './utils/useSortingContext.js'
-import { DataGridColumn } from './types.js'
+import { useSortingContext } from './useSortingContext'
+import DataGridRowGroup from './DataGridRowGroup.vue'
 
 export interface Props {
 	columns: Array<DataGridColumn>
