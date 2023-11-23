@@ -1,5 +1,5 @@
 <style>
-@import '/src/styles/field.css';
+@import '../field.css';
 
 .Multiselect {
 	--icon-size: var(--design-current-line-height);
