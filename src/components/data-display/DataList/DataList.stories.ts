@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/vue3'
 import DataList from './DataList.vue'
 import { action } from '@storybook/addon-actions'
 
-const onMenuItemClick = action('Menu item click')
-
 export default {
 	component: DataList,
 	args: {
@@ -15,13 +13,13 @@ export default {
 			{ name: 'Item 5' }
 		],
 		contextMenu: [
-			{ name: 'Point 1', action: onMenuItemClick },
-			{ name: 'Point 2', action: onMenuItemClick },
-			{ name: 'Point 3', action: onMenuItemClick },
-			{ name: 'Point 4', action: onMenuItemClick },
-			{ name: 'Point 5', action: onMenuItemClick }
+			{ name: 'Point 1' },
+			{ name: 'Point 2' },
+			{ name: 'Point 3' },
+			{ name: 'Point 4' },
+			{ name: 'Point 5' }
 		],
-		onItemClick: action('Item click')
+		onItemClick: action('itemClick')
 	},
 	render: (args) => ({
 		components: { DataList },

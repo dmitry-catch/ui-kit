@@ -22,7 +22,6 @@
 		"vue/attribute-hyphenation": ["error", "never"],
 		"vue/v-on-event-hyphenation": ["error", "never"],
 		"@typescript-eslint/no-explicit-any": "warn",
-		"@typescript-eslint/no-unused-vars": "warn",
 		"sonarjs/no-duplicate-string": "warn",
 		"vue/require-v-for-key": "warn",
 		"vue/valid-v-for": "warn",
