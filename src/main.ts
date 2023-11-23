@@ -15,8 +15,7 @@ import TextField from './components/data-entry/TextField/TextField.vue'
 import Modal from './components/general/Modal/Modal.vue'
 import Multiselect from './components/data-entry/Multiselect/Multiselect.vue'
 import Checkbox from './components/data-entry/Checkbox/Checkbox.vue'
-import SelectableOption from './components/data-entry/SelectPicker/SelectableOption/SelectableOption.vue'
-import SelectPicker from './components/data-entry/SelectPicker/SelectPicker.vue'
+import DropdownSelectableOption from './components/data-entry/DropdownSelectableOption/DropdownSelectableOption.vue'
 import DataList from './components/data-display/DataList/DataList.vue'
 import DataListGroup from './components/data-display/DataList/DataListGroup.vue'
 import DataListItem from './components/data-display/DataList/DataListItem.vue'
@@ -43,8 +42,7 @@ export {
 	Checkbox,
 	DatePicker,
 	DateRangePicker,
-	SelectPicker,
-	SelectableOption,
+	DropdownSelectableOption,
 	Multiselect,
 	TextField,
 	//Data display category

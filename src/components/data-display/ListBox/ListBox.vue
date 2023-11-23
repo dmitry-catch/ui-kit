@@ -20,7 +20,10 @@
 				@click="(event) => dropdownOptionClick(event, option)"
 			>
 				<slot name="item" :data="option">
-					<SelectableOption :option="option" :selected="modelValue.includes(option.value)"></SelectableOption>
+					<DropdownSelectableOption
+						:option="option"
+						:selected="modelValue.includes(option.value)"
+					></DropdownSelectableOption>
 				</slot>
 			</div>
 		</div>
@@ -31,7 +34,7 @@
 import Popover from '../../non-public/Popover/Popover.vue'
 import { ref, toRefs } from 'vue'
 import { ListBoxOption } from './ListBoxOption.js'
-import SelectableOption from '../../data-entry/SelectPicker/SelectableOption/SelectableOption.vue'
+import DropdownSelectableOption from '../../data-entry/DropdownSelectableOption/DropdownSelectableOption.vue'
 import { useClickOutside } from '../../../utils/useClickOutside.js'
 
 interface ListBoxProps {
