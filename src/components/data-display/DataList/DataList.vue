@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import DataListGroup from './DataListGroup.vue'
+import DataListGroup from './DataListGroup/DataListGroup.vue'
 import { Grouped } from '@forecsys/collections'
 
 interface DataListProps {

@@ -1,5 +1,5 @@
 <style>
-@import '../field.css';
+@import '/src/styles/field.css';
 
 .Multiselect {
 	--icon-size: var(--design-current-line-height);
@@ -94,7 +94,7 @@ import Icon from '../../general/Icon/Icon.vue'
 import Pill from '../../data-display/Pill/Pill.vue'
 import Button from '../../general/Button/Button.vue'
 import Checkbox from '../Checkbox/Checkbox.vue'
-import { FieldLocalization } from '../../../localization.js'
+import { FieldLocalization } from '../../../types/localization.js'
 
 interface MultiselectProps {
 	modelValue: Array<any>

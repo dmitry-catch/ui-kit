@@ -1,6 +1,6 @@
 <style>
 @import '/public/visually-hidden.css';
-@import '/src/components/data-entry/field.css';
+@import '/src/styles/field.css';
 
 .DatePicker {
 }
@@ -230,9 +230,9 @@ import Popover from '../../non-public/Popover/Popover.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Button from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
-import { DateLocalizationRu } from '../../../localization.ru.js'
+import { DateLocalizationRu } from '../../../consts/localization.ru.js'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from '../../../utils/dateHelpers.js'
+import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from './utils.js'
 
 interface DatePickerProps {
 	disabled?: boolean
@@ -257,16 +257,15 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 const emit = defineEmits(['update:modelValue'])
 
 const { autofocus } = toRefs(props)
-const modelValue = ref(props.modelValue ? new Date(props.modelValue).toLocaleDateString().replaceAll('.', '-') : null)
-console.log(modelValue.value)
-const day = ref<string | undefined>(modelValue.value?.split('-')[0])
+const modelValue = ref(props.modelValue ? JSON.stringify(new Date(props.modelValue)).split('T')[0] : null)
+const day = ref<string | undefined>(modelValue.value?.split('-')[2])
 const month = ref<string | undefined>(modelValue.value?.split('-')[1])
-const year = ref<string | undefined>(modelValue.value?.split('-')[2])
+const year = ref<string | undefined>(modelValue.value?.split('-')[0])
 
 watchEffect(() => {
-	year.value = modelValue.value != null ? modelValue.value?.split('-')[2] : undefined
+	year.value = modelValue.value != null ? modelValue.value?.split('-')[0] : undefined
 	month.value = modelValue.value != null ? modelValue.value?.split('-')[1] : undefined
-	day.value = modelValue.value != null ? modelValue.value?.split('-')[0] : undefined
+	day.value = modelValue.value != null ? modelValue.value?.split('-')[2] : undefined
 })
 
 const dayRef = ref()

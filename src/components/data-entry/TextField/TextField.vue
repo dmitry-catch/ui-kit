@@ -1,5 +1,5 @@
 <style>
-@import '../field.css';
+@import '/src/styles/field.css';
 </style>
 
 <template>

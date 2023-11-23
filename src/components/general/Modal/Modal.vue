@@ -7,7 +7,6 @@
 	border: none;
 	background: none;
 	padding: 0;
-	height: auto;
 	max-height: 100vh;
 }
 
