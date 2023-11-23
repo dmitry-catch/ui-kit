@@ -164,7 +164,7 @@
 						:disabled="disabled"
 						:autofocus="autofocus"
 						@input="handleDayInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 					<span class="DatePicker__dateValue">{{ day?.padStart(2, '0').slice(-2) || 'ДД' }}</span>
 				</label>
@@ -180,7 +180,7 @@
 						:valuel="month"
 						:disabled="disabled"
 						@input="handleMonthInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 					<span class="DatePicker__dateValue">{{ month?.padStart(2, '0').slice(-2) || 'ММ' }}</span>
 				</label>
@@ -195,7 +195,7 @@
 						:value="year"
 						:disabled="disabled"
 						@input="handleYearInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 					<span class="DatePicker__dateValue">{{ year?.padStart(4, '0').slice(-4) || 'ГГГГ' }}</span>
 				</label>
@@ -231,8 +231,9 @@ import Icon from '../../general/Icon/Icon.vue'
 import Btn from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
 import { DateLocalizationRu } from '../../../localization.ru.js'
-import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from '../../../utils/dateHelpers.js'
+import CalendarPopup from '../DataHelpers/CalendarPopup.vue'
+import { handleInputFocus } from '../DataHelpers/DataEventHelper.js'
+import { handleYearInputEvent, numberOfDaysInMonth } from '../DataHelpers/DataHelper.js'
 
 interface DatePickerProps {
 	disabled?: boolean
@@ -258,14 +259,14 @@ const emit = defineEmits(['update:modelValue'])
 
 const { autofocus } = toRefs(props)
 const modelValue = ref(props.modelValue ? JSON.stringify(new Date(props.modelValue)).split('T')[0] : null)
-const day = ref<string | undefined>(modelValue.value?.split('-')[2])
-const month = ref<string | undefined>(modelValue.value?.split('-')[1])
-const year = ref<string | undefined>(modelValue.value?.split('-')[0])
+const day = ref<string | null | undefined>(modelValue.value?.split('-')[2])
+const month = ref<string | null | undefined>(modelValue.value?.split('-')[1])
+const year = ref<string | null | undefined>(modelValue.value?.split('-')[0])
 
 watchEffect(() => {
-	year.value = modelValue.value != null ? modelValue.value?.split('-')[0] : undefined
-	month.value = modelValue.value != null ? modelValue.value?.split('-')[1] : undefined
-	day.value = modelValue.value != null ? modelValue.value?.split('-')[2] : undefined
+	year.value = modelValue.value != null ? modelValue.value?.split('-')[0] : null
+	month.value = modelValue.value != null ? modelValue.value?.split('-')[1] : null
+	day.value = modelValue.value != null ? modelValue.value?.split('-')[2] : null
 })
 
 const dayRef = ref()
@@ -333,9 +334,9 @@ watch([day, month, year], () => {
 			if (Number(day.value) < 1 && day.value.length > 1) day.value = '1'
 		}
 	}
-	year.value = year.value ? year.value.toString().slice(-4) : undefined
-	month.value = month.value ? month.value.toString().slice(-2) : undefined
-	day.value = day.value ? day.value.toString().slice(-2) : undefined
+	year.value = year.value ? year.value.toString().slice(-4) : null
+	month.value = month.value ? month.value.toString().slice(-2) : null
+	day.value = day.value ? day.value.toString().slice(-2) : null
 	if (day.value && month.value && year.value) emit('update:modelValue', `${year.value}-${month.value}-${day.value}`)
 	else emit('update:modelValue', null)
 })

@@ -171,7 +171,7 @@
 						class="visually-hidden"
 						:disabled="disabled"
 						@input="handleDayFromInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
@@ -184,7 +184,7 @@
 						class="visually-hidden"
 						:disabled="disabled"
 						@input="handleMonthFromInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
@@ -198,7 +198,7 @@
 						class="visually-hidden"
 						:disabled="disabled"
 						@input="handleYearFromInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 				</div>
 				<span> &mdash; </span>
@@ -212,7 +212,7 @@
 						class="visually-hidden"
 						:disabled="disabled"
 						@input="handleDayToInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
@@ -225,7 +225,7 @@
 						class="visually-hidden"
 						:disabled="disabled"
 						@input="handleMonthToInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 				</div>
 				<span>.</span>
@@ -238,7 +238,7 @@
 						class="visually-hidden"
 						:disabled="disabled"
 						@input="handleYearToInput"
-						@focus="callSelectOnElement"
+						@focus="handleInputFocus"
 					/>
 				</div>
 			</div>
@@ -277,12 +277,12 @@
 </template>
 
 <script setup lang="ts">
-import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
+import CalendarPopup from '../DataHelpers/CalendarPopup.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import { DateLocalizationRu } from '../../../localization.ru.js'
 import { computed, ref, toRefs, watch } from 'vue'
-import { callSelectOnElement, handleYearInputEvent, isInputEventTriggersEffect } from '../../../utils/dateHelpers.js'
-import { focusNextInput } from './utils.js'
+import { handleInputFocus, handleNextInputFocus } from '../DataHelpers/DataEventHelper.js'
+import { handleYearInputEvent, isInputEventTriggersEffect } from '../DataHelpers/DataHelper.js'
 
 interface DateRangePickerProps {
 	disabled?: boolean
@@ -335,28 +335,28 @@ const isCalendarOpen = ref(false)
 const handleDayFromInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	dayFrom.value = target.value
-	if (isInputEventTriggersEffect(dayFrom.value)) focusNextInput(refsArray, refsArray.indexOf(dayFromRef))
+	if (isInputEventTriggersEffect(dayFrom.value)) handleNextInputFocus(refsArray, refsArray.indexOf(dayFromRef))
 }
 const handleMonthFromInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	monthFrom.value = target.value
-	if (isInputEventTriggersEffect(monthFrom.value)) focusNextInput(refsArray, refsArray.indexOf(monthFromRef))
+	if (isInputEventTriggersEffect(monthFrom.value)) handleNextInputFocus(refsArray, refsArray.indexOf(monthFromRef))
 }
 const handleYearFromInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	yearFrom.value = handleYearInputEvent(target.value)
-	if (isInputEventTriggersEffect(yearFrom.value)) focusNextInput(refsArray, refsArray.indexOf(yearFromRef))
+	if (isInputEventTriggersEffect(yearFrom.value)) handleNextInputFocus(refsArray, refsArray.indexOf(yearFromRef))
 }
 
 const handleDayToInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	dayTo.value = target.value
-	if (isInputEventTriggersEffect(dayTo.value)) focusNextInput(refsArray, refsArray.indexOf(dayToRef))
+	if (isInputEventTriggersEffect(dayTo.value)) handleNextInputFocus(refsArray, refsArray.indexOf(dayToRef))
 }
 const handleMonthToInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	monthTo.value = target.value
-	if (isInputEventTriggersEffect(monthTo.value)) focusNextInput(refsArray, refsArray.indexOf(monthToRef))
+	if (isInputEventTriggersEffect(monthTo.value)) handleNextInputFocus(refsArray, refsArray.indexOf(monthToRef))
 }
 const handleYearToInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
