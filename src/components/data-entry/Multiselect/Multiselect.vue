@@ -67,17 +67,17 @@
 						<Icon class="Multiselect__removeVariant" name="close"></Icon>
 					</Pill>
 				</div>
-				<Button
+				<Btn
 					class="Multiselect__clearHandle icon functional"
 					:class="{ hidden: !hasSelectedValue }"
 					@click="clearSelection"
 				>
 					<Icon name="close"></Icon>
-				</Button>
-				<Button class="Multiselect__dropdownHandle icon functional" @click="toggleDropdown">
+				</Btn>
+				<Btn class="Multiselect__dropdownHandle icon functional" @click="toggleDropdown">
 					<Icon v-if="dropdownOpened" name="arrow_down"></Icon>
 					<Icon v-else name="arrow_up"></Icon>
-				</Button>
+				</Btn>
 			</div>
 		</div>
 		<div v-show="dropdownOpened" ref="dropdown" class="Multiselect__dropdown">
@@ -92,7 +92,7 @@
 import { computed, inject, onMounted, ref, toRefs } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Pill from '../../data-display/Pill/Pill.vue'
-import Button from '../../general/Button/Button.vue'
+import Btn from '../../general/Button/Button.vue'
 import Checkbox from '../Checkbox/Checkbox.vue'
 import { FieldLocalization } from '../../../localization.js'
 

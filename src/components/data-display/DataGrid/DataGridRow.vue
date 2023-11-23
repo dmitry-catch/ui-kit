@@ -40,10 +40,10 @@
 	<tr class="DataGridRow">
 		<td v-if="detailsColumn" class="DataGridRow__cell DataGridRow__detailsCell">
 			<span class="DataGridRow__detailsToggler">
-				<Button class="icon functional noBackground" @click="detailsVisible = !detailsVisible">
+				<Btn class="icon functional noBackground" @click="detailsVisible = !detailsVisible">
 					<Icon v-if="detailsVisible" name="chevron_down"></Icon>
 					<Icon v-else name="chevron_forward"></Icon>
-				</Button>
+				</Btn>
 			</span>
 		</td>
 		<td v-if="selectColumn" class="DataGridRow__cell DataGridRow__selectCell">
@@ -66,7 +66,7 @@
 import { computed, inject, ref, Ref, toRefs } from 'vue'
 import { DataGridColumn } from './DataGridColumn'
 import DataGridCell from './DataGridCell.vue'
-import Button from '../../general/Button/Button.vue'
+import Btn from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Checkbox from '../../data-entry/Checkbox/Checkbox.vue'
 

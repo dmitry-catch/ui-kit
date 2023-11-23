@@ -37,19 +37,19 @@
 			<slot name="content" :data="data"></slot>
 		</div>
 		<div class="DataListItem__contextMenu">
-			<Button class="DataListItem__button icon functional" :dropdown="wrappedContextMenu">
+			<Btn class="DataListItem__button icon functional" :dropdown="wrappedContextMenu">
 				<Icon name="more_vertical"></Icon>
 				<template #dropdownItem="{ data }">
 					<slot name="contextMenuItem" :data="data"></slot>
 				</template>
-			</Button>
+			</Btn>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import Icon from '../../general/Icon/Icon.vue'
-import Button from '../../general/Button/Button.vue'
+import Btn from '../../general/Button/Button.vue'
 import { computed, toRefs } from 'vue'
 
 interface DataListItemProps {

@@ -22,85 +22,85 @@
 	<div class="ButtonStand">
 		<div class="ButtonStand__ButtonStand__currentButtonsContainer">
 			<div class="ButtonStand__currentButton">
-				<p>Button_actual</p>
-				<Button @click="onClick">Кнопка</Button>
+				<p>Btn_actual</p>
+				<Btn @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>Disabled</p>
-				<Button :disabled="true" @click="onClick">Кнопка</Button>
+				<Btn :disabled="true" @click="onClick">Кнопка</Btn>
 			</div>
 
 			<div class="ButtonStand__currentButton">
 				<p>accent</p>
-				<Button class="accent" @click="onClick">Кнопка</Button>
+				<Btn class="accent" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>accent disabled</p>
-				<Button class="accent" :disabled="true" @click="onClick">Кнопка</Button>
+				<Btn class="accent" :disabled="true" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>minimal</p>
-				<Button class="minimal" @click="onClick">Кнопка</Button>
+				<Btn class="minimal" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>minimal disabled</p>
-				<Button class="minimal" :disabled="true" @click="onClick">Кнопка</Button>
+				<Btn class="minimal" :disabled="true" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>functional</p>
-				<Button class="functional" @click="onClick">Кнопка</Button>
+				<Btn class="functional" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>functional disabled</p>
-				<Button class="functional" :disabled="true" @click="onClick">Кнопка</Button>
+				<Btn class="functional" :disabled="true" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon</p>
-				<Button class="icon">
+				<Btn class="icon">
 					<Icon name="inbox" />
-				</Button>
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon functional</p>
-				<Button class="icon functional">
+				<Btn class="icon functional">
 					<Icon name="inbox" />
-				</Button>
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon disabled</p>
-				<Button class="icon" :disabled="true">
+				<Btn class="icon" :disabled="true">
 					<Icon name="inbox" />
-				</Button>
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>icon functional disabled</p>
-				<Button class="icon functional" :disabled="true">
+				<Btn class="icon functional" :disabled="true">
 					<Icon name="inbox" />
-				</Button>
+				</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>warning</p>
-				<Button class="warning" @click="onClick">Кнопка</Button>
+				<Btn class="warning" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>warning.accent</p>
-				<Button class="warning accent" @click="onClick">Кнопка</Button>
+				<Btn class="warning accent" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>danger</p>
-				<Button class="danger" @click="onClick">Кнопка</Button>
+				<Btn class="danger" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>.danger.accent</p>
-				<Button class="danger accent" @click="onClick">Кнопка</Button>
+				<Btn class="danger accent" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>.info</p>
-				<Button class="info" @click="onClick">Кнопка</Button>
+				<Btn class="info" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>.info.accent</p>
-				<Button class="info accent" @click="onClick">Кнопка</Button>
+				<Btn class="info accent" @click="onClick">Кнопка</Btn>
 			</div>
 			<div class="ButtonStand__currentButton">
 				<p>.dropdown</p>

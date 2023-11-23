@@ -54,38 +54,38 @@
 			></TextField>
 			<DatePicker v-else v-model="date" class="dense" autofocus>
 				<template #after>
-					<Button class="icon functional">
+					<Btn class="icon functional">
 						<Icon name="close" @click="date = null"></Icon>
-					</Button>
+					</Btn>
 				</template>
 			</DatePicker>
 		</div>
 		<div class="DataGridHeader__actions">
-			<Button
+			<Btn
 				v-if="(searchable || isDateColumn(column)) && !searchOpened"
 				class="DataGridHeader__action DataGridHeader__actionSearch icon functional"
 				@click="searchOpened = !searchOpened"
 			>
 				<Icon v-if="!isDateColumn(column)" :class="{ accent: Boolean(search) }" name="search"></Icon>
 				<Icon v-else :class="{ accent: Boolean(date) }" name="calendar"></Icon>
-			</Button>
+			</Btn>
 			<div
 				v-if="isEnumColumn(column)"
 				:ref="(element) => (filterListButton = element)"
 				class="DataGridHeader__eventInterceptor"
 			>
-				<Button
+				<Btn
 					class="DataGridHeader__action DataGridHeader__actionFilter icon functional"
 					@click="openFilterList"
 				>
 					<Icon name="filter"></Icon>
-				</Button>
+				</Btn>
 			</div>
-			<Button class="DataGridHeader__action DataGridHeader__actionSort icon functional" @click="clickSort">
+			<Btn class="DataGridHeader__action DataGridHeader__actionSort icon functional" @click="clickSort">
 				<Icon v-if="existingSort == null" name="sort"></Icon>
 				<Icon v-else-if="existingSort.direction === 'asc'" name="sort_ascending"></Icon>
 				<Icon v-else-if="existingSort.direction === 'desc'" name="sort_decending"></Icon>
-			</Button>
+			</Btn>
 		</div>
 		<ListBox
 			v-if="filterListOpened"
@@ -100,7 +100,7 @@
 import { DataGridColumn, isDateColumn, isEnumColumn, isTypedColumn } from './DataGridColumn.js'
 import { computed, ref, toRefs, watchEffect } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
-import Button from '../../general/Button/Button.vue'
+import Btn from '../../general/Button/Button.vue'
 import TextField from '../../data-entry/TextField/TextField.vue'
 import {
 	BinaryFilterExpression,

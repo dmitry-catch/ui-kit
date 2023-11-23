@@ -204,7 +204,7 @@
 				</div>
 			</div>
 
-			<Button
+			<Btn
 				class="DatePicker__visible icon functional"
 				:class="{
 					disabled__input: disabled
@@ -212,7 +212,7 @@
 				@click="handleCalendarClick"
 			>
 				<Icon class="DatePicker__icon calendarIcon" name="calendar"></Icon>
-			</Button>
+			</Btn>
 		</div>
 		<Popover v-if="isCalendarOpen" tabindex="0">
 			<CalendarPopup
@@ -228,7 +228,7 @@
 <script setup lang="ts">
 import Popover from '../../non-public/Popover/Popover.vue'
 import Icon from '../../general/Icon/Icon.vue'
-import Button from '../../general/Button/Button.vue'
+import Btn from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
 import { DateLocalizationRu } from '../../../localization.ru.js'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
