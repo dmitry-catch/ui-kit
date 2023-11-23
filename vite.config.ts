@@ -10,7 +10,7 @@ export default defineConfig({
 		emptyOutDir: true,
 		target: ['es2020'],
 		lib: {
-			entry: resolve(__dirname, 'src/main.ts'),
+			entry: resolve(__dirname, '/src/main.ts'),
 			formats: ['es'],
 			fileName: '[name]'
 		},

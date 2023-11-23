@@ -1,6 +1,6 @@
 <style>
 @import '/public/visually-hidden.css';
-@import '/src/styles/field.css';
+@import '/src/components/data-entry/field.css';
 
 .DatePicker {
 }
@@ -230,9 +230,9 @@ import Popover from '../../non-public/Popover/Popover.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Button from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
-import { DateLocalizationRu } from '../../../consts/localization.ru.js'
+import { DateLocalizationRu } from '../../../localization.ru.js'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from './utils.js'
+import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from '../../../utils/dateHelpers.js'
 
 interface DatePickerProps {
 	disabled?: boolean
