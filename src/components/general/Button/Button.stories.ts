@@ -6,10 +6,12 @@ import { OptionList } from 'storybook/consts.js'
 export default {
 	component: Button,
 	args: {
-		default: 'Button',
+		default: 'Кнопка',
 		disabled: false
 	},
 	argTypes: {
+		//@ts-expect-error it doesn't pick up types for native events
+		onClick: {},
 		class: {
 			control: 'select',
 			options: [
@@ -155,6 +157,8 @@ export const infoAccent: Story = {
 
 export const dropdown: Story = {
 	args: {
+		//@ts-expect-error it doesn't pick up types for native events
+		onClick: undefined,
 		default: undefined,
 		dropdown: OptionList
 	}
