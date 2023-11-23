@@ -9,6 +9,12 @@ export default {
 		readonly: false,
 		label: '',
 		description: '',
+		minLength: null,
+		maxLength: null,
+		min: null,
+		max: null,
+		placeholder: null,
+		tabindex: null,
 		modelValue: 'Hello'
 	},
 	argTypes: {
@@ -40,10 +46,6 @@ export const MinLength: Story = {
 		minLength: 5
 	}
 }
-
-/**
- * При установке свойства `maxLength` появляется счетчик символов.
- */
 export const MaxLength: Story = {
 	args: {
 		maxLength: 5
