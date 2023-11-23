@@ -232,7 +232,7 @@ import Button from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
 import { DateLocalizationRu } from '../../../localization.ru.js'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from './utils.js'
+import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from '../../../utils/dateHelpers.js'
 
 interface DatePickerProps {
 	disabled?: boolean
