@@ -226,7 +226,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import Popover from '../../general/Popover/Popover.vue'
+import Popover from '../../layout/Popover/Popover.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Btn from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
