@@ -23,11 +23,11 @@ export default {
 		setup: () => ({ args }),
 		template: `
 			<DataListGroup v-bind='args'>
-				<template v-slot:content='{data}'>
-					{{ data.name }}
+				<template v-slot:content='slotProps'>
+					{{ slotProps.data.name }}
 				</template>
-				<template v-slot:contextMenuItem='{data}'>
-					{{ data.name }}
+				<template v-slot:contextMenuItem='slotProps'>
+					{{ slotProps.data.name }}
 				</template>
 			</DataListGroup>`
 	})
