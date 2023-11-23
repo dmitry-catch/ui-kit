@@ -258,6 +258,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const { autofocus } = toRefs(props)
 const modelValue = ref(props.modelValue ? new Date(props.modelValue).toLocaleDateString().replaceAll('.', '-') : null)
+console.log(modelValue.value)
 const day = ref<string | undefined>(modelValue.value?.split('-')[0])
 const month = ref<string | undefined>(modelValue.value?.split('-')[1])
 const year = ref<string | undefined>(modelValue.value?.split('-')[2])
