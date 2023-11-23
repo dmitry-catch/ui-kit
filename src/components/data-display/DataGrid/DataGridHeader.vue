@@ -114,7 +114,7 @@ import {
 } from '@forecsys/collections'
 import { useFilterContext } from './useFilterContext.js'
 import ListBox from '../ListBox/ListBox.vue'
-import { ListBoxOption } from '../ListBox/types.js'
+import { ListBoxOption } from '../ListBox/ListBoxOption.js'
 import { useClickOutside } from '../../../utils/useClickOutside.js'
 import { useSortingContext } from './useSortingContext.js'
 import { MouseEvent } from 'happy-dom'

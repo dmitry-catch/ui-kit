@@ -164,7 +164,7 @@
 import { computed, ref, toRefs } from 'vue'
 import Icon from '../Icon/Icon.vue'
 import ListBox from '../../data-display/ListBox/ListBox.vue'
-import type { ListBoxOption } from '../../data-display/ListBox/types.js'
+import type { ListBoxOption } from '../../data-display/ListBox/ListBoxOption.js'
 
 //TODO move from the 'class' prop predefined classes
 interface BtnProps {

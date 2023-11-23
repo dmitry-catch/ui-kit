@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import Popover from '../../non-public/Popover/Popover.vue'
 import { ref, toRefs } from 'vue'
-import { ListBoxOption } from './types.js'
+import { ListBoxOption } from './ListBoxOption.js'
 import SelectableOption from '../../data-entry/SelectPicker/SelectableOption/SelectableOption.vue'
 import { useClickOutside } from '../../../utils/useClickOutside.js'
 
