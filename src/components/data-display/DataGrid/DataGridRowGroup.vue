@@ -21,7 +21,7 @@
 		</template>
 	</DataGridRow>
 	<template v-else>
-		<DataGroupToggler v-model="opened" class="DataGridRowGroup__toggler" :group="group"></DataGroupToggler>
+		<DataGroupTogler v-model="opened" class="DataGridRowGroup__toggler" :group="group"></DataGroupTogler>
 		<template v-if="opened">
 			<DataGridRowGroup
 				v-for="item of group.data"
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
 import { Group, isGroup } from '@forecsys/collections'
-import DataGroupToggler from '../../non-public/DataGroupToggler/DataGroupToggler.vue'
+import DataGroupTogler from '../DataGroupToggler/DataGroupToggler.vue'
 import DataGridRow from './DataGridRow.vue'
 import { DataGridColumn } from './DataGridColumn.js'
 

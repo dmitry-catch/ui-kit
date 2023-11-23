@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import Popover from '../../non-public/Popover/Popover.vue'
+import Popover from '../../general/Popover/Popover.vue'
 import { ref, toRefs } from 'vue'
 import { ListBoxOption } from './ListBoxOption.js'
 import DropdownSelectableOption from '../../data-entry/DropdownSelectableOption/DropdownSelectableOption.vue'

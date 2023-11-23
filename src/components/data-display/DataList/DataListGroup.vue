@@ -28,7 +28,7 @@
 import { computed, ref, toRefs } from 'vue'
 import DataListItem from './DataListItem.vue'
 import { Group, isGroup } from '@forecsys/collections'
-import DataGroupToggler from '../../non-public/DataGroupToggler/DataGroupToggler.vue'
+import DataGroupToggler from '../DataGroupToggler/DataGroupToggler.vue'
 
 interface DataListGroup {
 	data: any
