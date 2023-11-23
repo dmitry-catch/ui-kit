@@ -279,7 +279,7 @@
 <script setup lang="ts">
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
 import Icon from '../../general/Icon/Icon.vue'
-import { DateLocalizationRu } from '../../../consts/localization.ru.js'
+import { DateLocalizationRu } from '../../../localization.ru.js'
 import { computed, ref, toRefs, watch } from 'vue'
 import { callSelectOnElement, handleYearInputEvent, isInputEventTriggersEffect } from '../DatePicker/utils.js'
 import { focusNextInput } from './utils.js'
