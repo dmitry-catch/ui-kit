@@ -12,6 +12,10 @@ type Story = StoryObj<typeof Icon>
 
 export const Default: Story = {}
 
+/**
+ * Actual for 16/11/2023
+ * Except typewriter-24px.png and mic-24px-1.svg
+ */
 const IconNames: string[] = [
 	'Crown',
 	'access',
@@ -325,10 +329,6 @@ const IconNames: string[] = [
 	'zoom_out'
 ]
 
-/**
- * Actual for 16/11/2023
- * Except typewriter-24px.png and mic-24px-1.svg
- */
 export const AllIcons: Story = {
 	render: (args) => ({
 		components: { Icon },
