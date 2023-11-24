@@ -249,7 +249,7 @@ interface DatePickerProps {
 	label?: string
 	hint?: string
 	description?: string
-	modelValue?: string | Date | undefined
+	modelValue?: string | Date
 }
 
 const props = withDefaults(defineProps<DatePickerProps>(), {
@@ -264,9 +264,9 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 })
 const emit = defineEmits(['update:modelValue'])
 
-const { autofocus, modelValue } = toRefs(props)
+const { autofocus } = toRefs(props)
 
-const internalValue = ref<Date | undefined>(handleInitialDateValue(modelValue.value))
+const internalValue = ref<Date | undefined>()
 
 const day = ref<number | undefined>()
 const month = ref<number | undefined>()
@@ -309,7 +309,7 @@ const handleCalendarClose = () => {
 
 const handleCalendarClick = () => {
 	if (!props.disabled) {
-		if (!internalValue.value || !(internalValue.value instanceof Date)) internalValue.value = new Date()
+		if (!internalValue.value) internalValue.value = new Date()
 		isCalendarOpen.value = !isCalendarOpen.value
 	}
 }
@@ -329,11 +329,8 @@ watch([day, month, year], () => {
 	internalValue.value = new Date(newInternalValue.toDateString())
 })
 
-watch(modelValue, (value) => {
-	if (value != internalValue.value) internalValue.value = handleInitialDateValue(value)
-})
-
 onMounted(() => {
+	internalValue.value = handleInitialDateValue(props.modelValue)
 	if (autofocus.value) focus()
 })
 

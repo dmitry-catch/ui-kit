@@ -41,6 +41,6 @@ export const callSelectOnElement = (event: Event) => {
 
 export const handleInitialDateValue = (value: string | Date | undefined) => {
 	if (!value) return undefined
-	else if (typeof value == 'string') return new Date(String(value).split('T')[0])
-	else if (value instanceof Date) return new Date(value.toDateString())
+	else if (value instanceof Date) return value
+	else if (typeof value == 'string') return new Date(value)
 }
