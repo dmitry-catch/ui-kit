@@ -146,11 +146,10 @@
 			<div class="Field__beforeWrapper">
 				<slot name="before"></slot>
 			</div>
-			<!-- dateTimeValue.some((value) => /\d/.test(value)) -->
 			<div
 				class="DatePicker__dateTime text-medium"
 				:class="{
-					active: true,
+					active: dateTimeValue.some((value) => /\d/.test(value)),
 					disabled: disabled
 				}"
 			>
@@ -167,9 +166,7 @@
 						@input="handleDayInput"
 						@focus="callSelectOnElement"
 					/>
-					<span class="DatePicker__dateValue">{{
-						day ? String(day)?.padStart(2, '0').slice(-2) : DateLocalization[0]
-					}}</span>
+					<span class="DatePicker__dateValue">{{ day?.padStart(2, '0').slice(-2) || 'ДД' }}</span>
 				</label>
 
 				<span class="DatePicker__dateSplitter">.</span>
@@ -185,16 +182,14 @@
 						@input="handleMonthInput"
 						@focus="callSelectOnElement"
 					/>
-					<span class="DatePicker__dateValue">{{
-						month ? String(month)?.padStart(2, '0').slice(-2) : DateLocalization[1]
-					}}</span>
+					<span class="DatePicker__dateValue">{{ month?.padStart(2, '0').slice(-2) || 'ММ' }}</span>
 				</label>
 				<span class="DatePicker__dateSplitter">.</span>
 				<label class="Field__input" :class="{ disabled: disabled }">
 					<input
 						ref="yearRef"
 						type="number"
-						min="1900"
+						min="1"
 						max="9999"
 						class="DatePicker__input visually-hidden"
 						:value="year"
@@ -202,9 +197,7 @@
 						@input="handleYearInput"
 						@focus="callSelectOnElement"
 					/>
-					<span class="DatePicker__dateValue">{{
-						year ? String(year)?.padStart(4, '0').slice(-4) : DateLocalization[2]
-					}}</span>
+					<span class="DatePicker__dateValue">{{ year?.padStart(4, '0').slice(-4) || 'ГГГГ' }}</span>
 				</label>
 				<div class="Field__afterWrapper">
 					<slot name="after"></slot>
@@ -239,8 +232,7 @@ import Button from '../../general/Button/Button.vue'
 import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
 import { DateLocalizationRu } from '../../../consts/localization.ru.js'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth, handleInitialDateValue } from './utils.js'
-import test from 'node:test'
+import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from './utils.js'
 
 interface DatePickerProps {
 	disabled?: boolean
@@ -250,7 +242,7 @@ interface DatePickerProps {
 	label?: string
 	hint?: string
 	description?: string
-	modelValue?: string | Date
+	modelValue?: string
 }
 
 const props = withDefaults(defineProps<DatePickerProps>(), {
@@ -260,72 +252,93 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 	autofocus: false,
 	label: '',
 	hint: '',
-	description: '',
-	modelValue: undefined
+	description: ''
 })
 const emit = defineEmits(['update:modelValue'])
 
 const { autofocus } = toRefs(props)
+const modelValue = ref(props.modelValue ? new Date(props.modelValue).toLocaleDateString().replaceAll('.', '-') : null)
+const day = ref<string | undefined>(modelValue.value?.split('-')[0])
+const month = ref<string | undefined>(modelValue.value?.split('-')[1])
+const year = ref<string | undefined>(modelValue.value?.split('-')[2])
 
-const internalValue = ref<Date | undefined>()
-
-const day = ref<number | undefined>()
-const month = ref<number | undefined>()
-const year = ref<number | undefined>()
+watchEffect(() => {
+	year.value = modelValue.value != null ? modelValue.value?.split('-')[2] : undefined
+	month.value = modelValue.value != null ? modelValue.value?.split('-')[1] : undefined
+	day.value = modelValue.value != null ? modelValue.value?.split('-')[0] : undefined
+})
 
 const dayRef = ref()
 const monthRef = ref()
 const yearRef = ref()
-const DateLocalization = new DateLocalizationRu().DateAbbr()
+const DateLocalization = new DateLocalizationRu()
 
 const isCalendarOpen = ref(false)
 
+const dateTimeValue = computed(() => {
+	const dateAbbr = DateLocalization.DateAbbr().split('.')
+	return [
+		day.value && day.value != '00' ? String(day.value) : dateAbbr[0],
+		month.value && month.value != '00' ? String(month.value) : dateAbbr[1],
+		year.value && year.value != '0000' ? String(year.value) : dateAbbr[2]
+	]
+})
+
+const handleCalendarClick = () => {
+	if (!props.disabled) {
+		if (!day.value) day.value = String(new Date().getDate())
+		if (!month.value) month.value = String(new Date().getMonth() + 1)
+		if (!year.value) year.value = String(new Date().getFullYear())
+		isCalendarOpen.value = !isCalendarOpen.value
+	}
+}
+
 const focus = () => dayRef.value.focus()
 
-const handleDayInput = (event: Event) => {
-	const target = event.target as HTMLInputElement
-	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
-	newInternalValue.setDate(Number(target.value))
-	internalValue.value = newInternalValue
-}
-const handleMonthInput = (event: Event) => {
-	const target = event.target as HTMLInputElement
-	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
-	newInternalValue.setMonth(Number(target.value))
-	internalValue.value = newInternalValue
-}
-const handleYearInput = (event: Event) => {
-	const target = event.target as HTMLInputElement
-	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
-	newInternalValue.setFullYear(Number(target.value))
-	internalValue.value = newInternalValue
-}
-
+onMounted(() => {
+	if (autofocus.value) focus()
+})
 const handleCalendarClose = () => {
 	focus()
 	isCalendarOpen.value = false
 }
 
-const handleCalendarClick = () => {
-	if (!props.disabled) {
-		isCalendarOpen.value = !isCalendarOpen.value
-	}
+const handleDayInput = (event: Event) => {
+	const target = event.target as HTMLInputElement
+	if (target.value.length >= 2 && day.value && day.value.length < 2) monthRef.value.focus()
+	day.value = target.value
 }
 
-watch(internalValue, () => {
-	console.log('internalValue', internalValue.value)
-	console.log(internalValue.value?.getFullYear(), internalValue.value?.getMonth(), internalValue.value?.getDate())
-	day.value = internalValue.value?.getDate()
-	month.value = internalValue.value ? internalValue.value?.getMonth() + 1 : undefined
-	year.value = internalValue.value?.getFullYear()
-	emit('update:modelValue', internalValue.value)
-})
+const handleMonthInput = (event: Event) => {
+	const target = event.target as HTMLInputElement
+	if (target.value.length >= 2 && month.value && month.value.length < 2) yearRef.value.focus()
+	month.value = String(target.value)
+}
 
-onMounted(() => {
-	internalValue.value = handleInitialDateValue(props.modelValue)
-	if (autofocus.value) focus()
-})
+const handleYearInput = (event: Event) => {
+	const target = event.target as HTMLInputElement
+	year.value = handleYearInputEvent(target.value)
+}
 
+//TODO Refact it to decrease cognitive complexity
+// eslint-disable-next-line sonarjs/cognitive-complexity
+watch([day, month, year], () => {
+	if (month.value) {
+		if (Number(month.value) > 12) month.value = '12'
+		if (Number(month.value) < 1 && month.value.length > 1) month.value = '1'
+		if (day.value && year.value) {
+			const days = numberOfDaysInMonth(Number(month.value), Number(year.value))
+
+			if (Number(day.value) > days) day.value = days.toString()
+			if (Number(day.value) < 1 && day.value.length > 1) day.value = '1'
+		}
+	}
+	year.value = year.value ? year.value.toString().slice(-4) : undefined
+	month.value = month.value ? month.value.toString().slice(-2) : undefined
+	day.value = day.value ? day.value.toString().slice(-2) : undefined
+	if (day.value && month.value && year.value) emit('update:modelValue', `${year.value}-${month.value}-${day.value}`)
+	else emit('update:modelValue', null)
+})
 const root = ref()
 provide('datepicker-root', root)
 </script>
