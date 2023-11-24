@@ -146,10 +146,11 @@
 			<div class="Field__beforeWrapper">
 				<slot name="before"></slot>
 			</div>
+			<!-- dateTimeValue.some((value) => /\d/.test(value)) -->
 			<div
 				class="DatePicker__dateTime text-medium"
 				:class="{
-					active: internalValue != undefined,
+					active: true,
 					disabled: disabled
 				}"
 			>
