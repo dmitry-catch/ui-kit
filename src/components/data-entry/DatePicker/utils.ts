@@ -38,3 +38,9 @@ export const callSelectOnElement = (event: Event) => {
 	const target = event.target as HTMLInputElement | null
 	target?.select()
 }
+
+export const handleInitialDateValue = (value: string | Date | undefined) => {
+	if (!value) return undefined
+	else if (value instanceof Date) return value
+	else if (typeof value == 'string') return new Date(value)
+}
