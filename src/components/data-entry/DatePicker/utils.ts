@@ -39,13 +39,8 @@ export const callSelectOnElement = (event: Event) => {
 	target?.select()
 }
 
-export const handleInitialDateValue = (value: string | Date | undefined): Date | null => {
-	if (!value) return null
-	else if (typeof value == 'string') {
-		const date = new Date(String(value).split('T')[0])
-		return isNaN(date.getTime()) ? null : date
-	} else if (value instanceof Date) {
-		const date = new Date(value.toDateString())
-		return isNaN(date.getTime()) ? null : date
-	} else return null
+export const handleInitialDateValue = (value: string | Date | undefined) => {
+	if (!value) return undefined
+	else if (typeof value == 'string') return new Date(String(value).split('T')[0])
+	else if (value instanceof Date) return new Date(value.toDateString())
 }
