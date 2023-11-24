@@ -1,5 +1,5 @@
 <style scoped>
-.root {
+.SelectableOption {
 	display: flex;
 	flex-flow: row;
 	gap: var(--design-gap-unit);
@@ -7,15 +7,15 @@
 	justify-content: space-between;
 }
 
-.selected.hidden {
+.SelectableOption__selected.hidden {
 	visibility: hidden;
 }
 </style>
 
 <template>
-	<div class="root text-medium">
+	<div class="SelectableOption text-medium">
 		<div>{{ option.name }}</div>
-		<Icon name="check" class="selected accent" :class="{ hidden: !selected }"></Icon>
+		<Icon name="check" class="SelectableOption__selected accent" :class="{ hidden: !selected }"></Icon>
 	</div>
 </template>
 
