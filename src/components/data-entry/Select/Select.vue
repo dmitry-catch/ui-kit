@@ -126,14 +126,14 @@ import { computed, ref, toRefs } from 'vue'
 import TextField from '../TextField/TextField.vue'
 import { useUniqueId } from '../../../utils/useUniqueId.js'
 
-interface SelectProps {
+interface DropdownSelectProps {
 	placeholder?: string
 	label?: string
 	options: Array<{ name: string; value: any }>
 	modelValue: any
 }
 
-const props = withDefaults(defineProps<SelectProps>(), {
+const props = withDefaults(defineProps<DropdownSelectProps>(), {
 	options: () => []
 })
 const emit = defineEmits(['update:model-value'])

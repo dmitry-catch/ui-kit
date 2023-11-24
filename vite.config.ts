@@ -22,9 +22,5 @@ export default defineConfig({
 				preserveModules: false
 			}
 		}
-	},
-	test: {
-		environment: 'happy-dom',
-		globals: true
 	}
 })

@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import CharCounter from './components/CharCounter.vue'
-import { computed, onMounted, ref, toRefs } from 'vue'
+import { computed, defineEmits, onMounted, ref, toRefs } from 'vue'
 
 interface TextFieldProps {
 	autofocus?: boolean
