@@ -1,3 +1,281 @@
+<style>
+.DateRangePicker {
+	box-sizing: border-box;
+	width: fit-content;
+}
+
+.DateRangePicker__calendarPopup {
+	display: flex;
+	box-shadow: 0px 32px 64px 0px #212c3a29;
+	width: fit-content;
+}
+
+.DateRangePicker__calendarPopup .calendarPopup {
+	box-shadow: none;
+}
+
+.DateRangePicker__calendarPopup .calendarPopup:first-of-type {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.DateRangePicker__calendarPopup .calendarPopup:last-of-type {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.DateRangePicker__description {
+	color: var(--design-text-color-secondary);
+	display: block;
+}
+
+.DateRangePicker__inputsContainer {
+	background-color: var(--design-background-color-primary);
+	padding: var(--design-gap-unit) calc(1.75 * var(--design-gap-unit)) var(--design-gap-unit)
+		calc(2 * var(--design-gap-unit));
+	border-radius: var(--design-border-radius-control);
+	border: 1px solid var(--design-border-color-primary);
+	margin: var(--design-gap-unit) 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-width: 240px;
+}
+
+.DateRangePicker__inputsContainer:focus-within {
+	border-color: var(--design-border-color-primary);
+}
+
+.DateRangePicker__dateTime {
+	text-align: center;
+	color: var(--design-text-color-secondary);
+}
+
+.DateRangePicker__dateTime.disabled {
+	border: none;
+	color: var(--design-text-color-secondary);
+}
+
+.DateRangePicker__dateTime.active {
+	color: var(--design-text-color-primary);
+}
+
+.DateRangePicker__visible {
+	box-sizing: border-box;
+	display: inline-block;
+	margin-left: calc(0.75 * var(--design-gap-unit));
+	width: var(--design-current-line-height);
+	height: var(--design-current-line-height);
+	cursor: pointer;
+}
+
+.DateRangePicker__visible:focus {
+	outline: none;
+}
+
+.DateRangePicker__input:focus + .DateRangePicker__visible .DateRangePicker__calendarPopup {
+	display: block;
+}
+
+.DateRangePicker__icon {
+	--icon-color: var(--design-text-color-secondary);
+}
+
+.DateRangePicker__hint.invalid {
+	border: none;
+	color: var(--design-text-color-danger);
+}
+
+.DateRangePicker__inputsContainer.invalid {
+	border: 1px solid var(--design-border-color-accent-primary);
+}
+
+.DateRangePicker__inputsContainer.invalid:focus-within,
+.DateRangePicker__inputsContainer.invalid:focus {
+	box-shadow: 0px 0px 0px 3px #d2283533;
+	border: 1px solid var(--design-border-color-accent-primary);
+}
+
+.DateRangePicker__hint {
+	color: var(--design-text-color-secondary);
+	display: block;
+}
+
+.DateRangePicker__dateTimeInputContainer {
+	width: fit-content;
+	display: inline-block;
+}
+
+.DateRangePicker__dateTimeInputContainer:focus-within {
+	background-color: var(--design-background-color-accent-primary);
+	color: var(--design-text-color-on-accent-primary);
+}
+
+.DateRangePicker__dateTimeInputContainer.disabled {
+	background-color: transparent;
+	border: none;
+	color: var(--design-text-color-secondary);
+}
+
+.DateRangePicker__icon.calendarIcon {
+	--icon-color: var(--design-text-color-secondary);
+}
+
+.DateRangePicker__inputsContainer:focus-within.disabled {
+	border-color: var(--design-border-color-primary);
+}
+
+.DateRangePicker__inputsContainer.disabled {
+	background-color: var(--design-background-color-on-accent-primary);
+	border: 1px solid var(--design-border-color-primary);
+	cursor: not-allowed;
+}
+
+.DateRangePicker__dateTimeInputContainer span:focus {
+	outline: none;
+}
+
+.DateRangePicker__label.required::after {
+	content: '*';
+	color: var(--design-text-color-danger);
+	margin-left: 4px;
+}
+</style>
+
+<template>
+	<div class="DateRangePicker">
+		<span class="DateRangePicker__label" :class="{ required: required }">{{ label }}</span>
+		<span class="DateRangePicker__description text-small">{{ description }}</span>
+		<div
+			class="DateRangePicker__inputsContainer"
+			:class="{
+				disabled: disabled,
+				invalid: invalid
+			}"
+		>
+			<div
+				class="DateRangePicker__dateTime"
+				:class="{
+					active:
+						dateTimeFromValue.some((value) => /\d/.test(value)) ||
+						dateTimeToValue.some((value) => /\d/.test(value)),
+					disabled: disabled
+				}"
+			>
+				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span tabindex="1" @click="handleDateTimeDayFromClick">{{ dateTimeFromValue[0] }}</span>
+					<input
+						ref="dayFromRef"
+						v-model="dayFrom"
+						type="number"
+						class="visually-hidden"
+						:disabled="disabled"
+						@input="handleDayFromInput"
+						@focus="callSelectOnElement"
+					/>
+				</div>
+				<span>.</span>
+				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span tabindex="2" @click="handleDateTimeMonthFromClick">{{ dateTimeFromValue[1] }}</span>
+					<input
+						ref="monthFromRef"
+						v-model="monthFrom"
+						type="number"
+						class="visually-hidden"
+						:disabled="disabled"
+						@input="handleMonthFromInput"
+						@focus="callSelectOnElement"
+					/>
+				</div>
+				<span>.</span>
+				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span tabindex="3" @click="handleDateTimeYearFromClick">{{ dateTimeFromValue[2] }}</span>
+
+					<input
+						ref="yearFromRef"
+						v-model="yearFrom"
+						type="number"
+						class="visually-hidden"
+						:disabled="disabled"
+						@input="handleYearFromInput"
+						@focus="callSelectOnElement"
+					/>
+				</div>
+				<span> &mdash; </span>
+				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span tabindex="1" @click="handleDateTimeDayToClick">{{ dateTimeToValue[0] }}</span>
+
+					<input
+						ref="dayToRef"
+						v-model="dayTo"
+						type="number"
+						class="visually-hidden"
+						:disabled="disabled"
+						@input="handleDayToInput"
+						@focus="callSelectOnElement"
+					/>
+				</div>
+				<span>.</span>
+				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span tabindex="2" @click="handleDateTimeMonthToClick">{{ dateTimeToValue[1] }}</span>
+					<input
+						ref="monthToRef"
+						v-model="monthTo"
+						type="number"
+						class="visually-hidden"
+						:disabled="disabled"
+						@input="handleMonthToInput"
+						@focus="callSelectOnElement"
+					/>
+				</div>
+				<span>.</span>
+				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
+					<span tabindex="3" @click="handleDateTimeYearToClick">{{ dateTimeToValue[2] }}</span>
+					<input
+						ref="yearToRef"
+						v-model="yearTo"
+						type="number"
+						class="visually-hidden"
+						:disabled="disabled"
+						@input="handleYearToInput"
+						@focus="callSelectOnElement"
+					/>
+				</div>
+			</div>
+
+			<span
+				class="DateRangePicker__visible"
+				:class="{ disabled__input: disabled }"
+				tabindex="0"
+				@click="handleCalendarClick"
+			>
+				<Icon class="DateRangePicker__icon calendarIcon" name="calendar"></Icon>
+			</span>
+		</div>
+	</div>
+	<div v-if="isCalendarOpen" class="DateRangePicker__calendarPopup" tabindex="0">
+		<CalendarPopup
+			v-model:day="dayFrom"
+			v-model:month="monthFrom"
+			v-model:year="yearFrom"
+			:handleCalendarClose="handleCalendarClose"
+			:isRange="true"
+			:isControlRange="true"
+			:handleReset="handleCalendarReset"
+			:getFullRange="getRange"
+		/>
+		<CalendarPopup
+			v-model:day="dayTo"
+			v-model:month="monthTo"
+			v-model:year="yearTo"
+			:handleCalendarClose="handleCalendarClose"
+			:isRange="true"
+			:getFullRange="getRange"
+		/>
+	</div>
+	<span class="DateRangePicker__hint text-small" :class="invalid ? 'invalid' : ''">{{ hint }}</span>
+</template>
+
 <script setup lang="ts">
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
 import Icon from '../../general/Icon/Icon.vue'
@@ -142,281 +420,3 @@ watch([dayTo, monthTo, yearTo], () => {
 	emit('update:to', `${yearTo.value}-${monthTo.value}-${dayTo.value}`)
 })
 </script>
-
-<template>
-	<div class="DateRangePicker">
-		<span class="DateRangePicker__label" :class="{ required: required }">{{ label }}</span>
-		<span class="DateRangePicker__description text-small">{{ description }}</span>
-		<div
-			class="DateRangePicker__inputsContainer"
-			:class="{
-				disabled: disabled,
-				invalid: invalid
-			}"
-		>
-			<div
-				class="DateRangePicker__dateTime"
-				:class="{
-					active:
-						dateTimeFromValue.some((value) => /\d/.test(value)) ||
-						dateTimeToValue.some((value) => /\d/.test(value)),
-					disabled: disabled
-				}"
-			>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="1" @click="handleDateTimeDayFromClick">{{ dateTimeFromValue[0] }}</span>
-					<input
-						ref="dayFromRef"
-						v-model="dayFrom"
-						type="number"
-						class="visually-hidden"
-						:disabled="disabled"
-						@input="handleDayFromInput"
-						@focus="callSelectOnElement"
-					/>
-				</div>
-				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="2" @click="handleDateTimeMonthFromClick">{{ dateTimeFromValue[1] }}</span>
-					<input
-						ref="monthFromRef"
-						v-model="monthFrom"
-						type="number"
-						class="visually-hidden"
-						:disabled="disabled"
-						@input="handleMonthFromInput"
-						@focus="callSelectOnElement"
-					/>
-				</div>
-				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="3" @click="handleDateTimeYearFromClick">{{ dateTimeFromValue[2] }}</span>
-
-					<input
-						ref="yearFromRef"
-						v-model="yearFrom"
-						type="number"
-						class="visually-hidden"
-						:disabled="disabled"
-						@input="handleYearFromInput"
-						@focus="callSelectOnElement"
-					/>
-				</div>
-				<span> &mdash; </span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="1" @click="handleDateTimeDayToClick">{{ dateTimeToValue[0] }}</span>
-
-					<input
-						ref="dayToRef"
-						v-model="dayTo"
-						type="number"
-						class="visually-hidden"
-						:disabled="disabled"
-						@input="handleDayToInput"
-						@focus="callSelectOnElement"
-					/>
-				</div>
-				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="2" @click="handleDateTimeMonthToClick">{{ dateTimeToValue[1] }}</span>
-					<input
-						ref="monthToRef"
-						v-model="monthTo"
-						type="number"
-						class="visually-hidden"
-						:disabled="disabled"
-						@input="handleMonthToInput"
-						@focus="callSelectOnElement"
-					/>
-				</div>
-				<span>.</span>
-				<div class="DateRangePicker__dateTimeInputContainer" :class="{ disabled: disabled }">
-					<span tabindex="3" @click="handleDateTimeYearToClick">{{ dateTimeToValue[2] }}</span>
-					<input
-						ref="yearToRef"
-						v-model="yearTo"
-						type="number"
-						class="visually-hidden"
-						:disabled="disabled"
-						@input="handleYearToInput"
-						@focus="callSelectOnElement"
-					/>
-				</div>
-			</div>
-
-			<span
-				class="DateRangePicker__visible"
-				:class="{ disabled__input: disabled }"
-				tabindex="0"
-				@click="handleCalendarClick"
-			>
-				<Icon class="DateRangePicker__icon calendarIcon" name="calendar"></Icon>
-			</span>
-		</div>
-	</div>
-	<div v-if="isCalendarOpen" class="DateRangePicker__calendarPopup" tabindex="0">
-		<CalendarPopup
-			v-model:day="dayFrom"
-			v-model:month="monthFrom"
-			v-model:year="yearFrom"
-			:handleCalendarClose="handleCalendarClose"
-			:isRange="true"
-			:isControlRange="true"
-			:handleReset="handleCalendarReset"
-			:getFullRange="getRange"
-		/>
-		<CalendarPopup
-			v-model:day="dayTo"
-			v-model:month="monthTo"
-			v-model:year="yearTo"
-			:handleCalendarClose="handleCalendarClose"
-			:isRange="true"
-			:getFullRange="getRange"
-		/>
-	</div>
-	<span class="DateRangePicker__hint text-small" :class="invalid ? 'invalid' : ''">{{ hint }}</span>
-</template>
-
-<style>
-.DateRangePicker {
-	box-sizing: border-box;
-	width: fit-content;
-}
-
-.DateRangePicker__calendarPopup {
-	display: flex;
-	box-shadow: 0px 32px 64px 0px #212c3a29;
-	width: fit-content;
-}
-
-.DateRangePicker__calendarPopup .calendarPopup {
-	box-shadow: none;
-}
-
-.DateRangePicker__calendarPopup .calendarPopup:first-of-type {
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-.DateRangePicker__calendarPopup .calendarPopup:last-of-type {
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.DateRangePicker__description {
-	color: var(--design-text-color-secondary);
-	display: block;
-}
-
-.DateRangePicker__inputsContainer {
-	background-color: var(--design-background-color-primary);
-	padding: var(--design-gap-unit) calc(1.75 * var(--design-gap-unit)) var(--design-gap-unit)
-		calc(2 * var(--design-gap-unit));
-	border-radius: var(--design-border-radius-control);
-	border: 1px solid var(--design-border-color-primary);
-	margin: var(--design-gap-unit) 0;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	min-width: 240px;
-}
-
-.DateRangePicker__inputsContainer:focus-within {
-	border-color: var(--design-border-color-primary);
-}
-
-.DateRangePicker__dateTime {
-	text-align: center;
-	color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__dateTime.disabled {
-	border: none;
-	color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__dateTime.active {
-	color: var(--design-text-color-primary);
-}
-
-.DateRangePicker__visible {
-	box-sizing: border-box;
-	display: inline-block;
-	margin-left: calc(0.75 * var(--design-gap-unit));
-	width: var(--design-current-line-height);
-	height: var(--design-current-line-height);
-	cursor: pointer;
-}
-
-.DateRangePicker__visible:focus {
-	outline: none;
-}
-
-.DateRangePicker__input:focus + .DateRangePicker__visible .DateRangePicker__calendarPopup {
-	display: block;
-}
-
-.DateRangePicker__icon {
-	--icon-color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__hint.invalid {
-	border: none;
-	color: var(--design-text-color-danger);
-}
-
-.DateRangePicker__inputsContainer.invalid {
-	border: 1px solid var(--design-border-color-accent-primary);
-}
-
-.DateRangePicker__inputsContainer.invalid:focus-within,
-.DateRangePicker__inputsContainer.invalid:focus {
-	box-shadow: 0px 0px 0px 3px #d2283533;
-	border: 1px solid var(--design-border-color-accent-primary);
-}
-
-.DateRangePicker__hint {
-	color: var(--design-text-color-secondary);
-	display: block;
-}
-
-.DateRangePicker__dateTimeInputContainer {
-	width: fit-content;
-	display: inline-block;
-}
-
-.DateRangePicker__dateTimeInputContainer:focus-within {
-	background-color: var(--design-background-color-accent-primary);
-	color: var(--design-text-color-on-accent-primary);
-}
-
-.DateRangePicker__dateTimeInputContainer.disabled {
-	background-color: transparent;
-	border: none;
-	color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__icon.calendarIcon {
-	--icon-color: var(--design-text-color-secondary);
-}
-
-.DateRangePicker__inputsContainer:focus-within.disabled {
-	border-color: var(--design-border-color-primary);
-}
-
-.DateRangePicker__inputsContainer.disabled {
-	background-color: var(--design-background-color-on-accent-primary);
-	border: 1px solid var(--design-border-color-primary);
-	cursor: not-allowed;
-}
-
-.DateRangePicker__dateTimeInputContainer span:focus {
-	outline: none;
-}
-
-.DateRangePicker__label.required::after {
-	content: '*';
-	color: var(--design-text-color-danger);
-	margin-left: 4px;
-}
-</style>

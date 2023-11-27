@@ -1,3 +1,6 @@
+<style>
+/* TODO: move to appropriate place */
+</style>
 <template>
 	<div class="Property">
 		<span class="Property__name text-medium secondary">
@@ -9,6 +12,3 @@
 		</span>
 	</div>
 </template>
-<style>
-/* TODO: move to appropriate place */
-</style>

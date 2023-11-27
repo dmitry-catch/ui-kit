@@ -1,3 +1,18 @@
+<style>
+.Tabs {
+	display: flex;
+	align-items: center;
+	height: min-content;
+	gap: calc(2 * var(--design-gap-unit));
+}
+</style>
+
+<template>
+	<div class="Tabs">
+		<slot></slot>
+	</div>
+</template>
+
 <script setup lang="ts">
 import { computed, provide, Ref, toRef } from 'vue'
 import { TabsProvide } from './tabs.provide'
@@ -19,18 +34,3 @@ provide(TabsProvide.selectTab, (value: any) => {
 	selectedValue.value = value
 })
 </script>
-
-<template>
-	<div class="Tabs">
-		<slot></slot>
-	</div>
-</template>
-
-<style>
-.Tabs {
-	display: flex;
-	align-items: center;
-	height: min-content;
-	gap: calc(2 * var(--design-gap-unit));
-}
-</style>
