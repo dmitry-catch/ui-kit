@@ -1,3 +1,50 @@
+<script setup lang="ts">
+import { computed, ref, toRefs } from 'vue'
+import Icon from '../Icon/Icon.vue'
+import ListBox from '../../data-display/ListBox/ListBox.vue'
+import type { ListBoxOption } from '../../data-display/ListBox/types.js'
+
+//TODO move from the 'class' prop predefined classes
+interface BtnProps {
+	/** Массив значений для выпадающего списка. */
+	dropdown?: ListBoxOption[]
+	disabled?: boolean
+}
+
+const props = withDefaults(defineProps<BtnProps>(), {
+	dropdown: () => [],
+	disabled: false
+})
+
+const root = ref()
+
+const { dropdown, disabled } = toRefs(props)
+
+const hasDropdown = computed(() => !!dropdown?.value?.length)
+const dropdownOpened = ref(false)
+
+const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
+const clickOutside = (event: Event) => {
+	if (!event.composedPath().includes(root.value)) dropdownOpened.value = false
+}
+</script>
+
+<template>
+	<div ref="root" class="Btn" :class="{ disabled: disabled }">
+		<button class="Btn__actual accent" :disabled="disabled" @click="toggleDropdown">
+			<slot name="before"></slot>
+			<slot></slot>
+			<slot name="after"></slot>
+			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
+		</button>
+		<ListBox v-if="hasDropdown && dropdownOpened" :options="dropdown" @closeRequest="clickOutside">
+			<template #item="{ data }">
+				<slot name="dropdownItem" :data="data">{{ data.name }}</slot>
+			</template>
+		</ListBox>
+	</div>
+</template>
+
 <style>
 .Btn {
 	--button-background-color-primary: var(--design-background-color-primary);
@@ -144,49 +191,3 @@
 	border-radius: var(--design-border-radius-control);
 }
 </style>
-
-<template>
-	<div ref="root" class="Btn" :class="{ disabled: disabled }">
-		<button class="Btn__actual accent" :disabled="disabled" @click="toggleDropdown">
-			<slot name="before"></slot>
-			<slot></slot>
-			<slot name="after"></slot>
-			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
-		</button>
-		<ListBox v-if="hasDropdown && dropdownOpened" :options="dropdown" @closeRequest="clickOutside">
-			<template #item="{ data }">
-				<slot name="dropdownItem" :data="data">{{ data.name }}</slot>
-			</template>
-		</ListBox>
-	</div>
-</template>
-<script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
-import Icon from '../Icon/Icon.vue'
-import ListBox from '../../data-display/ListBox/ListBox.vue'
-import type { ListBoxOption } from '../../data-display/ListBox/types.js'
-
-//TODO move from the 'class' prop predefined classes
-interface BtnProps {
-	/** Массив значений для выпадающего списка. */
-	dropdown?: ListBoxOption[]
-	disabled?: boolean
-}
-
-const props = withDefaults(defineProps<BtnProps>(), {
-	dropdown: () => [],
-	disabled: false
-})
-
-const root = ref()
-
-const { dropdown, disabled } = toRefs(props)
-
-const hasDropdown = computed(() => !!dropdown?.value?.length)
-const dropdownOpened = ref(false)
-
-const toggleDropdown = () => (dropdownOpened.value = !dropdownOpened.value)
-const clickOutside = (event: Event) => {
-	if (!event.composedPath().includes(root.value)) dropdownOpened.value = false
-}
-</script>

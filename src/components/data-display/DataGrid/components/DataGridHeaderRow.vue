@@ -1,32 +1,3 @@
-<style>
-.DataGridHeaderRow {
-	display: contents;
-}
-
-.DataGridHeaderRow__cell {
-	position: sticky;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: min-content;
-}
-</style>
-
-<template>
-	<tr ref="root" class="DataGridHeaderRow">
-		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
-		<td v-if="selectColumn" class="DataGridHeaderRow__cell"></td>
-		<DataGridHeader
-			v-for="column of columns"
-			:key="column.field"
-			class="DataGridHeaderRow__cell"
-			:column="column"
-			@pointerdown.prevent="dragHandleMousedown"
-			@click="clickHandler"
-		></DataGridHeader>
-	</tr>
-</template>
-
 <script setup lang="ts">
 import { DataGridColumn } from '../types.js'
 import DataGridHeader from './DataGridHeader.vue'
@@ -73,3 +44,32 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 	componentRoot: root
 })
 </script>
+
+<template>
+	<tr ref="root" class="DataGridHeaderRow">
+		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
+		<td v-if="selectColumn" class="DataGridHeaderRow__cell"></td>
+		<DataGridHeader
+			v-for="column of columns"
+			:key="column.field"
+			class="DataGridHeaderRow__cell"
+			:column="column"
+			@pointerdown.prevent="dragHandleMousedown"
+			@click="clickHandler"
+		></DataGridHeader>
+	</tr>
+</template>
+
+<style>
+.DataGridHeaderRow {
+	display: contents;
+}
+
+.DataGridHeaderRow__cell {
+	position: sticky;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: min-content;
+}
+</style>

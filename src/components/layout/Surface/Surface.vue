@@ -1,3 +1,11 @@
+<script setup lang="ts"></script>
+
+<template>
+	<div class="Surface">
+		<slot></slot>
+	</div>
+</template>
+
 <style>
 .Surface {
 	background: var(--design-background-color-primary);
@@ -16,11 +24,3 @@
 	border-radius: 0;
 }
 </style>
-
-<template>
-	<div class="Surface">
-		<slot></slot>
-	</div>
-</template>
-
-<script setup lang="ts"></script>

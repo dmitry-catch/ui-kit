@@ -1,3 +1,38 @@
+<script setup lang="ts">
+import Icon from '../../general/Icon/Icon.vue'
+import { computed, toRefs } from 'vue'
+
+interface CheckboxProps {
+	modelValue: boolean
+	value?: any
+}
+
+const props = withDefaults(defineProps<CheckboxProps>(), { value: true })
+const emit = defineEmits(['update:modelValue'])
+
+const { modelValue } = toRefs(props)
+const internalValue = computed({
+	get() {
+		return modelValue.value
+	},
+	set(value) {
+		emit('update:modelValue', value)
+	}
+})
+</script>
+
+<template>
+	<label class="Checkbox">
+		<input v-model="internalValue" type="checkbox" :value="value" class="Checkbox__input visually-hidden" />
+		<span class="Checkbox__visible">
+			<Icon class="Checkbox__checked" name="check"></Icon>
+		</span>
+		<span class="Checkbox__label">
+			<slot></slot>
+		</span>
+	</label>
+</template>
+
 <style>
 @import '/public/visually-hidden.css';
 
@@ -34,38 +69,3 @@
 	outline: var(--design-focus-outline);
 }
 </style>
-
-<template>
-	<label class="Checkbox">
-		<input v-model="internalValue" type="checkbox" :value="value" class="Checkbox__input visually-hidden" />
-		<span class="Checkbox__visible">
-			<Icon class="Checkbox__checked" name="check"></Icon>
-		</span>
-		<span class="Checkbox__label">
-			<slot></slot>
-		</span>
-	</label>
-</template>
-
-<script setup lang="ts">
-import Icon from '../../general/Icon/Icon.vue'
-import { computed, toRefs } from 'vue'
-
-interface CheckboxProps {
-	modelValue: boolean
-	value?: any
-}
-
-const props = withDefaults(defineProps<CheckboxProps>(), { value: true })
-const emit = defineEmits(['update:modelValue'])
-
-const { modelValue } = toRefs(props)
-const internalValue = computed({
-	get() {
-		return modelValue.value
-	},
-	set(value) {
-		emit('update:modelValue', value)
-	}
-})
-</script>

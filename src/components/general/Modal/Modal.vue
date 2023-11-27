@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, toRefs } from 'vue'
+import { ModalAnchor } from './ModalAnchor.js'
+import { useModalContext } from '../../../utils/useModalContext.js'
+
+const root = ref<HTMLDialogElement>()
+onMounted(() => root.value?.showModal())
+const props = defineProps<{ anchor: ModalAnchor }>()
+const { anchor } = toRefs(props)
+
+const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
+
+useModalContext(root)
+</script>
+
+<template>
+	<dialog ref="root" class="Modal" :class="anchorClass">
+		<slot></slot>
+	</dialog>
+</template>
+
 <style>
 .Modal::backdrop {
 	background: var(--design-background-color-modal-shadow);
@@ -38,24 +59,3 @@
 	margin-block-end: 0;
 }
 </style>
-
-<template>
-	<dialog ref="root" class="Modal" :class="anchorClass">
-		<slot></slot>
-	</dialog>
-</template>
-
-<script setup lang="ts">
-import { computed, onMounted, ref, toRefs } from 'vue'
-import { ModalAnchor } from './ModalAnchor.js'
-import { useModalContext } from '../../../utils/useModalContext.js'
-
-const root = ref<HTMLDialogElement>()
-onMounted(() => root.value?.showModal())
-const props = defineProps<{ anchor: ModalAnchor }>()
-const { anchor } = toRefs(props)
-
-const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
-
-useModalContext(root)
-</script>
