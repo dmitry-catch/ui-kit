@@ -7,8 +7,7 @@ export default {
 			{ name: 'Option 1', value: 1 },
 			{ name: 'Option 2', value: 2 },
 			{ name: 'Option 3', value: 3 }
-		],
-		modelValue: [2]
+		]
 	},
 	component: Multiselect
 } satisfies Meta<typeof Multiselect>

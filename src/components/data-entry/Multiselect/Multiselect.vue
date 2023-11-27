@@ -82,12 +82,7 @@
 		</div>
 		<div v-show="dropdownOpened" ref="dropdown" class="Multiselect__dropdown">
 			<div v-for="option of options" :key="option.value" class="Multiselect__dropdownItem">
-				<Checkbox
-					:value="option.value"
-					:modelValue="selectedValue.includes(option.value)"
-					@update:modelValue="handleSelect($event, option.value)"
-					>{{ option.name }}
-				</Checkbox>
+				<Checkbox v-model="selectedValue" :value="option.value">{{ option.name }}</Checkbox>
 			</div>
 		</div>
 	</div>
@@ -102,16 +97,14 @@ import Checkbox from '../Checkbox/Checkbox.vue'
 import { FieldLocalization } from '../../../types/localization.js'
 
 interface MultiselectProps {
-	modelValue?: Array<any>
+	modelValue: Array<any>
 	options: Array<{ name: string; value: any }>
 }
 
-const props = withDefaults(defineProps<MultiselectProps>(), {
-	modelValue: () => []
-})
+const props = defineProps<MultiselectProps>()
 const emit = defineEmits(['update:modelValue'])
 
-const localization = inject<FieldLocalization | undefined>('FieldLocalization', undefined)
+const localization = inject<FieldLocalization>('FieldLocalization')
 const { modelValue, options } = toRefs(props)
 const root = ref<HTMLElement>()
 const selectedValue = computed({
@@ -122,10 +115,6 @@ const selectedValue = computed({
 		emit('update:modelValue', value)
 	}
 })
-
-const handleSelect = (checked: boolean, value: any) =>
-	(selectedValue.value = checked ? [...selectedValue.value, value] : selectedValue.value.filter((v) => v !== value))
-
 const selectedText = computed(() => {
 	if (modelValue.value.length === 1)
 		return options.value.find((it: { name: string; value: any }) => modelValue.value.includes(it.value))?.name

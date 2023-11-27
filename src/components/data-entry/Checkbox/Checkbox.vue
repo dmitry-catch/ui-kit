@@ -53,7 +53,7 @@ import { computed, toRefs } from 'vue'
 
 interface CheckboxProps {
 	modelValue: boolean
-	value?: any
+	value: any
 }
 
 const props = withDefaults(defineProps<CheckboxProps>(), { value: true })

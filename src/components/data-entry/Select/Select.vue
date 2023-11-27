@@ -71,7 +71,7 @@
 		<TextField
 			:modelValue="name"
 			:placeholder="placeholder"
-			readonly
+			readonly="true"
 			class="DropdownSelect__field"
 			role="combobox"
 			:aria-controls="listId"
@@ -129,8 +129,8 @@ import { useUniqueId } from '../../../utils/useUniqueId.js'
 interface SelectProps {
 	placeholder?: string
 	label?: string
-	options?: Array<{ name: string; value: any }>
-	modelValue?: any
+	options: Array<{ name: string; value: any }>
+	modelValue: any
 }
 
 const props = withDefaults(defineProps<SelectProps>(), {
@@ -146,7 +146,7 @@ const optionId = (option: any) => `${listId}-option-${option.value}`
 const { modelValue, options } = toRefs(props)
 const opened = ref(false)
 const value = computed({ get: () => modelValue.value, set: (value) => emit('update:model-value', value) })
-const name = computed(() => options.value.find((it) => it.value === modelValue.value)?.name ?? '')
+const name = computed(() => options.value.find((it) => it.value === modelValue.value)?.name)
 const active = ref(0)
 const activeDescendant = computed(() => {
 	const value = active.value
