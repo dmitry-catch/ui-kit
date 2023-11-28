@@ -1,13 +1,3 @@
-<script setup lang="ts"></script>
-
-<template>
-	<div class="Pill">
-		<slot name="before"></slot>
-		<slot></slot>
-		<slot name="after"></slot>
-	</div>
-</template>
-
 <style>
 .Pill {
 	display: flex;
@@ -31,3 +21,13 @@
 	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
 }
 </style>
+
+<template>
+	<div class="Pill">
+		<slot name="before"></slot>
+		<slot></slot>
+		<slot name="after"></slot>
+	</div>
+</template>
+
+<script setup lang="ts"></script>

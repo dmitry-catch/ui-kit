@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import { ref, toRefs, watchEffect } from 'vue'
-
-const props = defineProps({ name: { required: true, type: String } })
-const { name } = toRefs(props)
-
-const svgContent = ref<string>('')
-
-watchEffect(async () => {
-	try {
-		svgContent.value = (await import(`./icons/${name?.value}-24px.svg?raw`)).default
-	} catch (e) {
-		svgContent.value = ''
-	}
-})
-</script>
-
-<template>
-	<div class="Icon" v-html="svgContent"></div>
-</template>
-
 <style>
 .Icon {
 	fill: var(--icon-color, currentColor);
@@ -35,3 +14,24 @@ watchEffect(async () => {
 	height: 100%;
 }
 </style>
+
+<template>
+	<div class="Icon" v-html="svgContent"></div>
+</template>
+
+<script setup lang="ts">
+import { ref, toRefs, watchEffect } from 'vue'
+
+const props = defineProps({ name: { required: true, type: String } })
+const { name } = toRefs(props)
+
+const svgContent = ref<string>('')
+
+watchEffect(async () => {
+	try {
+		svgContent.value = (await import(`./icons/${name?.value}-24px.svg?raw`)).default
+	} catch (e) {
+		svgContent.value = ''
+	}
+})
+</script>

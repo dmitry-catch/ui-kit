@@ -1,3 +1,125 @@
+<style>
+.DropdownSelect {
+	position: relative;
+}
+
+.DropdownSelect:focus {
+	outline: none;
+}
+
+.DropdownSelect:focus-within {
+	outline: none;
+	--forced-focus-outline: var(--design-focus-outline);
+}
+
+.DropdownSelect__field {
+	display: flex;
+}
+
+.DropdownSelect__openButton {
+	margin-inline-start: auto;
+}
+
+.DropdownSelect__dropdown {
+	position: fixed;
+	width: 100%;
+	max-height: 600px;
+	overflow: auto;
+	z-index: var(--dropdown-z-index, 1000);
+	padding-top: var(--design-gap-unit);
+}
+
+.DropdownSelect__value {
+	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
+}
+
+.DropdownSelect__value:is(:hover, .active, :focus, :focus-visible) {
+	background: var(--design-background-color-secondary);
+}
+
+.DropdownSelect__values {
+	display: flex;
+	flex-flow: column;
+}
+
+.DropdownSelect__searchFieldWrapper {
+	padding: calc(var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+}
+
+.DropdownSelect__dropdownSurface {
+	background: var(--design-background-color-primary);
+	border-color: var(--design-border-color-primary);
+	border-radius: var(--design-border-radius-control);
+	border-width: 1px;
+	border-style: solid;
+	box-sizing: border-box;
+	max-height: 100%;
+	max-width: 100%;
+	overflow: auto;
+}
+</style>
+
+<template>
+	<div
+		ref="root"
+		class="DropdownSelect"
+		@keydown.down.prevent="downHandler"
+		@keydown.up.prevent="upHandler"
+		@keydown.enter="enterHandler"
+		@keydown.esc="escapeHandler"
+	>
+		<TextField
+			:modelValue="name"
+			:placeholder="placeholder"
+			readonly
+			class="DropdownSelect__field"
+			role="combobox"
+			:aria-controls="listId"
+			:aria-activedescendant="activeDescendant"
+			:aria-expanded="opened"
+			aria-readonly="true"
+			aria-haspopup="listbox"
+			:label="label"
+		>
+			<template #before>
+				<Icon name="search"></Icon>
+			</template>
+			<template #after>
+				<slot name="after"></slot>
+				<div class="DropdownSelect__openButton" @click="toggle">
+					<Icon v-if="opened" name="arrow_down"></Icon>
+					<Icon v-else name="arrow_up"></Icon>
+				</div>
+			</template>
+		</TextField>
+		<div v-if="opened" :id="listId" class="DropdownSelect__dropdown" role="listbox">
+			<div class="DropdownSelect__dropdownSurface">
+				<div class="DropdownSelect__searchFieldWrapper"></div>
+				<div class="DropdownSelect__values">
+					<div
+						v-for="option of options"
+						:id="optionId(option)"
+						:key="option.name"
+						class="DropdownSelect__value"
+						:class="{ selected: isSelected(option), active: isActive(option) }"
+						role="option"
+						:aria-selected="isSelected(option)"
+						@click="itemClickHandler(option)"
+					>
+						<slot
+							name="dropdownItem"
+							:option="option"
+							:selected="isSelected(option)"
+							:active="isActive(option)"
+							>{{ option.name }}
+						</slot>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
 <script setup lang="ts">
 import Icon from '../../general/Icon/Icon.vue'
 import { computed, ref, toRefs } from 'vue'
@@ -78,125 +200,3 @@ const itemClickHandler = (option: any) => {
 	close()
 }
 </script>
-
-<template>
-	<div
-		ref="root"
-		class="DropdownSelect"
-		@keydown.down.prevent="downHandler"
-		@keydown.up.prevent="upHandler"
-		@keydown.enter="enterHandler"
-		@keydown.esc="escapeHandler"
-	>
-		<TextField
-			:modelValue="name"
-			:placeholder="placeholder"
-			readonly
-			class="DropdownSelect__field"
-			role="combobox"
-			:aria-controls="listId"
-			:aria-activedescendant="activeDescendant"
-			:aria-expanded="opened"
-			aria-readonly="true"
-			aria-haspopup="listbox"
-			:label="label"
-		>
-			<template #before>
-				<Icon name="search"></Icon>
-			</template>
-			<template #after>
-				<slot name="after"></slot>
-				<div class="DropdownSelect__openButton" @click="toggle">
-					<Icon v-if="opened" name="arrow_down"></Icon>
-					<Icon v-else name="arrow_up"></Icon>
-				</div>
-			</template>
-		</TextField>
-		<div v-if="opened" :id="listId" class="DropdownSelect__dropdown" role="listbox">
-			<div class="DropdownSelect__dropdownSurface">
-				<div class="DropdownSelect__searchFieldWrapper"></div>
-				<div class="DropdownSelect__values">
-					<div
-						v-for="option of options"
-						:id="optionId(option)"
-						:key="option.name"
-						class="DropdownSelect__value"
-						:class="{ selected: isSelected(option), active: isActive(option) }"
-						role="option"
-						:aria-selected="isSelected(option)"
-						@click="itemClickHandler(option)"
-					>
-						<slot
-							name="dropdownItem"
-							:option="option"
-							:selected="isSelected(option)"
-							:active="isActive(option)"
-							>{{ option.name }}
-						</slot>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</template>
-
-<style>
-.DropdownSelect {
-	position: relative;
-}
-
-.DropdownSelect:focus {
-	outline: none;
-}
-
-.DropdownSelect:focus-within {
-	outline: none;
-	--forced-focus-outline: var(--design-focus-outline);
-}
-
-.DropdownSelect__field {
-	display: flex;
-}
-
-.DropdownSelect__openButton {
-	margin-inline-start: auto;
-}
-
-.DropdownSelect__dropdown {
-	position: fixed;
-	width: 100%;
-	max-height: 600px;
-	overflow: auto;
-	z-index: var(--dropdown-z-index, 1000);
-	padding-top: var(--design-gap-unit);
-}
-
-.DropdownSelect__value {
-	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
-}
-
-.DropdownSelect__value:is(:hover, .active, :focus, :focus-visible) {
-	background: var(--design-background-color-secondary);
-}
-
-.DropdownSelect__values {
-	display: flex;
-	flex-flow: column;
-}
-
-.DropdownSelect__searchFieldWrapper {
-	padding: calc(var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
-}
-
-.DropdownSelect__dropdownSurface {
-	background: var(--design-background-color-primary);
-	border-color: var(--design-border-color-primary);
-	border-radius: var(--design-border-radius-control);
-	border-width: 1px;
-	border-style: solid;
-	box-sizing: border-box;
-	max-height: 100%;
-	max-width: 100%;
-	overflow: auto;
-}
-</style>

@@ -1,3 +1,20 @@
+<style>
+.DataGridCell {
+	display: block;
+	padding: var(--datagrid-table-cell-padding);
+	-webkit-line-clamp: 3;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border-bottom: var(--design-border-color-primary) 1px solid;
+}
+</style>
+
+<template>
+	<td class="DataGridCell">
+		<component :is="cellComponent(item, column)" :item="item" :column="column"></component>
+	</td>
+</template>
+
 <script setup lang="ts">
 import { DataGridColumn } from '../types.js'
 import { toRefs } from 'vue'
@@ -19,20 +36,3 @@ const cellComponent = (item: any, column: DataGridColumn) => {
 	return DataGridCellContent
 }
 </script>
-
-<template>
-	<td class="DataGridCell">
-		<component :is="cellComponent(item, column)" :item="item" :column="column"></component>
-	</td>
-</template>
-
-<style>
-.DataGridCell {
-	display: block;
-	padding: var(--datagrid-table-cell-padding);
-	-webkit-line-clamp: 3;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	border-bottom: var(--design-border-color-primary) 1px solid;
-}
-</style>

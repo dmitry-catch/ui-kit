@@ -1,24 +1,4 @@
-<script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
-import DataListItem from '../DataListItem/DataListItem.vue'
-import { Group, isGroup } from '@forecsys/collections'
-import DataGroupToggler from '../../../non-public/DataGroupToggler/DataGroupToggler.vue'
-
-interface DataListGroup {
-	data: any
-	contextMenu: Array<any>
-}
-
-const props = defineProps<DataListGroup>()
-const emit = defineEmits(['itemClick'])
-const { data, contextMenu } = toRefs(props)
-
-const group = computed(() => data.value as Group<any>)
-const isItem = computed(() => !isGroup(data.value))
-
-const opened = ref(true)
-const itemClick = (data: any) => emit('itemClick', data)
-</script>
+<style></style>
 
 <template>
 	<DataListItem v-if="isItem" :data="data" :contextMenu="contextMenu" @click="itemClick(data)">
@@ -44,4 +24,24 @@ const itemClick = (data: any) => emit('itemClick', data)
 	</template>
 </template>
 
-<style></style>
+<script setup lang="ts">
+import { computed, ref, toRefs } from 'vue'
+import DataListItem from '../DataListItem/DataListItem.vue'
+import { Group, isGroup } from '@forecsys/collections'
+import DataGroupToggler from '../../../non-public/DataGroupToggler/DataGroupToggler.vue'
+
+interface DataListGroup {
+	data: any
+	contextMenu: Array<any>
+}
+
+const props = defineProps<DataListGroup>()
+const emit = defineEmits(['itemClick'])
+const { data, contextMenu } = toRefs(props)
+
+const group = computed(() => data.value as Group<any>)
+const isItem = computed(() => !isGroup(data.value))
+
+const opened = ref(true)
+const itemClick = (data: any) => emit('itemClick', data)
+</script>

@@ -1,3 +1,9 @@
+<style></style>
+
+<template>
+	{{ template(item[column.field]) }}
+</template>
+
 <script setup lang="ts">
 import { toRefs } from 'vue'
 import { DataGridColumn } from '../types.js'
@@ -11,9 +17,3 @@ const template = (value: any) => {
 	return value
 }
 </script>
-
-<template>
-	{{ template(item[column.field]) }}
-</template>
-
-<style></style>

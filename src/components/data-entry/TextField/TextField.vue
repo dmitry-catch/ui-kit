@@ -1,44 +1,6 @@
-<script setup lang="ts">
-import CharCounter from './components/CharCounter.vue'
-import { computed, onMounted, ref, toRefs } from 'vue'
-
-interface TextFieldProps {
-	autofocus?: boolean
-	required?: boolean
-	invalid?: boolean
-	readonly?: boolean
-	label?: string
-	description?: string
-	minLength?: number
-	/** Добавляет счетчик символов. */
-	maxLength?: number
-	min?: number
-	max?: number
-	placeholder?: string
-	tabindex?: '0' | '1' | 0 | 1
-	modelValue: string
-}
-
-const props = withDefaults(defineProps<TextFieldProps>(), {
-	autofocus: false,
-	required: false,
-	invalid: false,
-	readonly: false,
-	label: '',
-	description: ''
-})
-const emit = defineEmits(['update:modelValue'])
-
-const { modelValue, tabindex, maxLength, label, invalid, placeholder, description, autofocus, required } = toRefs(props)
-const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
-const type = computed(() => 'text')
-const inputElement = ref()
-const focus = () => inputElement.value.focus()
-
-onMounted(() => {
-	if (autofocus.value) focus()
-})
-</script>
+<style>
+@import '/src/styles/field.css';
+</style>
 
 <template>
 	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
@@ -81,6 +43,44 @@ onMounted(() => {
 	</label>
 </template>
 
-<style>
-@import '/src/styles/field.css';
-</style>
+<script setup lang="ts">
+import CharCounter from './components/CharCounter.vue'
+import { computed, onMounted, ref, toRefs } from 'vue'
+
+interface TextFieldProps {
+	autofocus?: boolean
+	required?: boolean
+	invalid?: boolean
+	readonly?: boolean
+	label?: string
+	description?: string
+	minLength?: number
+	/** Добавляет счетчик символов. */
+	maxLength?: number
+	min?: number
+	max?: number
+	placeholder?: string
+	tabindex?: '0' | '1' | 0 | 1
+	modelValue: string
+}
+
+const props = withDefaults(defineProps<TextFieldProps>(), {
+	autofocus: false,
+	required: false,
+	invalid: false,
+	readonly: false,
+	label: '',
+	description: ''
+})
+const emit = defineEmits(['update:modelValue'])
+
+const { modelValue, tabindex, maxLength, label, invalid, placeholder, description, autofocus, required } = toRefs(props)
+const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
+const type = computed(() => 'text')
+const inputElement = ref()
+const focus = () => inputElement.value.focus()
+
+onMounted(() => {
+	if (autofocus.value) focus()
+})
+</script>

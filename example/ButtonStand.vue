@@ -1,13 +1,23 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import { Btn, Icon } from '../src/main.js'
-
-const onClick = () => {
-	alert('CLICK')
+<style>
+.ButtonStand {
+	display: flex;
+	flex-direction: column;
+	margin: 100px 0px;
 }
-const value = ref()
-</script>
 
+.ButtonStand__ButtonStand__currentButtonsContainer {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	width: 100%;
+}
+
+.ButtonStand__currentButton {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+</style>
 <template>
 	<div class="ButtonStand">
 		<div class="ButtonStand__ButtonStand__currentButtonsContainer">
@@ -126,23 +136,12 @@ const value = ref()
 	</div>
 </template>
 
-<style>
-.ButtonStand {
-	display: flex;
-	flex-direction: column;
-	margin: 100px 0px;
-}
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Btn, Icon } from '../src/main.js'
 
-.ButtonStand__ButtonStand__currentButtonsContainer {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	width: 100%;
+const onClick = () => {
+	alert('CLICK')
 }
-
-.ButtonStand__currentButton {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-</style>
+const value = ref()
+</script>
