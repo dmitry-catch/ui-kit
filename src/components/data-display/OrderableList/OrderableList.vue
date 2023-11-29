@@ -1,38 +1,3 @@
-<style>
-.OrderableList {
-	display: flex;
-	flex-flow: column;
-	gap: calc(1.5 * var(--design-gap-unit));
-}
-
-.OrderableListItem {
-	display: flex;
-	gap: calc(0.5 * var(--design-gap-unit));
-	align-content: center;
-}
-
-.OrderableListItem__dragDropHandle {
-	--icon-size: var(--design-current-line-height);
-}
-</style>
-
-<template>
-	<div ref="root" class="OrderableList">
-		<div
-			v-for="item of internalItems"
-			:key="item.name"
-			class="OrderableListItem"
-			@pointerdown.prevent="dragHandleMousedown"
-			@click="clickHandler"
-		>
-			<Icon class="OrderableListItem__dragDropHandle" name="drag-drop"></Icon>
-			<span>
-				<slot name="itemTemplate" :data="item"></slot>
-			</span>
-		</div>
-	</div>
-</template>
-
 <script setup lang="ts">
 import Icon from '../../general/Icon/Icon.vue'
 import { ref, toRefs, watchEffect } from 'vue'
@@ -77,3 +42,38 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 	componentRoot: root
 })
 </script>
+
+<template>
+	<div ref="root" class="OrderableList">
+		<div
+			v-for="item of internalItems"
+			:key="item.name"
+			class="OrderableListItem"
+			@pointerdown.prevent="dragHandleMousedown"
+			@click="clickHandler"
+		>
+			<Icon class="OrderableListItem__dragDropHandle" name="drag-drop"></Icon>
+			<span>
+				<slot name="itemTemplate" :data="item"></slot>
+			</span>
+		</div>
+	</div>
+</template>
+
+<style>
+.OrderableList {
+	display: flex;
+	flex-flow: column;
+	gap: calc(1.5 * var(--design-gap-unit));
+}
+
+.OrderableListItem {
+	display: flex;
+	gap: calc(0.5 * var(--design-gap-unit));
+	align-content: center;
+}
+
+.OrderableListItem__dragDropHandle {
+	--icon-size: var(--design-current-line-height);
+}
+</style>

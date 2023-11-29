@@ -6,8 +6,8 @@ import { OptionList } from 'storybook/consts.js'
 export default {
 	component: Button,
 	args: {
-		default: 'Button',
-		disabled: false
+		disabled: false,
+		default: 'Button'
 	},
 	argTypes: {
 		class: {

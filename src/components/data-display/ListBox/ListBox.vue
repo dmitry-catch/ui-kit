@@ -1,32 +1,3 @@
-<style>
-.ListBox {
-}
-
-.ListBox__dropdownItem {
-	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
-}
-
-.ListBox__dropdownItem:hover {
-	background: var(--design-background-color-secondary);
-}
-</style>
-
-<template>
-	<Popover ref="root" class="ListBox">
-		<div class="Btn__dropdownContent">
-			<div
-				v-for="option in options"
-				class="ListBox__dropdownItem"
-				@click="(event) => dropdownOptionClick(event, option)"
-			>
-				<slot name="item" :data="option">
-					<SelectableOption :option="option" :selected="modelValue.includes(option.value)"></SelectableOption>
-				</slot>
-			</div>
-		</div>
-	</Popover>
-</template>
-
 <script setup lang="ts">
 import Popover from '../../non-public/Popover/Popover.vue'
 import { ref, toRefs } from 'vue'
@@ -59,3 +30,32 @@ const dropdownOptionClick = async (event: MouseEvent, option: ListBoxOption) => 
 }
 useClickOutside(root, (event) => emit('closeRequest', event))
 </script>
+
+<template>
+	<Popover ref="root" class="ListBox">
+		<div class="Btn__dropdownContent">
+			<div
+				v-for="option in options"
+				class="ListBox__dropdownItem"
+				@click="(event) => dropdownOptionClick(event, option)"
+			>
+				<slot name="item" :data="option">
+					<SelectableOption :option="option" :selected="modelValue.includes(option.value)"></SelectableOption>
+				</slot>
+			</div>
+		</div>
+	</Popover>
+</template>
+
+<style>
+.ListBox {
+}
+
+.ListBox__dropdownItem {
+	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
+}
+
+.ListBox__dropdownItem:hover {
+	background: var(--design-background-color-secondary);
+}
+</style>

@@ -1,3 +1,9 @@
+<template>
+	<div class="ContentContainer">
+		<slot></slot>
+	</div>
+</template>
+
 <style>
 .ContentContainer {
 	--content-container-content-spacing: calc(2 * var(--design-gap-unit));
@@ -18,8 +24,3 @@
 	margin-block-end: calc(var(--content-container-content-spacing) * -0.5);
 }
 </style>
-<template>
-	<div class="ContentContainer">
-		<slot></slot>
-	</div>
-</template>

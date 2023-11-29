@@ -32,7 +32,7 @@
 		"vue/component-tags-order": [
 			"error",
 			{
-				"order": ["style", "template", "script"]
+				"order": ["script", "template", "style"]
 			}
 		]
 	},

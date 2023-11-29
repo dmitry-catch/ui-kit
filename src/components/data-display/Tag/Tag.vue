@@ -1,12 +1,4 @@
-<style>
-.Tag {
-	display: inline-flex;
-	gap: var(--design-gap-unit);
-	border-radius: var(--design-border-radius-tag);
-	background: var(--design-background-color-secondary);
-	padding: 0 10px;
-}
-</style>
+<script setup lang="ts"></script>
 
 <template>
 	<div class="Tag text-medium">
@@ -16,4 +8,12 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<style>
+.Tag {
+	display: inline-flex;
+	gap: var(--design-gap-unit);
+	border-radius: var(--design-border-radius-tag);
+	background: var(--design-background-color-secondary);
+	padding: 0 10px;
+}
+</style>

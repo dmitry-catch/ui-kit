@@ -1,78 +1,3 @@
-<style>
-.DataGrid {
-	/*noinspection CssInvalidFunction*/
-	--datagrid-table-cell-padding: var(
-		--design-table-cell-padding,
-		calc(1.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit))
-	);
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-}
-
-.DataGrid__table {
-	width: 100%;
-	height: 100%;
-	display: grid;
-	--datagrid-rows-count: v-bind(rowsCount);
-	--datagrid-columns-count: v-bind(columnsCount);
-	--datagrid-content-columns-count: v-bind(contentColumnsCount);
-	grid-auto-rows: min-content;
-	--datagrid-template-details-column: v-bind(detailsColumn);
-	--datagrid-template-select-column: v-bind(selectColumn);
-	grid-template-columns:
-		var(--datagrid-template-details-column, minmax(min-content, auto))
-		var(--datagrid-template-select-column, minmax(min-content, auto))
-		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
-	background: var(--design-background-color-primary);
-	overflow: auto;
-}
-
-.DataGrid__header {
-	position: sticky;
-	top: 0;
-}
-
-.DataGrid__thead,
-.DataGrid__tbody {
-	display: contents;
-}
-
-.DataGrid__eventInterceptor {
-	display: contents;
-}
-</style>
-
-<template>
-	<div ref="root" class="DataGrid">
-		<table class="DataGrid__table">
-			<thead class="DataGrid__thead">
-				<DataGridHeaderRow
-					v-model:columns="internalColumns"
-					class="DataGrid__header"
-					:detailsColumn="hasDetails"
-					:selectColumn="allowSelection"
-				>
-				</DataGridHeaderRow>
-			</thead>
-			<tbody class="DataGrid__tbody">
-				<DataGridRowGroup
-					v-for="item in dataSource"
-					:key="rowKey(item)"
-					:item="item"
-					:columns="internalColumns"
-					:detailsColumn="hasDetails"
-					:selectColumn="allowSelection"
-				>
-					<template #rowDetails="{ item }">
-						<slot name="rowDetails" :item="item"></slot>
-					</template>
-				</DataGridRowGroup>
-			</tbody>
-		</table>
-	</div>
-</template>
-
 <script setup lang="ts">
 import { computed, provide, ref, toRefs, useSlots, watch } from 'vue'
 import { and, FilterExpression } from '@forecsys/collections'
@@ -141,3 +66,78 @@ watch(
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
 </script>
+
+<template>
+	<div ref="root" class="DataGrid">
+		<table class="DataGrid__table">
+			<thead class="DataGrid__thead">
+				<DataGridHeaderRow
+					v-model:columns="internalColumns"
+					class="DataGrid__header"
+					:detailsColumn="hasDetails"
+					:selectColumn="allowSelection"
+				>
+				</DataGridHeaderRow>
+			</thead>
+			<tbody class="DataGrid__tbody">
+				<DataGridRowGroup
+					v-for="item in dataSource"
+					:key="rowKey(item)"
+					:item="item"
+					:columns="internalColumns"
+					:detailsColumn="hasDetails"
+					:selectColumn="allowSelection"
+				>
+					<template #rowDetails="{ item }">
+						<slot name="rowDetails" :item="item"></slot>
+					</template>
+				</DataGridRowGroup>
+			</tbody>
+		</table>
+	</div>
+</template>
+
+<style>
+.DataGrid {
+	/*noinspection CssInvalidFunction*/
+	--datagrid-table-cell-padding: var(
+		--design-table-cell-padding,
+		calc(1.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit))
+	);
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+.DataGrid__table {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	--datagrid-rows-count: v-bind(rowsCount);
+	--datagrid-columns-count: v-bind(columnsCount);
+	--datagrid-content-columns-count: v-bind(contentColumnsCount);
+	grid-auto-rows: min-content;
+	--datagrid-template-details-column: v-bind(detailsColumn);
+	--datagrid-template-select-column: v-bind(selectColumn);
+	grid-template-columns:
+		var(--datagrid-template-details-column, minmax(min-content, auto))
+		var(--datagrid-template-select-column, minmax(min-content, auto))
+		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
+	background: var(--design-background-color-primary);
+	overflow: auto;
+}
+
+.DataGrid__header {
+	position: sticky;
+	top: 0;
+}
+
+.DataGrid__thead,
+.DataGrid__tbody {
+	display: contents;
+}
+
+.DataGrid__eventInterceptor {
+	display: contents;
+}
+</style>
