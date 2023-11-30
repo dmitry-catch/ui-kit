@@ -1,3 +1,101 @@
+<style>
+.DataGridHeader {
+	display: flex;
+	flex-flow: row;
+	padding: var(--datagrid-table-cell-padding);
+	background: var(--design-background-color-primary);
+	width: 100%;
+	height: 100%;
+	min-height: 26px;
+	box-sizing: border-box;
+	gap: calc(1.5 * var(--design-gap-unit));
+	align-items: center;
+}
+
+.DataGridHeader__name {
+	margin-inline-end: auto;
+}
+
+.DataGridHeader__actions {
+	display: flex;
+	flex-flow: row;
+	gap: var(--design-gap-unit);
+	align-items: center;
+}
+
+.DataGridHeader__action {
+	--icon-size: var(--design-current-font-size);
+}
+
+.DataGridHeader__eventInterceptor {
+	display: contents;
+}
+
+.DataGridHeader__search {
+	min-width: 100px;
+}
+</style>
+
+<template>
+	<th class="DataGridHeader">
+		<div v-if="!searchOpened" class="DataGridHeader__name accent">{{ column.name }}</div>
+		<div
+			v-if="searchOpened"
+			class="DataGridHeader__eventInterceptor"
+			@focusout="searchOpened = isDateColumn(column) ? searchOpened : false"
+		>
+			<TextField
+				v-if="!isDateColumn(column)"
+				v-model="search"
+				class="DataGridHeader__search dense"
+				:placeholder="column.name"
+				autofocus
+				@focusout="searchOpened = false"
+			></TextField>
+			<DatePicker v-else v-model="date" class="dense" autofocus>
+				<template #after>
+					<Button class="icon functional">
+						<Icon name="close" @click="date = null"></Icon>
+					</Button>
+				</template>
+			</DatePicker>
+		</div>
+		<div class="DataGridHeader__actions">
+			<Button
+				v-if="(searchable || isDateColumn(column)) && !searchOpened"
+				class="DataGridHeader__action DataGridHeader__actionSearch icon functional"
+				@click="searchOpened = !searchOpened"
+			>
+				<Icon v-if="!isDateColumn(column)" :class="{ accent: Boolean(search) }" name="search"></Icon>
+				<Icon v-else :class="{ accent: Boolean(date) }" name="calendar"></Icon>
+			</Button>
+			<div
+				v-if="isEnumColumn(column)"
+				:ref="(element) => (filterListButton = element)"
+				class="DataGridHeader__eventInterceptor"
+			>
+				<Button
+					class="DataGridHeader__action DataGridHeader__actionFilter icon functional"
+					@click="openFilterList"
+				>
+					<Icon name="filter"></Icon>
+				</Button>
+			</div>
+			<Button class="DataGridHeader__action DataGridHeader__actionSort icon functional" @click="clickSort">
+				<Icon v-if="existingSort == null" name="sort"></Icon>
+				<Icon v-else-if="existingSort.direction === 'asc'" name="sort_ascending"></Icon>
+				<Icon v-else-if="existingSort.direction === 'desc'" name="sort_decending"></Icon>
+			</Button>
+		</div>
+		<ListBox
+			v-if="filterListOpened"
+			v-model="filterListSelected"
+			:options="filterListOptions"
+			@update:modelValue="filterListOpened = false"
+		></ListBox>
+	</th>
+</template>
+
 <script setup lang="ts">
 import { DataGridColumn } from '../types.js'
 import { computed, ref, toRefs, watchEffect } from 'vue'
@@ -111,98 +209,3 @@ const clickSort = (event: MouseEvent) => {
 	} else changeDirection()
 }
 </script>
-
-<template>
-	<th class="DataGridHeader">
-		<div v-if="!searchOpened" class="DataGridHeader__name accent">{{ column.name }}</div>
-		<div
-			v-if="searchOpened"
-			class="DataGridHeader__eventInterceptor"
-			@focusout="searchOpened = isDateColumn(column) ? searchOpened : false"
-		>
-			<TextField
-				v-if="!isDateColumn(column)"
-				v-model="search"
-				class="DataGridHeader__search dense"
-				:placeholder="column.name"
-				autofocus
-				@focusout="searchOpened = false"
-			></TextField>
-			<DatePicker v-else v-model="date" class="dense" autofocus>
-				<template #after>
-					<Button class="icon functional">
-						<Icon name="close" @click="date = null"></Icon>
-					</Button>
-				</template>
-			</DatePicker>
-		</div>
-		<div class="DataGridHeader__actions">
-			<Button
-				v-if="(searchable || isDateColumn(column)) && !searchOpened"
-				class="DataGridHeader__action DataGridHeader__actionSearch icon functional"
-				@click="searchOpened = !searchOpened"
-			>
-				<Icon v-if="!isDateColumn(column)" :class="{ accent: Boolean(search) }" name="search"></Icon>
-				<Icon v-else :class="{ accent: Boolean(date) }" name="calendar"></Icon>
-			</Button>
-			<div
-				v-if="isEnumColumn(column)"
-				:ref="(element) => (filterListButton = element)"
-				class="DataGridHeader__eventInterceptor"
-			>
-				<Button
-					class="DataGridHeader__action DataGridHeader__actionFilter icon functional"
-					@click="openFilterList"
-				>
-					<Icon name="filter"></Icon>
-				</Button>
-			</div>
-			<Button class="DataGridHeader__action DataGridHeader__actionSort icon functional" @click="clickSort">
-				<Icon v-if="existingSort == null" name="sort"></Icon>
-				<Icon v-else-if="existingSort.direction === 'asc'" name="sort_ascending"></Icon>
-				<Icon v-else-if="existingSort.direction === 'desc'" name="sort_decending"></Icon>
-			</Button>
-		</div>
-		<ListBox
-			v-if="filterListOpened"
-			v-model="filterListSelected"
-			:options="filterListOptions"
-			@update:modelValue="filterListOpened = false"
-		></ListBox>
-	</th>
-</template>
-
-<style>
-.DataGridHeader {
-	display: flex;
-	flex-flow: row;
-	padding: var(--datagrid-table-cell-padding);
-	background: var(--design-background-color-primary);
-	width: 100%;
-	height: 100%;
-	min-height: 26px;
-	box-sizing: border-box;
-	gap: calc(1.5 * var(--design-gap-unit));
-	align-items: center;
-	justify-content: center;
-}
-
-.DataGridHeader__actions {
-	display: flex;
-	flex-flow: row;
-	gap: var(--design-gap-unit);
-	align-items: center;
-}
-
-.DataGridHeader__action {
-	--icon-size: var(--design-current-font-size);
-}
-
-.DataGridHeader__eventInterceptor {
-	display: contents;
-}
-
-.DataGridHeader__search {
-	min-width: 100px;
-}
-</style>

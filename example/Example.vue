@@ -1,3 +1,29 @@
+<style>
+body {
+	background: white;
+}
+</style>
+
+<template>
+	<ButtonStand />
+	<input type="date" />
+	<input type="number" />
+	<div style="width: 468px">
+		<DatePicker v-model="date" :hint="'string'" :description="'string'" :invalid="false" :disabled="true" />
+	</div>
+
+	<div>
+		<DataGrid
+			v-model:filters="filters"
+			v-model:sort="sort"
+			:columns="options"
+			:data-source="grouped"
+			:rowKey="(data: any) => data.id"
+		>
+		</DataGrid>
+	</div>
+</template>
+
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
@@ -60,29 +86,3 @@ watchEffect(() => {
 	console.log(linqSort(sort.value))
 })
 </script>
-
-<template>
-	<ButtonStand />
-	<input type="date" />
-	<input type="number" />
-	<div style="width: 468px">
-		<DatePicker v-model="date" :hint="'string'" :description="'string'" :invalid="false" :disabled="true" />
-	</div>
-
-	<div>
-		<DataGrid
-			v-model:filters="filters"
-			v-model:sort="sort"
-			:columns="options"
-			:data-source="grouped"
-			:rowKey="(data: any) => data.id"
-		>
-		</DataGrid>
-	</div>
-</template>
-
-<style>
-body {
-	background: white;
-}
-</style>

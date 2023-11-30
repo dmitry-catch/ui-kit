@@ -1,208 +1,3 @@
-<script setup lang="ts">
-import Popover from '../../non-public/Popover/Popover.vue'
-import Icon from '../../general/Icon/Icon.vue'
-import Button from '../../general/Button/Button.vue'
-import { computed, onMounted, provide, ref, toRefs, watch, watchEffect } from 'vue'
-import { DateLocalizationRu } from '../../../consts/localization.ru.js'
-import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleYearInputEvent, numberOfDaysInMonth } from './utils.js'
-
-interface DatePickerProps {
-	disabled?: boolean
-	required?: boolean
-	invalid?: boolean
-	autofocus?: boolean
-	label?: string
-	hint?: string
-	description?: string
-	modelValue?: string
-}
-
-const props = withDefaults(defineProps<DatePickerProps>(), {
-	disabled: false,
-	required: false,
-	invalid: false,
-	autofocus: false,
-	label: '',
-	hint: '',
-	description: ''
-})
-const emit = defineEmits(['update:modelValue'])
-
-const { autofocus } = toRefs(props)
-const modelValue = ref(props.modelValue ? new Date(props.modelValue).toLocaleDateString().replaceAll('.', '-') : null)
-const day = ref<string | undefined>(modelValue.value?.split('-')[0])
-const month = ref<string | undefined>(modelValue.value?.split('-')[1])
-const year = ref<string | undefined>(modelValue.value?.split('-')[2])
-
-watchEffect(() => {
-	year.value = modelValue.value != null ? modelValue.value?.split('-')[2] : undefined
-	month.value = modelValue.value != null ? modelValue.value?.split('-')[1] : undefined
-	day.value = modelValue.value != null ? modelValue.value?.split('-')[0] : undefined
-})
-
-const dayRef = ref()
-const monthRef = ref()
-const yearRef = ref()
-const DateLocalization = new DateLocalizationRu()
-
-const isCalendarOpen = ref(false)
-
-const dateTimeValue = computed(() => {
-	const dateAbbr = DateLocalization.DateAbbr().split('.')
-	return [
-		day.value && day.value != '00' ? String(day.value) : dateAbbr[0],
-		month.value && month.value != '00' ? String(month.value) : dateAbbr[1],
-		year.value && year.value != '0000' ? String(year.value) : dateAbbr[2]
-	]
-})
-
-const handleCalendarClick = () => {
-	if (!props.disabled) {
-		if (!day.value) day.value = String(new Date().getDate())
-		if (!month.value) month.value = String(new Date().getMonth() + 1)
-		if (!year.value) year.value = String(new Date().getFullYear())
-		isCalendarOpen.value = !isCalendarOpen.value
-	}
-}
-
-const focus = () => dayRef.value.focus()
-
-onMounted(() => {
-	if (autofocus.value) focus()
-})
-const handleCalendarClose = () => {
-	focus()
-	isCalendarOpen.value = false
-}
-
-const handleDayInput = (event: Event) => {
-	const target = event.target as HTMLInputElement
-	if (target.value.length >= 2 && day.value && day.value.length < 2) monthRef.value.focus()
-	day.value = target.value
-}
-
-const handleMonthInput = (event: Event) => {
-	const target = event.target as HTMLInputElement
-	if (target.value.length >= 2 && month.value && month.value.length < 2) yearRef.value.focus()
-	month.value = String(target.value)
-}
-
-const handleYearInput = (event: Event) => {
-	const target = event.target as HTMLInputElement
-	year.value = handleYearInputEvent(target.value)
-}
-
-//TODO Refact it to decrease cognitive complexity
-// eslint-disable-next-line sonarjs/cognitive-complexity
-watch([day, month, year], () => {
-	if (month.value) {
-		if (Number(month.value) > 12) month.value = '12'
-		if (Number(month.value) < 1 && month.value.length > 1) month.value = '1'
-		if (day.value && year.value) {
-			const days = numberOfDaysInMonth(Number(month.value), Number(year.value))
-
-			if (Number(day.value) > days) day.value = days.toString()
-			if (Number(day.value) < 1 && day.value.length > 1) day.value = '1'
-		}
-	}
-	year.value = year.value ? year.value.toString().slice(-4) : undefined
-	month.value = month.value ? month.value.toString().slice(-2) : undefined
-	day.value = day.value ? day.value.toString().slice(-2) : undefined
-	if (day.value && month.value && year.value) emit('update:modelValue', `${year.value}-${month.value}-${day.value}`)
-	else emit('update:modelValue', null)
-})
-const root = ref()
-provide('datepicker-root', root)
-</script>
-
-<template>
-	<div ref="root" class="DatePicker Field" :class="{ disabled: disabled, invalid: invalid }">
-		<span class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
-		<span class="Field__description text-small">{{ description }}</span>
-		<div class="Field__visibleInput">
-			<div class="Field__beforeWrapper">
-				<slot name="before"></slot>
-			</div>
-			<div
-				class="DatePicker__dateTime text-medium"
-				:class="{
-					active: dateTimeValue.some((value) => /\d/.test(value)),
-					disabled: disabled
-				}"
-			>
-				<label class="Field__input" :class="{ disabled: disabled }">
-					<input
-						ref="dayRef"
-						type="number"
-						min="1"
-						max="31"
-						class="visually-hidden"
-						:value="day"
-						:disabled="disabled"
-						:autofocus="autofocus"
-						@input="handleDayInput"
-						@focus="callSelectOnElement"
-					/>
-					<span class="DatePicker__dateValue">{{ day?.padStart(2, '0').slice(-2) || 'ДД' }}</span>
-				</label>
-
-				<span class="DatePicker__dateSplitter">.</span>
-				<label class="Field__input" :class="{ disabled: disabled }">
-					<input
-						ref="monthRef"
-						type="number"
-						min="1"
-						max="12"
-						class="visually-hidden"
-						:valuel="month"
-						:disabled="disabled"
-						@input="handleMonthInput"
-						@focus="callSelectOnElement"
-					/>
-					<span class="DatePicker__dateValue">{{ month?.padStart(2, '0').slice(-2) || 'ММ' }}</span>
-				</label>
-				<span class="DatePicker__dateSplitter">.</span>
-				<label class="Field__input" :class="{ disabled: disabled }">
-					<input
-						ref="yearRef"
-						type="number"
-						min="1"
-						max="9999"
-						class="DatePicker__input visually-hidden"
-						:value="year"
-						:disabled="disabled"
-						@input="handleYearInput"
-						@focus="callSelectOnElement"
-					/>
-					<span class="DatePicker__dateValue">{{ year?.padStart(4, '0').slice(-4) || 'ГГГГ' }}</span>
-				</label>
-				<div class="Field__afterWrapper">
-					<slot name="after"></slot>
-				</div>
-			</div>
-
-			<Button
-				class="DatePicker__visible icon functional"
-				:class="{
-					disabled__input: disabled
-				}"
-				@click="handleCalendarClick"
-			>
-				<Icon class="DatePicker__icon calendarIcon" name="calendar"></Icon>
-			</Button>
-		</div>
-		<Popover v-if="isCalendarOpen" tabindex="0">
-			<CalendarPopup
-				v-model:day="day"
-				v-model:month="month"
-				v-model:year="year"
-				:handleCalendarClose="handleCalendarClose"
-			/>
-		</Popover>
-		<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
-	</div>
-</template>
 <style>
 @import '/public/visually-hidden.css';
 @import '/src/styles/field.css';
@@ -342,3 +137,213 @@ provide('datepicker-root', root)
 	--design-current-line-height: var(--design-line-height-footnote);
 }
 </style>
+
+<template>
+	<div ref="root" class="DatePicker Field" :class="{ disabled: disabled, invalid: invalid }">
+		<span class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
+		<span class="Field__description text-small">{{ description }}</span>
+		<div class="Field__visibleInput">
+			<div class="Field__beforeWrapper">
+				<slot name="before"></slot>
+			</div>
+			<div
+				class="DatePicker__dateTime text-medium"
+				:class="{
+					active: internalValue != undefined,
+					disabled: disabled
+				}"
+			>
+				<label class="Field__input" :class="{ disabled: disabled }">
+					<input
+						ref="dayRef"
+						type="number"
+						min="1"
+						max="31"
+						class="visually-hidden"
+						:value="day"
+						:disabled="disabled"
+						:autofocus="autofocus"
+						@input="handleDayInput"
+						@focus="callSelectOnElement"
+					/>
+					<span class="DatePicker__dateValue">{{
+						day ? String(day)?.padStart(2, '0').slice(-2) : DateLocalization[0]
+					}}</span>
+				</label>
+
+				<span class="DatePicker__dateSplitter">.</span>
+				<label class="Field__input" :class="{ disabled: disabled }">
+					<input
+						ref="monthRef"
+						type="number"
+						min="1"
+						max="12"
+						class="visually-hidden"
+						:valuel="month"
+						:disabled="disabled"
+						@input="handleMonthInput"
+						@focus="callSelectOnElement"
+					/>
+					<span class="DatePicker__dateValue">{{
+						month ? String(month)?.padStart(2, '0').slice(-2) : DateLocalization[1]
+					}}</span>
+				</label>
+				<span class="DatePicker__dateSplitter">.</span>
+				<label class="Field__input" :class="{ disabled: disabled }">
+					<input
+						ref="yearRef"
+						type="number"
+						min="1900"
+						max="9999"
+						class="DatePicker__input visually-hidden"
+						:value="year"
+						:disabled="disabled"
+						@input="handleYearInput"
+						@focus="callSelectOnElement"
+					/>
+					<span class="DatePicker__dateValue">{{
+						year ? String(year)?.padStart(4, '0').slice(-4) : DateLocalization[2]
+					}}</span>
+				</label>
+				<div class="Field__afterWrapper">
+					<slot name="after"></slot>
+				</div>
+			</div>
+
+			<Button
+				class="DatePicker__visible icon functional"
+				:class="{
+					disabled__input: disabled
+				}"
+				@click="handleCalendarClick"
+			>
+				<Icon class="DatePicker__icon calendarIcon" name="calendar"></Icon>
+			</Button>
+		</div>
+		<Popover v-if="isCalendarOpen" tabindex="0">
+			<CalendarPopup
+				v-model:day="day"
+				v-model:month="month"
+				v-model:year="year"
+				:handleCalendarClose="handleCalendarClose"
+			/>
+		</Popover>
+		<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
+	</div>
+</template>
+<script setup lang="ts">
+import Popover from '../../non-public/Popover/Popover.vue'
+import Icon from '../../general/Icon/Icon.vue'
+import Button from '../../general/Button/Button.vue'
+import { onMounted, provide, ref, toRefs, watch } from 'vue'
+import { DateLocalizationRu } from '../../../consts/localization.ru.js'
+import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
+import { callSelectOnElement, handleInitialDateValue } from './utils.js'
+import test from 'node:test'
+
+interface DatePickerProps {
+	disabled?: boolean
+	required?: boolean
+	invalid?: boolean
+	autofocus?: boolean
+	label?: string
+	hint?: string
+	description?: string
+	modelValue?: string | Date | undefined
+}
+
+const props = withDefaults(defineProps<DatePickerProps>(), {
+	disabled: false,
+	required: false,
+	invalid: false,
+	autofocus: false,
+	label: '',
+	hint: '',
+	description: '',
+	modelValue: undefined
+})
+const emit = defineEmits(['update:modelValue'])
+
+const { autofocus, modelValue } = toRefs(props)
+
+const internalValue = ref<Date | null>(handleInitialDateValue(modelValue.value))
+
+const day = ref<number | undefined>()
+const month = ref<number | undefined>()
+const year = ref<number | undefined>()
+
+const dayRef = ref()
+const monthRef = ref()
+const yearRef = ref()
+const DateLocalization = new DateLocalizationRu().DateAbbr()
+
+const isCalendarOpen = ref(false)
+
+const focus = () => dayRef.value.focus()
+
+const handleDayInput = (event: Event) => {
+	const target = event.target as HTMLInputElement
+	if (target.value.length >= 2) monthRef.value.focus()
+	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
+	newInternalValue.setDate(Number(target.value))
+	internalValue.value = new Date(newInternalValue.toDateString())
+}
+const handleMonthInput = (event: Event) => {
+	const target = event.target as HTMLInputElement
+	if (target.value.length >= 2) yearRef.value.focus()
+	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
+	newInternalValue.setMonth(Number(target.value) - 1)
+	internalValue.value = new Date(newInternalValue.toDateString())
+}
+const handleYearInput = (event: Event) => {
+	const target = event.target as HTMLInputElement
+	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
+	newInternalValue.setFullYear(Number(target.value.slice(-4)))
+	internalValue.value = new Date(newInternalValue.toDateString())
+}
+
+const handleCalendarClose = () => {
+	focus()
+	isCalendarOpen.value = false
+}
+
+const handleCalendarClick = () => {
+	if (!props.disabled) {
+		if (!internalValue.value || !(internalValue.value instanceof Date)) internalValue.value = new Date()
+		isCalendarOpen.value = !isCalendarOpen.value
+	}
+}
+
+const handleInternalValueChange = () => {
+	if (internalValue.value) {
+		day.value = internalValue.value?.getDate()
+		month.value = Number(internalValue.value?.getMonth()) + 1
+		year.value = internalValue.value?.getFullYear()
+		emit('update:modelValue', internalValue.value)
+	}
+}
+
+watch(internalValue, () => {
+	handleInternalValueChange()
+})
+
+watch([day, month, year], () => {
+	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
+	newInternalValue.setDate(Number(day.value))
+	newInternalValue.setMonth(Number(month.value) - 1)
+	newInternalValue.setFullYear(Number(year.value))
+	internalValue.value = new Date(newInternalValue.toDateString())
+})
+
+watch(modelValue, (value) => {
+	if (value != internalValue.value) internalValue.value = handleInitialDateValue(value)
+})
+
+onMounted(() => {
+	if (autofocus.value) focus()
+	handleInternalValueChange()
+})
+
+const root = ref()
+provide('datepicker-root', root)
+</script>

@@ -18,7 +18,7 @@ export interface Localization {
  December - 31 days
  */
 export interface DateLocalization {
-	DateAbbr(): string
+	DateAbbr(): Array<string>
 	January(): string
 	February(): string
 	April(): string
