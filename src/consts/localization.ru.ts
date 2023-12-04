@@ -1,8 +1,8 @@
 import { DateLocalization } from '../types/localization.js'
 
 export class DateLocalizationRu implements DateLocalization {
-	DateAbbr(): string {
-		return 'ДД.ММ.ГГГГ'
+	DateAbbr(): Array<string> {
+		return ['ДД', 'ММ', 'ГГГГ']
 	}
 
 	January(): string {

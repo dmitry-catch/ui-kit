@@ -38,3 +38,14 @@ export const callSelectOnElement = (event: Event) => {
 	const target = event.target as HTMLInputElement | null
 	target?.select()
 }
+
+export const handleInitialDateValue = (value: string | Date | undefined): Date | null => {
+	if (!value) return null
+	else if (typeof value == 'string') {
+		const date = new Date(String(value).split('T')[0])
+		return isNaN(date.getTime()) ? null : date
+	} else if (value instanceof Date) {
+		const date = new Date(value.toDateString())
+		return isNaN(date.getTime()) ? null : date
+	} else return null
+}
