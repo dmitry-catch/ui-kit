@@ -184,7 +184,10 @@ const clickSort = (event: MouseEvent) => {
 	box-sizing: border-box;
 	gap: calc(1.5 * var(--design-gap-unit));
 	align-items: center;
-	justify-content: center;
+}
+
+.DataGridHeader__name {
+	margin-inline-end: auto;
 }
 
 .DataGridHeader__actions {
