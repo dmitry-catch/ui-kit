@@ -7,8 +7,7 @@ export default {
 	component: Button,
 	args: {
 		disabled: false,
-		default: 'Button',
-		size: "medium",
+		default: 'Button'
 	},
 	argTypes: {
 		class: {
@@ -26,13 +25,6 @@ export default {
 				'danger accent',
 				'info',
 				'info accent'
-			]
-		},
-		size: {
-			control: 'select',
-			options: [
-				'small',
-				'medium'
 			]
 		}
 	}
