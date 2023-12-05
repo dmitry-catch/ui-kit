@@ -103,11 +103,13 @@ watch([day, month, year], () => {
 })
 
 watch(modelValue, (value) => {
+	console.log('MODEL VALUE CHANGE')
 	if (value != handleInternalValue(internalValue.value)) {
+		console.log('WIRKED')
 		internalValue.value = handleInitialDateValue(value)
 	}
 })
-2
+
 onMounted(() => {
 	if (autofocus.value) focus()
 	if (modelValue.value != handleInternalValue(internalValue.value)) {
