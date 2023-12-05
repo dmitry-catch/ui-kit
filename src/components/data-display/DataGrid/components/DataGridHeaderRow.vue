@@ -70,5 +70,6 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 	top: 0;
 	left: 0;
 	width: 100%;
+	height: min-content;
 }
 </style>
