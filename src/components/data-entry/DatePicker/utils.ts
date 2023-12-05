@@ -49,10 +49,3 @@ export const handleInitialDateValue = (value: string | Date | undefined): Date |
 		return isNaN(date.getTime()) ? null : date
 	} else return null
 }
-
-export const handleInternalValue = (value: Date | undefined | null): String | null => {
-	if (value instanceof Date) {
-		return value.toLocaleDateString().split('.').reverse().join('-')
-	}
-	return null
-}

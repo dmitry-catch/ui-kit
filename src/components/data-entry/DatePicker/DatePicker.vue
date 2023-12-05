@@ -5,7 +5,7 @@ import Button from '../../general/Button/Button.vue'
 import { onMounted, provide, ref, toRefs, watch } from 'vue'
 import { DateLocalizationRu } from '../../../consts/localization.ru.js'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
-import { callSelectOnElement, handleInitialDateValue, handleInternalValue } from './utils.js'
+import { callSelectOnElement, handleInitialDateValue } from './utils.js'
 import test from 'node:test'
 
 interface DatePickerProps {
@@ -86,7 +86,7 @@ const handleInternalValueChange = () => {
 		day.value = internalValue.value?.getDate()
 		month.value = Number(internalValue.value?.getMonth()) + 1
 		year.value = internalValue.value?.getFullYear()
-		emit('update:modelValue', handleInternalValue(internalValue.value))
+		emit('update:modelValue', internalValue.value)
 	}
 }
 
@@ -103,18 +103,11 @@ watch([day, month, year], () => {
 })
 
 watch(modelValue, (value) => {
-	console.log('MODEL VALUE CHANGE')
-	if (value != handleInternalValue(internalValue.value)) {
-		console.log('WIRKED')
-		internalValue.value = handleInitialDateValue(value)
-	}
+	if (value != internalValue.value) internalValue.value = handleInitialDateValue(value)
 })
 
 onMounted(() => {
 	if (autofocus.value) focus()
-	if (modelValue.value != handleInternalValue(internalValue.value)) {
-		internalValue.value = handleInitialDateValue(modelValue.value)
-	}
 	handleInternalValueChange()
 })
 
