@@ -69,6 +69,7 @@ const clickOutside = (event: Event) => {
 	justify-content: center;
 	align-items: center;
 	gap: var(--design-gap-unit);
+	min-width: 144px;
 	box-sizing: border-box;
 	height: min-content;
 	white-space: nowrap;

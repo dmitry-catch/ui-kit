@@ -267,10 +267,6 @@ provide('datepicker-root', root)
 	color: var(--design-text-color-primary);
 }
 
-.DatePicker .Field__visibleInput {
-	margin-top: var(--design-gap-unit);
-}
-
 .DatePicker__hint {
 	color: var(--design-text-color-secondary);
 	display: block;
