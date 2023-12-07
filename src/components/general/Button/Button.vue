@@ -9,13 +9,13 @@ interface BtnProps {
 	/** Массив значений для выпадающего списка. */
 	dropdown?: ListBoxOption[]
 	disabled?: boolean
-	size?: 'medium' | 'small'
+  size?: "medium" | 'small'
 }
 
 const props = withDefaults(defineProps<BtnProps>(), {
 	dropdown: () => [],
 	disabled: false,
-	size: 'medium'
+  size: "medium"
 })
 
 const root = ref()
@@ -33,7 +33,7 @@ const clickOutside = (event: Event) => {
 
 <template>
 	<div ref="root" class="Btn" :class="{ disabled: disabled }">
-		<button class="Btn__actual accent" :class="[props.size]" :disabled="disabled" @click="toggleDropdown">
+		<button class="Btn__actual accent " :class="[props.size]" :disabled="disabled" @click="toggleDropdown">
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
@@ -185,11 +185,11 @@ const clickOutside = (event: Event) => {
 
 .Btn.icon .Btn__actual {
 	min-width: min-content;
-	padding: var(--design-gap-unit);
+  padding: var(--design-gap-unit);
 }
 
 .Btn__actual.small {
-	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
+  padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 }
 
 .Btn__dropdownContent {

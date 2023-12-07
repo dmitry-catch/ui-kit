@@ -8,7 +8,7 @@ export default {
 	args: {
 		disabled: false,
 		default: 'Button',
-		size: 'medium'
+		size: "medium",
 	},
 	argTypes: {
 		class: {
@@ -30,7 +30,10 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['small', 'medium']
+			options: [
+				'small',
+				'medium'
+			]
 		}
 	}
 } satisfies Meta<typeof Button>
