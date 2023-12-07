@@ -5,7 +5,7 @@ import { Grouped } from '@forecsys/collections'
 
 interface DataListProps {
 	dataSource: Grouped<any>
-	contextMenu?: Array<{ name: string; action: (data: any) => any }>
+	contextMenu: Array<{ name: string; action: (data: any) => any }>
 }
 
 const props = defineProps<DataListProps>()
