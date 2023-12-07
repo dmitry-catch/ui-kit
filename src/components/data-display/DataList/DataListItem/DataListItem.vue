@@ -5,14 +5,14 @@ import { computed, toRefs } from 'vue'
 
 interface DataListItemProps {
 	data: any
-	contextMenu?: Array<any>
+	contextMenu: Array<any>
 }
 
 const props = defineProps<DataListItemProps>()
 const { data, contextMenu } = toRefs(props)
 
 const wrappedContextMenu = computed(() =>
-	contextMenu.value?.map((it: any) => ({ ...it, action: () => it.action(data) }))
+	contextMenu.value.map((it: any) => ({ ...it, action: () => it.action(data) }))
 )
 </script>
 
@@ -21,7 +21,7 @@ const wrappedContextMenu = computed(() =>
 		<div class="DataListItem__content">
 			<slot name="content" :data="data"></slot>
 		</div>
-		<div v-if="contextMenu" class="DataListItem__contextMenu">
+		<div class="DataListItem__contextMenu">
 			<Button class="DataListItem__button icon functional" :dropdown="wrappedContextMenu">
 				<Icon name="more_vertical"></Icon>
 				<template #dropdownItem="{ data }">

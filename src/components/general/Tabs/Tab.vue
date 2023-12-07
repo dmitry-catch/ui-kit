@@ -11,7 +11,7 @@ const selectValue =
 </script>
 
 <template>
-	<button class="Tab" :class="{ pressed: selectedValue === value }" @click="selectValue(value)">
+	<button class="Tab accent" :class="{ pressed: selectedValue === value }" @click="selectValue(value)">
 		<slot name="before"></slot>
 		<slot></slot>
 		<slot name="after"></slot>
@@ -23,7 +23,7 @@ const selectValue =
 	display: flex;
 	gap: var(--design-gap-unit);
 	background: var(--design-background-color-primary);
-	color: var(--design-text-color-primary);
+	color: var(--design-text-color-secondary);
 	border: none;
 	border-bottom: 3px solid rgba(0, 0, 0, 0);
 	box-sizing: border-box;
@@ -34,8 +34,13 @@ const selectValue =
 	color: var(--design-text-color-primary);
 }
 
+.Tab:hover:disabled {
+	color: var(--design-text-color-secondary);
+}
+
 .Tab:disabled {
 	color: var(--design-text-color-secondary);
+	cursor: none;
 }
 
 .Tab:focus-visible {
@@ -45,5 +50,6 @@ const selectValue =
 
 .Tab.pressed {
 	border-bottom: var(--design-background-color-accent-primary) 3px solid;
+	color: var(--design-text-color-primary);
 }
 </style>
