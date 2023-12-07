@@ -6,7 +6,7 @@ import DataGroupToggler from '../../../non-public/DataGroupToggler/DataGroupTogg
 
 interface DataListGroup {
 	data: any
-	contextMenu: Array<any>
+	contextMenu?: Array<any>
 }
 
 const props = defineProps<DataListGroup>()
