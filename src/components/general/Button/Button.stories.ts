@@ -7,8 +7,7 @@ export default {
 	component: Button,
 	args: {
 		disabled: false,
-		default: 'Button',
-		size: 'medium'
+		default: 'Button'
 	},
 	argTypes: {
 		class: {
@@ -27,10 +26,6 @@ export default {
 				'info',
 				'info accent'
 			]
-		},
-		size: {
-			control: 'select',
-			options: ['small', 'medium']
 		}
 	}
 } satisfies Meta<typeof Button>
