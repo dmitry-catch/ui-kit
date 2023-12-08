@@ -28,17 +28,12 @@ const dropdownOptionClick = async (event: MouseEvent, option: ListBoxOption) => 
 		emit('closeRequest', event)
 	}
 }
-const content = ref()
-defineExpose(
-	{ content }
-)
-
 useClickOutside(root, (event) => emit('closeRequest', event))
 </script>
 
 <template>
 	<Popover ref="root" class="ListBox">
-		<div ref="content" class="Btn__dropdownContent">
+		<div class="Btn__dropdownContent">
 			<div
 				v-for="option in options"
 				class="ListBox__dropdownItem"
@@ -62,11 +57,5 @@ useClickOutside(root, (event) => emit('closeRequest', event))
 
 .ListBox__dropdownItem:hover {
 	background: var(--design-background-color-secondary);
-}
-
-.Btn__dropdownContent {
-	background: var(--design-background-color-primary);
-	border: 1px solid var(--design-border-color-primary);
-	border-radius: var(--design-border-radius-control);
 }
 </style>
