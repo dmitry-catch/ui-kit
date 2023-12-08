@@ -32,7 +32,7 @@ export const getMonthArray = (month: number, year: number) => {
 }
 
 export const numberOfDaysInMonth = (month: number, year: number) => {
-	return new Date(year, month + 1, 0).getDate()
+	return new Date(year, month + 2, 0).getDate()
 }
 export const callSelectOnElement = (event: Event) => {
 	const target = event.target as HTMLInputElement | null
@@ -48,14 +48,4 @@ export const handleInitialDateValue = (value: string | Date | undefined): Date |
 		const date = new Date(value.toDateString())
 		return isNaN(date.getTime()) ? null : date
 	} else return null
-}
-
-export const handleInternalValue = (value: Date | undefined | null): String | null => {
-	if (value instanceof Date) {
-		const day = String(value.getDate()).padStart(2, '0')
-		const month = String(Number(value.getMonth()) + 1).padStart(2, '0')
-		const year = value.getFullYear()
-		return [year, month, day].join('-')
-	}
-	return null
 }
