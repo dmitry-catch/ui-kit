@@ -29,7 +29,9 @@ const dropdownOptionClick = async (event: MouseEvent, option: ListBoxOption) => 
 	}
 }
 const content = ref()
-defineExpose({ content })
+defineExpose(
+	{ content }
+)
 
 useClickOutside(root, (event) => emit('closeRequest', event))
 </script>

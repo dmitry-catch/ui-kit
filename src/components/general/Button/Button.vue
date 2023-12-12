@@ -195,4 +195,5 @@ const clickOutside = (event: Event) => {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-small);
 }
+
 </style>
