@@ -3,6 +3,7 @@ import { computed, provide, ref, toRefs, useSlots, watch } from 'vue'
 import { and, FilterExpression } from '@forecsys/collections'
 import DataGridHeaderRow from './components/DataGridHeaderRow.vue'
 import DataGridRowGroup from './components/DataGridRowGroup.vue'
+import DataGridPaginationPanel from './components/DataGridPaginationPanel.vue'
 import { useFilterContext } from './utils/useFilterContext.js'
 import { useSortingContext } from './utils/useSortingContext.js'
 import { DataGridColumn } from './types.js'
@@ -13,6 +14,9 @@ export interface Props {
 	rowKey: (data: any) => string
 	allowSelection: boolean
 	selectedRows: Array<any>
+	pageSize: number
+	totalElements: number
+	allowPagination: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,7 +24,15 @@ const props = withDefaults(defineProps<Props>(), {
 	allowSelection: false,
 	selectedRows: () => []
 })
-const emit = defineEmits(['update:filters', 'update:sort', 'update:group', 'update:order', 'update:settings'])
+
+const emit = defineEmits([
+	'update:filters',
+	'update:sort',
+	'update:group',
+	'update:order',
+	'update:settings',
+	'update:currentPage'
+])
 
 const slots = useSlots()
 const { columns, dataSource, rowKey, allowSelection, selectedRows } = toRefs(props)
@@ -65,6 +77,13 @@ watch(
 
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
+
+const currentPage = ref(0)
+
+const changePage = (value: number) => {
+	currentPage.value = value
+	emit('update:currentPage', value)
+}
 </script>
 
 <template>
@@ -94,6 +113,13 @@ watch(columns, () => (internalColumns.value = columns.value))
 				</DataGridRowGroup>
 			</tbody>
 		</table>
+		<DataGridPaginationPanel
+			v-if="allowPagination"
+			:totalElements="totalElements"
+			:modelValue="currentPage"
+			:pageSize="pageSize"
+			@update:modelValue="changePage"
+		/>
 	</div>
 </template>
 
