@@ -5,7 +5,7 @@ import dts from 'vite-plugin-dts'
 
 export default defineConfig((env) => {
 	return {
-		plugins: [vue(), dts()],
+		plugins: [vue(), dts({ rollupTypes: true })],
 		server: { host: true },
 		build: {
 			emptyOutDir: true,
