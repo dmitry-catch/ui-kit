@@ -47,6 +47,8 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 
 <template>
 	<tr ref="root" class="DataGridHeaderRow">
+		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
+		<td v-if="selectColumn" class="DataGridHeaderRow__cell"></td>
 		<DataGridHeader
 			v-for="column of columns"
 			:key="column.field"
