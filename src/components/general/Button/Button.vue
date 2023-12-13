@@ -195,10 +195,4 @@ const clickOutside = (event: Event) => {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-small);
 }
-
-.Btn__dropdownContent {
-	background: var(--design-background-color-primary);
-	border: 1px solid var(--design-border-color-primary);
-	border-radius: var(--design-border-radius-control);
-}
 </style>
