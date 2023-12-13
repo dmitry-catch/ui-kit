@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Button from './Button.vue'
 import Icon from '../Icon/Icon.vue'
-
-import { OptionList } from '../../../../storybook/consts/OptionList'
+import { OptionList } from 'storybook/consts.js'
 
 export default {
 	component: Button,
