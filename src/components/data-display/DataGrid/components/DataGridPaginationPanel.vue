@@ -65,9 +65,8 @@ const toLastPage = () => updatePage(totalPages.value)
 				<span
 					:class="{ 'DataGridPaginationPanel__buttonText--current': button === currentPage }"
 					class="accent"
+					>{{ button }}</span
 				>
-					{{ button }}
-				</span>
 			</Button>
 			<span v-if="!isLastButtonGroup">...</span>
 			<Button
@@ -78,10 +77,9 @@ const toLastPage = () => updatePage(totalPages.value)
 				<span
 					class="accent"
 					:class="{ 'DataGridPaginationPanel__buttonText--current': totalPages === currentPage }"
-				>
-					{{ totalPages }}
-				</span>
-			</Button>
+					>{{ totalPages }}</span
+				></Button
+			>
 			<Button class="DataGridPaginationPanel__button icon functional" @click="decrementPage">
 				<Icon name="chevron_backward" class="DataGridPaginationPanel__buttonIcon" />
 			</Button>

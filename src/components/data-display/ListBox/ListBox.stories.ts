@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import ListBox from './ListBox.vue'
-
-import { OptionList } from '../../../../storybook/consts/OptionList'
+import { OptionList } from 'storybook/consts.js'
 
 export default {
 	component: ListBox,
