@@ -13,23 +13,18 @@ interface DataGridHeaderRowProps {
 const props = defineProps<DataGridHeaderRowProps>()
 const emit = defineEmits(['update:columns'])
 
-const { columns, detailsColumn, selectColumn } = toRefs(props)
+const { columns, detailsColumn } = toRefs(props)
 
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
-console.log('detailsColumndetailsColumn', detailsColumn.value, props.selectColumn)
 const root = ref<HTMLElement>()
 const onDrag = ({ shadow, element }: DragEvent) => {
 	internalColumns.value = [...internalColumns.value].sort((a, b) => {
 		const indexA = internalColumns.value.indexOf(a)
 		const indexB = internalColumns.value.indexOf(b)
 
-		let elementA = Array.from(root.value!.querySelectorAll('.DataGridHeaderRow__cell'))[
-			indexA + Number(selectColumn.value) + Number(detailsColumn.value)
-		]
-		let elementB = Array.from(root.value!.querySelectorAll('.DataGridHeaderRow__cell'))[
-			indexB + Number(selectColumn.value) + Number(detailsColumn.value)
-		]
+		let elementA = Array.from(root.value!.querySelectorAll('.DataGridHeaderRow__cell'))[indexA]
+		let elementB = Array.from(root.value!.querySelectorAll('.DataGridHeaderRow__cell'))[indexB]
 		if (elementA == element) elementA = shadow
 		if (elementB == element) elementB = shadow
 		const rectA = elementA.getBoundingClientRect()
