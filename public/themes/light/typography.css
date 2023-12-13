@@ -58,10 +58,6 @@
 	line-height: var(--design-current-line-height);
 }
 
-b {
-	font-weight: 600;
-}
-
 .text-large,
 .text-medium,
 .text-small,
