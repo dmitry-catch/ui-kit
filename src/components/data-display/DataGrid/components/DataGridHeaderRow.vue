@@ -17,6 +17,7 @@ const { columns, detailsColumn, selectColumn } = toRefs(props)
 
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
+console.log('detailsColumndetailsColumn', detailsColumn.value, props.selectColumn)
 const root = ref<HTMLElement>()
 const onDrag = ({ shadow, element }: DragEvent) => {
 	internalColumns.value = [...internalColumns.value].sort((a, b) => {
@@ -52,7 +53,7 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 <template>
 	<tr ref="root" class="DataGridHeaderRow">
 		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
-		<td class="DataGridHeaderRow__cell"></td>
+		<td v-if="selectColumn" class="DataGridHeaderRow__cell"></td>
 		<DataGridHeader
 			v-for="column of columns"
 			:key="column.field"
