@@ -89,7 +89,7 @@ const handleYearToInput = (event: Event) => {
 const getRange = () => (from.value && to.value ? [from.value, to.value] : [])
 
 const dateTimeFromValue = computed(() => {
-	const dateAbbr = DateLocalization.DateAbbr().split('.')
+	const dateAbbr = DateLocalization.DateAbbr()
 	return [
 		dayFrom.value && dayFrom.value != '00' ? String(dayFrom.value) : dateAbbr[0],
 		monthFrom.value && monthFrom.value != '00' ? String(monthFrom.value) : dateAbbr[1],
@@ -98,7 +98,7 @@ const dateTimeFromValue = computed(() => {
 })
 
 const dateTimeToValue = computed(() => {
-	const dateAbbr = DateLocalization.DateAbbr().split('.')
+	const dateAbbr = DateLocalization.DateAbbr()
 	return [
 		dayTo.value && dayTo.value != '00' ? String(dayTo.value) : dateAbbr[0],
 		monthTo.value && monthTo.value != '00' ? String(monthTo.value) : dateAbbr[1],
