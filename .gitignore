@@ -109,8 +109,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist/
-storybook-static/
+dist
 
 # Gatsby files
 .cache/
