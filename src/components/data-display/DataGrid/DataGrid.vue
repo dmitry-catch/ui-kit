@@ -3,7 +3,6 @@ import { computed, provide, ref, toRefs, useSlots, watch } from 'vue'
 import { and, FilterExpression } from '@forecsys/collections'
 import DataGridHeaderRow from './components/DataGridHeaderRow.vue'
 import DataGridRowGroup from './components/DataGridRowGroup.vue'
-import DataGridPaginationPanel from './components/DataGridPaginationPanel.vue'
 import { useFilterContext } from './utils/useFilterContext.js'
 import { useSortingContext } from './utils/useSortingContext.js'
 import { DataGridColumn } from './types.js'
@@ -14,39 +13,21 @@ export interface Props {
 	rowKey: (data: any) => string
 	allowSelection: boolean
 	selectedRows: Array<any>
-	pageSize: number
-	totalElements: number
-	allowPagination: boolean
-	currentPage: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	rowKey: (item: any) => item.id,
 	allowSelection: false,
-	selectedRows: () => [],
-	allowPagination: false,
-	currentPage: 0
+	selectedRows: () => []
 })
-
-const emit = defineEmits([
-	'update:filters',
-	'update:sort',
-	'update:group',
-	'update:order',
-	'update:settings',
-	'update:currentPage'
-])
+const emit = defineEmits(['update:filters', 'update:sort', 'update:group', 'update:order', 'update:settings'])
 
 const slots = useSlots()
 const { columns, dataSource, rowKey, allowSelection, selectedRows } = toRefs(props)
 const hasDetails = computed(() => Boolean(slots.rowDetails))
-const contentColumnsCount = computed(
-	() => columns.value.length - Number(!hasDetails.value) - Number(!allowSelection.value)
-)
-const columnsCount = computed(() => columns.value.length + Number(allowSelection.value) + Number(hasDetails.value))
+const contentColumnsCount = computed(() => columns.value.length)
+const columnsCount = computed(() => columns.value.length + Number(hasDetails.value) + 1)
 const rowsCount = computed(() => dataSource.value.length)
-const detailsColumn = computed(() => (hasDetails.value ? 'min-content' : null))
-const selectColumn = computed(() => (allowSelection.value ? 'min-content' : null))
 provide('datagrid-selectedRows', selectedRows)
 const { filters } = useFilterContext({ forceId: true })
 
@@ -80,10 +61,6 @@ watch(
 
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
-
-const changePage = (value: number) => {
-	emit('update:currentPage', value)
-}
 </script>
 
 <template>
@@ -113,13 +90,6 @@ const changePage = (value: number) => {
 				</DataGridRowGroup>
 			</tbody>
 		</table>
-		<DataGridPaginationPanel
-			v-if="allowPagination"
-			:totalElements="totalElements"
-			:modelValue="currentPage"
-			:pageSize="pageSize"
-			@update:modelValue="changePage"
-		/>
 	</div>
 </template>
 
@@ -143,11 +113,8 @@ const changePage = (value: number) => {
 	--datagrid-columns-count: v-bind(columnsCount);
 	--datagrid-content-columns-count: v-bind(contentColumnsCount);
 	grid-auto-rows: min-content;
-	--datagrid-template-details-column: v-bind(detailsColumn);
-	--datagrid-template-select-column: v-bind(selectColumn);
 	grid-template-columns:
-		var(--datagrid-template-details-column, minmax(min-content, auto))
-		var(--datagrid-template-select-column, minmax(min-content, auto))
+		repeat(calc(var(--datagrid-columns-count) - var(--datagrid-content-columns-count)), min-content)
 		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
 	background: var(--design-background-color-primary);
 	overflow: auto;

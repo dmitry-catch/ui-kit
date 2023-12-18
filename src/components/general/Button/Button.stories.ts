@@ -1,14 +1,16 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Button from './Button.vue'
 import Icon from '../Icon/Icon.vue'
-import { OptionList } from 'storybook/consts.js'
+
+import { OptionList } from '../../../../storybook/consts/OptionList'
 
 export default {
 	component: Button,
 	args: {
 		disabled: false,
 		default: 'Button',
-		size: 'medium'
+		size: 'medium',
+		isLoading: 'true'
 	},
 	argTypes: {
 		class: {
