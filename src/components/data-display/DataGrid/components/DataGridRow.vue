@@ -42,8 +42,8 @@ const selected = computed({
 				</Button>
 			</span>
 		</td>
-		<td class="DataGridRow__cell DataGridRow__selectCell">
-			<Checkbox v-if="selectColumn" v-model="selected"></Checkbox>
+		<td v-if="selectColumn" class="DataGridRow__cell DataGridRow__selectCell">
+			<Checkbox v-model="selected"></Checkbox>
 		</td>
 		<DataGridCell
 			v-for="column of columns"

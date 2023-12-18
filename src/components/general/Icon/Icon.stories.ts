@@ -265,7 +265,7 @@ const IconNames: string[] = [
 	'snowflake',
 	'sort',
 	'sort_ascending',
-	'sort_descending',
+	'sort_decending',
 	'spotify',
 	'spray',
 	'star',

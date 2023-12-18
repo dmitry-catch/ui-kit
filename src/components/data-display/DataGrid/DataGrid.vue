@@ -40,9 +40,13 @@ const emit = defineEmits([
 const slots = useSlots()
 const { columns, dataSource, rowKey, allowSelection, selectedRows } = toRefs(props)
 const hasDetails = computed(() => Boolean(slots.rowDetails))
-const contentColumnsCount = computed(() => columns.value.length)
-const columnsCount = computed(() => columns.value.length + Number(hasDetails.value) + 1)
+const contentColumnsCount = computed(
+	() => columns.value.length - Number(!hasDetails.value) - Number(!allowSelection.value)
+)
+const columnsCount = computed(() => columns.value.length + Number(allowSelection.value) + Number(hasDetails.value))
 const rowsCount = computed(() => dataSource.value.length)
+const detailsColumn = computed(() => (hasDetails.value ? 'min-content' : null))
+const selectColumn = computed(() => (allowSelection.value ? 'min-content' : null))
 provide('datagrid-selectedRows', selectedRows)
 const { filters } = useFilterContext({ forceId: true })
 
@@ -139,8 +143,11 @@ const changePage = (value: number) => {
 	--datagrid-columns-count: v-bind(columnsCount);
 	--datagrid-content-columns-count: v-bind(contentColumnsCount);
 	grid-auto-rows: min-content;
+	--datagrid-template-details-column: v-bind(detailsColumn);
+	--datagrid-template-select-column: v-bind(selectColumn);
 	grid-template-columns:
-		repeat(calc(var(--datagrid-columns-count) - var(--datagrid-content-columns-count)), min-content)
+		var(--datagrid-template-details-column, minmax(min-content, auto))
+		var(--datagrid-template-select-column, minmax(min-content, auto))
 		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
 	background: var(--design-background-color-primary);
 	overflow: auto;
