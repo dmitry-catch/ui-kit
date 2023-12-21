@@ -2,6 +2,7 @@
 import { computed, ref, toRefs } from 'vue'
 import Icon from '../Icon/Icon.vue'
 import ListBox from '../../data-display/ListBox/ListBox.vue'
+import Spinner from '../Spinner/Spinner.vue'
 import type { ListBoxOption } from '../../data-display/ListBox/types.js'
 
 //TODO move from the 'class' prop predefined classes
@@ -20,7 +21,7 @@ const props = withDefaults(defineProps<BtnProps>(), {
 
 const root = ref()
 
-const { dropdown, disabled } = toRefs(props)
+const { dropdown, disabled, isLoading } = toRefs(props)
 
 const hasDropdown = computed(() => !!dropdown?.value?.length)
 const dropdownOpened = ref(false)
@@ -34,6 +35,7 @@ const clickOutside = (event: Event) => {
 <template>
 	<div ref="root" class="Btn" :class="{ disabled: disabled }">
 		<button class="Btn__actual accent" :class="[props.size]" :disabled="disabled" @click="toggleDropdown">
+			<Spinner v-if="isLoading" />
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
