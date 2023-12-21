@@ -1,142 +1,34 @@
 <script setup lang="ts">
 import Button from '../../general/Button/Button.vue'
-import FileDeck from '../../data-display/FileDeck/FileDeck.vue'
-import { onMounted, ref, toRefs, watch } from 'vue'
-import { byteConverter } from '../../data-display/FileDeck/utils/byteConverter'
-import { extractFileNameAndExtension } from '../../data-display/FileDeck/utils/extractFileNameAndExtension'
-
+import { computed, ref, toRefs } from 'vue'
 // <!-- inject localization -->
 
 interface UploaderProps {
-	modelValue: Array<null> | Array<File>
-	isInvalid?: boolean
+	isInvalid: boolean
 	header?: string
 	hint?: string
-	requirementsString?: string
-	multiple?: boolean
-	disabled?: boolean
-	fileSizeLimit?: number
-	accept?: string
 }
 
 const props = withDefaults(defineProps<UploaderProps>(), {
 	header: 'Перетащите файл в эту область или загрузите с компьютера',
-	fileSizeLimit: 10 * 1024 ** 2,
-	isInvalid: false,
-	multiple: true,
-	disabled: false,
-	accept: '.xls,.xlsx,.pdf,.doc,.docx,.zip'
-})
-const { header, isInvalid, hint, multiple, disabled, fileSizeLimit, accept } = toRefs(props)
-
-const files = ref<Array<null> | Array<File>>([])
-const emit = defineEmits(['update:modelValue'])
-const isInnerInvalid = ref<boolean>(false)
-const innerErrorMessage = ref<string | null>()
-
-const preventDefaultDragBehavior = (event: DragEvent) => {
-	event.stopPropagation()
-	event.preventDefault()
-}
-
-const onFileSelect = (event: Event) => {
-	event.stopPropagation()
-	event.preventDefault()
-	const droppedFiles = Object.entries(event.dataTransfer ? event.dataTransfer.files : event.target?.files).map(
-		([key, value]) => value
-	)
-	const allowDrop = validateFiles(droppedFiles)
-	if (allowDrop) {
-		files.value = [...files.value, ...droppedFiles]
-	} else {
-		isInnerInvalid.value = true
-	}
-}
-
-const validateFiles = (files: Array<File>) => {
-	let isValid = true && !disabled.value && (multiple.value || (files && files.length == 1))
-	for (const file of files) {
-		isValid = isValid && file.size < fileSizeLimit.value
-		if (!isValid) {
-			innerErrorMessage.value = `Размер файла не должен превышать ${byteConverter(fileSizeLimit.value).size} ${
-				byteConverter(fileSizeLimit.value).measurementUnit
-			}`
-			break
-		}
-		isValid = isValid && isFileAcceptable(accept.value, file)
-		if (!isValid) {
-			innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${accept.value
-				.split(',')
-				.map((it) => it.trim().slice(1))
-				.join(', ')}`
-			break
-		}
-	}
-	return isValid
-}
-
-function isFileAcceptable(accept: string, file: File): boolean {
-	const fileType = file.type
-	const fileExtension = extractFileNameAndExtension(file.name).extension
-	if (accept.includes(fileExtension) || accept.includes(fileType)) return true
-	return false
-}
-
-const fileInputRef = ref()
-
-const uploadFile = () => fileInputRef.value.click()
-
-watch(files, () => {
-	innerErrorMessage.value = null
-	isInnerInvalid.value = false
-	emit('update:modelValue', files.value)
+	isInvalid: false
 })
 
-onMounted(() => (files.value = props.modelValue))
+const { header, isInvalid, hint } = toRefs(props)
 
 const root = ref()
 </script>
 
 <template>
-	<div ref="root" class="Uploader">
-		<div
-			class="Uploader__content"
-			@dragenter="preventDefaultDragBehavior"
-			@dragover="preventDefaultDragBehavior"
-			@drop="onFileSelect"
-			:class="{ invalid: isInvalid || isInnerInvalid }"
-		>
-			<div class="header">
-				<span class="">{{ header }}</span>
-				<span class="text-small" v-if="requirementsString">{{ requirementsString }}</span>
-			</div>
-
-			<input
-				type="file"
-				ref="fileInputRef"
-				:multiple="multiple"
-				@change="onFileSelect"
-				:disabled="disabled"
-				:accept="accept"
-				style="display: none"
-			/>
-			<Button @click="uploadFile" :disabled="disabled">Выбрать файл</Button>
-		</div>
-		<span v-if="hint || innerErrorMessage" :class="{ danger: isInvalid || isInnerInvalid }" class="hint">
-			{{ hint ? hint : innerErrorMessage }}
-		</span>
-		<FileDeck v-if="files.length > 0" v-model="files" />
+	<div :ref="root" class="Uploader" :class="{ invalid: isInvalid }">
+		<span class="header">{{ header }}</span>
+		<Button>Выбрать файл</Button>
 	</div>
+	<span v-if="hint">{{ hint }}</span>
 </template>
 
 <style scoped>
 .Uploader {
-	display: flex;
-	flex-direction: column;
-	gap: var(--design-gap-unit);
-}
-
-.Uploader__content {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -150,14 +42,7 @@ const root = ref()
 	background-color: var(--design-background-color-primary);
 }
 
-.Uploader__content.invalid {
+.invalid {
 	border-color: var(--design-border-color-danger-primary);
-}
-
-.header {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 }
 </style>

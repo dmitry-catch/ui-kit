@@ -33,6 +33,7 @@ watchEffect(() => {
 })
 
 const isLastButtonGroup = computed(() => buttons.value[buttons.value.length - 1] >= totalPages.value - 1)
+const isLastTheTotalButton = computed(() => totalPages.value == visibleButtons[visibleButtons.length - 1])
 
 const updatePage = (value: number) => {
 	const clamped = Math.min(totalPages.value, Math.max(1, value))
@@ -71,6 +72,7 @@ const toLastPage = () => updatePage(totalPages.value)
 			</Button>
 			<span v-if="!isLastButtonGroup">...</span>
 			<Button
+				v-if="!isLastTheTotalButton"
 				class="DataGridPaginationPanel__button functional"
 				@click="toLastPage"
 				:class="{ 'DataGridPaginationPanel__button--current': totalPages === currentPage }"
