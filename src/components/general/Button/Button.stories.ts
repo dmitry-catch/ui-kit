@@ -9,8 +9,7 @@ export default {
 	args: {
 		disabled: false,
 		default: 'Button',
-		size: 'medium',
-		isLoading: 'true'
+		size: 'medium'
 	},
 	argTypes: {
 		class: {
