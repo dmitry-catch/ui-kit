@@ -163,7 +163,7 @@ const itemClickHandler = (option: any) => {
 }
 
 .DropdownSelect__dropdown {
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	max-height: 600px;
 	overflow: auto;
@@ -173,10 +173,6 @@ const itemClickHandler = (option: any) => {
 
 .DropdownSelect__value {
 	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
-}
-
-.DropdownSelect__value:not(:last-child) {
-	border-bottom: var(--design-border-color-primary) 1px solid;
 }
 
 .DropdownSelect__value:is(:hover, .active, :focus, :focus-visible) {
