@@ -13,7 +13,6 @@ import Tabs from './components/general/Tabs/Tabs.vue'
 import Tab from './components/general/Tabs/Tab.vue'
 import TextField from './components/data-entry/TextField/TextField.vue'
 import Modal from './components/general/Modal/Modal.vue'
-import Spinner from './components/general/Spinner/Spinner.vue'
 import Multiselect from './components/data-entry/Multiselect/Multiselect.vue'
 import Checkbox from './components/data-entry/Checkbox/Checkbox.vue'
 import SelectableOption from './components/data-entry/Select/SelectableOption/SelectableOption.vue'
@@ -36,7 +35,6 @@ export {
 	Modal,
 	Tabs,
 	Tab,
-	Spinner,
 	//Layout category
 	ContentContainer,
 	ContentBlock,
