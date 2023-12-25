@@ -158,6 +158,7 @@ const changePage = (value: number) => {
 .DataGrid__tbody {
 	display: contents;
 }
+
 .DataGrid__eventInterceptor {
 	display: contents;
 }
