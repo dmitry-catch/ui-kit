@@ -34,8 +34,7 @@ const emit = defineEmits([
 	'update:group',
 	'update:order',
 	'update:settings',
-	'update:currentPage',
-	'update:columns'
+	'update:currentPage'
 ])
 
 const slots = useSlots()
@@ -77,8 +76,6 @@ watch(
 
 const internalColumns = ref(columns.value)
 watch(columns, () => (internalColumns.value = columns.value))
-
-watch(internalColumns, (newValue) => emit('update:columns', newValue))
 
 const changePage = (value: number) => {
 	emit('update:currentPage', value)

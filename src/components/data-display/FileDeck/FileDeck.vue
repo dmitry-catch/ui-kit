@@ -3,26 +3,17 @@ import { toRefs } from 'vue'
 import FileCard from './components/FileCard.vue'
 
 interface FileDeckProps {
-	modelValue: Array<File>
-	actionVariant?: 'delete' | 'upload'
+	modelValue: Array<null> | Array<File>
 }
 
-const props = withDefaults(defineProps<FileDeckProps>(), {
-	actionVariant: 'delete'
-})
+const props = defineProps<FileDeckProps>()
 
-const emit = defineEmits(['update:modelValue', 'delete', 'upload'])
+const emit = defineEmits(['update:modelValue'])
 const { modelValue } = toRefs(props)
 </script>
 <template>
 	<div class="FileDeck">
-		<FileCard
-			:variant="actionVariant"
-			@delete="emit('delete', file)"
-			@upload="emit('upload', file)"
-			v-for="file in modelValue"
-			:file="file"
-		/>
+		<FileCard v-for="file in modelValue" :file="file" />
 	</div>
 </template>
 <style scoped>

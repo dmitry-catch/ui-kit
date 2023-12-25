@@ -1,36 +1,20 @@
 <script setup lang="ts">
-import { extractFileNameAndExtension } from '../../../../utils/extractFileNameAndExtension'
-import { byteConverter } from '../../../../utils/byteConverter'
+import { extractFileNameAndExtension } from '../utils/extractFileNameAndExtension'
+import { byteConverter } from '../utils/byteConverter'
 import { toRefs } from 'vue'
-import { Button, Icon, Spinner } from '../../../../main'
 
 interface FileCardProps {
-	file: File
-	variant: 'delete' | 'upload'
-	isLoading?: boolean
+	file: File | null
 }
 
-const props = withDefaults(defineProps<FileCardProps>(), {
-	isLoading: false,
-	variant: 'delete'
-})
-const emit = defineEmits(['delete', 'upload'])
-const { file, isLoading, variant } = toRefs(props)
+const props = defineProps<FileCardProps>()
+const { file } = toRefs(props)
 </script>
 <template>
 	<div class="FileCard">
 		<div class="extension">{{ extractFileNameAndExtension(file.name).extension }}</div>
 		<div class="name">{{ extractFileNameAndExtension(file.name).fileName }}</div>
 		<div class="size">{{ byteConverter(file.size).size }} {{ byteConverter(file.size).measurementUnit }}</div>
-		<div class="controls">
-			<Button v-if="!isLoading && variant == 'delete'" @click="emit('delete')" class="icon functional">
-				<Icon name="trash" />
-			</Button>
-			<Button v-if="!isLoading && variant == 'upload'" @click="emit('upload')" class="icon functional"
-				><Icon name="upload"
-			/></Button>
-			<Spinner v-if="isLoading" variant="dark" />
-		</div>
 	</div>
 </template>
 <style scoped>
@@ -53,13 +37,5 @@ const { file, isLoading, variant } = toRefs(props)
 
 .size {
 	color: var(--design-text-color-on-accent-secondary);
-}
-
-.controls {
-	margin-left: auto;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--design-gap-unit);
 }
 </style>

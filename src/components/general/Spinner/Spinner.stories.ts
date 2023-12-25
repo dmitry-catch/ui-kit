@@ -9,7 +9,7 @@ export default {
 		setup: () => ({ args }),
 		template: `
       <div>
-        <Spinner /> 
+        <Spinner v-bind='args'/> 
       </div>
     `
 	})
@@ -18,3 +18,9 @@ export default {
 type Story = StoryObj<typeof Spinner>
 
 export const Default: Story = {}
+
+export const Dark: Story = {
+	args: {
+		variant: 'dark'
+	}
+}

@@ -2,23 +2,21 @@
 import Button from '../../general/Button/Button.vue'
 import FileDeck from '../../data-display/FileDeck/FileDeck.vue'
 import { onMounted, ref, toRefs, watch } from 'vue'
-import { byteConverter } from '../../../utils/byteConverter'
-import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
+import { byteConverter } from '../../data-display/FileDeck/utils/byteConverter'
+import { extractFileNameAndExtension } from '../../data-display/FileDeck/utils/extractFileNameAndExtension'
 
 // <!-- inject localization -->
 
 interface UploaderProps {
-	modelValue: Array<File>
+	modelValue: Array<null> | Array<File>
 	isInvalid?: boolean
-	isLoading?: boolean
-	multiple?: boolean
-	disabled?: boolean
-	fileSizeLimit?: number
-	length?: number
-	accept?: string
 	header?: string
 	hint?: string
 	requirementsString?: string
+	multiple?: boolean
+	disabled?: boolean
+	fileSizeLimit?: number
+	accept?: string
 }
 
 const props = withDefaults(defineProps<UploaderProps>(), {
@@ -27,13 +25,11 @@ const props = withDefaults(defineProps<UploaderProps>(), {
 	isInvalid: false,
 	multiple: true,
 	disabled: false,
-	accept: '.xls,.xlsx,.pdf,.doc,.docx,.zip',
-	length: 10,
-	isLoading: false
+	accept: '.xls,.xlsx,.pdf,.doc,.docx,.zip'
 })
-const { header, isInvalid, hint, multiple, disabled, fileSizeLimit, accept, length, isLoading } = toRefs(props)
+const { header, isInvalid, hint, multiple, disabled, fileSizeLimit, accept } = toRefs(props)
 
-const files = ref<Array<File>>([])
+const files = ref<Array<null> | Array<File>>([])
 const emit = defineEmits(['update:modelValue'])
 const isInnerInvalid = ref<boolean>(false)
 const innerErrorMessage = ref<string | null>()
@@ -46,10 +42,9 @@ const preventDefaultDragBehavior = (event: DragEvent) => {
 const onFileSelect = (event: Event) => {
 	event.stopPropagation()
 	event.preventDefault()
-	const droppedFiles: Array<File> = Object.entries(
-		event.dataTransfer ? event.dataTransfer.files : event.target?.files
-	).map(([key, value]) => value)
-
+	const droppedFiles = Object.entries(event.dataTransfer ? event.dataTransfer.files : event.target?.files).map(
+		([key, value]) => value
+	)
 	const allowDrop = validateFiles(droppedFiles)
 	if (allowDrop) {
 		files.value = [...files.value, ...droppedFiles]
@@ -58,38 +53,29 @@ const onFileSelect = (event: Event) => {
 	}
 }
 
-const validateFiles = (inputFiles: Array<File>) => {
-	if (!disabled.value) {
-		const lengthValidation: boolean =
-			(multiple.value || (inputFiles && inputFiles.length == 1)) &&
-			files.value.length + inputFiles.length <= length.value
-
-		if (!lengthValidation) {
-			innerErrorMessage.value = `Количество файлов должно быть меньше ${multiple.value ? length.value : 1}`
-			return false
+const validateFiles = (files: Array<File>) => {
+	let isValid = true && !disabled.value && (multiple.value || (files && files.length == 1))
+	for (const file of files) {
+		isValid = isValid && file.size < fileSizeLimit.value
+		if (!isValid) {
+			innerErrorMessage.value = `Размер файла не должен превышать ${byteConverter(fileSizeLimit.value).size} ${
+				byteConverter(fileSizeLimit.value).measurementUnit
+			}`
+			break
 		}
-
-		for (const file of inputFiles) {
-			if (file.size > fileSizeLimit.value) {
-				innerErrorMessage.value = `Размер файла не должен превышать ${
-					byteConverter(fileSizeLimit.value).size
-				} ${byteConverter(fileSizeLimit.value).measurementUnit}`
-				return false
-			}
-			if (!isFileAcceptable(accept.value, file)) {
-				innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${accept.value
-					.split(',')
-					.map((it) => it.trim().slice(1))
-					.join(', ')}`
-				return false
-			}
+		isValid = isValid && isFileAcceptable(accept.value, file)
+		if (!isValid) {
+			innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${accept.value
+				.split(',')
+				.map((it) => it.trim().slice(1))
+				.join(', ')}`
+			break
 		}
-		return true
 	}
-	return false
+	return isValid
 }
 
-const isFileAcceptable = (accept: string, file: File): boolean => {
+function isFileAcceptable(accept: string, file: File): boolean {
 	const fileType = file.type
 	const fileExtension = extractFileNameAndExtension(file.name).extension
 	if (accept.includes(fileExtension) || accept.includes(fileType)) return true
@@ -98,8 +84,7 @@ const isFileAcceptable = (accept: string, file: File): boolean => {
 
 const fileInputRef = ref()
 
-const chooseFile = () => fileInputRef.value.click()
-const deleteFile = (file: File) => (files.value = files.value.filter((fileIt: any) => fileIt.name != file.name))
+const uploadFile = () => fileInputRef.value.click()
 
 watch(files, () => {
 	innerErrorMessage.value = null
@@ -135,12 +120,12 @@ const root = ref()
 				:accept="accept"
 				style="display: none"
 			/>
-			<Button @click="chooseFile" :isLoading="isLoading" :disabled="disabled">Выбрать файл</Button>
+			<Button @click="uploadFile" :disabled="disabled">Выбрать файл</Button>
 		</div>
 		<span v-if="hint || innerErrorMessage" :class="{ danger: isInvalid || isInnerInvalid }" class="hint">
 			{{ hint ? hint : innerErrorMessage }}
 		</span>
-		<FileDeck @delete="deleteFile" v-if="files.length > 0" v-model="files" />
+		<FileDeck v-if="files.length > 0" v-model="files" />
 	</div>
 </template>
 

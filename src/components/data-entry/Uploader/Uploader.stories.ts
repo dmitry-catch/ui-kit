@@ -4,13 +4,10 @@ import Uploader from './Uploader.vue'
 export default {
 	component: Uploader,
 	args: {
-		modelValue: [],
+		files: [],
 		isInvalid: false,
 		disabled: false,
-		multiple: true,
-		isLoading: false,
-		requirementsString: 'Прикрепите файлы форматов doc, docx, zip, xls, xlsx, pdf',
-		length: 3
+		requirementsString: 'Прикрепите файлы форматов doc, docx, zip, xls, xlsx, pdf'
 	},
 	argTypes: {},
 	render: (args) => ({
