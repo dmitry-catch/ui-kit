@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button from '../../general/Button/Button.vue'
-import FileCard from '../../data-display/FileCard/FileCard.vue'
+import FileDeck from '../../data-display/FileDeck/FileDeck.vue'
 import { onMounted, ref, toRefs, watch } from 'vue'
 import { byteConverter } from '../../../utils/byteConverter'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
@@ -9,16 +9,12 @@ import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndEx
 
 interface UploaderProps {
 	modelValue: Array<File>
-	/** Отвечает за возможность перетаскивания файлов внутрь компонента */
-	draggable?: boolean
-	invalid?: boolean
-	loading?: boolean
+	isInvalid?: boolean
+	isLoading?: boolean
 	multiple?: boolean
 	disabled?: boolean
-	/** Размер в байтах */
 	fileSizeLimit?: number
 	length?: number
-	/** Принимаемые расширения файлов. К примеру: '.xls,.xlsx,.pdf,.doc,.docx,.zip' */
 	accept?: string
 	header?: string
 	hint?: string
@@ -27,10 +23,15 @@ interface UploaderProps {
 
 const props = withDefaults(defineProps<UploaderProps>(), {
 	header: 'Перетащите файл в эту область или загрузите с компьютера',
+	fileSizeLimit: 10 * 1024 ** 2,
+	isInvalid: false,
 	multiple: true,
-	draggable: true
+	disabled: false,
+	accept: '.xls,.xlsx,.pdf,.doc,.docx,.zip',
+	length: 10,
+	isLoading: false
 })
-const { header, invalid, hint, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
+const { header, isInvalid, hint, multiple, disabled, fileSizeLimit, accept, length, isLoading } = toRefs(props)
 
 const files = ref<Array<File>>([])
 const emit = defineEmits(['update:modelValue'])
@@ -42,12 +43,13 @@ const preventDefaultDragBehavior = (event: DragEvent) => {
 	event.preventDefault()
 }
 
-const onFileSelect = (event: any) => {
+const onFileSelect = (event: Event) => {
 	event.stopPropagation()
 	event.preventDefault()
-	const droppedFiles: Array<File> = Object.entries<File>(
-		event.dataTransfer ? event.dataTransfer.files : event.target.files
-	).map(([_, value]) => value)
+	const droppedFiles: Array<File> = Object.entries(
+		event.dataTransfer ? event.dataTransfer.files : event.target?.files
+	).map(([key, value]) => value)
+
 	const allowDrop = validateFiles(droppedFiles)
 	if (allowDrop) {
 		files.value = [...files.value, ...droppedFiles]
@@ -60,16 +62,26 @@ const validateFiles = (inputFiles: Array<File>) => {
 	if (!disabled.value) {
 		const lengthValidation: boolean =
 			(multiple.value || (inputFiles && inputFiles.length == 1)) &&
-			(!length?.value || files.value.length + inputFiles.length <= length?.value)
+			files.value.length + inputFiles.length <= length.value
+
 		if (!lengthValidation) {
-			innerErrorMessage.value = `Количество файлов должно быть меньше ${multiple.value ? length?.value : 1}`
+			innerErrorMessage.value = `Количество файлов должно быть меньше ${multiple.value ? length.value : 1}`
 			return false
 		}
 
 		for (const file of inputFiles) {
-			const fileValidity = validateFile(file)
-			if (fileValidity === false) {
-				return fileValidity
+			if (file.size > fileSizeLimit.value) {
+				innerErrorMessage.value = `Размер файла не должен превышать ${
+					byteConverter(fileSizeLimit.value).size
+				} ${byteConverter(fileSizeLimit.value).measurementUnit}`
+				return false
+			}
+			if (!isFileAcceptable(accept.value, file)) {
+				innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${accept.value
+					.split(',')
+					.map((it) => it.trim().slice(1))
+					.join(', ')}`
+				return false
 			}
 		}
 		return true
@@ -77,38 +89,17 @@ const validateFiles = (inputFiles: Array<File>) => {
 	return false
 }
 
-const validateFile = (inputFile: File) => {
-	if (fileSizeLimit?.value || inputFile.size > Number(fileSizeLimit?.value)) {
-		innerErrorMessage.value = fileSizeLimit?.value
-			? `Размер файла не должен превышать ${byteConverter(fileSizeLimit.value).size} ${
-					byteConverter(fileSizeLimit.value).measurementUnit
-			  }`
-			: ''
-		return false
-	}
-	if (accept?.value || !isFileAcceptable(accept?.value, inputFile)) {
-		innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${
-			accept?.value ??
-			''
-				.split(',')
-				.map((it) => it.trim().slice(1))
-				.join(', ')
-		}`
-		return false
-	}
-}
-
-const isFileAcceptable = (accept: string | undefined, file: File): boolean => {
-	if (!accept) return true
+const isFileAcceptable = (accept: string, file: File): boolean => {
 	const fileType = file.type
 	const fileExtension = extractFileNameAndExtension(file.name).extension
-	return accept?.includes(fileExtension) || accept?.includes(fileType)
+	if (accept.includes(fileExtension) || accept.includes(fileType)) return true
+	return false
 }
 
 const fileInputRef = ref()
 
 const chooseFile = () => fileInputRef.value.click()
-const deleteFile = (file: File) => (files.value = files.value.filter((fileIt: File) => fileIt.name != file.name))
+const deleteFile = (file: File) => (files.value = files.value.filter((fileIt: any) => fileIt.name != file.name))
 
 watch(files, () => {
 	innerErrorMessage.value = null
@@ -124,53 +115,32 @@ const root = ref()
 <template>
 	<div ref="root" class="Uploader">
 		<div
-			v-if="draggable"
 			class="Uploader__content"
-			:class="{ invalid: invalid || isInnerInvalid }"
 			@dragenter="preventDefaultDragBehavior"
 			@dragover="preventDefaultDragBehavior"
 			@drop="onFileSelect"
+			:class="{ invalid: isInvalid || isInnerInvalid }"
 		>
-			<div class="Uploader__header">
+			<div class="header">
 				<span class="">{{ header }}</span>
-				<span v-if="requirementsString" class="text-small">{{ requirementsString }}</span>
+				<span class="text-small" v-if="requirementsString">{{ requirementsString }}</span>
 			</div>
 
 			<input
-				ref="fileInputRef"
 				type="file"
+				ref="fileInputRef"
 				:multiple="multiple"
+				@change="onFileSelect"
 				:disabled="disabled"
 				:accept="accept"
 				style="display: none"
-				@change="onFileSelect"
 			/>
-			<Button v-if="!$slots.actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"
-				>Выбрать файл</Button
-			>
-			<slot name="actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"></slot>
+			<Button @click="chooseFile" :isLoading="isLoading" :disabled="disabled">Выбрать файл</Button>
 		</div>
-		<div v-else>
-			<input
-				ref="fileInputRef"
-				type="file"
-				:multiple="multiple"
-				:disabled="disabled"
-				:accept="accept"
-				style="display: none"
-				@change="onFileSelect"
-			/>
-			<Button v-if="!$slots.actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"
-				>Upload</Button
-			>
-			<slot name="actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"></slot>
-		</div>
-		<span v-if="hint || innerErrorMessage" :class="{ danger: invalid || isInnerInvalid }" class="hint">
+		<span v-if="hint || innerErrorMessage" :class="{ danger: isInvalid || isInnerInvalid }" class="hint">
 			{{ hint ? hint : innerErrorMessage }}
 		</span>
-		<div class="Uploader__fileDeck" v-if="files.length > 0 && draggable">
-			<FileCard v-for="file in files" :file="file" @delete="deleteFile" />
-		</div>
+		<FileDeck @delete="deleteFile" v-if="files.length > 0" v-model="files" />
 	</div>
 </template>
 
@@ -199,15 +169,10 @@ const root = ref()
 	border-color: var(--design-border-color-danger-primary);
 }
 
-.Uploader__header {
+.header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-}
-
-.Uploader__fileDeck {
-	display: flex;
-	flex-direction: column;
 }
 </style>
