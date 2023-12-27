@@ -7,15 +7,15 @@ import Meta, { Default } from './Surface.stories.js'
 const Component = composeStory(Default, Meta)
 
 describe(`Component ${Component.name}`, () => {
-	it('it should be rendered', () => render(Component))
+	it('should render', () => render(Component))
 
-	it('it should display surface content by slot', () => {
+    it('renders slot content', () => {
 		const { container } = render(Meta.component, {
 			slots: {
 				default: Meta.args.default
 			}
 		})
-		const surface = container.querySelector('.Surface')
-		expect(surface?.textContent).toBe(Meta.args.default)
-	})
+        const surface = container.querySelector('.Surface')
+        expect(surface?.textContent).toBe(Meta.args.default)
+    })
 })

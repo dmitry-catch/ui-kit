@@ -7,9 +7,9 @@ import Meta, { Default } from './ContentContainer.stories.js'
 const Component = composeStory(Default, Meta)
 
 describe(`Component ${Component.name}`, () => {
-	it('it should be rendered', () => render(Component))
+	it('should render', () => render(Component))
 
-	it('it should display ContentContainer content by slot', () => {
+	it('renders slot content', () => {
 		const { container } = render(Meta.component, {
 			slots: {
 				default: Meta.args.default
