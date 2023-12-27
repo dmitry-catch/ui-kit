@@ -9,7 +9,7 @@ export default {
 		setup: () => ({ args }),
 		template: `
       <div>
-        <Spinner v-bind='args'/> 
+        <Spinner :variant='args.variant'/> 
       </div>
     `
 	})

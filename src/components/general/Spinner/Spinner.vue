@@ -27,7 +27,7 @@ const { variant } = toRefs(props)
 	animation: spin 1.2s ease-in-out infinite;
 }
 .Spinner[variant='dark'] {
-	border: 2px solid var(--design-text-color-on-accent-tertiary);
+	border: 3px solid var(--design-text-color-on-accent-tertiary);
 	border-top-color: var(--design-border-color-accent-primary);
 }
 

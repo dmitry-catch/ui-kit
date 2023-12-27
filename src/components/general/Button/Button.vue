@@ -11,14 +11,12 @@ interface BtnProps {
 	dropdown?: ListBoxOption[]
 	disabled?: boolean
 	size?: 'medium' | 'small' | 'extra-small'
-	isLoading?: boolean
 }
 
 const props = withDefaults(defineProps<BtnProps>(), {
 	dropdown: () => [],
 	disabled: false,
-	size: 'medium',
-	isLoading: false
+	size: 'medium'
 })
 
 const root = ref()
@@ -172,7 +170,6 @@ const clickOutside = (event: Event) => {
 	--button-background-color-primary: transparent;
 	--button-background-color-secondary: transparent;
 	--button-text-color-secondary: var(--design-text-color-hover-secondary);
-	cursor: pointer;
 	border: none;
 	padding: 0;
 	justify-content: start;

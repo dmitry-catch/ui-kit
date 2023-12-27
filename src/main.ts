@@ -25,7 +25,6 @@ import type { DateLocalization, FieldLocalization, Localization } from './types/
 import OrderableList from './components/data-display/OrderableList/OrderableList.vue'
 import DataGrid from './components/data-display/DataGrid/DataGrid.vue'
 import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
-import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
 
 export {
@@ -50,7 +49,6 @@ export {
 	SelectableOption,
 	Multiselect,
 	TextField,
-	Uploader,
 	//Data display category
 	DataGrid,
 	DataList,
