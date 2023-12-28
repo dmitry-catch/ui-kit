@@ -11,7 +11,7 @@ describe(`Component ${Component.name}`, () => {
 	it('should render', () => render(Component))
 })
 
-it('renders correctly with normal props', () => {
+it('renders correctly with props', () => {
 	const file = new File([''], 'file.txt', { type: 'text/plain' })
 	const wrapper = mount(Default, {
 		props: {
