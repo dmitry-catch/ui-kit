@@ -30,13 +30,10 @@ const props = withDefaults(defineProps<UploaderProps>(), {
 	multiple: true,
 	draggable: true
 })
-const emit = defineEmits<{
-	(e: 'update:modelValue', files: Array<File>): void
-}>()
-
 const { header, invalid, hint, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
 
 const files = ref<Array<File>>([])
+const emit = defineEmits(['update:modelValue'])
 const isInnerInvalid = ref<boolean>(false)
 const innerErrorMessage = ref<string | null>()
 
@@ -45,26 +42,15 @@ const preventDefaultDragBehavior = (event: DragEvent) => {
 	event.preventDefault()
 }
 
-const onDrop = (event: DragEvent) => {
+const onFileSelect = (event: any) => {
 	event.stopPropagation()
 	event.preventDefault()
-	if (event.dataTransfer?.files) handleUploadedFiles(event.dataTransfer?.files)
-	else isInnerInvalid.value = true
-}
-
-const onFileSelect = (event: Event) => {
-	event.stopPropagation()
-	event.preventDefault()
-	const target = event.target as HTMLInputElement
-	if (target.files) handleUploadedFiles(target.files)
-	else isInnerInvalid.value = true
-}
-
-const handleUploadedFiles = (uploadedFiles: FileList) => {
-	const processedFiles: Array<File> = Object.entries<File>(uploadedFiles).map(([_, value]) => value)
-	const allowDrop = validateFiles(processedFiles)
+	const droppedFiles: Array<File> = Object.entries<File>(
+		event.dataTransfer ? event.dataTransfer.files : event.target.files
+	).map(([_, value]) => value)
+	const allowDrop = validateFiles(droppedFiles)
 	if (allowDrop) {
-		files.value = [...files.value, ...processedFiles]
+		files.value = [...files.value, ...droppedFiles]
 	} else {
 		isInnerInvalid.value = true
 	}
@@ -143,7 +129,7 @@ const root = ref()
 			:class="{ invalid: invalid || isInnerInvalid }"
 			@dragenter="preventDefaultDragBehavior"
 			@dragover="preventDefaultDragBehavior"
-			@drop="onDrop"
+			@drop="onFileSelect"
 		>
 			<div class="Uploader__header">
 				<span class="">{{ header }}</span>
