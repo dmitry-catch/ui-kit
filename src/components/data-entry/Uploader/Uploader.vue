@@ -159,10 +159,10 @@ const root = ref()
 				style="display: none"
 				@change="onFileSelect"
 			/>
-			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"
+			<Button v-if="!$slots.actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"
 				>Выбрать файл</Button
 			>
-			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
+			<slot name="actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"></slot>
 		</div>
 		<div v-else>
 			<input
@@ -174,10 +174,10 @@ const root = ref()
 				style="display: none"
 				@change="onFileSelect"
 			/>
-			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"
+			<Button v-if="!$slots.actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"
 				>Upload</Button
 			>
-			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
+			<slot name="actionButton" :isLoading="loading" :disabled="disabled" @click="chooseFile"></slot>
 		</div>
 		<span v-if="hint || innerErrorMessage" :class="{ danger: invalid || isInnerInvalid }" class="hint">
 			{{ hint ? hint : innerErrorMessage }}
