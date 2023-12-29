@@ -21,6 +21,8 @@ interface UploaderProps {
 	/** Принимаемые расширения файлов. К примеру: '.xls,.xlsx,.pdf,.doc,.docx,.zip' */
 	accept?: string
 	header?: string
+	hint?: string
+	requirementsString?: string
 }
 
 const props = withDefaults(defineProps<UploaderProps>(), {
@@ -30,11 +32,7 @@ const emit = defineEmits<{
 	(e: 'update:modelValue', files: Array<File>): void
 }>()
 
-const slots = defineSlots<{
-	default(props: { msg: string }): any
-}>()
-
-const { header, invalid, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
+const { header, invalid, hint, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
 
 const files = ref<Array<File>>([])
 const isInnerInvalid = ref<boolean>(false)
@@ -147,7 +145,7 @@ const root = ref()
 		>
 			<div class="Uploader__header">
 				<span class="">{{ header }}</span>
-				<span v-if="$slots.hint" class="text-small"><slot name="hint"></slot></span>
+				<span v-if="requirementsString" class="text-small">{{ requirementsString }}</span>
 			</div>
 
 			<input
@@ -179,14 +177,11 @@ const root = ref()
 			>
 			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
 		</div>
-		<span v-if="$slots.error || innerErrorMessage" :class="{ danger: invalid }" class="hint">
-			<slot name="error"></slot>
-		</span>
-		<span v-if="innerErrorMessage" :class="{ danger: isInnerInvalid }" class="hint">
-			{{ innerErrorMessage }}
+		<span v-if="hint || innerErrorMessage" :class="{ danger: invalid || isInnerInvalid }" class="hint">
+			{{ hint ? hint : innerErrorMessage }}
 		</span>
 		<div class="Uploader__fileDeck" v-if="files.length > 0 && draggable">
-			<FileCard v-for="file in files" v-bind:file="file" @delete="deleteFile" />
+			<FileCard v-for="file in files" :file="file" @delete="deleteFile" />
 		</div>
 	</div>
 </template>

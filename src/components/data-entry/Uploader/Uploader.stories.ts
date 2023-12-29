@@ -10,6 +10,7 @@ export default {
 		disabled: false,
 		multiple: true,
 		loading: false,
+		requirementsString: 'Прикрепите файлы форматов doc, docx, zip, xls, xlsx, pdf',
 		length: 3
 	},
 	argTypes: {},
@@ -52,7 +53,7 @@ export const NotDraggable: Story = {
 	}
 }
 
-export const NotDraggableWithActionButtonSlot: Story = {
+export const NotDraggableWithSlot: Story = {
 	args: {
 		draggable: false
 	},
@@ -64,40 +65,6 @@ export const NotDraggableWithActionButtonSlot: Story = {
         <Uploader v-model="args.files" v-bind='args'>
 			<template v-slot:actionButton='actionButtonProps'>
 				<Button class='icon' v-bind='actionButtonProps'><Icon name='upload'></Icon></Button>
-			</template>
-		</Uploader>
-      </div>
-    `
-	})
-}
-
-export const HintSlot: Story = {
-	args: {},
-	render: (args) => ({
-		components: { Uploader, Button, Icon },
-		setup: () => ({ args }),
-		template: `
-      <div>
-        <Uploader v-model="args.files" v-bind='args'>
-			<template #hint>
-				Прикрепите файлы форматов doc, docx, zip, xls, xlsx, pdf
-			</template>
-		</Uploader>
-      </div>
-    `
-	})
-}
-
-export const ErrorSlot: Story = {
-	args: {},
-	render: (args) => ({
-		components: { Uploader, Button, Icon },
-		setup: () => ({ args }),
-		template: `
-      <div>
-        <Uploader v-model="args.files" v-bind='args'>
-			<template #error>
-				some error message
 			</template>
 		</Uploader>
       </div>
