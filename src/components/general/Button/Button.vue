@@ -11,19 +11,17 @@ interface BtnProps {
 	dropdown?: ListBoxOption[]
 	disabled?: boolean
 	size?: 'medium' | 'small' | 'extra-small'
-	loading?: boolean
 }
 
 const props = withDefaults(defineProps<BtnProps>(), {
 	dropdown: () => [],
 	disabled: false,
-	size: 'medium',
-	loading: false
+	size: 'medium'
 })
 
 const root = ref()
 
-const { dropdown, disabled, loading } = toRefs(props)
+const { dropdown, disabled, isLoading } = toRefs(props)
 
 const hasDropdown = computed(() => !!dropdown?.value?.length)
 const dropdownOpened = ref(false)
@@ -37,7 +35,7 @@ const clickOutside = (event: Event) => {
 <template>
 	<div ref="root" class="Btn" :class="{ disabled: disabled }">
 		<button class="Btn__actual accent" :class="[props.size]" :disabled="disabled" @click="toggleDropdown">
-			<Spinner v-if="loading" />
+			<Spinner v-if="isLoading" />
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
@@ -172,7 +170,6 @@ const clickOutside = (event: Event) => {
 	--button-background-color-primary: transparent;
 	--button-background-color-secondary: transparent;
 	--button-text-color-secondary: var(--design-text-color-hover-secondary);
-	cursor: pointer;
 	border: none;
 	padding: 0;
 	justify-content: start;
