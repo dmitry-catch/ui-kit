@@ -10,7 +10,7 @@ export default {
 		disabled: false,
 		default: 'Button',
 		size: 'medium',
-		isLoading: 'true'
+		loading: true
 	},
 	argTypes: {
 		class: {

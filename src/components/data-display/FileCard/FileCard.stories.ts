@@ -1,17 +1,15 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import FileCard from './FileCard.vue'
 
-const mockFile = (name: string, type: string, size: number): File => {
-	const file = new File([''], name)
-	Object.defineProperty(file, 'size', { value: size })
-	return file
-}
-
 export default {
 	component: FileCard,
 	args: {
-		/** где 8 - бит в байте, 1024 - байт в кб и кб в мб, а 10 - итоговое количество мегабайт */
-		file: mockFile('qwerty12.12.1212.xlsx', 'xlsx', 8 * 1024 ** 2 * 10)
+		file: {
+			name: 'qwerty.1.xlsx',
+			size: 1000000,
+			lastModified: 1703494824575,
+			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		}
 	}
 } satisfies Meta<typeof FileCard>
 

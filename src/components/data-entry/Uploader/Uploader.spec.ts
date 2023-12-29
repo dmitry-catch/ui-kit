@@ -8,31 +8,26 @@ import Meta, { Default } from './Uploader.stories.js'
 const Component = composeStory(Default, Meta)
 
 describe(`Component ${Component.name}`, () => {
-	it('should render', () => render(Component))
+	it('it should render', () => render(Component))
 
 	it('should renders correctly with props', () => {
-		const wrapper = mount(Default, {
+		const { getByText } = render(Component, {
 			props: {
-				modelValue: [],
 				header: 'Test Header',
 				hint: 'Test Hint',
 				requirementsString: 'Test Requirements',
-				draggable: false,
 				invalid: true,
-				loading: false,
-				multiple: false,
 				disabled: true,
-				fileSizeLimit: 1024,
-				length: 5,
 				accept: '.pdf,.docx'
 			}
 		})
-		expect(wrapper.find('.Uploader__header').text()).toBe('Test Header')
-		expect(wrapper.find('.Uploader__hint').text()).toBe('Test Hint')
-		expect(wrapper.find('.Uploader__requirements').text()).toBe('Test Requirements')
+
+		getByText('Test Header')
+		getByText('Test Hint')
+		getByText('Test Requirements')
 	})
 
-	it('should adds files to modelValue array when uploaded', async () => {
+	it('it should adds files to modelValue array when uploaded', async () => {
 		const file1 = new File([''], 'file1.txt', { type: 'text/plain' })
 		const file2 = new File([''], 'file2.txt', { type: 'text/plain' })
 		const wrapper = mount(Default, {
@@ -59,7 +54,7 @@ describe(`Component ${Component.name}`, () => {
 		expect(wrapper.vm.modelValue).toEqual([file1, file2])
 	})
 
-	it('should removes correct file from modelValue array when deleteFile method is called', async () => {
+	it('it should removes correct file from modelValue array when deleteFile method is called', async () => {
 		const file1 = new File([''], 'file1.txt', { type: 'text/plain' })
 		const file2 = new File([''], 'file2.txt', { type: 'text/plain' })
 		const wrapper = mount(Default, {
@@ -83,7 +78,7 @@ describe(`Component ${Component.name}`, () => {
 		expect(wrapper.vm.modelValue).toEqual([file2])
 	})
 
-	it('should adds files to modelValue array when dropped', async () => {
+	it('it should adds files to modelValue array when dropped', async () => {
 		const file1 = new File([''], 'file1.txt', { type: 'text/plain' })
 		const file2 = new File([''], 'file2.txt', { type: 'text/plain' })
 		const dropEvent = new DragEvent('drop', { dataTransfer: { files: [file1, file2] } })

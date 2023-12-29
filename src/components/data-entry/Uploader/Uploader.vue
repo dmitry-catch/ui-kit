@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Button from '../../general/Button/Button.vue'
-import FileCard from '../../data-display/FileCard/FileCard.vue'
 import { onMounted, ref, toRefs, watch } from 'vue'
 import { byteConverter } from '../../../utils/byteConverter'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
+import Button from '../../general/Button/Button.vue'
+import FileCard from '../../data-display/FileCard/FileCard.vue'
 
 // <!-- inject localization -->
 
@@ -26,7 +26,9 @@ interface UploaderProps {
 }
 
 const props = withDefaults(defineProps<UploaderProps>(), {
-	header: 'Перетащите файл в эту область или загрузите с компьютера'
+	header: 'Перетащите файл в эту область или загрузите с компьютера',
+	multiple: true,
+	draggable: true
 })
 const emit = defineEmits<{
 	(e: 'update:modelValue', files: Array<File>): void
@@ -158,8 +160,8 @@ const root = ref()
 				@change="onFileSelect"
 			/>
 			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"
-				>Выбрать файл</Button
-			>
+				>Выбрать файл
+			</Button>
 			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
 		</div>
 		<div v-else>
@@ -173,8 +175,8 @@ const root = ref()
 				@change="onFileSelect"
 			/>
 			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"
-				>Upload</Button
-			>
+				>Upload
+			</Button>
 			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
 		</div>
 		<span v-if="hint || innerErrorMessage" :class="{ danger: invalid || isInnerInvalid }" class="hint">
