@@ -10,21 +10,26 @@ const Component = composeStory(Default, Meta)
 describe(`Component ${Component.name}`, () => {
 	it('it should render', () => render(Component))
 
-	it('should renders correctly with props', () => {
-		const { getByText } = render(Component, {
+	it('it should renders correctly with props', () => {
+		const wrapper = mount(Default, {
 			props: {
+				modelValue: [],
 				header: 'Test Header',
 				hint: 'Test Hint',
 				requirementsString: 'Test Requirements',
+				draggable: false,
 				invalid: true,
+				loading: false,
+				multiple: false,
 				disabled: true,
+				fileSizeLimit: 1024,
+				length: 5,
 				accept: '.pdf,.docx'
 			}
 		})
-
-		getByText('Test Header')
-		getByText('Test Hint')
-		getByText('Test Requirements')
+		expect(wrapper.find('.Uploader__header').text()).toBe('Test Header')
+		expect(wrapper.find('.Uploader__hint').text()).toBe('Test Hint')
+		expect(wrapper.find('.Uploader__requirements').text()).toBe('Test Requirements')
 	})
 
 	it('it should adds files to modelValue array when uploaded', async () => {

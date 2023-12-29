@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Uploader from './Uploader.vue'
 import { Button, Icon } from '../../../main'
-
 export default {
 	component: Uploader,
 	args: {
@@ -14,7 +13,18 @@ export default {
 		requirementsString: 'Прикрепите файлы форматов doc, docx, zip, xls, xlsx, pdf',
 		length: 3
 	},
-	argTypes: {}
+	argTypes: {},
+	render: (args) => ({
+		components: { Uploader, Button },
+		setup: () => ({ args }),
+		template: `
+      <div>
+        <Uploader v-model="args.files" v-bind='args'>
+			{{slotcontent}}
+		</Uploader>
+      </div>
+    `
+	})
 } satisfies Meta<typeof Uploader>
 
 type Story = StoryObj<typeof Uploader>
