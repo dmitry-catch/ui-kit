@@ -9,6 +9,7 @@ import Tag from './components/data-display/Tag/Tag.vue'
 import ContentContainer from './components/layout/ContentContainer/ContentContainer.vue'
 import ContentBlock from './components/layout/ContentBlock/ContentBlock.vue'
 import Surface from './components/layout/Surface/Surface.vue'
+import Drawer from './components/layout/Drawer/Drawer.vue'
 import Tabs from './components/general/Tabs/Tabs.vue'
 import Tab from './components/general/Tabs/Tab.vue'
 import TextField from './components/data-entry/TextField/TextField.vue'
@@ -25,7 +26,6 @@ import type { DateLocalization, FieldLocalization, Localization } from './types/
 import OrderableList from './components/data-display/OrderableList/OrderableList.vue'
 import DataGrid from './components/data-display/DataGrid/DataGrid.vue'
 import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
-import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
 
 export {
@@ -42,6 +42,7 @@ export {
 	ContentContainer,
 	ContentBlock,
 	Surface,
+	Drawer,
 	//Data entry category
 	Checkbox,
 	DatePicker,
@@ -50,7 +51,6 @@ export {
 	SelectableOption,
 	Multiselect,
 	TextField,
-	Uploader,
 	//Data display category
 	DataGrid,
 	DataList,

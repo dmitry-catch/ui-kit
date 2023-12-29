@@ -4,19 +4,9 @@ import { Button } from '../../../main'
 
 export default {
 	component: Drawer,
-	args: { open: false, autoFocus: false, backdrop: false, keyboard: false, placement: 'right', size: 'md' },
-	argTypes: {
-		placement: {
-			control: 'select',
-			options: ['right', 'center', 'left']
-		},
-		size: {
-			control: 'select',
-			options: ['sm', 'md', 'lg']
-		}
-	},
+	args: { open: false },
 	render: (args) => ({
-		args: args,
+		args: { open: false },
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
