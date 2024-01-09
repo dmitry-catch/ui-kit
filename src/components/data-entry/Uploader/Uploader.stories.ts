@@ -5,12 +5,12 @@ export default {
 	component: Uploader,
 	args: {
 		modelValue: [],
-		draggable: false,
+		draggable: true,
 		invalid: false,
 		disabled: false,
-		multiple: false,
+		multiple: true,
 		loading: false,
-		length: undefined
+		length: 3
 	},
 	argTypes: {},
 	render: (args) => ({
@@ -30,12 +30,6 @@ type Story = StoryObj<typeof Uploader>
 
 export const Default: Story = {}
 
-export const Draggable: Story = {
-	args: {
-		draggable: true
-	}
-}
-
 export const FilledSlot: Story = {
 	render: (args) => ({
 		components: { Uploader, Button, Icon },
@@ -44,7 +38,7 @@ export const FilledSlot: Story = {
       <div>
         <Uploader v-model="args.files" v-bind='args'>
 			<template v-slot:actionButton='actionButtonProps'>
-				<Icon name='upload'></Icon>
+				<Button class='icon' v-bind='actionButtonProps'><Icon name='upload'></Icon></Button>
 			</template>
 		</Uploader>
       </div>
@@ -52,9 +46,15 @@ export const FilledSlot: Story = {
 	})
 }
 
-export const DraggableWithFilledSlot: Story = {
+export const NotDraggable: Story = {
 	args: {
-		draggable: true
+		draggable: false
+	}
+}
+
+export const NotDraggableWithActionButtonSlot: Story = {
+	args: {
+		draggable: false
 	},
 	render: (args) => ({
 		components: { Uploader, Button, Icon },
@@ -63,7 +63,7 @@ export const DraggableWithFilledSlot: Story = {
       <div>
         <Uploader v-model="args.files" v-bind='args'>
 			<template v-slot:actionButton='actionButtonProps'>
-				<Icon name='upload'></Icon>
+				<Button class='icon' v-bind='actionButtonProps'><Icon name='upload'></Icon></Button>
 			</template>
 		</Uploader>
       </div>
@@ -72,7 +72,7 @@ export const DraggableWithFilledSlot: Story = {
 }
 
 export const HintSlot: Story = {
-	args: { draggable: true },
+	args: {},
 	render: (args) => ({
 		components: { Uploader, Button, Icon },
 		setup: () => ({ args }),
@@ -89,7 +89,7 @@ export const HintSlot: Story = {
 }
 
 export const ErrorSlot: Story = {
-	args: { draggable: true },
+	args: {},
 	render: (args) => ({
 		components: { Uploader, Button, Icon },
 		setup: () => ({ args }),

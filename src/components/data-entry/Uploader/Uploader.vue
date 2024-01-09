@@ -30,10 +30,8 @@ const emit = defineEmits<{
 	(e: 'update:modelValue', files: Array<File>): void
 }>()
 
-defineSlots<{
-	hint?: string
-	error?: string
-	actionButton?: () => any
+const slots = defineSlots<{
+	default(props: { msg: string }): any
 }>()
 
 const { header, invalid, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
@@ -43,13 +41,11 @@ const isInnerInvalid = ref<boolean>(false)
 const innerErrorMessage = ref<string | null>()
 
 const preventDefaultDragBehavior = (event: DragEvent) => {
-	if (!draggable.value) return
 	event.stopPropagation()
 	event.preventDefault()
 }
 
 const onDrop = (event: DragEvent) => {
-	if (!draggable.value) return
 	event.stopPropagation()
 	event.preventDefault()
 	if (event.dataTransfer?.files) handleUploadedFiles(event.dataTransfer?.files)
@@ -142,12 +138,14 @@ const root = ref()
 <template>
 	<div ref="root" class="Uploader">
 		<div
-			:class="{ Uploader__content: draggable, invalid: draggable && (invalid || isInnerInvalid) }"
+			v-if="draggable"
+			class="Uploader__content"
+			:class="{ invalid: invalid || isInnerInvalid }"
 			@dragenter="preventDefaultDragBehavior"
 			@dragover="preventDefaultDragBehavior"
 			@drop="onDrop"
 		>
-			<div v-if="draggable" class="Uploader__header">
+			<div class="Uploader__header">
 				<span class="">{{ header }}</span>
 				<span v-if="$slots.hint" class="text-small"><slot name="hint"></slot></span>
 			</div>
@@ -161,14 +159,25 @@ const root = ref()
 				style="display: none"
 				@change="onFileSelect"
 			/>
-			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile">
-				{{ draggable ? 'Выбрать файл' : 'Upload' }}
-			</Button>
-			<div class="Uploader__actionButoon">
-				<Button v-if="$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile">
-					<slot name="actionButton"></slot>
-				</Button>
-			</div>
+			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"
+				>Выбрать файл</Button
+			>
+			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
+		</div>
+		<div v-else>
+			<input
+				ref="fileInputRef"
+				type="file"
+				:multiple="multiple"
+				:disabled="disabled"
+				:accept="accept"
+				style="display: none"
+				@change="onFileSelect"
+			/>
+			<Button v-if="!$slots.actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"
+				>Upload</Button
+			>
+			<slot name="actionButton" :loading="loading" :disabled="disabled" @click="chooseFile"></slot>
 		</div>
 		<span v-if="$slots.error || innerErrorMessage" :class="{ danger: invalid }" class="hint">
 			<slot name="error"></slot>
@@ -176,8 +185,8 @@ const root = ref()
 		<span v-if="innerErrorMessage" :class="{ danger: isInnerInvalid }" class="hint">
 			{{ innerErrorMessage }}
 		</span>
-		<div v-if="files.length > 0 && draggable" class="Uploader__fileDeck">
-			<FileCard v-for="file in files" :key="file.size" :file="file" @delete="deleteFile" />
+		<div class="Uploader__fileDeck" v-if="files.length > 0 && draggable">
+			<FileCard v-for="file in files" v-bind:file="file" @delete="deleteFile" />
 		</div>
 	</div>
 </template>
