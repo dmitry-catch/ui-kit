@@ -69,7 +69,7 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 	color: var(--design-text-color-on-accent-primary);
 }
 .Spinner__wheel[variant='dark'] {
-	border: 2px solid var(--design-text-color-on-accent-tertiary);
+	border: 3px solid var(--design-text-color-on-accent-tertiary);
 	border-top-color: var(--design-border-color-accent-primary);
 }
 .Spinner__wheel[size='small'] {
