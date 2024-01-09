@@ -9,21 +9,23 @@ interface InputNumberProps {
 	max?: number
 	disabled?: boolean
 	readonly?: boolean
-	enabledArrows?: boolean
-	scrollable?: boolean
-	invalid?: boolean | string
+	error?: boolean | string
 	placeholder?: string
 	size?: 'extra-small' | 'small' | 'medium'
 }
 
 const props = withDefaults(defineProps<InputNumberProps>(), {
 	step: 1,
+	disabled: false,
+	readonly: false,
+	error: false,
+	placeholder: '',
 	size: 'medium',
 	min: -Infinity,
 	max: Infinity
 })
 
-const { modelValue, step, placeholder, disabled, readonly, invalid, size, min, max, scrollable } = toRefs(props)
+const { modelValue, step, placeholder, disabled, readonly, error, size, min, max } = toRefs(props)
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -50,13 +52,11 @@ const decrementValue = () => {
 
 const onWheel = (evt: WheelEvent) => {
 	evt.preventDefault()
-	if (scrollable.value) {
-		const delta = -evt.deltaY
-		if (delta > 0) {
-			incrementValue()
-		} else {
-			decrementValue()
-		}
+	const delta = -evt.deltaY
+	if (delta > 0) {
+		incrementValue()
+	} else {
+		decrementValue()
 	}
 }
 
@@ -89,7 +89,7 @@ const onBlur = () => {
 
 <template>
 	<div ref="root" class="InputNumber__wrapper">
-		<div class="InputNumber" :class="{ 'InputNumber--invalid': invalid }">
+		<div class="InputNumber" :class="{ 'InputNumber--invalid': error }">
 			<span class="InputNumber__prefix" :class="size">
 				<slot name="prefix"></slot>
 			</span>
@@ -108,17 +108,17 @@ const onBlur = () => {
 				:disabled="disabled"
 				:readonly="readonly"
 			/>
-			<span v-if="enabledArrows" class="InputNumber__arrows" :class="size">
+			<span class="InputNumber__arrows" :class="size">
 				<span
 					class="InputNumber__arrowUp"
-					:class="{ 'InputNumber__arrow--disabled': !isNotMaxValue || disabled }"
+					:class="{ 'InputNumber__arrow--disabled': !isNotMaxValue }"
 					@click="incrementValue"
 				>
 					<Icon name="chevron_up" class="InputNumber__arrowIcon" />
 				</span>
 				<span
 					class="InputNumber__arrowDown"
-					:class="{ 'InputNumber__arrow--disabled': !isNotMinValue || disabled }"
+					:class="{ 'InputNumber__arrow--disabled': !isNotMinValue }"
 					@click="decrementValue"
 				>
 					<Icon name="chevron_down" class="InputNumber__arrowIcon" />
@@ -128,13 +128,13 @@ const onBlur = () => {
 				<slot name="postfix"></slot>
 			</span>
 		</div>
-		<span v-if="typeof invalid === 'string'" class="InputNumber__error" :class="size">
-			{{ invalid }}
+		<span v-if="typeof error === 'string'" class="InputNumber__error" :class="size">
+			{{ error }}
 		</span>
 	</div>
 </template>
 
-<style scoped>
+<style>
 .InputNumber {
 	display: flex;
 	border: 1px solid var(--design-border-color-primary);
@@ -186,11 +186,7 @@ const onBlur = () => {
 
 .InputNumber__arrow--disabled .InputNumber__arrowIcon {
 	cursor: not-allowed;
-	background-color: var(--design-background-color-on-accent-primary);
-}
-
-.InputNumber__arrow--disabled :deep(.Icon path) {
-	fill: var(--design-background-color-disabled-primary);
+	background-color: var(--design-background-color-disabled-primary);
 }
 
 .InputNumber--invalid {

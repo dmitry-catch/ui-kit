@@ -4,21 +4,7 @@ import InputNumber from './InputNumber.vue'
 export default {
 	component: InputNumber,
 	args: {
-		modelValue: 0,
-		step: 1,
-		disabled: false,
-		readonly: false,
-		invalid: false,
-		placeholder: '',
-		size: 'medium',
-		enabledArrows: false,
-		scrollable: false
-	},
-	argTypes: {
-		size: {
-			control: 'select',
-			options: ['small', 'medium', 'extra-small']
-		}
+		modelValue: 0
 	}
 } satisfies Meta<typeof InputNumber>
 
@@ -40,28 +26,13 @@ export const Postfix: Story = {
 
 export const Invalid: Story = {
 	args: {
-		invalid: true
+		error: true
 	}
 }
 
 export const InvalidWithDescription: Story = {
 	args: {
-		invalid: 'Wrong value!'
-	}
-}
-
-/**
- * Появляется возможность изменять значение с помощью `scroll`'а
- */
-export const Scrollable: Story = {
-	args: {
-		scrollable: true
-	}
-}
-
-export const EnabledArrows: Story = {
-	args: {
-		enabledArrows: true
+		error: 'Wrong value!'
 	}
 }
 
