@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Uploader from './Uploader.vue'
 import { Button, Icon } from '../../../main'
-
 export default {
 	component: Uploader,
 	args: {
@@ -13,7 +12,18 @@ export default {
 		loading: false,
 		length: undefined
 	},
-	argTypes: {}
+	argTypes: {},
+	render: (args) => ({
+		components: { Uploader, Button },
+		setup: () => ({ args }),
+		template: `
+      <div>
+        <Uploader v-model="args.files" v-bind='args'>
+			{{slotcontent}}
+		</Uploader>
+      </div>
+    `
+	})
 } satisfies Meta<typeof Uploader>
 
 type Story = StoryObj<typeof Uploader>

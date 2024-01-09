@@ -29,11 +29,7 @@ const { size, measurementUnit } = byteConverter(file.value.size)
 		<span class="FileCard__name">{{ fileName }}</span>
 		<span class="FileCard__size">{{ size }} {{ measurementUnit }}</span>
 		<div class="FileCard__controls">
-			<Button
-				v-if="!loading && variant == 'delete'"
-				class="icon functional FileCard__deleteBtn"
-				@click="emit('delete', file)"
-			>
+			<Button v-if="!loading && variant == 'delete'" class="icon functional" @click="emit('delete', file)">
 				<Icon name="trash" />
 			</Button>
 			<Button v-if="!loading && variant == 'upload'" class="icon functional" @click="emit('upload', file)">
