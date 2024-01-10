@@ -1,18 +1,18 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Drawer from './Drawer.vue'
-import { Button, Icon } from '../../../main'
+import { Button } from '../../../main'
 
 export default {
 	component: Drawer,
-	args: { open: false, autofocus: false, backdrop: false, keyboard: false, placement: 'right', size: 'medium' },
+	args: { open: false, autoFocus: false, backdrop: false, keyboard: false, placement: 'right', size: 'md' },
 	argTypes: {
 		placement: {
 			control: 'select',
-			options: ['right', 'left', 'top', 'bottom']
+			options: ['right', 'center', 'left']
 		},
 		size: {
 			control: 'select',
-			options: ['small', 'medium', 'large', 'full']
+			options: ['sm', 'md', 'lg']
 		}
 	},
 	render: (args) => ({
@@ -21,8 +21,8 @@ export default {
 		setup: () => ({ args }),
 		template: `
       <div>
-        <Button @click="()=>args.open = !args.open">Click here to open the Drawer!</Button>
-		<Drawer v-bind='args' @onClose='()=>args.open = !args.open'></Drawer>
+        <Button @click="()=>args.open = !args.open">Click here to open the drawer!</Button>
+        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'></Drawer>
       </div>
     `
 	})
@@ -31,74 +31,3 @@ export default {
 type Story = StoryObj<typeof Drawer>
 
 export const Default: Story = {}
-
-export const DefferentPlacements: Story = {
-	render: (args) => ({
-		args: {},
-		components: { Drawer, Button, Icon },
-		setup: () => ({ args }),
-		template: `
-      <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
-        <Button @click="()=>{args.open = !args.open; args.placement = 'top'}"><Icon name="chevron_up"/></Button>
-		<Button class='accent' @click="()=>{args.open = !args.open; args.placement = 'bottom'}"><Icon name="chevron_down"/></Button>
-		<Button @click="()=>{args.open = !args.open; args.placement = 'right'}"><Icon name="chevron_forward"/></Button>
-		<Button class='accent' @click="()=>{args.open = !args.open; args.placement = 'left'}"><Icon name="chevron_backward"/></Button>
-        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'></Drawer>
-      </div>
-    `
-	})
-}
-
-export const DefferentSizes: Story = {
-	render: (args) => ({
-		args: {},
-		components: { Drawer, Button },
-		setup: () => ({ args }),
-		template: `
-      <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
-        <Button @click="()=>{args.open = !args.open; args.size = 'small'}">small</Button>
-		<Button class='accent' @click="()=>{args.open = !args.open; args.size = 'medium'}">medium</Button>
-		<Button @click="()=>{args.open = !args.open; args.size = 'large'}">large</Button>
-		<Button class='accent' @click="()=>{args.open = !args.open; args.size = 'full'}">full</Button>
-        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'></Drawer>
-      </div>
-    `
-	})
-}
-
-export const WithHeader: Story = {
-	render: (args) => ({
-		args: {},
-		components: { Drawer, Button },
-		setup: () => ({ args }),
-		template: `
-      <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
-	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with header!</Button>
-        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'>
-			<template #header>
-				Some header
-			</template>
-		</Drawer>
-      </div>
-    `
-	})
-}
-export const WithContent: Story = {
-	render: (args) => ({
-		args: {},
-		components: { Drawer, Button },
-		setup: () => ({ args }),
-		template: `
-      <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
-	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with content!</Button>
-        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'>
-			<template #default>
-			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae accusamus perspiciatis quae, nam ea molestiae dolorum repe</p>
-			<p>llendus corporis, commodi, unde architecto ullam qui expedita esse assumenda. Explicabo ab sequi quae.</p>
-				<Button >Some content</Button>
-			</template>
-		</Drawer>
-      </div>
-    `
-	})
-}
