@@ -15,7 +15,10 @@ interface UploaderProps {
 	loading?: boolean
 	multiple?: boolean
 	disabled?: boolean
-	/** Размер в байтах */
+	/** Размер в байтах
+	 *
+	 * f.e - 1024*1024*25 - 25mb
+	 */
 	fileSizeLimit?: number
 	length?: number
 	/** Принимаемые расширения файлов. К примеру: '.xls,.xlsx,.pdf,.doc,.docx,.zip' */
@@ -84,7 +87,7 @@ const handleUploadedFiles = (uploadedFiles: FileList) => {
 const validateFiles = (inputFiles: Array<File>) => {
 	if (!disabled.value) {
 		const lengthValidation: boolean =
-			(multiple.value || (inputFiles && inputFiles.length == 1)) &&
+			(multiple.value || (inputFiles && files.value.length + inputFiles.length == 1)) &&
 			(!length?.value || files.value.length + inputFiles.length <= length?.value)
 		if (!lengthValidation) {
 			innerErrorMessage.value = `Количество файлов должно быть меньше ${multiple.value ? length?.value : 1}`
@@ -103,7 +106,7 @@ const validateFiles = (inputFiles: Array<File>) => {
 }
 
 const validateFile = (inputFile: File) => {
-	if (fileSizeLimit?.value || inputFile.size > Number(fileSizeLimit?.value)) {
+	if (!fileSizeLimit?.value || Number(inputFile.size) > Number(fileSizeLimit?.value)) {
 		innerErrorMessage.value = fileSizeLimit?.value
 			? `Размер файла не должен превышать ${byteConverter(fileSizeLimit.value).size} ${
 					byteConverter(fileSizeLimit.value).measurementUnit
@@ -111,7 +114,7 @@ const validateFile = (inputFile: File) => {
 			: ''
 		return false
 	}
-	if (accept?.value || !isFileAcceptable(accept?.value, inputFile)) {
+	if (!accept?.value || !isFileAcceptable(accept?.value, inputFile)) {
 		innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${
 			accept?.value ??
 			''
@@ -123,11 +126,11 @@ const validateFile = (inputFile: File) => {
 	}
 }
 
-const isFileAcceptable = (accept: string | undefined, file: File): boolean => {
-	if (!accept) return true
+const isFileAcceptable = (acceptString: string | undefined, file: File): boolean => {
+	if (!acceptString) return true
 	const fileType = file.type
 	const fileExtension = extractFileNameAndExtension(file.name).extension
-	return accept?.includes(fileExtension) || accept?.includes(fileType)
+	return acceptString?.includes(fileExtension) || acceptString?.includes(fileType)
 }
 
 const fileInputRef: Ref = ref()
@@ -138,6 +141,7 @@ const deleteFile = (file: File) => {
 	const newStates = { ...loadingStates.value }
 	delete newStates[file.name]
 	loadingStates.value = newStates
+	fileInputRef.value.value = ''
 }
 
 watch(files, () => {
@@ -171,8 +175,8 @@ const root = ref()
 			</div>
 
 			<input
-				data-testid="main"
 				ref="fileInputRef"
+				data-testid="main"
 				type="file"
 				:multiple="multiple"
 				:disabled="disabled"

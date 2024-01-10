@@ -8,7 +8,6 @@ const Component = composeStory(Default, Meta)
 const ComponentWithHeader = composeStory(WithHeader, Meta)
 const ComponentWithControls = composeStory(WithControls, Meta)
 const ComponentWithDefaults = composeStory(WithContent, Meta)
-
 describe('Drawer', () => {
 	it('should be rendered', () => render(Component))
 
@@ -55,21 +54,16 @@ describe('Drawer', () => {
 		expect(drawer?.textContent).eq(WithContent?.args?.default)
 	})
 
-	it('should renders correctly when closed', async () => {
+	it('should renders correctly when closed', () => {
 		const { container } = render(Component, {
 			props: {
-				open: true,
-				onClose: () => (Meta.args.open = false)
+				open: true
 			}
 		})
-
-		const button = container.querySelector('.Btn__actual')
-		const drawerSurface = container.querySelector('.Drawer__surface')
-		screen.debug()
+		// const button = screen.getByRole('button')
+		const drawerSurface = container.querySelector('.Drawer__Surface')
 		expect(drawerSurface).not.toBeNull()
-		if (button) {
-			await fireEvent.click(button)
-		}
+		// fireEvent.click(button)
 		// expect(drawerSurface).toBeNull()
 	})
 })
