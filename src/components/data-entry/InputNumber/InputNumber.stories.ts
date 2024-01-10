@@ -11,13 +11,13 @@ export default {
 		invalid: false,
 		placeholder: '',
 		size: 'medium',
-		arrowed: false,
+		enabledArrows: false,
 		scrollable: false
 	},
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['extra-small', 'small', 'medium']
+			options: ['small', 'medium', 'extra-small']
 		}
 	}
 } satisfies Meta<typeof InputNumber>
@@ -59,9 +59,9 @@ export const Scrollable: Story = {
 	}
 }
 
-export const arrowed: Story = {
+export const EnabledArrows: Story = {
 	args: {
-		arrowed: true
+		enabledArrows: true
 	}
 }
 

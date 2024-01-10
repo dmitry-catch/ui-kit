@@ -9,7 +9,7 @@ interface InputNumberProps {
 	max?: number
 	disabled?: boolean
 	readonly?: boolean
-	arrowed?: boolean
+	enabledArrows?: boolean
 	scrollable?: boolean
 	invalid?: boolean | string
 	placeholder?: string
@@ -108,7 +108,7 @@ const onBlur = () => {
 				:disabled="disabled"
 				:readonly="readonly"
 			/>
-			<span v-if="arrowed" class="InputNumber__arrows" :class="size">
+			<span v-if="enabledArrows" class="InputNumber__arrows" :class="size">
 				<span
 					class="InputNumber__arrowUp"
 					:class="{ 'InputNumber__arrow--disabled': !isNotMaxValue || disabled }"
