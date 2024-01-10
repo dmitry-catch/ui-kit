@@ -32,7 +32,7 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['small', 'medium', 'extra-small']
+			options: ['extra-small', 'small', 'medium']
 		}
 	}
 } satisfies Meta<typeof Button>
