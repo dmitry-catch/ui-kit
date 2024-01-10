@@ -25,7 +25,6 @@ const emit = defineEmits<{
 defineSlots<{
 	header?: string
 	default?: () => any
-	controls?: () => any
 }>()
 
 const { open, backdrop, keyboard, placement, size, autofocus } = toRefs(props)
@@ -49,15 +48,12 @@ onMounted(() => {
 	<div ref="root" class="Drawer">
 		<Modal v-if="open" class="Drawer__modal" :class="{ backdrop, horizontal: horizontal }" :anchor="placement">
 			<Surface class="Drawer__surface" :size="size">
-				<div class="Drawer__head">
-					<span class="Drawer__header accent text-large"><slot name="header"></slot></span>
-					<Button class="icon functional" @click="emit('onClose', false)"><Icon name="close" /></Button>
-				</div>
 				<div class="Drawer_content">
+					<div class="Drawer__head">
+						<span class="accent"><slot name="header"></slot></span>
+						<Button class="icon functional" @click="emit('onClose', false)"><Icon name="close" /></Button>
+					</div>
 					<slot></slot>
-				</div>
-				<div v-if="$slots.controls" class="Drawer__controls">
-					<slot name="controls"></slot>
 				</div>
 			</Surface>
 		</Modal>
@@ -71,15 +67,12 @@ onMounted(() => {
 	height: 100vh;
 	border-radius: 0;
 	box-shadow: 0px 32px 64px 0px rgba(33, 44, 58, 0.16);
-	display: flex;
-	flex-direction: column;
 }
 .Drawer__head {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	margin-bottom: calc(3 * var(--design-gap-unit));
 }
 .Drawer__modal::backdrop {
 	background: none;
@@ -91,16 +84,6 @@ onMounted(() => {
 .Drawer__modal.horizontal .Drawer__surface {
 	height: fit-content;
 	width: 100vw;
-}
-
-.Drawer__controls {
-	margin-top: auto;
-	display: flex;
-	align-items: center;
-	justify-content: end;
-	gap: calc(2 * var(--design-gap-unit));
-	padding-top: calc(3 * var(--design-gap-unit));
-	border-top: 1px solid var(--design-border-color-baseline);
 }
 
 .Drawer__surface[size='small'] {

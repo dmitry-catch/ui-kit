@@ -68,15 +68,15 @@ export const DefferentSizes: Story = {
 
 export const WithHeader: Story = {
 	render: (args) => ({
-		args: { header: 'Some header' },
+		args: {},
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
       <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
 	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with header!</Button>
         <Drawer v-bind='args' @onClose='()=>args.open = !args.open'>
-			<template #header v-slot>
-				${args.header}
+			<template #header>
+				Some header
 			</template>
 		</Drawer>
       </div>
@@ -85,40 +85,17 @@ export const WithHeader: Story = {
 }
 export const WithContent: Story = {
 	render: (args) => ({
-		args: {
-			content: `			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae accusamus perspiciatis quae, nam ea molestiae dolorum repe</p>
-			<p>llendus corporis, commodi, unde architecto ullam qui expedita esse assumenda. Explicabo ab sequi quae.</p>
-				<Button >Some content</Button>`
-		},
+		args: {},
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
       <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
 	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with content!</Button>
         <Drawer v-bind='args' @onClose='()=>args.open = !args.open'>
-			<template #default v-slot>
-				${args.default}
-			</template>
-		</Drawer>
-      </div>
-    `
-	})
-}
-
-export const WithControls: Story = {
-	render: (args) => ({
-		args: {
-			controls: `<Button class="accent" @click="()=>args.open = !args.open">Some success action</Button>
-				<Button @click="()=>args.open = !args.open">Some cancel action</Button>`
-		},
-		components: { Drawer, Button },
-		setup: () => ({ args }),
-		template: `
-      <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
-	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with controls!</Button>
-        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'>
-			<template #controls v-slot>
-				${args.controls}
+			<template #default>
+			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae accusamus perspiciatis quae, nam ea molestiae dolorum repe</p>
+			<p>llendus corporis, commodi, unde architecto ullam qui expedita esse assumenda. Explicabo ab sequi quae.</p>
+				<Button >Some content</Button>
 			</template>
 		</Drawer>
       </div>

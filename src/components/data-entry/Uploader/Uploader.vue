@@ -123,11 +123,11 @@ const validateFile = (inputFile: File) => {
 	}
 }
 
-const isFileAcceptable = (accept: string | undefined, file: File): boolean => {
-	if (!accept) return true
+const isFileAcceptable = (acceptString: string | undefined, file: File): boolean => {
+	if (!acceptString) return true
 	const fileType = file.type
 	const fileExtension = extractFileNameAndExtension(file.name).extension
-	return accept?.includes(fileExtension) || accept?.includes(fileType)
+	return acceptString?.includes(fileExtension) || acceptString?.includes(fileType)
 }
 
 const fileInputRef: Ref = ref()
