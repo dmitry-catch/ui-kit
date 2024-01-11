@@ -180,6 +180,7 @@ const root = ref()
 				type="file"
 				:multiple="multiple"
 				:disabled="disabled"
+				:accept="accept"
 				style="display: none"
 				@change="onFileSelect"
 			/>
