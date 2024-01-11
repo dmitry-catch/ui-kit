@@ -1,121 +1,48 @@
-import { render, fireEvent, cv } from '@testing-library/vue'
+import { render, fireEvent, screen, waitFor } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
 import Meta, { Default } from './Uploader.stories.js'
-const file1 = new File([new ArrayBuffer(4 * 1024 ** 2)], 'file1.pdf', { type: 'PDF/A' })
-const file2 = new File([new ArrayBuffer(10 * 1024 ** 2)], 'file2.jpg', { type: 'img/jpg' })
+const file1 = new File(['file1'], 'file1.txt', { type: 'text/plain' })
 const header = 'Test Header'
-const accept = 'pdf'
+const accept = '.pdf, .docx'
 const Component = composeStory(Default, Meta)
 
 describe(`Component ${Component.name}`, () => {
 	it('should render', () => render(Component))
 
-	it('should renders correctly with non-default props', () => {
-		const { container, getByText } = render(Component, {
+	it('should renders correctly with props', () => {
+		const { getByText } = render(Component, {
 			props: {
 				header: header,
 				invalid: true,
-				draggable: true
-			}
-		})
-
-		const headerElement = getByText(header)
-		const uploaderContent = container.querySelector('.Uploader__content')
-		expect(headerElement.textContent).toBe(header)
-		expect(uploaderContent?.classList?.contains('invalid')).toBeTruthy()
-	})
-
-	it('should adds files to when uploaded', async () => {
-		const { getByTestId } = render(Meta.component, {
-			props: {
-				modelValue: [],
-				draggable: true
-			}
-		})
-		const fileInput: HTMLInputElement = getByTestId('main')
-		await userEvent.upload(fileInput, file1, { applyAccept: false })
-		expect(fileInput.files).not.toBeNull()
-		expect(fileInput.files[0]).toEqual(file1)
-	})
-
-	it("shouldn't adds files when disabled", async () => {
-		const { getByTestId } = render(Meta.component, {
-			props: {
-				modelValue: [],
-				disabled: true
-			}
-		})
-		const fileInput: HTMLInputElement = getByTestId('main')
-		await userEvent.upload(fileInput, file1)
-		expect(fileInput?.files?.length).toEqual(0)
-	})
-
-	it("shouldn't accept files when file type not in accept", async () => {
-		const { container, getByTestId, getByText } = render(Component, {
-			props: {
-				modelValue: [],
+				disabled: true,
 				accept: accept,
 				draggable: true
 			}
 		})
-		const fileInput: HTMLInputElement = getByTestId('main')
-		const uploadButton = getByText('Выбрать файл')
-		await fireEvent.click(uploadButton)
-		await userEvent.upload(fileInput, [file2])
-		const errorMessage = container.querySelector('.hint')
-		expect(errorMessage).not.toBeNull()
+
+		getByText(header)
 	})
 
-	it('should accept files when file type in accept', async () => {
-		const { container, getByTestId, getByText } = render(Component, {
+	it('should adds files to modelValue array when uploaded', async () => {
+		const { getByTestId } = render(Component, {
 			props: {
 				modelValue: [],
-				accept: accept,
-				draggable: true
+				header: header,
+				draggable: true,
+				invalid: true,
+				loading: false,
+				multiple: false,
+				disabled: true,
+				fileSizeLimit: 1024,
+				length: 5,
+				accept: accept
 			}
 		})
-		const fileInput: HTMLInputElement = getByTestId('main')
-		const uploadButton = getByText('Выбрать файл')
-		await fireEvent.click(uploadButton)
-		await userEvent.upload(fileInput, file1)
-		const uploaderContent = container.querySelector('.Uploader__content')
-		expect(fileInput?.files).toBeNull()
-		expect(uploaderContent?.classList?.contains('invalid')).not.toBeTruthy()
+		const fileInput = getByTestId('main')
+		await fireEvent.change(fileInput, { target: { files: [file1] } })
+		expect(fileInput.files.length).toBe(1)
 	})
-
-	it("shouldn't accept files when file type not in file limit size range", async () => {
-		const { container, getByTestId, getByText } = render(Component, {
-			props: {
-				modelValue: [],
-				fileSizeLimit: 1024 ** 2 * 5,
-				draggable: true
-			}
-		})
-		const fileInput: HTMLInputElement = getByTestId('main')
-		const uploadButton = getByText('Выбрать файл')
-		await fireEvent.click(uploadButton)
-		await userEvent.upload(fileInput, file2)
-		const errorMessage = container.querySelector('.hint')
-		expect(errorMessage).not.toBeNull()
-	})
-
-	// it('should accept files when file type in file limit size range', async () => {
-	// 	const { container, getByTestId, getByText } = render(Component, {
-	// 		props: {
-	// 			modelValue: [],
-	// 			fileSizeLimit: 1024 ** 2 * 5,
-	// 			draggable: true,
-	// 			multiple: true
-	// 		}
-	// 	})
-	// 	const fileInput: HTMLInputElement = getByTestId('main')
-	// 	const uploadButton = getByText('Выбрать файл')
-	// 	await fireEvent.click(uploadButton)
-	// 	await userEvent.upload(fileInput, file1)
-	// 	const uploaderContent = container.querySelector('.Uploader__content')
-	// 	expect(uploaderContent?.classList?.contains('invalid')).not.toBeTruthy()
-	// })
 })

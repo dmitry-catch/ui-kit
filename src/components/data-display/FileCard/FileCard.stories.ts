@@ -10,8 +10,8 @@ const mockFile = (name: string, type: string, size: number): File => {
 export default {
 	component: FileCard,
 	args: {
-		/**1024 - байт в кб и кб в мб, а 10 - итоговое количество мегабайт */
-		file: mockFile('qwerty12.12.1212.xlsx', 'xlsx', 1024 ** 2 * 10)
+		/** где 8 - бит в байте, 1024 - байт в кб и кб в мб, а 10 - итоговое количество мегабайт */
+		file: mockFile('qwerty12.12.1212.xlsx', 'xlsx', 8 * 1024 ** 2 * 10)
 	}
 } satisfies Meta<typeof FileCard>
 

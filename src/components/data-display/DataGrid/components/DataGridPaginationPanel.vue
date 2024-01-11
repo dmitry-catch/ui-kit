@@ -47,6 +47,7 @@ const buttonClick = (value: number) => {
 
 const incrementPage = () => updatePage(currentPage.value + 1)
 const decrementPage = () => updatePage(currentPage.value - 1)
+const toFirstPage = () => updatePage(0)
 const toLastPage = () => updatePage(totalPages.value)
 </script>
 
@@ -84,11 +85,17 @@ const toLastPage = () => updatePage(totalPages.value)
 					{{ totalPages }}
 				</span>
 			</Button>
+			<Button class="DataGridPaginationPanel__button icon functional" @click="toFirstPage">
+				<Icon name="chevron_double_backward" class="DataGridPaginationPanel__buttonIcon" />
+			</Button>
 			<Button class="DataGridPaginationPanel__button icon functional" @click="decrementPage">
 				<Icon name="chevron_backward" class="DataGridPaginationPanel__buttonIcon" />
 			</Button>
 			<Button class="DataGridPaginationPanel__button icon functional" @click="incrementPage">
 				<Icon name="chevron_forward" class="DataGridPaginationPanel__buttonIcon" />
+			</Button>
+			<Button class="DataGridPaginationPanel__button icon functional" @click="toLastPage">
+				<Icon name="chevron_double_forward" class="DataGridPaginationPanel__buttonIcon" />
 			</Button>
 		</div>
 	</div>

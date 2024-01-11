@@ -48,6 +48,13 @@ const isCalendarOpen = ref(false)
 
 const focus = () => dayRef.value.focus()
 
+const handleCalendarReset = () => {
+	day.value = undefined
+	month.value = undefined
+	year.value = undefined
+	handleCalendarClose()
+}
+
 const handleDayInput = (event: Event) => {
 	const target = event.target as HTMLInputElement
 	if (target.value.length >= 2) monthRef.value.focus()
@@ -76,7 +83,9 @@ const handleCalendarClose = () => {
 
 const handleCalendarClick = () => {
 	if (!props.disabled) {
-		if (!internalValue.value || !(internalValue.value instanceof Date)) internalValue.value = new Date()
+		if (!internalValue.value || !(internalValue.value instanceof Date) || isNaN(Number(internalValue.value))) {
+			internalValue.value = new Date()
+		}
 		isCalendarOpen.value = !isCalendarOpen.value
 	}
 }
@@ -107,7 +116,7 @@ watch(modelValue, (value) => {
 		internalValue.value = handleInitialDateValue(value)
 	}
 })
-2
+
 onMounted(() => {
 	if (autofocus.value) focus()
 	if (modelValue.value != handleInternalValue(internalValue.value)) {
@@ -206,6 +215,7 @@ provide('datepicker-root', root)
 				v-model:day="day"
 				v-model:month="month"
 				v-model:year="year"
+				:handleReset="handleCalendarReset"
 				:handleCalendarClose="handleCalendarClose"
 			/>
 		</Popover>
