@@ -56,7 +56,7 @@ describe('Drawer', () => {
 		expect(drawer?.textContent).eq(WithContent?.args?.default)
 	})
 
-	it('should renders correctly when close action called', async () => {
+	it('should renders correctly when closed', async () => {
 		const spy = vi.fn()
 		const { container } = render(Component, {
 			props: {
@@ -73,5 +73,6 @@ describe('Drawer', () => {
 		}
 
 		expect(spy).toBeCalled()
+		// expect(drawerSurface).toBeNull()
 	})
 })
