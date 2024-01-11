@@ -1,4 +1,4 @@
-import { render, fireEvent, cv, screen } from '@testing-library/vue'
+import { render, fireEvent, cv } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
@@ -37,8 +37,8 @@ describe(`Component ${Component.name}`, () => {
 		})
 		const fileInput: HTMLInputElement = getByTestId('main')
 		await userEvent.upload(fileInput, file1, { applyAccept: false })
-		expect(fileInput?.files).not.toBeNull()
-		expect(fileInput?.files[0]).toEqual(file1)
+		expect(fileInput.files).not.toBeNull()
+		expect(fileInput.files[0]).toEqual(file1)
 	})
 
 	it("shouldn't adds files when disabled", async () => {
@@ -74,16 +74,15 @@ describe(`Component ${Component.name}`, () => {
 			props: {
 				modelValue: [],
 				accept: accept,
-				draggable: true,
-				multiple: true
+				draggable: true
 			}
 		})
 		const fileInput: HTMLInputElement = getByTestId('main')
 		const uploadButton = getByText('Выбрать файл')
 		await fireEvent.click(uploadButton)
-		await userEvent.upload(fileInput, file1, { applyAccept: false })
+		await userEvent.upload(fileInput, file1)
 		const uploaderContent = container.querySelector('.Uploader__content')
-		screen.debug()
+		expect(fileInput?.files).toBeNull()
 		expect(uploaderContent?.classList?.contains('invalid')).not.toBeTruthy()
 	})
 
