@@ -11,7 +11,7 @@ export default {
 		description: '',
 		invalid: false,
 		autofocus: false,
-		modelValue: '2023-12-05'
+		modelValue: undefined
 	}
 } satisfies Meta<typeof DatePicker>
 

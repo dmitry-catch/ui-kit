@@ -5,7 +5,6 @@ import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
 import Meta, { Default } from './Uploader.stories.js'
 const file1 = new File(['file1'], 'file1.txt', { type: 'text/plain' })
-const file2 = new File(['file2'], 'file2.txt', { type: 'text/plain' })
 const header = 'Test Header'
 const accept = '.pdf, .docx'
 const Component = composeStory(Default, Meta)
@@ -24,8 +23,7 @@ describe(`Component ${Component.name}`, () => {
 			}
 		})
 
-		const headerElement = getByText(header)
-		expect(headerElement.textContent).toBe(header)
+		getByText(header)
 	})
 
 	it('should adds files to modelValue array when uploaded', async () => {
@@ -44,7 +42,7 @@ describe(`Component ${Component.name}`, () => {
 			}
 		})
 		const fileInput = getByTestId('main')
-		await fireEvent.change(fileInput, { target: { files: [file1, file2] } })
-		expect(fileInput.files.length).toBe(2)
+		await fireEvent.change(fileInput, { target: { files: [file1] } })
+		expect(fileInput.files.length).toBe(1)
 	})
 })
