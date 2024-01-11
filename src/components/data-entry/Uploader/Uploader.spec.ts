@@ -37,8 +37,8 @@ describe(`Component ${Component.name}`, () => {
 		})
 		const fileInput: HTMLInputElement = getByTestId('main')
 		await userEvent.upload(fileInput, file1, { applyAccept: false })
-		expect(fileInput.files).not.toBeNull()
-		expect(fileInput.files[0]).toEqual(file1)
+		expect(fileInput?.files).not.toBeNull()
+		expect(fileInput?.files[0]).toEqual(file1)
 	})
 
 	it("shouldn't adds files when disabled", async () => {
