@@ -106,7 +106,7 @@ const validateFiles = (inputFiles: Array<File>) => {
 }
 
 const validateFile = (inputFile: File) => {
-	if (fileSizeLimit?.value && Number(inputFile.size) > Number(fileSizeLimit?.value)) {
+	if (!fileSizeLimit?.value || Number(inputFile.size) > Number(fileSizeLimit?.value)) {
 		innerErrorMessage.value = fileSizeLimit?.value
 			? `Размер файла не должен превышать ${byteConverter(fileSizeLimit.value).size} ${
 					byteConverter(fileSizeLimit.value).measurementUnit
@@ -114,7 +114,7 @@ const validateFile = (inputFile: File) => {
 			: ''
 		return false
 	}
-	if (accept?.value && !isFileAcceptable(accept?.value, inputFile)) {
+	if (!accept?.value || !isFileAcceptable(accept?.value, inputFile)) {
 		innerErrorMessage.value = `Загрузите файл одного из этих форматов: ${
 			accept?.value ??
 			''
