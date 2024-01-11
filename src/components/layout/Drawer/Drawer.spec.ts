@@ -1,4 +1,4 @@
-import { render } from '@testing-library/vue'
+import { render, fireEvent, screen } from '@testing-library/vue'
 import { describe, it, expect, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
