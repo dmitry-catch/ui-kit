@@ -70,6 +70,24 @@ describe(`Component ${Component.name}`, () => {
 		expect(errorMessage).not.toBeNull()
 	})
 
+	it('should accept files when file type in accept', async () => {
+		const { container, getByTestId, getByText } = render(Component, {
+			props: {
+				modelValue: [],
+				accept: pdfAccepted,
+				draggable: true,
+				multiple: true
+			}
+		})
+		const fileInput: HTMLInputElement = getByTestId('main')
+		const uploadButton = getByText('Выбрать файл')
+		await userEvent.click(uploadButton)
+		await userEvent.upload(fileInput, filePDF, { applyAccept: false })
+		const uploaderContent = container.querySelector('.Uploader__content')
+		screen.debug()
+		expect(uploaderContent?.classList?.contains('invalid')).not.toBeTruthy()
+	})
+
 	it("shouldn't accept files when file type not in file limit size range", async () => {
 		const { container, getByTestId, getByText } = render(Component, {
 			props: {
