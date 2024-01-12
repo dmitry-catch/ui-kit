@@ -9,7 +9,7 @@ import Tag from './components/data-display/Tag/Tag.vue'
 import ContentContainer from './components/layout/ContentContainer/ContentContainer.vue'
 import ContentBlock from './components/layout/ContentBlock/ContentBlock.vue'
 import Surface from './components/layout/Surface/Surface.vue'
-import Drawer from './components/general/Drawer/Drawer.vue'
+import Drawer from './components/layout/Drawer/Drawer.vue'
 import Tabs from './components/general/Tabs/Tabs.vue'
 import Tab from './components/general/Tabs/Tab.vue'
 import TextField from './components/data-entry/TextField/TextField.vue'
@@ -40,11 +40,11 @@ export {
 	Tabs,
 	Tab,
 	Spinner,
-	Drawer,
 	//Layout category
 	ContentContainer,
 	ContentBlock,
 	Surface,
+	Drawer,
 	//Data entry category
 	Checkbox,
 	DatePicker,

@@ -1,10 +1,8 @@
-import { KEY } from '../consts/KEY'
-
-interface handleKeyboardEventProps {
-	key: KEY
+interface KeyboardInputHandlerProps {
+	key: string
 	event: KeyboardEvent
 	callback: () => void
 }
-export const handleKeyboardEvent = ({ event, key, callback }: handleKeyboardEventProps) => {
-	if (event.code == key) callback()
+export const handleKeyboardInput = ({ event, key, callback }: KeyboardInputHandlerProps) => {
+	if (event.code.toLowerCase() == key) callback()
 }
