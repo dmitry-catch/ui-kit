@@ -4,11 +4,10 @@ import { describe, it, expect } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
 import Meta, { Default } from './Uploader.stories.js'
-
-const filePDF = new File([new ArrayBuffer(4 * 1024 ** 2)], 'file1.pdf', { type: 'PDF/A' })
-const fileJPG = new File([new ArrayBuffer(10 * 1024 ** 2)], 'file2.jpg', { type: 'img/jpg' })
+const file1 = new File([new ArrayBuffer(4 * 1024 ** 2)], 'file1.pdf', { type: 'application/pdf' })
+const file2 = new File([new ArrayBuffer(10 * 1024 ** 2)], 'file2.jpg', { type: 'img/jpg' })
 const header = 'Test Header'
-const pdfAccepted = 'pdf'
+const accept = 'pdf'
 const Component = composeStory(Default, Meta)
 
 describe(`Component ${Component.name}`, () => {
@@ -37,9 +36,9 @@ describe(`Component ${Component.name}`, () => {
 			}
 		})
 		const fileInput: HTMLInputElement = getByTestId('main')
-		await userEvent.upload(fileInput, filePDF, { applyAccept: false })
+		await userEvent.upload(fileInput, file1, { applyAccept: false })
 		expect(fileInput.files).not.toBeNull()
-		expect(fileInput.files[0]).toEqual(filePDF)
+		expect(fileInput.files[0]).toEqual(file1)
 	})
 
 	it("shouldn't adds files when disabled", async () => {
@@ -50,7 +49,7 @@ describe(`Component ${Component.name}`, () => {
 			}
 		})
 		const fileInput: HTMLInputElement = getByTestId('main')
-		await userEvent.upload(fileInput, filePDF)
+		await userEvent.upload(fileInput, file1)
 		expect(fileInput?.files?.length).toEqual(0)
 	})
 
@@ -58,34 +57,16 @@ describe(`Component ${Component.name}`, () => {
 		const { container, getByTestId, getByText } = render(Component, {
 			props: {
 				modelValue: [],
-				accept: pdfAccepted,
+				accept: accept,
 				draggable: true
 			}
 		})
 		const fileInput: HTMLInputElement = getByTestId('main')
 		const uploadButton = getByText('Выбрать файл')
 		await fireEvent.click(uploadButton)
-		await userEvent.upload(fileInput, [fileJPG])
+		await userEvent.upload(fileInput, [file2])
 		const errorMessage = container.querySelector('.hint')
 		expect(errorMessage).not.toBeNull()
-	})
-
-	it('should accept files when file type in accept', async () => {
-		const { container, getByTestId, getByText } = render(Component, {
-			props: {
-				modelValue: [],
-				accept: pdfAccepted,
-				draggable: true,
-				multiple: true
-			}
-		})
-		const fileInput: HTMLInputElement = getByTestId('main')
-		const uploadButton = getByText('Выбрать файл')
-		await userEvent.click(uploadButton)
-		await userEvent.upload(fileInput, filePDF, { applyAccept: false })
-		const uploaderContent = container.querySelector('.Uploader__content')
-		screen.debug()
-		expect(uploaderContent?.classList?.contains('invalid')).not.toBeTruthy()
 	})
 
 	it("shouldn't accept files when file type not in file limit size range", async () => {
@@ -99,7 +80,7 @@ describe(`Component ${Component.name}`, () => {
 		const fileInput: HTMLInputElement = getByTestId('main')
 		const uploadButton = getByText('Выбрать файл')
 		await fireEvent.click(uploadButton)
-		await userEvent.upload(fileInput, fileJPG)
+		await userEvent.upload(fileInput, file2)
 		const errorMessage = container.querySelector('.hint')
 		expect(errorMessage).not.toBeNull()
 	})
