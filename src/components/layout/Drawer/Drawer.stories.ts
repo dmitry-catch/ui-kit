@@ -32,32 +32,24 @@ type Story = StoryObj<typeof Drawer>
 
 export const Default: Story = {}
 
-export const DifferentPlacements: Story = {
+export const DefferentPlacements: Story = {
 	render: (args) => ({
 		args: {},
 		components: { Drawer, Button, Icon },
 		setup: () => ({ args }),
 		template: `
-			<div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
-				<Button @click="()=>{args.open = !args.open; args.placement = 'top'}">
-					<Icon name="chevron_up" />
-				</Button>
-				<Button class='accent' @click="()=>{args.open = !args.open; args.placement = 'bottom'}">
-					<Icon name="chevron_down" />
-				</Button>
-				<Button @click="()=>{args.open = !args.open; args.placement = 'right'}">
-					<Icon name="chevron_forward" />
-				</Button>
-				<Button class='accent' @click="()=>{args.open = !args.open; args.placement = 'left'}">
-					<Icon name="chevron_backward" />
-				</Button>
-				<Drawer v-bind='args' @onClose='()=>args.open = !args.open'></Drawer>
-			</div>
-		`
+      <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}" >
+        <Button @click="()=>{args.open = !args.open; args.placement = 'top'}"><Icon name="chevron_up"/></Button>
+		<Button class='accent' @click="()=>{args.open = !args.open; args.placement = 'bottom'}"><Icon name="chevron_down"/></Button>
+		<Button @click="()=>{args.open = !args.open; args.placement = 'right'}"><Icon name="chevron_forward"/></Button>
+		<Button class='accent' @click="()=>{args.open = !args.open; args.placement = 'left'}"><Icon name="chevron_backward"/></Button>
+        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'></Drawer>
+      </div>
+    `
 	})
 }
 
-export const DifferentSizes: Story = {
+export const DefferentSizes: Story = {
 	render: (args) => ({
 		args: {},
 		components: { Drawer, Button },
