@@ -32,7 +32,7 @@ type Story = StoryObj<typeof Drawer>
 
 export const Default: Story = {}
 
-export const DifferentPlacements: Story = {
+export const DefferentPlacements: Story = {
 	render: (args) => ({
 		args: {},
 		components: { Drawer, Button, Icon },
