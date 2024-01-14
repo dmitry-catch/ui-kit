@@ -1,5 +1,5 @@
-import { render } from '@testing-library/vue'
-import { userEvent as user } from '@testing-library/user-event'
+import { render, fireEvent } from '@testing-library/vue'
+import userEvent from '@testing-library/user-event'
 import { describe, it, expect } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
@@ -36,8 +36,8 @@ describe(`Component ${Component.name}`, () => {
 				draggable: true
 			}
 		})
-		const fileInput: HTMLInputElement = getByTestId('fileInput')
-		await user.upload(fileInput, filePDF, { applyAccept: false })
+		const fileInput: HTMLInputElement = getByTestId('main')
+		await userEvent.upload(fileInput, filePDF, { applyAccept: false })
 		expect(fileInput.files).not.toBeNull()
 		expect(fileInput.files[0]).toEqual(filePDF)
 	})
@@ -49,8 +49,8 @@ describe(`Component ${Component.name}`, () => {
 				disabled: true
 			}
 		})
-		const fileInput: HTMLInputElement = getByTestId('fileInput')
-		await user.upload(fileInput, filePDF)
+		const fileInput: HTMLInputElement = getByTestId('main')
+		await userEvent.upload(fileInput, filePDF)
 		expect(fileInput?.files?.length).toEqual(0)
 	})
 
@@ -62,10 +62,10 @@ describe(`Component ${Component.name}`, () => {
 				draggable: true
 			}
 		})
-		const fileInput: HTMLInputElement = getByTestId('fileInput')
+		const fileInput: HTMLInputElement = getByTestId('main')
 		const uploadButton = getByText('Выбрать файл')
-		await user.click(uploadButton)
-		await user.upload(fileInput, [fileJPG])
+		await fireEvent.click(uploadButton)
+		await userEvent.upload(fileInput, [fileJPG])
 		const errorMessage = container.querySelector('.hint')
 		expect(errorMessage).not.toBeNull()
 	})
@@ -78,10 +78,10 @@ describe(`Component ${Component.name}`, () => {
 				draggable: true
 			}
 		})
-		const fileInput: HTMLInputElement = getByTestId('fileInput')
+		const fileInput: HTMLInputElement = getByTestId('main')
 		const uploadButton = getByText('Выбрать файл')
-		await user.click(uploadButton)
-		await user.upload(fileInput, fileJPG)
+		await fireEvent.click(uploadButton)
+		await userEvent.upload(fileInput, fileJPG)
 		const errorMessage = container.querySelector('.hint')
 		expect(errorMessage).not.toBeNull()
 	})

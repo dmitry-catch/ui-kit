@@ -10,9 +10,10 @@ interface DrawerProps {
 	backdrop?: boolean | 'static'
 	/** Закртытие по нажатию на Esc */
 	keyboard?: boolean
+	/** Закртытие по нажатию вне drawer'a*/
+	static?: boolean
 	placement?: 'top' | 'bottom' | 'right' | 'left'
-	/** Продвинутые параметры: number\string размер компонента */
-	size?: 'small' | 'medium' | 'large' | 'full' | number | string
+	size?: 'small' | 'medium' | 'large' | 'full'
 }
 const props = withDefaults(defineProps<DrawerProps>(), {
 	autofocus: true,
@@ -35,32 +36,16 @@ const { open, backdrop, keyboard, placement, size, autofocus } = toRefs(props)
 const root = ref()
 const visibleContainerRef = ref()
 const focus = () => root.value.focus()
-const horizontal = computed(() => ['top', 'bottom'].includes(placement.value))
-const sizesContsts = ['small', 'medium', 'large', 'full']
-const innerDefaultSize = computed(() => (sizesContsts.includes(String(size.value)) ? size.value : null))
-const innerStyling = computed(() => {
-	if (sizesContsts.includes(String(size.value))) return null
-	if (isNaN(Number(size.value)))
-		return {
-			width: horizontal.value ? '100vw' : size.value,
-			height: horizontal.value ? size.value : '100vh'
-		}
-	return {
-		width: horizontal.value ? '100vw' : size.value + 'px',
-		height: horizontal.value ? size.value + 'px' : '100vh'
-	}
-})
 
-const handleEscape = () => {
-	if (keyboard.value) emit('onClose')
-}
+const horizontal = computed(() => ['top', 'bottom'].includes(placement.value))
+const handleEscape = () => emit('onClose')
 
 const clickOutside = (event: MouseEvent) => {
 	return !(visibleContainerRef.value === event.target || visibleContainerRef.value?.$el.contains(event.target))
 }
 
 const handleClickOutside = (event: MouseEvent) => {
-	if (clickOutside(event) && backdrop.value != 'static') emit('onClose')
+	if (clickOutside(event)) emit('onClose')
 }
 
 const keyboardEvent = (e: KeyboardEvent) => handleKeyboardEvent({ event: e, key: KEY.ESC, callback: handleEscape })
@@ -79,7 +64,7 @@ onUnmounted(() => {
 <template>
 	<div ref="root" class="Drawer">
 		<Modal v-if="open" class="Drawer__modal" :class="{ backdrop, horizontal: horizontal }" :anchor="placement">
-			<Surface ref="visibleContainerRef" class="Drawer__surface" :size="innerDefaultSize" :style="innerStyling">
+			<Surface ref="visibleContainerRef" class="Drawer__surface" :size="size">
 				<div class="Drawer__head">
 					<span class="Drawer__header accent text-large"><slot name="header"></slot></span>
 					<Button class="icon functional" @click="emit('onClose')"><Icon name="close" /></Button>

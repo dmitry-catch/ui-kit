@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/vue'
+import { render } from '@testing-library/vue'
 import { describe, it, expect, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
@@ -6,47 +6,54 @@ import Meta, { Default, WithHeader, WithFooter, WithContent } from './Drawer.sto
 import userEvent from '@testing-library/user-event'
 
 const Component = composeStory(Default, Meta)
+const ComponentWithHeader = composeStory(WithHeader, Meta)
+const ComponentWithFooter = composeStory(WithFooter, Meta)
+const ComponentWithDefaults = composeStory(WithContent, Meta)
 
 describe('Drawer', () => {
 	it('should be rendered', () => render(Component))
 
-	it('should have a close button', () => {
+	it('should render with default size', () => {
 		const { container } = render(Component, { props: { open: true } })
 
 		const closeButtonIcon = container.querySelector('.Icon')
 		expect(closeButtonIcon).toBeTruthy()
+	})
+
+	it('should render with button', () => {
+		const { container } = render(Component, { props: { open: true } })
 
 		const drawer = container.querySelector('.Drawer__surface')
 		expect(drawer?.getAttribute('size')).toBe('medium')
 	})
 
 	it('should display header slot', () => {
-		const { getByText } = render(Meta.component, {
+		const { container } = render(ComponentWithHeader, {
 			props: {
-				open: true,
-				header: WithHeader.args?.header
+				header: WithHeader?.args?.header
 			}
 		})
-		getByText(String(WithHeader.args?.header))
+		const drawer = container.querySelector('.Drawer__header')
+		expect(drawer?.textContent).eq(WithHeader?.args?.header)
 	})
 	it('should display footer slot', () => {
-		const { getByText } = render(Meta.component, {
+		const { container } = render(ComponentWithFooter, {
 			props: {
-				open: true,
-				footer: WithFooter?.args?.footer
+				footer: WithFooter?.args?.header
 			}
 		})
-		getByText(WithFooter?.args?.footer)
+		const drawer = container.querySelector('.Drawer__controls')
+		expect(drawer?.textContent).eq(WithFooter?.args?.header)
 	})
 
 	it('should display default slot', () => {
-		const { getByText } = render(Meta.component, {
+		const { container } = render(ComponentWithDefaults, {
 			props: {
-				open: true,
-				default: WithContent.args?.default
+				default: WithContent?.args?.default
 			}
 		})
-		getByText(WithContent.args?.default)
+		const drawer = container.querySelector('.Drawer__content')
+		expect(drawer?.textContent).eq(WithContent?.args?.default)
 	})
 
 	it('should renders correctly when close action called', async () => {

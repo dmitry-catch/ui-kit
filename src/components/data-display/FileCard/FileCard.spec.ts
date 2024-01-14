@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/vue'
+import { render } from '@testing-library/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 import Meta, { Default } from './FileCard.stories.js'
@@ -33,9 +33,9 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should call delete action on delete button click', async () => {
 		const spy = vi.fn()
-		const { getByRole } = render(Component, { props: { onDelete: spy } })
+		const { container } = render(Component, { props: { onDelete: spy } })
 
-		const button = getByRole('button')
+		const button = container.querySelector('.Btn__actual')
 		if (button) {
 			await userEvent.click(button)
 		}
@@ -44,9 +44,9 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should call upload action on upload button click', async () => {
 		const spy = vi.fn()
-		const { getByRole } = render(Component, { props: { variant: 'upload', onUpload: spy } })
+		const { container } = render(Component, { props: { variant: 'upload', onUpload: spy } })
 
-		const button = getByRole('button')
+		const button = container.querySelector('.Btn__actual')
 		if (button) {
 			await userEvent.click(button)
 		}

@@ -4,25 +4,15 @@ import { Button, Icon } from '../../../main'
 
 export default {
 	component: Drawer,
-	args: {
-		open: false,
-		autofocus: false,
-		backdrop: false,
-		keyboard: true,
-		placement: 'right',
-		size: 'medium',
-		header: '',
-		default: '',
-		footer: ''
-	},
+	args: { open: false, autofocus: false, backdrop: false, keyboard: true, placement: 'right', size: 'medium' },
 	argTypes: {
 		placement: {
 			control: 'select',
 			options: ['right', 'left', 'top', 'bottom']
 		},
-		backdrop: {
+		size: {
 			control: 'select',
-			options: [true, false, 'static']
+			options: ['small', 'medium', 'large', 'full']
 		}
 	},
 	render: (args) => ({
@@ -32,11 +22,7 @@ export default {
 		template: `
 		<div>
 			<Button @click="()=>args.open = true">Click here to open the Drawer!</Button>
-			<Drawer v-bind='args' @onClose='()=>args.open = false'>
-				<template #header v-slot>${args.header}</template>
-				<template #default v-slot>${args.default}</template>
-				<template #footer v-slot>${args.footer}</template>
-			</Drawer>
+			<Drawer v-bind='args' @onClose='()=>args.open = false'></Drawer>
 		</div>
     	`
 	})
@@ -46,7 +32,7 @@ type Story = StoryObj<typeof Drawer>
 
 export const Default: Story = {}
 
-export const DifferentPlacements = {
+export const DifferentPlacements: Story = {
 	render: (args) => ({
 		args: {},
 		components: { Drawer, Button, Icon },
@@ -61,9 +47,9 @@ export const DifferentPlacements = {
       </div>
     `
 	})
-} satisfies Story
+}
 
-export const DefferentSizes = {
+export const DefferentSizes: Story = {
 	render: (args) => ({
 		args: {},
 		components: { Drawer, Button },
@@ -78,17 +64,17 @@ export const DefferentSizes = {
       </div>
     `
 	})
-} satisfies Story
+}
 
-export const WithHeader = {
+export const WithHeader: Story = {
 	render: (args) => ({
-		args: { header: 'Some header' },
+		args: {},
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
       <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
 	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with header!</Button>
-        <Drawer v-bind='args'  @onClose='()=>args.open = false'>
+        <Drawer v-bind='args' @onClose='()=>args.open = !args.open'>
 			<template #header v-slot>
 				<div v-if="args.header">${args.header}</div>
 				<div v-else>Some header</div>
@@ -97,11 +83,10 @@ export const WithHeader = {
       </div>
     `
 	})
-} satisfies Story
-
-export const WithContent = {
+}
+export const WithContent: Story = {
 	render: (args) => ({
-		args: { default: 'Some content' },
+		args: {},
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
@@ -118,11 +103,11 @@ export const WithContent = {
       </div>
     `
 	})
-} satisfies Story
+}
 
-export const WithFooter = {
-	args: { footer: 'Some footer' },
+export const WithFooter: Story = {
 	render: (args) => ({
+		args: {},
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
@@ -138,4 +123,4 @@ export const WithFooter = {
       </div>
     `
 	})
-} satisfies Story
+}
