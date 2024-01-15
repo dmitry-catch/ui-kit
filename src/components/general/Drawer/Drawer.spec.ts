@@ -1,4 +1,4 @@
-import { render } from '@testing-library/vue'
+import { render, screen } from '@testing-library/vue'
 import { describe, it, expect, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
@@ -23,18 +23,16 @@ describe('Drawer', () => {
 	it('should display header slot', () => {
 		const { getByText } = render(Meta.component, {
 			props: {
-				open: true
-			},
-			slots: { header: WithHeader.args?.header }
+				open: true,
+				header: WithHeader.args?.header
+			}
 		})
 		getByText(String(WithHeader.args?.header))
 	})
 	it('should display footer slot', () => {
 		const { getByText } = render(Meta.component, {
 			props: {
-				open: true
-			},
-			slots: {
+				open: true,
 				footer: WithFooter?.args?.footer
 			}
 		})
@@ -44,16 +42,16 @@ describe('Drawer', () => {
 	it('should display default slot', () => {
 		const { getByText } = render(Meta.component, {
 			props: {
-				open: true
-			},
-			slots: { default: WithContent.args?.default }
+				open: true,
+				default: WithContent.args?.default
+			}
 		})
 		getByText(WithContent.args?.default)
 	})
 
 	it('should renders correctly when close action called', async () => {
 		const spy = vi.fn()
-		const { container } = render(Meta.component, {
+		const { container } = render(Component, {
 			props: {
 				open: true,
 				onOnClose: spy
@@ -66,6 +64,7 @@ describe('Drawer', () => {
 		if (button) {
 			await userEvent.click(button)
 		}
+
 		expect(spy).toBeCalled()
 	})
 })

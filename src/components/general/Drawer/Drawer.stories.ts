@@ -81,8 +81,8 @@ export const DefferentSizes = {
 } satisfies Story
 
 export const WithHeader = {
-	args: { header: 'Some header' },
 	render: (args) => ({
+		args: { header: 'Some header' },
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
@@ -100,8 +100,8 @@ export const WithHeader = {
 } satisfies Story
 
 export const WithContent = {
-	args: { default: 'Some content' },
 	render: (args) => ({
+		args: { default: 'Some content' },
 		components: { Drawer, Button },
 		setup: () => ({ args }),
 		template: `
