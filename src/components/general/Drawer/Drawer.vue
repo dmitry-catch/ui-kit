@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, watch, ref, toRefs } from 'vue'
 import { handleKeyboardEvent } from '../../../utils/keyboardEventHandler'
-import { Keyboard } from '../../../consts/Keyboard'
+import { KEY } from '../../../consts/KEY'
 import { Modal, Surface, Button, Icon } from '../../../main'
 
 interface DrawerProps {
@@ -17,9 +17,7 @@ interface DrawerProps {
 const props = withDefaults(defineProps<DrawerProps>(), {
 	autofocus: true,
 	placement: 'right',
-	size: 'medium',
-	keyboard: true,
-	backdrop: true
+	size: 'medium'
 })
 const emit = defineEmits<{
 	(e: 'onClose'): void
@@ -65,10 +63,7 @@ const handleClickOutside = (event: MouseEvent) => {
 	if (clickOutside(event) && backdrop.value != 'static') emit('onClose')
 }
 
-const keyboardEvent = (e: KeyboardEvent) => {
-	e.preventDefault()
-	handleKeyboardEvent({ event: e, key: Keyboard.ESC, callback: handleEscape })
-}
+const keyboardEvent = (e: KeyboardEvent) => handleKeyboardEvent({ event: e, key: KEY.ESC, callback: handleEscape })
 
 onMounted(() => {
 	emit('onOpen')
@@ -83,13 +78,7 @@ onUnmounted(() => {
 </script>
 <template>
 	<div ref="root" class="Drawer">
-		<Modal
-			v-if="open"
-			class="Drawer__modal"
-			:class="{ backdrop, horizontal: horizontal }"
-			:anchor="placement"
-			@onDialogKeyDown="keyboardEvent"
-		>
+		<Modal v-if="open" class="Drawer__modal" :class="{ backdrop, horizontal: horizontal }" :anchor="placement">
 			<Surface ref="visibleContainerRef" class="Drawer__surface" :size="innerDefaultSize" :style="innerStyling">
 				<div class="Drawer__head">
 					<span class="Drawer__header accent text-large"><slot name="header"></slot></span>

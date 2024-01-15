@@ -1,7 +1,7 @@
-import { Keyboard } from '../consts/Keyboard'
+import { KEY } from '../consts/KEY'
 
 interface handleKeyboardEventProps {
-	key: Keyboard
+	key: KEY
 	event: KeyboardEvent
 	callback: () => void
 }

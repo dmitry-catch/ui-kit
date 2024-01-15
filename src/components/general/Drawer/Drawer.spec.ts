@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
 import Meta, { Default, WithHeader, WithFooter, WithContent } from './Drawer.stories.js'
-import { userEvent as user } from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 const Component = composeStory(Default, Meta)
 
@@ -64,7 +64,7 @@ describe('Drawer', () => {
 		const drawerSurface = container.querySelector('.Drawer__surface')
 		expect(drawerSurface).not.toBeNull()
 		if (button) {
-			await user.click(button)
+			await userEvent.click(button)
 		}
 		expect(spy).toBeCalled()
 	})

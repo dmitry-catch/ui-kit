@@ -2,14 +2,10 @@
 import { computed, onMounted, ref, toRefs } from 'vue'
 import { ModalAnchor } from './ModalAnchor.js'
 import { useModalContext } from '../../../utils/useModalContext.js'
-import { Keyboard } from '../../../consts/Keyboard'
 
 const root = ref<HTMLDialogElement>()
 onMounted(() => root.value?.showModal())
 const props = defineProps<{ anchor: ModalAnchor }>()
-const emit = defineEmits<{
-	(e: 'onDialogKeyDown', event: KeyboardEvent): void
-}>()
 const { anchor } = toRefs(props)
 
 const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
@@ -18,12 +14,7 @@ useModalContext(root)
 </script>
 
 <template>
-	<dialog
-		ref="root"
-		class="Modal"
-		:class="anchorClass"
-		@keydown="(event: KeyboardEvent) => emit('onDialogKeyDown', event)"
-	>
+	<dialog ref="root" class="Modal" :class="anchorClass">
 		<slot></slot>
 	</dialog>
 </template>

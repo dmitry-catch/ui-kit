@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 import Meta, { Default } from './FileCard.stories.js'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
-import { userEvent as user } from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 const Component = composeStory(Default, Meta)
 
@@ -25,8 +25,10 @@ describe(`Component ${Component.name}`, () => {
 	it('should display extension and name of the file', () => {
 		const { getByText } = render(Component, { props: { file: Meta.args.file } })
 		const { extension, fileName } = extractFileNameAndExtension(Meta.args.file.name)
-		getByText(extension)
-		getByText(fileName)
+		const extensionElement = getByText(extension)
+		const nameElement = getByText(fileName)
+		expect(extensionElement).toBeTruthy()
+		expect(nameElement).toBeTruthy()
 	})
 
 	it('should call delete action on delete button click', async () => {
@@ -35,7 +37,7 @@ describe(`Component ${Component.name}`, () => {
 
 		const button = getByRole('button')
 		if (button) {
-			await user.click(button)
+			await userEvent.click(button)
 		}
 		expect(spy).toBeCalled()
 	})
@@ -46,7 +48,7 @@ describe(`Component ${Component.name}`, () => {
 
 		const button = getByRole('button')
 		if (button) {
-			await user.click(button)
+			await userEvent.click(button)
 		}
 		expect(spy).toBeCalled()
 	})
