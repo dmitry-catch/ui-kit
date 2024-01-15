@@ -216,6 +216,7 @@ const root = ref()
 	flex-direction: column;
 	gap: var(--design-gap-unit);
 }
+
 .Uploader__content {
 	display: flex;
 	flex-direction: column;
