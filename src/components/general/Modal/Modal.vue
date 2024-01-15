@@ -6,27 +6,24 @@ import { Keyboard } from '../../../consts/Keyboard'
 
 const root = ref<HTMLDialogElement>()
 onMounted(() => root.value?.showModal())
-const props = withDefaults(defineProps<{ anchor: ModalAnchor; keyboard: boolean }>(), {
-	/**Закрытие модального окна по клавише esc */
-	keyboard: true
-})
+const props = defineProps<{ anchor: ModalAnchor }>()
 const emit = defineEmits<{
 	(e: 'onDialogKeyDown', event: KeyboardEvent): void
 }>()
-const { anchor, keyboard } = toRefs(props)
+const { anchor } = toRefs(props)
 
 const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
-
-const handleKeyDown = (event: KeyboardEvent) => {
-	emit('onDialogKeyDown', event)
-	if (event.code == Keyboard.ESC && keyboard.value) root.value?.close()
-}
 
 useModalContext(root)
 </script>
 
 <template>
-	<dialog ref="root" class="Modal" :class="anchorClass" @keydown="handleKeyDown">
+	<dialog
+		ref="root"
+		class="Modal"
+		:class="anchorClass"
+		@keydown="(event: KeyboardEvent) => emit('onDialogKeyDown', event)"
+	>
 		<slot></slot>
 	</dialog>
 </template>
