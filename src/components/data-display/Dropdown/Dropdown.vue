@@ -1,103 +1,37 @@
 <script setup lang="ts">
-import { ref, toRefs, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, toRefs, watch, nextTick } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
-import DropdownItem from './DropdownItem/DropdownItem.vue'
-import Button from '../../general/Button/Button.vue'
-import { ItemsProp, Item } from './types.js'
-import { isGroup } from './utils.js'
 
 interface DropdownProps {
 	title?: string | boolean
-	caret?: boolean
+	chevroned?: boolean
 	disabled?: boolean
-	icon?: string
+	preIcon?: string
 	size?: 'extra-small' | 'small' | 'medium'
-	autoclose?: boolean | ('keyboard' | 'outside' | 'item')[]
-	offset?: number
-	loading?: boolean
-	items?: ItemsProp
-	variant?: 'icon' | 'functional' | 'accent'
 }
 
 const props = withDefaults(defineProps<DropdownProps>(), {
-	caret: true,
-	size: 'medium',
-	autoclose: true,
-	offset: 2
+	chevroned: true,
+	size: 'medium'
 })
 
 defineSlots<{
-	toggle?: () => Node[]
-	header?: () => Node[]
-	item?: () => Node[]
-	'group-label'?: () => Node[]
-	footer?: () => Node[]
 	default?: () => Node[]
 }>()
 
-defineExpose({
-	close: () => closeDropdown()
-})
-
-const emit = defineEmits(['beforeClose', 'afterClose'])
-
-const { title, caret, disabled, icon, size, autoclose, offset, loading, items, variant } = toRefs(props)
+const { title, chevroned, disabled, preIcon, size } = toRefs(props)
 
 const isDropdownOpen = ref(false)
-const root = ref()
 
 const toggleDropdown = () => {
-	if (disabled.value || loading.value) return
-	if (isDropdownOpen.value) {
-		closeDropdown()
-	} else {
-		openDropdown()
-	}
-}
-
-const closeDropdown = () => {
-	emit('beforeClose')
-	isDropdownOpen.value = false
-	emit('afterClose')
-}
-
-const openDropdown = () => {
-	isDropdownOpen.value = true
-}
-
-const escapeHandler = (evt: KeyboardEvent) => {
-	if (
-		evt.key === 'Escape' &&
-		isDropdownOpen.value &&
-		(autoclose.value === true || autoclose.value.includes('keyboard'))
-	) {
-		closeDropdown()
-	}
-}
-
-const outsideClickHandler = (evt: MouseEvent) => {
-	if (
-		!root.value.contains(evt.target) &&
-		isDropdownOpen.value &&
-		(autoclose.value === true || autoclose.value.includes('outside'))
-	) {
-		closeDropdown()
-	}
-}
-
-const itemClickHandler = (item: Item) => {
-	if (!item.extraAttrs?.disabled) item.action?.(item)
-	if (autoclose.value === true || autoclose.value.includes('item')) {
-		closeDropdown()
-	}
+	if (disabled.value) return
+	isDropdownOpen.value = !isDropdownOpen.value
 }
 
 const dropdownMenuRef = ref()
 const dropdownFieldRef = ref()
 
 const isEnoughSpaceForMenu = ref(true)
-const dropdownHeigth = ref(0)
-const totalOffset = ref('')
 
 const calculateDropdownPosition = () => {
 	nextTick(() => {
@@ -105,11 +39,7 @@ const calculateDropdownPosition = () => {
 			const dropdownMenuRect = dropdownMenuRef.value.getBoundingClientRect()
 			const dropdownFieldRect = dropdownFieldRef.value.getBoundingClientRect()
 			const spaceBelow = window.innerHeight - dropdownFieldRect.bottom
-			isEnoughSpaceForMenu.value = spaceBelow >= dropdownMenuRect.height + offset.value
-			dropdownHeigth.value = root.value.getBoundingClientRect().height
-			totalOffset.value = isEnoughSpaceForMenu.value
-				? `${offset.value}px`
-				: `${dropdownHeigth.value + offset.value}px`
+			isEnoughSpaceForMenu.value = spaceBelow >= dropdownMenuRect.height
 		}
 	})
 }
@@ -119,121 +49,31 @@ watch(isDropdownOpen, () => {
 		calculateDropdownPosition()
 	}
 })
-
-onMounted(() => {
-	document.addEventListener('mousedown', outsideClickHandler)
-	document.addEventListener('keydown', escapeHandler)
-})
-
-onUnmounted(() => {
-	document.removeEventListener('mousedown', outsideClickHandler)
-	document.removeEventListener('keydown', escapeHandler)
-})
 </script>
 
 <template>
 	<div ref="root" class="Dropdown">
-		<div ref="dropdownFieldRef" class="Dropdown__button">
-			<Button
-				@click="toggleDropdown"
-				class="Dropdown__field"
-				:class="variant"
-				:disabled="disabled"
-				:loading="loading"
-				:size="size"
-			>
-				<template #before>
-					<Icon
-						v-if="icon"
-						:name="icon"
-						class="Dropdown__icon Dropdown__fieldLabelIcon"
-						:class="[{ onAccent: variant == 'accent' }, size]"
-					/>
-				</template>
-				<template #default v-if="!variant?.includes('icon')"> {{ title }} </template>
-				<template #after
-					><Icon
-						v-if="caret && !variant?.includes('icon')"
-						name="chevron_down"
-						class="Dropdown__icon Dropdown__fieldIcon"
-						:class="[{ onAccent: variant == 'accent' }, size]"
-					/>
-				</template>
-			</Button>
+		<div
+			class="Dropdown__field"
+			:class="{ 'Dropdown__field--disabled': disabled }"
+			@click="toggleDropdown"
+			ref="dropdownFieldRef"
+		>
+			<div class="Dropdown__fieldLabel" :class="size">
+				<Icon v-if="preIcon" :name="preIcon" class="Dropdown__icon" />
+				<span v-if="title" class="Dropdown__fieldTitle">
+					{{ title }}
+				</span>
+			</div>
+			<Icon v-if="chevroned" name="chevron_down" class="Dropdown__icon Dropdown__fieldIcon" :class="size" />
 		</div>
 		<div
 			v-if="isDropdownOpen"
-			class="Dropdown__menu"
-			:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }, size]"
+			class="Dropdown__content"
+			:class="[{ 'Dropdown__content--up': !isEnoughSpaceForMenu }, size]"
 			ref="dropdownMenuRef"
 		>
-			<div class="Dropdown__menuToogle" :class="size">
-				<slot name="toggle"></slot>
-			</div>
-			<div class="Dropdown__menuHeader accent" :class="size">
-				<slot name="header"></slot>
-			</div>
-			<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }, size]">
-				<slot>
-					<template v-if="items.length > 0">
-						<template v-for="(item, idx) in items" :key="idx">
-							<div v-if="isGroup(item)" v-bind="item.extraAttrs" class="Dropdown__contentSubItems">
-								<div class="Dropdown__contentSubItemsLabel" :class="size">
-									<slot name="group-label" :group="item">{{ item.name }}</slot>
-								</div>
-								<div
-									v-for="(subItem, idx) in item.items"
-									:key="idx"
-									@click="itemClickHandler(subItem)"
-									class="Dropdown__contentSubItemField"
-								>
-									<div
-										v-if="$slots.item"
-										v-bind="subItem.extraAttrs"
-										:class="[size, subItem.wrapperClass]"
-										class="Dropdown__contentSubItem"
-									>
-										<slot name="item" :item="subItem" v-bind="subItem.extraAttrs"></slot>
-									</div>
-									<DropdownItem
-										v-else
-										v-bind="subItem.extraAttrs"
-										:class="[subItem.wrapperClass, size]"
-										class="Dropdown__contentSubItem"
-									>
-										{{ subItem.label }}
-									</DropdownItem>
-								</div>
-							</div>
-							<template v-else>
-								<div
-									v-if="$slots.item"
-									v-bind="item.extraAttrs"
-									:class="[size, item.wrapperClass]"
-									class="Dropdown__contentItem"
-									@click="itemClickHandler(item)"
-								>
-									<slot name="item" :item="item"></slot>
-								</div>
-								<DropdownItem
-									v-else
-									v-bind="item.extraAttrs"
-									:class="[item.wrapperClass, size]"
-									class="Dropdown__contentItem"
-									@click="itemClickHandler(item)"
-								>
-									{{ item.label }}
-								</DropdownItem>
-							</template>
-						</template>
-					</template>
-				</slot>
-			</div>
-			<div>
-				<div class="Dropdown_menuFooter" :class="size">
-					<slot name="footer"></slot>
-				</div>
-			</div>
+			<slot></slot>
 		</div>
 	</div>
 </template>
@@ -241,164 +81,104 @@ onUnmounted(() => {
 <style scoped>
 .Dropdown {
 	width: max-content;
-	box-sizing: border-box;
 }
 
-.Dropdown__button {
+.Dropdown__field {
 	display: flex;
 	justify-content: space-between;
+	background-color: var(--design-background-color-on-accent-primary);
+	border-radius: var(--design-border-radius-control);
+	width: max-content;
+	cursor: pointer;
 }
 
 .Dropdown__fieldLabel {
 	display: flex;
-	justify-content: flex-start;
 	gap: var(--design-gap-unit);
+	padding: var(--design-gap-unit);
+	border-radius: var(--design-border-radius-control) 0 0 var(--design-border-radius-control);
 }
 
-.Dropdown__menu {
+.Dropdown__fieldIcon {
+	padding: var(--design-gap-unit);
+	border-radius: 0 var(--design-border-radius-control) var(--design-border-radius-control) 0;
+}
+
+.Dropdown__fieldLabel:hover,
+.Dropdown__fieldIcon:hover {
+	background-color: var(--design-background-color-tertiary);
+}
+
+.Dropdown__content {
 	border-radius: var(--design-border-radius-control);
 	max-height: 322px;
 	overflow: auto;
 	box-shadow: var(--dropdown-box-shadow);
-	border: 1px solid var(--design-border-color-primary);
 }
 
-.Dropdown__menuToogle,
-.Dropdown__menuHeader,
-.Dropdown__contentItem,
-.Dropdown__contentSubItemsLabel,
-.Dropdown__contentSubItem,
-.Dropdown_menuFooter,
-.Dropdown__contentDefault {
+.Dropdown__content > * {
 	padding: calc(var(--design-gap-unit) / 2) var(--design-gap-unit);
-}
-
-.Dropdown__contentSubItemField:hover,
-.Dropdown__contentItem:hover {
-	background-color: var(--design-background-color-tertiary);
 	cursor: pointer;
 }
 
-.Dropdown__content .Dropdown__contentSubItems {
-	border-top: 1px solid var(--design-border-color-primary);
-	border-bottom: 1px solid var(--design-border-color-primary);
-}
-
-.Dropdown__content .Dropdown__contentSubItems ~ .Dropdown__contentSubItems,
-.Dropdown__menuToogle:empty + .Dropdown__menuHeader:empty + .Dropdown__content .Dropdown__contentSubItems {
-	border-top: none;
-}
-
-.Dropdown__contentSubItemsLabel :deep(*),
-:deep(.Dropdown__contentSubItemsLabel) {
-	font-weight: 600;
-}
-
-.Dropdown__menu:not(.Dropdown__menu--up) {
-	margin-top: v-bind(totalOffset);
-}
-
-.Dropdown__menu--up {
-	position: relative;
-	bottom: v-bind(totalOffset);
-}
-
-.Dropdown__icon.onAccent :deep(path) {
-	fill: var(--design-background-color-primary);
-}
-
-.Dropdown__contentItem[disabled],
-.Dropdown__contentSubItem[disabled],
-.Dropdown__contentSubItems[disabled] {
+.Dropdown__field.Dropdown__field--disabled {
 	background: var(--design-background-color-tertiary);
-	cursor: pointer;
+	cursor: not-allowed;
 }
 
-.Dropdown__contentItem[disabled] :deep(*),
-.Dropdown__contentSubItem[disabled] :deep(*),
-.Dropdown__contentSubItems[disabled] :deep(*) {
+.Dropdown__field--disabled .Dropdown__fieldTitle,
+.Dropdown__field--disabled :deep(.Icon path) {
 	color: var(--design-background-color-disabled-primary);
+}
+
+.Dropdown__content--up {
+	position: relative;
+	bottom: 100%;
 }
 
 /* Size Styling */
 
 /* Extra-Small Size Styling */
+.Dropdown__fieldLabel.extra-small,
+.Dropdown__fieldIcon.extra-small {
+	--icon-size: 20px;
+	font-size: var(--design-font-size-footnote);
+	padding: calc(var(--design-gap-unit) / 4);
+	gap: var(--design-gap-unit);
+}
 
-.Dropdown__menu.extra-small :deep(.DropdownItem > *) {
+.Dropdown__fieldLabel.extra-small .Dropdown__fieldTitle {
+	font-size: var(--design-font-size-footnote);
+	line-height: var(--design-line-height-footnote);
+	padding: 0 calc(var(--design-gap-unit) / 4);
+}
+
+.Dropdown__content.extra-small :deep(.DropdownItem:not(.divider)),
+.Dropdown__content.extra-small :deep(.DropdownItem > *) {
 	--icon-size: 20px;
 	font-size: var(--design-font-size-footnote);
 	padding: calc(var(--design-gap-unit) / 4);
 	line-height: var(--design-line-height-footnote);
 	gap: calc(var(--design-gap-unit) / 2);
-}
-
-.Dropdown__menuToogle.extra-small,
-.Dropdown__menuHeader.extra-small,
-.Dropdown__contentItem.extra-small,
-.Dropdown__contentSubItemsLabel.extra-small,
-.Dropdown__contentSubItem.extra-small,
-.Dropdown_menuFooter.extra-small,
-.Dropdown__contentDefault.extra-small {
-	padding: calc(var(--design-gap-unit) / 4);
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
-}
-
-.Dropdown__menuToogle.extra-small :deep(*),
-.Dropdown__menuHeader.extra-small :deep(*),
-.Dropdown__contentItem.extra-small :deep(*),
-.Dropdown__contentSubItemsLabel.extra-small :deep(*),
-.Dropdown__contentSubItem.extra-small :deep(*),
-.Dropdown_menuFooter.extra-small :deep(*),
-.Dropdown__contentDefault.extra-small :deep(*) {
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
-}
-
-.Dropdown__icon.extra-small {
-	--icon-size: 18px;
 }
 
 /* Small Size Styling */
 
-.Dropdown__menu.small :deep(.DropdownItem > *) {
+.Dropdown__fieldLabel.small,
+.Dropdown__fieldIcon.small {
+	font-size: var(--design-font-size-small);
+	padding: calc(var(--design-gap-unit) / 2);
+}
+
+.Dropdown__fieldLabel.small .Dropdown__fieldTitle {
+	font-size: var(--design-font-size-small);
+	padding: 0 calc(var(--design-gap-unit) / 2);
+}
+
+.Dropdown__content.small :deep(.DropdownItem:not(.divider)),
+.Dropdown__content.small :deep(.DropdownItem > *) {
 	font-size: var(--design-font-size-small);
 	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
 	gap: calc(var(--design-gap-unit) / 2);
-}
-
-.Dropdown__menuToogle.small,
-.Dropdown__menuHeader.small,
-.Dropdown__contentItem.small,
-.Dropdown__contentSubItemsLabel.small,
-.Dropdown__contentSubItem.small,
-.Dropdown_menuFooter.small,
-.Dropdown__contentDefault.small {
-	font-size: var(--design-font-size-small);
-	line-height: var(--design-line-height-small);
-	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
-}
-
-.Dropdown__menuToogle.small :deep(*),
-.Dropdown__menuHeader.small :deep(*),
-.Dropdown__contentItem.small :deep(*),
-.Dropdown__contentSubItemsLabel.small :deep(*),
-.Dropdown__contentSubItem.small :deep(*),
-.Dropdown_menuFooter.small :deep(*),
-.Dropdown__contentDefault.small :deep(*) {
-	font-size: var(--design-font-size-small);
-	line-height: var(--design-line-height-small);
-}
-
-.Dropdown__icon.small {
-	--icon-size: 20px;
-}
-
-/*  */
-
-.Dropdown__menuToogle:empty,
-.Dropdown__menuHeader:empty,
-.Dropdown_menuFooter:empty {
-	padding: 0;
 }
 </style>

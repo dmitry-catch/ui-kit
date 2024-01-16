@@ -8,64 +8,35 @@ export default {
 	args: {
 		title: 'Dropdown',
 		disabled: false,
-		caret: true,
-		icon: 'internet',
-		loading: false,
-		items: [
-			{
-				label: 'Item 1',
-				value: 'value1',
-				extraAttrs: { disabled: true },
-				wrapperClass: 'Dropdown__wrapperClass',
-				action: () => console.log('selected Item 1.')
-			},
-			{ label: 'Item 2', value: 'value2', action: () => console.log('selected Item 2.') },
-			{
-				name: 'Группа 1',
-				
-				items: [
-					{
-						label: 'SubItem 1',
-						value: 'value1.1',
-						
-						action: () => console.log('selected option 1.1.')
-					},
-					{ label: 'SubItem 2', value: 'value1.2', action: () => console.log('selected option 1.2.'), extraAttrs: { disabled: true } }
-				]
-			}
-		]
+		chevroned: true,
+		preIcon: 'internet'
 	},
 	argTypes: {
 		size: {
 			control: 'select',
 			options: ['extra-small', 'small', 'medium']
-		},
-		variant: {
-			control: 'select',
-			options: ['default', 'icon', 'functional', 'accent']
-		},
-		autoclose: {
-			control: 'select',
-			options: [true, 'keyboard', 'outside', 'item']
 		}
 	},
     render: (args) => ({
 		components: { Dropdown, DropdownItem, Icon },
 		setup: () => ({ args }),
 		template: `
-		<Dropdown v-bind="args">
-			<template #toggle> Toggle </template>
-			<template #header> Dropdown header </template>
-			<template #item="{ item }">
-				<div>{{ item.label }}</div>
-			</template>
-			<template #group-label="{ group }">
-				<div>{{ group.name }}</div>
-			</template>
-			<template #footer>
-				<i>Footer</i>
-			</template>
-		</Dropdown>
+			<Dropdown v-bind="args">
+				<DropdownItem >
+					<div>1 Item</div>
+				</DropdownItem>
+				<DropdownItem disabled>
+					<div>2 Item</div>
+				</DropdownItem>
+				<DropdownItem >
+					<Icon name="edit" />
+					<div>3 Item</div>
+				</DropdownItem>
+				<DropdownItem divider />
+                <DropdownItem >
+					<div>4 Item</div>
+				</DropdownItem>
+			</Dropdown>
 		`
 	})
 

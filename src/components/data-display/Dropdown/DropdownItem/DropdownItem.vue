@@ -3,6 +3,7 @@ import { toRefs } from 'vue'
 
 interface DropdownItemProps {
 	disabled?: boolean
+	divider?: boolean
 }
 
 const props = defineProps<DropdownItemProps>()
@@ -11,12 +12,12 @@ defineSlots<{
 	default?: () => Node[]
 }>()
 
-const { disabled } = toRefs(props)
+const { disabled, divider } = toRefs(props)
 </script>
 
 <template>
-	<div class="DropdownItem" :class="{ 'DropdownItem--disabled': disabled }">
-		<slot></slot>
+	<div class="DropdownItem" :class="{ 'DropdownItem--disabled': disabled, divider: divider }">
+		<slot v-if="!divider"></slot>
 	</div>
 </template>
 
@@ -24,12 +25,27 @@ const { disabled } = toRefs(props)
 .DropdownItem {
 	display: flex;
 	gap: var(--design-gap-unit);
+	padding: var(--design-gap-unit);
 	cursor: pointer;
+}
+
+.DropdownItem:hover {
+	background: var(--design-background-color-on-accent-primary);
 }
 
 .DropdownItem--disabled {
 	background: var(--design-background-color-tertiary);
+	cursor: not-allowed;
+}
+
+.DropdownItem--disabled :deep(> *),
+.DropdownItem--disabled :deep(.Icon path) {
 	color: var(--design-background-color-disabled-primary);
-	cursor: pointer;
+}
+
+.DropdownItem.divider {
+	height: 1px;
+	padding: 0;
+	background-color: var(--design-background-color-on-accent-primary);
 }
 </style>
