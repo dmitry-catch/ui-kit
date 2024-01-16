@@ -4,19 +4,12 @@ import { ModalAnchor } from './ModalAnchor.js'
 import { useModalContext } from '../../../utils/useModalContext.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
-interface ModalProps {
-	/**Закрытие модального окна по клавише esc */
-	keyboard: boolean
-	anchor: ModalAnchor
-}
-
-const props = withDefaults(defineProps<ModalProps>(), {
-	keyboard: true
-})
-
 const root = ref<HTMLDialogElement>()
 onMounted(() => root.value?.showModal())
-
+const props = withDefaults(defineProps<{ anchor: ModalAnchor; keyboard: boolean }>(), {
+	/**Закрытие модального окна по клавише esc */
+	keyboard: true
+})
 const emit = defineEmits<{
 	(e: 'onDialogKeyDown', event: KeyboardEvent): void
 }>()
