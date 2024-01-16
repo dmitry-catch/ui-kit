@@ -26,7 +26,7 @@ const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
 
 const handleKeyDown = (event: KeyboardEvent) => {
 	emit('onDialogKeyDown', event)
-	if (event.key == Keyboard.ESC && keyboard.value) root.value?.close()
+	if (event.code == Keyboard.ESC && keyboard.value) root.value?.close()
 }
 
 useModalContext(root)
