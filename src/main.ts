@@ -4,6 +4,7 @@ import Button from './components/general/Button/Button.vue'
 import Property from './components/data-display/Property/Property.vue'
 import Paragraph from './components/data-display/Paragraph/Paragraph.vue'
 import Header from './components/data-display/Header/Header.vue'
+import Pill from './components/data-display/Pill/Pill.vue'
 import Tag from './components/data-display/Tag/Tag.vue'
 import ContentContainer from './components/layout/ContentContainer/ContentContainer.vue'
 import ContentBlock from './components/layout/ContentBlock/ContentBlock.vue'
@@ -61,6 +62,7 @@ export {
 	Header,
 	OrderableList,
 	Paragraph,
+	Pill,
 	Property,
 	Tag,
 	FileCard,
