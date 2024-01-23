@@ -5,7 +5,6 @@ import DropdownItem from './DropdownItem/DropdownItem.vue'
 import Button from '../../general/Button/Button.vue'
 import { ItemsProp, Item } from './types.js'
 import { isGroup } from './utils.js'
-import { Keyboard } from '../../../consts/Keyboard'
 
 interface DropdownProps {
 	title?: string | boolean
@@ -68,7 +67,7 @@ const openDropdown = () => {
 
 const escapeHandler = (evt: KeyboardEvent) => {
 	if (
-		evt.key === Keyboard.ESC &&
+		evt.key === 'Escape' &&
 		isDropdownOpen.value &&
 		(autoClose.value === true || autoClose.value.includes('keyboard'))
 	) {
