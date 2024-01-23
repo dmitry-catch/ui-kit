@@ -12,7 +12,7 @@ interface DropdownProps {
 	disabled?: boolean
 	icon?: string
 	size?: 'extra-small' | 'small' | 'medium'
-	autoClose?: boolean | ('keyboard' | 'outside' | 'item')[]
+	autoclose?: boolean | ('keyboard' | 'outside' | 'item')[]
 	offset?: number
 	loading?: boolean
 	items?: ItemsProp
@@ -22,7 +22,7 @@ interface DropdownProps {
 const props = withDefaults(defineProps<DropdownProps>(), {
 	caret: true,
 	size: 'medium',
-	autoClose: true,
+	autoclose: true,
 	offset: 2
 })
 
@@ -41,7 +41,7 @@ defineExpose({
 
 const emit = defineEmits(['beforeClose', 'afterClose'])
 
-const { title, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
+const { title, caret, disabled, icon, size, autoclose, offset, loading, items, variant } = toRefs(props)
 
 const isDropdownOpen = ref(false)
 const root = ref()
@@ -69,7 +69,7 @@ const escapeHandler = (evt: KeyboardEvent) => {
 	if (
 		evt.key === 'Escape' &&
 		isDropdownOpen.value &&
-		(autoClose.value === true || autoClose.value.includes('keyboard'))
+		(autoclose.value === true || autoclose.value.includes('keyboard'))
 	) {
 		closeDropdown()
 	}
@@ -79,7 +79,7 @@ const outsideClickHandler = (evt: MouseEvent) => {
 	if (
 		!root.value.contains(evt.target) &&
 		isDropdownOpen.value &&
-		(autoClose.value === true || autoClose.value.includes('outside'))
+		(autoclose.value === true || autoclose.value.includes('outside'))
 	) {
 		closeDropdown()
 	}
@@ -87,7 +87,7 @@ const outsideClickHandler = (evt: MouseEvent) => {
 
 const itemClickHandler = (item: Item) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
-	if (autoClose.value === true || autoClose.value.includes('item')) {
+	if (autoclose.value === true || autoclose.value.includes('item')) {
 		closeDropdown()
 	}
 }

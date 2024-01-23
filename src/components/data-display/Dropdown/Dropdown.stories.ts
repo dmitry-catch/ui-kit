@@ -44,7 +44,7 @@ export default {
 			control: 'select',
 			options: ['default', 'icon', 'functional', 'accent']
 		},
-		autoClose: {
+		autoclose: {
 			control: 'select',
 			options: [true, 'keyboard', 'outside', 'item']
 		}
