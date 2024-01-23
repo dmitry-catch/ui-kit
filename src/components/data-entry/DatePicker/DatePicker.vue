@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { onMounted, provide, ref, toRefs, watch } from 'vue'
-import { callSelectOnElement, handleInitialDateValue, handleInternalValue } from './utils.js'
-import { DateLocalizationRu } from '../../../consts/localization.ru.js'
-import { Keyboard } from '../../../consts/Keyboard'
-import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
 import Popover from '../../non-public/Popover/Popover.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Button from '../../general/Button/Button.vue'
-
+import { onMounted, provide, ref, toRefs, watch } from 'vue'
+import { DateLocalizationRu } from '../../../consts/localization.ru.js'
+import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
+import { callSelectOnElement, handleInitialDateValue, handleInternalValue } from './utils.js'
 import test from 'node:test'
 
 interface DatePickerProps {
@@ -33,7 +31,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 })
 const emit = defineEmits(['update:modelValue'])
 
-const { autofocus, modelValue, disabled } = toRefs(props)
+const { autofocus, modelValue } = toRefs(props)
 
 const internalValue = ref<Date | null>(handleInitialDateValue(modelValue.value))
 
@@ -119,13 +117,8 @@ watch(modelValue, (value) => {
 	}
 })
 
-const handleBackspace = (event: KeyboardEvent) => {
-	if (!disabled.value && event.key == Keyboard.BACKSPACE) handleCalendarReset()
-}
-
 onMounted(() => {
 	if (autofocus.value) focus()
-	root.value.addEventListener('keydown', handleBackspace)
 	if (modelValue.value != handleInternalValue(internalValue.value)) {
 		internalValue.value = handleInitialDateValue(modelValue.value)
 	}
@@ -229,7 +222,7 @@ provide('datepicker-root', root)
 		<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
 	</div>
 </template>
-<style scoped>
+<style>
 @import '/public/visually-hidden.css';
 @import '/src/styles/field.css';
 

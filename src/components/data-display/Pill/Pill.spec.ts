@@ -2,7 +2,7 @@ import { render } from '@testing-library/vue'
 import { describe, it } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
-import Meta, { Default } from './Tag.stories.js'
+import Meta, { Default } from './Pill.stories.js'
 
 const Component = composeStory(Default, Meta)
 

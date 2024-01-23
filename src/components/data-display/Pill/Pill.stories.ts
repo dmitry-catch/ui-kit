@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/vue3'
-import Tag from './Tag.vue'
+import Pill from './Pill.vue'
 
 export default {
-	component: Tag,
+	component: Pill,
 	args: {
 		default: 'I am Pill'
 	}
-} satisfies Meta<typeof Tag>
+} satisfies Meta<typeof Pill>
 
-type Story = StoryObj<typeof Tag>
+type Story = StoryObj<typeof Pill>
 
 export const Default: Story = {}

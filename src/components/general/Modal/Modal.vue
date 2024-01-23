@@ -2,38 +2,19 @@
 import { computed, onMounted, ref, toRefs } from 'vue'
 import { ModalAnchor } from './ModalAnchor.js'
 import { useModalContext } from '../../../utils/useModalContext.js'
-import { Keyboard } from '../../../consts/Keyboard'
-
-interface ModalProps {
-	/**Закрытие модального окна по клавише esc */
-	keyboard: boolean
-	anchor: ModalAnchor
-}
-
-const props = withDefaults(defineProps<ModalProps>(), {
-	keyboard: true
-})
 
 const root = ref<HTMLDialogElement>()
 onMounted(() => root.value?.showModal())
-
-const emit = defineEmits<{
-	(e: 'onDialogKeyDown', event: KeyboardEvent): void
-}>()
-const { anchor, keyboard } = toRefs(props)
+const props = defineProps<{ anchor: ModalAnchor }>()
+const { anchor } = toRefs(props)
 
 const anchorClass = computed(() => `Modal--anchor-${anchor.value ?? 'center'}`)
-
-const handleKeyDown = (event: KeyboardEvent) => {
-	emit('onDialogKeyDown', event)
-	if (event.key == Keyboard.ESC && keyboard.value) root.value?.close()
-}
 
 useModalContext(root)
 </script>
 
 <template>
-	<dialog ref="root" class="Modal" :class="anchorClass" @keydown="handleKeyDown">
+	<dialog ref="root" class="Modal" :class="anchorClass">
 		<slot></slot>
 	</dialog>
 </template>

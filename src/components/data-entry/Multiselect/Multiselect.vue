@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, toRefs } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
-import Tag from '../../data-display/Tag/Tag.vue'
+import Pill from '../../data-display/Pill/Pill.vue'
 import Button from '../../general/Button/Button.vue'
 import Checkbox from '../Checkbox/Checkbox.vue'
 import { FieldLocalization } from '../../../types/localization.js'
@@ -83,9 +83,10 @@ onMounted(() => {
 			<span class="Field__description text-small"><slot name="description"></slot></span>
 			<div class="Multiselect__visibleInput Field__visibleInput">
 				<div v-if="hasSelectedValue">
-					<Tag class="control" size="extra-small" clossable @onClose="clearSelection">
+					<Pill class="control">
 						<div>{{ selectedText }}</div>
-					</Tag>
+						<Icon class="Multiselect__removeVariant" name="close"></Icon>
+					</Pill>
 				</div>
 				<Button
 					class="Multiselect__clearHandle icon functional"
