@@ -70,7 +70,7 @@ const escapeHandler = (evt: KeyboardEvent) => {
 	if (
 		evt.key === Keyboard.ESC &&
 		isDropdownOpen.value &&
-		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('keyboard')))
+		(autoClose.value === true || autoClose.value.includes('keyboard'))
 	) {
 		closeDropdown()
 	}
@@ -80,7 +80,7 @@ const outsideClickHandler = (evt: MouseEvent) => {
 	if (
 		!root.value.contains(evt.target) &&
 		isDropdownOpen.value &&
-		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('outside')))
+		(autoClose.value === true || autoClose.value.includes('outside'))
 	) {
 		closeDropdown()
 	}
@@ -88,7 +88,7 @@ const outsideClickHandler = (evt: MouseEvent) => {
 
 const itemClickHandler = (item: Item) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
-	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
+	if (autoClose.value === true || autoClose.value.includes('item')) {
 		closeDropdown()
 	}
 }
@@ -159,12 +159,12 @@ onUnmounted(() => {
 			:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }, size]"
 			ref="dropdownMenuRef"
 		>
-			<div class="Dropdown__menuHeader" :class="size">
+			<div class="Dropdown__menuHeader accent" :class="size">
 				<slot name="header"></slot>
 			</div>
 			<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }, size]">
 				<slot>
-					<template v-if="items && items.length > 0">
+					<template v-if="items.length > 0">
 						<template v-for="(item, idx) in items" :key="idx">
 							<div v-if="isGroup(item)" v-bind="item.extraAttrs" class="Dropdown__contentSubItems">
 								<div class="Dropdown__contentSubItemsLabel" :class="size">
