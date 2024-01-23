@@ -142,19 +142,23 @@ onUnmounted(() => {
 				:loading="loading"
 				:size="size"
 			>
-				<Icon
-					v-if="icon"
-					:name="icon"
-					class="Dropdown__icon Dropdown__fieldLabelIcon"
-					:class="[{ onAccent: variant == 'accent' }, size]"
-				/>
-				<template v-if="!variant?.includes('icon')">{{ title }}</template>
-				<Icon
-					v-if="caret && !variant?.includes('icon')"
-					name="chevron_down"
-					class="Dropdown__icon Dropdown__fieldIcon"
-					:class="[{ onAccent: variant == 'accent' }, size]"
-				/>
+				<template #before>
+					<Icon
+						v-if="icon"
+						:name="icon"
+						class="Dropdown__icon Dropdown__fieldLabelIcon"
+						:class="[{ onAccent: variant == 'accent' }, size]"
+					/>
+				</template>
+				<template #default v-if="!variant?.includes('icon')"> {{ title }} </template>
+				<template #after
+					><Icon
+						v-if="caret && !variant?.includes('icon')"
+						name="chevron_down"
+						class="Dropdown__icon Dropdown__fieldIcon"
+						:class="[{ onAccent: variant == 'accent' }, size]"
+					/>
+				</template>
 			</Button>
 		</div>
 		<div
