@@ -30,7 +30,7 @@ defineSlots<{
 	toggle?: () => any
 	header?: () => any
 	item?: () => any
-	groupLabel?: () => any
+	'group-label'?: () => any
 	footer?: () => any
 	default?: () => any
 }>()
@@ -167,7 +167,7 @@ onUnmounted(() => {
 						<template v-for="(item, idx) in items" :key="idx">
 							<div v-if="isGroup(item)" v-bind="item.extraAttrs" class="Dropdown__contentSubItems">
 								<div class="Dropdown__contentSubItemsLabel" :class="size">
-									<slot name="groupLabel" :group="item">{{ item.name }}</slot>
+									<slot name="group-label" :group="item">{{ item.name }}</slot>
 								</div>
 								<div
 									v-for="(subItem, idx) in item.items"

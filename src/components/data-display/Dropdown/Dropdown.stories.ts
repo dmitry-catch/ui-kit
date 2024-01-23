@@ -59,7 +59,7 @@ export default {
 			<template #item="{ item }">
 				<div>{{ item.label }}</div>
 			</template>
-			<template #groupLabel="{ group }">
+			<template #group-label="{ group }">
 				<div>{{ group.name }}</div>
 			</template>
 			<template #footer>
