@@ -4,11 +4,11 @@ import Button from './components/general/Button/Button.vue'
 import Property from './components/data-display/Property/Property.vue'
 import Paragraph from './components/data-display/Paragraph/Paragraph.vue'
 import Header from './components/data-display/Header/Header.vue'
+import Pill from './components/data-display/Pill/Pill.vue'
 import Tag from './components/data-display/Tag/Tag.vue'
 import ContentContainer from './components/layout/ContentContainer/ContentContainer.vue'
 import ContentBlock from './components/layout/ContentBlock/ContentBlock.vue'
 import Surface from './components/layout/Surface/Surface.vue'
-import Drawer from './components/general/Drawer/Drawer.vue'
 import Tabs from './components/general/Tabs/Tabs.vue'
 import Tab from './components/general/Tabs/Tab.vue'
 import TextField from './components/data-entry/TextField/TextField.vue'
@@ -28,6 +28,9 @@ import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
 import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import FileCard from './components/data-display/FileCard/FileCard.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
+import InputNumber from './components/data-entry/InputNumber/InputNumber.vue'
+import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
+import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
 
 export {
 	//General category
@@ -39,7 +42,6 @@ export {
 	Tabs,
 	Tab,
 	Spinner,
-	Drawer,
 	//Layout category
 	ContentContainer,
 	ContentBlock,
@@ -53,6 +55,7 @@ export {
 	Multiselect,
 	TextField,
 	Uploader,
+	InputNumber,
 	//Data display category
 	DataGrid,
 	DataList,
@@ -61,9 +64,12 @@ export {
 	Header,
 	OrderableList,
 	Paragraph,
+	Pill,
 	Property,
 	Tag,
 	FileCard,
+	Dropdown,
+	DropdownItem,
 	//Other
 	Localization,
 	FieldLocalization,

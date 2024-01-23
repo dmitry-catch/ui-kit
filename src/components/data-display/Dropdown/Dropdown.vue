@@ -27,12 +27,12 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 })
 
 defineSlots<{
-	toggle?: () => any
-	header?: () => any
-	item?: () => any
-	'group-label'?: () => any
-	footer?: () => any
-	default?: () => any
+	toggle?: () => Node[]
+	header?: () => Node[]
+	item?: () => Node[]
+	'group-label'?: () => Node[]
+	footer?: () => Node[]
+	default?: () => Node[]
 }>()
 
 defineExpose({
@@ -133,24 +133,29 @@ onUnmounted(() => {
 
 <template>
 	<div ref="root" class="Dropdown">
-		<div ref="dropdownFieldRef" class="Dropdown__button" @click="toggleDropdown" :class="size">
-			<slot name="toggle">
-				<Button class="Dropdown__field" :class="variant" :disabled="disabled" :loading="loading" :size="size">
-					<Icon
-						v-if="icon"
-						:name="icon"
-						class="Dropdown__icon Dropdown__fieldLabelIcon"
-						:class="[{ onAccent: variant == 'accent' }, size]"
-					/>
-					<template v-if="!variant?.includes('icon')">{{ title }}</template>
-					<Icon
-						v-if="caret && !variant?.includes('icon')"
-						name="chevron_down"
-						class="Dropdown__icon Dropdown__fieldIcon"
-						:class="[{ onAccent: variant == 'accent' }, size]"
-					/>
-				</Button>
-			</slot>
+		<div ref="dropdownFieldRef" class="Dropdown__button">
+			<Button
+				@click="toggleDropdown"
+				class="Dropdown__field"
+				:class="variant"
+				:disabled="disabled"
+				:loading="loading"
+				:size="size"
+			>
+				<Icon
+					v-if="icon"
+					:name="icon"
+					class="Dropdown__icon Dropdown__fieldLabelIcon"
+					:class="[{ onAccent: variant == 'accent' }, size]"
+				/>
+				<template v-if="!variant?.includes('icon')">{{ title }}</template>
+				<Icon
+					v-if="caret && !variant?.includes('icon')"
+					name="chevron_down"
+					class="Dropdown__icon Dropdown__fieldIcon"
+					:class="[{ onAccent: variant == 'accent' }, size]"
+				/>
+			</Button>
 		</div>
 		<div
 			v-if="isDropdownOpen"
@@ -158,6 +163,9 @@ onUnmounted(() => {
 			:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }, size]"
 			ref="dropdownMenuRef"
 		>
+			<div class="Dropdown__menuToogle" :class="size">
+				<slot name="toggle"></slot>
+			</div>
 			<div class="Dropdown__menuHeader accent" :class="size">
 				<slot name="header"></slot>
 			</div>
@@ -251,6 +259,7 @@ onUnmounted(() => {
 	border: 1px solid var(--design-border-color-primary);
 }
 
+.Dropdown__menuToogle,
 .Dropdown__menuHeader,
 .Dropdown__contentItem,
 .Dropdown__contentSubItemsLabel,
@@ -272,7 +281,7 @@ onUnmounted(() => {
 }
 
 .Dropdown__content .Dropdown__contentSubItems ~ .Dropdown__contentSubItems,
-.Dropdown__menuHeader:empty + .Dropdown__content .Dropdown__contentSubItems {
+.Dropdown__menuToogle:empty + .Dropdown__menuHeader:empty + .Dropdown__content .Dropdown__contentSubItems {
 	border-top: none;
 }
 
@@ -319,6 +328,7 @@ onUnmounted(() => {
 	gap: calc(var(--design-gap-unit) / 2);
 }
 
+.Dropdown__menuToogle.extra-small,
 .Dropdown__menuHeader.extra-small,
 .Dropdown__contentItem.extra-small,
 .Dropdown__contentSubItemsLabel.extra-small,
@@ -330,12 +340,7 @@ onUnmounted(() => {
 	line-height: var(--design-line-height-footnote);
 }
 
-.Dropdown__button.extra-small {
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
-}
-
-.Dropdown__button.extra-small :deep(*),
+.Dropdown__menuToogle.extra-small :deep(*),
 .Dropdown__menuHeader.extra-small :deep(*),
 .Dropdown__contentItem.extra-small :deep(*),
 .Dropdown__contentSubItemsLabel.extra-small :deep(*),
@@ -358,6 +363,7 @@ onUnmounted(() => {
 	gap: calc(var(--design-gap-unit) / 2);
 }
 
+.Dropdown__menuToogle.small,
 .Dropdown__menuHeader.small,
 .Dropdown__contentItem.small,
 .Dropdown__contentSubItemsLabel.small,
@@ -369,12 +375,7 @@ onUnmounted(() => {
 	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
 }
 
-.Dropdown__button.small {
-	font-size: var(--design-font-size-small);
-	line-height: var(--design-line-height-small);
-}
-
-.Dropdown__button.small :deep(*),
+.Dropdown__menuToogle.small :deep(*),
 .Dropdown__menuHeader.small :deep(*),
 .Dropdown__contentItem.small :deep(*),
 .Dropdown__contentSubItemsLabel.small :deep(*),
@@ -391,6 +392,7 @@ onUnmounted(() => {
 
 /*  */
 
+.Dropdown__menuToogle:empty,
 .Dropdown__menuHeader:empty,
 .Dropdown_menuFooter:empty {
 	padding: 0;
