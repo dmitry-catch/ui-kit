@@ -176,7 +176,7 @@ const root = ref()
 
 			<input
 				ref="fileInputRef"
-				data-testid="main"
+				data-testid="fileInput"
 				type="file"
 				:multiple="multiple"
 				:disabled="disabled"

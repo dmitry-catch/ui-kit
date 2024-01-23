@@ -12,15 +12,17 @@ describe(`Component ${Component.name}`, () => {
 	it('should render with default variant', () => {
 		const { container } = render(Component)
 		const spinner = container.querySelector('.Spinner')
+		const spinnerWheel = container.querySelector('.Spinner__wheel')
 		expect(spinner).toBeTruthy()
-		expect(spinner?.getAttribute('variant')).toBe('light')
+		expect(spinnerWheel?.getAttribute('variant')).toBe('light')
 	})
 
 	it('should change style when variant value is dark', () => {
 		const { container } = render(Component, { props: { variant: 'dark' } })
 		const spinner = container.querySelector('.Spinner')
+		const spinnerWheel = container.querySelector('.Spinner__wheel')
 		expect(spinner).toBeTruthy()
-		expect(spinner?.getAttribute('variant')).toBe('dark')
+		expect(spinnerWheel?.getAttribute('variant')).toBe('dark')
 	})
 
 	it('should be centered when center prop is true', () => {
@@ -33,8 +35,9 @@ describe(`Component ${Component.name}`, () => {
 	it('should be inverted when inverse prop is true', () => {
 		const { container } = render(Component, { props: { inverse: true } })
 		const spinner = container.querySelector('.Spinner')
+		const spinnerWheel = container.querySelector('.Spinner__wheel')
 		expect(spinner).toBeTruthy()
-		expect(spinner?.classList.contains('inverse')).toBe(true)
+		expect(spinnerWheel?.classList.contains('inverse')).toBe(true)
 	})
 
 	it('should show the backdrop when backdrop prop is true', () => {
@@ -45,17 +48,17 @@ describe(`Component ${Component.name}`, () => {
 	})
 
 	it('should change size when size prop is set', () => {
-		const { container } = render(Component, { props: { size: 'lg' } })
-		const spinner = container.querySelector('.Spinner')
+		const { container } = render(Component, { props: { size: 'large' } })
+		const spinner = container.querySelector('.Spinner__wheel')
 		expect(spinner).toBeTruthy()
-		expect(spinner?.classList.contains('size-lg')).toBe(true)
+		expect(spinner?.getAttribute('size')).toBe('large')
 	})
 
 	it('should change speed when speed prop is set', () => {
 		const { container } = render(Component, { props: { speed: 'fast' } })
-		const spinner = container.querySelector('.Spinner')
+		const spinner = container.querySelector('.Spinner__wheel')
 		expect(spinner).toBeTruthy()
-		expect(spinner?.classList.contains('speed-fast')).toBe(true)
+		expect(spinner?.getAttribute('speed')).toBe('fast')
 	})
 
 	it('should be vertical when vertical prop is true', () => {

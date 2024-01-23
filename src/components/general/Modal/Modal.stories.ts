@@ -7,7 +7,8 @@ export default {
 		default: 'Press "Esc" to exit',
 		anchor: 'center',
 		//@ts-expect-error argument for wrapper
-		show: false
+		show: false,
+		keyboard: true
 	},
 	argTypes: {
 		anchor: {
