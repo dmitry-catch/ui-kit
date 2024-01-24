@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect, watch } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import Button from '../../../general/Button/Button.vue'
 
@@ -14,11 +14,11 @@ const props = defineProps<Props>()
 const emit = defineEmits(['update:modelValue'])
 
 const totalPages = computed(() => Math.ceil(props.totalElements / props.pageSize))
-const visibleButtons = computed(() => Array.from({ length: Math.min(totalPages.value, 5) }, (_, i) => i + 1))
+const visibleButtons = Array.from({ length: Math.min(totalPages.value, 5) }, (_, i) => i + 1)
 const currentPage = ref(props.modelValue + 1)
 
 const buttons = computed(() =>
-	visibleButtons.value.map((_, index, arr) =>
+	visibleButtons.map((_, index, arr) =>
 		Math.max(
 			currentPage.value + Math.ceil(arr.length / 2) <= totalPages.value
 				? Math.max(index + 1, Math.min(currentPage.value - Math.ceil(arr.length / 2) + index + 1))
@@ -33,7 +33,7 @@ watchEffect(() => {
 })
 
 const isLastButtonGroup = computed(() => buttons.value[buttons.value.length - 1] >= totalPages.value - 1)
-const isLastTheTotalButton = computed(() => totalPages.value == visibleButtons.value[visibleButtons.value.length - 1])
+const isLastTheTotalButton = computed(() => totalPages.value == visibleButtons[visibleButtons.length - 1])
 
 const updatePage = (value: number) => {
 	const clamped = Math.min(totalPages.value, Math.max(1, value))

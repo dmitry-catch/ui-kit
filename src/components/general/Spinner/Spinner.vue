@@ -38,7 +38,6 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: var(--design-gap-unit);
 }
 
 .Spinner.backdrop::backdrop {
