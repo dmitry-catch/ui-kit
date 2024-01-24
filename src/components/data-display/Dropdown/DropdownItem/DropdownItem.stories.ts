@@ -4,7 +4,7 @@ import DropdownItem from './DropdownItem.vue'
 export default {
 	component: DropdownItem,
 	args: {
-		disabled: false,
+        disabled: false,
 		default: 'I am DropdownItem'
 	}
 } satisfies Meta<typeof DropdownItem>
