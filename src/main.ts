@@ -28,9 +28,6 @@ import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
 import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import FileCard from './components/data-display/FileCard/FileCard.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
-import InputNumber from './components/data-entry/InputNumber/InputNumber.vue'
-import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
-import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
 
 export {
 	//General category
@@ -56,7 +53,6 @@ export {
 	Multiselect,
 	TextField,
 	Uploader,
-	InputNumber,
 	//Data display category
 	DataGrid,
 	DataList,
@@ -68,8 +64,6 @@ export {
 	Property,
 	Tag,
 	FileCard,
-	Dropdown,
-	DropdownItem,
 	//Other
 	Localization,
 	FieldLocalization,
