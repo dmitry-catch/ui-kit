@@ -3,7 +3,7 @@ import { ref, toRefs, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import DropdownItem from './DropdownItem/DropdownItem.vue'
 import Button from '../../general/Button/Button.vue'
-import { DropdownGroupType, DropdownItemType } from './types.js'
+import { ItemsProp, Item } from './types.js'
 import { isGroup } from './utils.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
@@ -16,7 +16,7 @@ interface DropdownProps {
 	autoClose?: boolean | ('keyboard' | 'outside' | 'item')[]
 	offset?: number
 	loading?: boolean
-	items?: Array<DropdownItemType> | Array<DropdownGroupType>
+	items?: ItemsProp
 	variant?: 'icon' | 'functional' | 'accent'
 }
 
@@ -37,8 +37,7 @@ defineSlots<{
 }>()
 
 defineExpose({
-	close: () => closeDropdown(),
-	open: () => openDropdown()
+	close: () => closeDropdown()
 })
 
 const emit = defineEmits(['beforeClose', 'afterClose'])
@@ -87,7 +86,7 @@ const outsideClickHandler = (evt: MouseEvent) => {
 	}
 }
 
-const itemClickHandler = (item: DropdownItemType) => {
+const itemClickHandler = (item: Item) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
 		closeDropdown()

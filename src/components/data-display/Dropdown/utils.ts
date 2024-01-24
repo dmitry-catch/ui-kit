@@ -1,5 +1,5 @@
-import { DropdownItemType, DropdownGroupType } from './types.js'
+import { Item, Group } from './types.js'
 
-export const isGroup = (itemOrGroup: DropdownItemType | DropdownGroupType): itemOrGroup is DropdownGroupType => {
+export const isGroup = (itemOrGroup: Item | Group): itemOrGroup is Group => {
 	return 'items' in itemOrGroup
 }

@@ -8,7 +8,7 @@ interface DropdownItemProps {
 const props = defineProps<DropdownItemProps>()
 
 defineSlots<{
-	default?: () => any
+	default?: () => Node[]
 }>()
 
 const { disabled } = toRefs(props)

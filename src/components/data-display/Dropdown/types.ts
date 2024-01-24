@@ -1,13 +1,15 @@
-export type DropdownItemType = {
+export type Item = {
 	label: string
 	value?: any
-	action?: (item: DropdownItemType) => void
+	action?: (item: Item) => void
 	extraAttrs?: Record<string, any>
 	wrapperClass?: string
 }
 
-export type DropdownGroupType = {
+export type Group = {
 	name?: string
-	items: Array<DropdownItemType>
+	items: Array<Item>
 	extraAttrs?: Record<string, any>
 }
+
+export type ItemsProp = Array<Item> | Array<Group>
