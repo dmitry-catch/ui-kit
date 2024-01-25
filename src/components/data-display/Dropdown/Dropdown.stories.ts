@@ -1,16 +1,16 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Dropdown from './Dropdown.vue'
 import Icon from '../../general/Icon/Icon.vue'
-import { DropdownGroupType, DropdownItemType } from './types'
+import { Group, Item } from './types'
 
-const dropdownItems: DropdownItemType[] = [
+const dropdownItems: Item[] = [
 	{ label: 'Item 1', value: 'value1', action: () => console.log('selected Item 1.') },
 	{ label: 'Item 2', value: 'value2', action: () => console.log('selected Item 2.') },
 	{ label: 'Item 3', value: 'value3', action: () => console.log('selected Item 3.') },
 	{ label: 'Item 4', value: 'value4', action: () => console.log('selected Item 4.') }
 ]
 
-const dropdownGroupItems: DropdownGroupType[] = [
+const dropdownGroupItems: Group[] = [
 	{
 		name: 'Group1:',
 		items: [
