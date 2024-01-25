@@ -27,8 +27,7 @@ export default {
 		clossable: false,
 		color: 'gray',
 		size: 'medium',
-		icon: '',
-		squared: false
+		icon: ''
 	},
 	argTypes: {
 		size: {
@@ -46,11 +45,6 @@ type Story = StoryObj<typeof Tag>
 
 export const Default: Story = {}
 
-export const Squared: Story = {
-	args: {
-		squared: true
-	}
-}
 export const Clossable: Story = {
 	args: {
 		clossable: true
