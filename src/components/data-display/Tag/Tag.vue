@@ -56,7 +56,7 @@ const { color, closable, squared } = toRefs(props)
 }
 
 .Tag--squared {
-	border-radius: 4px;
+	border-radius: 0;
 }
 
 .Tag[size='extra-small'] {
