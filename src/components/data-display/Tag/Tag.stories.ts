@@ -24,7 +24,7 @@ export default {
 	args: {
 		onOnClose: () => {},
 		default: 'I am Tag',
-		closable: false,
+		clossable: false,
 		color: 'gray',
 		size: 'medium',
 		icon: '',
@@ -51,9 +51,9 @@ export const Squared: Story = {
 		squared: true
 	}
 }
-export const Closable: Story = {
+export const Clossable: Story = {
 	args: {
-		closable: true
+		clossable: true
 	}
 }
 export const WithIcon: Story = {
@@ -88,7 +88,7 @@ export const ColorVariants: Story = {
 					v-for='color in colors'
 					:title='color'
 				>
-					<Tag closable :color='color' icon='fire'>{{ color }}</Tag>
+					<Tag clossable :color='color' icon='fire'>{{color}}</Tag>
 				</div>
 			</div>`
 	})

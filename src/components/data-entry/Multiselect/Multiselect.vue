@@ -83,7 +83,7 @@ onMounted(() => {
 			<span class="Field__description text-small"><slot name="description"></slot></span>
 			<div class="Multiselect__visibleInput Field__visibleInput">
 				<div v-if="hasSelectedValue">
-					<Tag class="control" size="extra-small" closable squared @onClose="clearSelection">
+					<Tag class="control" size="extra-small" clossable squared @onClose="clearSelection">
 						<div>{{ selectedText }}</div>
 					</Tag>
 				</div>

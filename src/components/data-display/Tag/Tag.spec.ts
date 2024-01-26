@@ -16,7 +16,7 @@ describe(`Component ${Component.name}`, () => {
 		expect(tag).toBeTruthy()
 		expect(tag?.textContent).toBe('I am Tag')
 		expect(tag?.getAttribute('size')).toBe('medium')
-		expect(tag?.getAttribute('closable')).toBe(null)
+		expect(tag?.getAttribute('clossable')).toBe(null)
 		expect(tag?.getAttribute('color')).toBe('gray')
 	})
 
@@ -36,7 +36,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should call close action on close button click', async () => {
 		const spy = vi.fn()
-		const { getByRole } = render(Component, { props: { closable: true, onOnClose: spy } })
+		const { getByRole } = render(Component, { props: { clossable: true, onOnClose: spy } })
 
 		const button = getByRole('button')
 		if (button) {
