@@ -8,12 +8,13 @@ import { isGroup } from './utils.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
 interface DropdownProps {
-	title?: string | boolean
+	title?: string
 	caret?: boolean
 	disabled?: boolean
 	icon?: string
 	size?: 'extra-small' | 'small' | 'medium'
 	autoClose?: boolean | ('keyboard' | 'outside' | 'item')[]
+	/** Отступ от кнопки до контекстного меню (в пикселях)  */
 	offset?: number
 	loading?: boolean
 	items?: Array<DropdownItemType> | Array<DropdownGroupType>
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 })
 
 defineSlots<{
+	/** "Контролирующий" элемент. (кнопка выпадающего списка)  */
 	toggle?: () => any
 	header?: () => any
 	item?: () => any
@@ -147,7 +149,7 @@ onUnmounted(() => {
 					<template v-if="!variant?.includes('icon')">{{ title }}</template>
 					<Icon
 						v-if="caret && !variant?.includes('icon')"
-						name="chevron_down"
+						:name="isDropdownOpen ? 'chevron_up' : 'chevron_down'"
 						class="Dropdown__icon Dropdown__fieldIcon"
 						:class="[{ onAccent: variant == 'accent' }, size]"
 					/>
