@@ -26,26 +26,6 @@ const dataListGroupItems: DataListGroup[] = [
 	}
 ]
 
-const dataListCollapseGroupItems: DataListGroup[] = [
-	{
-		name: 'Group1:',
-		expandable: true,
-		isCollapsed: true,
-		items: [
-			{ label: 'SubItem 1.1', value: 'value1.1', action: () => console.log('selected option 1.1.') },
-			{ label: 'SubItem 1.2', value: 'value1.2', action: () => console.log('selected option 1.2.') }
-		]
-	},
-	{
-		name: 'Group2:',
-		expandable: true,
-		items: [
-			{ label: 'SubItem 2.2', value: 'value1.1', action: () => console.log('selected option 1.1.') },
-			{ label: 'SubItem 2.2', value: 'value1.2', action: () => console.log('selected option 1.2.') }
-		]
-	}
-]
-
 export default {
 	component: DataList,
 	args: {
@@ -110,30 +90,11 @@ export const CustomGroups: Story = {
 			return { args }
 		},
 		template: `
-	  	<DataList v-bind="args">
-			<template #groupLabel="{ group }">
-			  <i>{{ group.name }}</i>
-			</template>
-	  	</DataList>
-	  `
-	})
-}
-
-export const CollapseGroups: Story = {
-	args: {
-		items: dataListCollapseGroupItems
-	},
-	render: (args) => ({
-		components: { DataList },
-		setup() {
-			return { args }
-		},
-		template: `
-	  	<DataList v-bind="args">
-			<template #groupLabel="{ group }">
-			  <div>{{ group.name }}</div>
-			</template>
-	  	</DataList>
+	  <DataList v-bind="args">
+		<template #groupLabel="{ group }">
+		  <i>{{ group.name }}</i>
+		</template>
+	  </DataList>
 	  `
 	})
 }
