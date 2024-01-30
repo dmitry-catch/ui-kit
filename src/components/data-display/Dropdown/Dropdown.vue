@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+import { ref, toRefs, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import DropdownItem from './DropdownItem/DropdownItem.vue'
 import Button from '../../general/Button/Button.vue'
@@ -18,7 +18,6 @@ interface DropdownProps {
 	loading?: boolean
 	items?: Array<DropdownItemType> | Array<DropdownGroupType>
 	variant?: 'icon' | 'functional' | 'accent'
-	related?: boolean
 }
 
 const props = withDefaults(defineProps<DropdownProps>(), {
@@ -29,12 +28,12 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 })
 
 defineSlots<{
-	toggle?: () => unknown
-	header?: () => unknown
-	item?: () => unknown
-	groupLabel?: () => unknown
-	footer?: () => unknown
-	default?: () => unknown
+	toggle?: () => any
+	header?: () => any
+	item?: () => any
+	groupLabel?: () => any
+	footer?: () => any
+	default?: () => any
 }>()
 
 defineExpose({
@@ -44,11 +43,10 @@ defineExpose({
 
 const emit = defineEmits(['beforeClose', 'afterClose'])
 
-const { title, caret, disabled, icon, size, autoClose, offset, loading, items, variant, related } = toRefs(props)
+const { title, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
 
 const isDropdownOpen = ref(false)
 const root = ref()
-const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
 const toggleDropdown = () => {
 	if (disabled.value || loading.value) return
@@ -234,7 +232,6 @@ onUnmounted(() => {
 .Dropdown {
 	width: max-content;
 	box-sizing: border-box;
-	position: v-bind(menuWidthStyling);
 }
 
 .Dropdown__button {
@@ -249,9 +246,6 @@ onUnmounted(() => {
 }
 
 .Dropdown__menu {
-	position: absolute;
-	width: 100%;
-	left: 0%;
 	border-radius: var(--design-border-radius-control);
 	max-height: 322px;
 	overflow: auto;
