@@ -8,16 +8,12 @@ import { isGroup } from './utils.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
 interface DropdownProps {
-	label?: string
+	title?: string | boolean
 	caret?: boolean
 	disabled?: boolean
 	icon?: string
 	size?: 'extra-small' | 'small' | 'medium'
 	autoClose?: boolean | ('keyboard' | 'outside' | 'item')[]
-	/**
-	 * Отступ от кнопки до контекстного меню (в пикселях)
-	 * @default 2
-	 */
 	offset?: number
 	loading?: boolean
 	items?: Array<DropdownItemType> | Array<DropdownGroupType>
@@ -32,32 +28,25 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 })
 
 defineSlots<{
-	/** "Контролирующий" элемент. (кнопка выпадающего списка)  */
 	toggle?: () => any
-	/** Заголовок контекстного меню  */
 	header?: () => any
-	/** Элементы контекстного меню  */
-	item?: (props: { item: DropdownItemType }) => any
-	/** Группа элементов контекстного меню  */
-	groupLabel?: (props: { group: DropdownGroupType }) => any
-	/** Нижний колонтитул контекстного меню  */
+	item?: () => any
+	groupLabel?: () => any
 	footer?: () => any
-	/** Передача произвольного контента в контекстное меню */
 	default?: () => any
 }>()
 
-const isDropdownOpen = ref(false)
-const root = ref()
-
 defineExpose({
 	close: () => closeDropdown(),
-	open: () => openDropdown(),
-	isOpen: isDropdownOpen
+	open: () => openDropdown()
 })
 
 const emit = defineEmits(['beforeClose', 'afterClose'])
 
-const { label, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
+const { title, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
+
+const isDropdownOpen = ref(false)
+const root = ref()
 
 const toggleDropdown = () => {
 	if (disabled.value || loading.value) return
@@ -155,10 +144,10 @@ onUnmounted(() => {
 						class="Dropdown__icon Dropdown__fieldLabelIcon"
 						:class="[{ onAccent: variant == 'accent' }, size]"
 					/>
-					<template v-if="!variant?.includes('icon')">{{ label }}</template>
+					<template v-if="!variant?.includes('icon')">{{ title }}</template>
 					<Icon
 						v-if="caret && !variant?.includes('icon')"
-						:name="isDropdownOpen ? 'chevron_up' : 'chevron_down'"
+						name="chevron_down"
 						class="Dropdown__icon Dropdown__fieldIcon"
 						:class="[{ onAccent: variant == 'accent' }, size]"
 					/>
