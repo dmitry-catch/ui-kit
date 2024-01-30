@@ -1,206 +1,268 @@
 <script setup lang="ts">
-import Icon from '../../general/Icon/Icon.vue'
-import { computed, ref, toRefs } from 'vue'
-import TextField from '../TextField/TextField.vue'
-import { useUniqueId } from '../../../utils/useUniqueId.js'
+import { ref, toRefs, computed, watch, onMounted } from 'vue'
+import { Dropdown, Button, Icon, TextField } from '../../../main'
+import { DropdownItemType } from '../../data-display/Dropdown/types'
+import { SelectOptionType } from '../types'
 
 interface SelectProps {
-	placeholder?: string
+	modelValue: string | number | null
+	options: Array<SelectOptionType>
+	invalid?: boolean
+	required?: boolean
+	loading?: boolean
+	block?: boolean
+	disabled?: boolean
 	label?: string
-	options?: Array<{ name: string; value: any }>
-	modelValue?: any
+	hint?: string
+	placeholder?: string
+	icon?: string
+	search?: 'input' | false | 'auto' | 'popup'
+	size?: 'extra-small' | 'small' | 'medium'
 }
 
-const props = withDefaults(defineProps<SelectProps>(), {
-	options: () => []
+const props = withDefaults(defineProps<SelectProps>(), { search: 'input', size: 'medium' })
+const {
+	icon,
+	search,
+	invalid,
+	required,
+	label,
+	/** Подсказка, а также валидационное сообщение при параметре invalid = true */
+	hint,
+	size,
+	placeholder,
+	loading,
+	options,
+	modelValue,
+	/** Использовать фиксированную, а не адаптивную ширину селекта */
+	block,
+	disabled
+} = toRefs(props)
+const emit = defineEmits<{
+	(e: 'update:modelValue', value: string | number): void
+}>()
+defineSlots<{
+	/**  Невыбираемый фиксированный первый элемент выпадающего списка */
+	listHeader?: string | unknown
+	/**  Кастомный компонент для элемента выпадающего списка */
+	listItem?: unknown
+	/**  Заголовок для группы элементов списка */
+	listGroupLabel?: string | unknown
+	/**   Невыбираемый фиксированный последний элемент выпадающего списка */
+	listFooter?: string | unknown
+	/** Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
+	empty?: string | unknown
+}>()
+const searchRef = ref()
+const dropdownRef = ref<InstanceType<typeof Dropdown>>()
+const searchInput = ref('')
+
+const blockStyle = computed(() => {
+	if (block.value && size.value == 'medium') return '240px'
+	if (block.value && size.value == 'small') return '180px'
+	if (block.value && size.value == 'extra-small') return '120px'
+	return 'auto'
 })
-const emit = defineEmits(['update:model-value'])
 
-const { getRandomId } = useUniqueId('DropdownSelect')
-const root = ref<HTMLElement>()
-const listId = getRandomId()
-const optionId = (option: any) => `${listId}-option-${option.value}`
+const items = ref()
 
-const { modelValue, options } = toRefs(props)
-const opened = ref(false)
-const value = computed({ get: () => modelValue.value, set: (value) => emit('update:model-value', value) })
-const name = computed(() => options.value.find((it) => it.value === modelValue.value)?.name ?? '')
-const active = ref(0)
-const activeDescendant = computed(() => {
-	const value = active.value
-	if (root.value) return root.value!.querySelector(`.DropdownSelect__value:nth-child(${value + 1})`)?.id
+const pickedItem = computed(() => options.value.find((it) => it.value == modelValue.value))
+const shownName = computed(() => {
+	if (block.value && String(pickedItem.value?.name).length >= 18)
+		return String(pickedItem.value?.name.padEnd(18, '...'))
+	if (String(pickedItem.value?.name).length >= 50) return String(pickedItem.value?.name.padEnd(50, '...'))
+	return pickedItem.value?.name ? pickedItem.value?.name : ''
 })
-const open = () => (opened.value = true)
-const close = () => ((opened.value = false), root.value!.focus())
-const toggle = () => (opened.value ? close() : open())
 
-const select = (option: any) => (value.value = option.value)
-const isSelected = (option: any) => value.value === option.value
-const isActive = (option: any) => active.value === options.value.indexOf(option)
-const lastIndex = (array: any) => Math.max(array.length - 1, 0)
-const nextActive = () => {
-	active.value++
-	if (active.value >= options.value.length) active.value = 0
-}
-const previousActive = () => {
-	if (active.value === 0) active.value = lastIndex(options.value)
-	else active.value--
-}
-const downHandler = () => {
-	if (!opened.value) {
-		open()
-		active.value = 0
-	} else {
-		nextActive()
-	}
-}
-const upHandler = () => {
-	if (!opened.value) {
-		open()
-		active.value = lastIndex(options)
-	} else {
-		previousActive()
-	}
-}
-const enterHandler = () => {
-	console.log('enterHandler', opened.value, active.value)
-	if (opened.value) {
-		select(options.value[active.value])
-		close()
-	}
-}
-const escapeHandler = () => {
-	close()
+const isSearchVisible = computed(
+	() => search.value == 'popup' || (search.value == 'auto' && options.value?.length >= 10)
+)
+
+const clearInput = () => (searchInput.value = '')
+const setFocus = () => {
+	searchRef.value?.focus()
+	openList()
 }
 
-const itemClickHandler = (option: any) => {
-	select(option)
-	close()
+const optionsHandler = () => {
+	items.value = options.value.map((option) => ({
+		label: option.name,
+		value: option.value,
+		action: (item: DropdownItemType) => {
+			emit('update:modelValue', item.value)
+		}
+	}))
 }
+
+const onSearch = () => {
+	if (!searchInput.value) optionsHandler()
+	items.value = items.value.filter((item: DropdownItemType) =>
+		item.label.toLowerCase().includes(searchInput.value?.toLowerCase())
+	)
+}
+
+const openList = () => {
+	dropdownRef.value?.open()
+}
+
+watch(pickedItem, () => {
+	if (pickedItem.value && !isSearchVisible.value) searchInput.value = shownName.value
+})
+
+watch(searchInput, () => onSearch())
+
+onMounted(() => optionsHandler())
+
+const root = ref()
 </script>
-
 <template>
-	<div
-		ref="root"
-		class="DropdownSelect"
-		@keydown.down.prevent="downHandler"
-		@keydown.up.prevent="upHandler"
-		@keydown.enter="enterHandler"
-		@keydown.esc="escapeHandler"
-	>
-		<TextField
-			:modelValue="name"
-			:placeholder="placeholder"
-			readonly
-			class="DropdownSelect__field"
-			role="combobox"
-			:aria-controls="listId"
-			:aria-activedescendant="activeDescendant"
-			:aria-expanded="opened"
-			aria-readonly="true"
-			aria-haspopup="listbox"
-			:label="label"
-		>
-			<template #before>
-				<Icon name="search"></Icon>
-			</template>
-			<template #after>
-				<slot name="after"></slot>
-				<div class="DropdownSelect__openButton" @click="toggle">
-					<Icon v-if="opened" name="arrow_down"></Icon>
-					<Icon v-else name="arrow_up"></Icon>
-				</div>
-			</template>
-		</TextField>
-		<div v-if="opened" :id="listId" class="DropdownSelect__dropdown" role="listbox">
-			<div class="DropdownSelect__dropdownSurface">
-				<div class="DropdownSelect__searchFieldWrapper"></div>
-				<div class="DropdownSelect__values">
-					<div
-						v-for="option of options"
-						:id="optionId(option)"
-						:key="option.name"
-						class="DropdownSelect__value"
-						:class="{ selected: isSelected(option), active: isActive(option) }"
-						role="option"
-						:aria-selected="isSelected(option)"
-						@click="itemClickHandler(option)"
-					>
-						<slot
-							name="dropdownItem"
-							:option="option"
-							:selected="isSelected(option)"
-							:active="isActive(option)"
-							>{{ option.name }}
-						</slot>
-					</div>
-				</div>
-			</div>
+	<div ref="root" class="Select" :size="size">
+		<div v-if="label" class="Select__Label">
+			{{ label }}
+			<span v-if="required" class="danger">&ast;</span>
 		</div>
+		<div class="Select__content" :class="{ disabled, invalid }">
+			<Button
+				v-if="search == 'input'"
+				class="functional icon"
+				:loading="loading"
+				:disabled="disabled"
+				@click="setFocus"
+			>
+				<Icon :name="icon ? icon : 'search'" />
+			</Button>
+			<Icon v-if="icon && search != 'input'" :name="icon" />
+			<div class="Select__innerContent" @click="openList">
+				<span v-if="!pickedItem && search != 'input'" class="secondary">
+					{{ placeholder }}
+				</span>
+				<span v-if="search != 'input'">
+					{{ shownName }}
+				</span>
+				<input
+					v-if="search == 'input'"
+					ref="searchRef"
+					v-model="searchInput"
+					class="Select__search"
+					:placeholder="placeholder"
+				/>
+			</div>
+			<Button v-if="search == 'input' && searchInput" class="icon functional" :size="size" @click="clearInput">
+				<Icon name="close" />
+			</Button>
+			<Dropdown
+				ref="dropdownRef"
+				variant="functional"
+				:items="items"
+				:size="size"
+				:offset="12"
+				related
+				:disabled="disabled"
+				title=""
+			>
+				<template v-if="$slots.listHeader || isSearchVisible" #header>
+					<TextField v-if="isSearchVisible" v-model="searchInput" class="Select__popupSearch">
+						<template #before>
+							<Icon name="search" class="Select__popupSearchButton" />
+						</template>
+						<template #after>
+							<Button v-if="searchInput" class="icon functional" :size="size" @click="clearInput">
+								<Icon name="close" />
+							</Button>
+						</template>
+					</TextField>
+					<slot name="listHeader"></slot>
+				</template>
+
+				<template v-if="$slots.listItem" #item="itemProps">
+					<slot name="listItem" :item="itemProps"></slot>
+				</template>
+				<template v-if="$slots.groupLabel" #groupLabel="groupProps"
+					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
+				></template>
+				<template v-if="$slots.listFooter || items?.length == 0" #footer>
+					<span v-if="items?.length == 0 && !searchInput">Нет элементов</span>
+					<span v-if="items?.length == 0 && searchInput">Нет совпадений «{{ searchInput }}»</span>
+					<slot v-if="items?.length == 0 && $slots.empty" name="empty"></slot>
+					<slot name="listFooter"></slot>
+				</template>
+			</Dropdown>
+		</div>
+
+		<span v-if="hint" class="Select__hint" :class="{ danger: invalid }">{{ hint }}</span>
 	</div>
 </template>
-
-<style>
-.DropdownSelect {
-	position: relative;
-}
-
-.DropdownSelect:focus {
-	outline: none;
-}
-
-.DropdownSelect:focus-within {
-	outline: none;
-	--forced-focus-outline: var(--design-focus-outline);
-}
-
-.DropdownSelect__field {
-	display: flex;
-}
-
-.DropdownSelect__openButton {
-	margin-inline-start: auto;
-}
-
-.DropdownSelect__dropdown {
-	position: absolute;
+<style scoped>
+.Select {
 	width: 100%;
-	max-height: 600px;
-	overflow: auto;
-	z-index: var(--dropdown-z-index, 1000);
-	padding-top: var(--design-gap-unit);
-}
-
-.DropdownSelect__value {
-	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
-}
-
-.DropdownSelect__value:not(:last-child) {
-	border-bottom: var(--design-border-color-primary) 1px solid;
-}
-
-.DropdownSelect__value:is(:hover, .active, :focus, :focus-visible) {
-	background: var(--design-background-color-secondary);
-}
-
-.DropdownSelect__values {
 	display: flex;
-	flex-flow: column;
+	flex-direction: column;
+	justify-content: center;
+	gap: var(--design-gap-unit);
 }
-
-.DropdownSelect__searchFieldWrapper {
-	padding: calc(var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+.Select__Label {
+	display: flex;
+	gap: var(--design-gap-unit);
 }
-
-.DropdownSelect__dropdownSurface {
-	background: var(--design-background-color-primary);
-	border-color: var(--design-border-color-primary);
+.Select__content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--design-gap-unit);
+	max-width: v-bind(blockStyle);
 	border-radius: var(--design-border-radius-control);
-	border-width: 1px;
-	border-style: solid;
-	box-sizing: border-box;
-	max-height: 100%;
-	max-width: 100%;
-	overflow: auto;
+	border: 1px solid var(--design-border-color-baseline);
+	background: var(--design-background-color-primary);
+	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
+	position: relative;
+	cursor: pointer;
+}
+.Select__innerContent {
+	width: 100%;
+	text-align: start;
+}
+
+.Select__content.disabled * {
+	color: var(--design-text-color-secondary);
+}
+.Select__content.invalid {
+	border-color: var(--design-border-color-danger-primary);
+}
+.Select__content.invalid:focus-within {
+	box-shadow: 0px 0px 0px 3px rgba(210, 40, 53, 0.2);
+}
+.Select[size='extra-small'].Select__content {
+	padding: calc(0.5 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
+	gap: calc(0.5 * var(--design-gap-unit));
+}
+.Select[size='small'].Select__content {
+	padding: calc(0.75 * var(--design-gap-unit)) calc(1.75 * var(--design-gap-unit));
+	gap: calc(0.75 * var(--design-gap-unit));
+}
+.Select[size='small']:deep(*) {
+	font-size: var(--design-font-size-small);
+	line-height: var(--design-line-height-small);
+	--icon-size: var(--design-line-height-hint);
+}
+.Select[size='extra-small']:deep(*) {
+	font-size: var(--design-font-size-footnote);
+	line-height: var(--design-line-height-footnote);
+	--icon-size: var(--design-font-size-large);
+}
+
+.Select__search,
+.Select__search:focus,
+.Select__search:hover {
+	border: none;
+	outline: none;
+	background: var(--design-background-color-primary);
+	width: 100%;
+}
+.Select__popupSearch {
+	display: flex;
+	padding: calc(2 * var(--design-gap-unit)) var(--design-gap-unit);
+}
+.Select__popupSearchButton {
+	margin-right: var(--design-gap-unit);
 }
 </style>
