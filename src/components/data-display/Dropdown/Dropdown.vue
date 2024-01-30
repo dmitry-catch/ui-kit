@@ -8,7 +8,7 @@ import { isGroup } from './utils.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
 interface DropdownProps {
-	label?: string
+	title?: string
 	caret?: boolean
 	disabled?: boolean
 	icon?: string
@@ -53,7 +53,7 @@ defineExpose({
 
 const emit = defineEmits(['beforeClose', 'afterClose'])
 
-const { label, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
+const { title, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
 
 const isDropdownOpen = ref(false)
 const root = ref()
@@ -154,7 +154,7 @@ onUnmounted(() => {
 						class="Dropdown__icon Dropdown__fieldLabelIcon"
 						:class="[{ onAccent: variant == 'accent' }, size]"
 					/>
-					<template v-if="!variant?.includes('icon')">{{ label }}</template>
+					<template v-if="!variant?.includes('icon')">{{ title }}</template>
 					<Icon
 						v-if="caret && !variant?.includes('icon')"
 						:name="isDropdownOpen ? 'chevron_up' : 'chevron_down'"
