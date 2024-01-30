@@ -28,8 +28,8 @@ const itemClickHandler = (item: DataListItem) => {
 
 defineSlots<{
 	header?: () => any
-	item?: (props: { item: DataListItem }) => any
-	groupLabel?: (props: { group: DataListGroup }) => any
+	item?: () => any
+	groupLabel?: () => any
 	footer?: () => any
 	empty?: () => any
 }>()
