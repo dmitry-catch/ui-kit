@@ -3,7 +3,6 @@ import { toRefs } from 'vue'
 import { DataListItem, DataListGroup } from './types.js'
 import { isGroup } from './utils.js'
 import Spinner from '../../general/Spinner/Spinner.vue'
-import Icon from '../../general//Icon/Icon.vue'
 
 export interface DataListProps {
 	loading?: boolean
@@ -27,10 +26,6 @@ const itemClickHandler = (item: DataListItem) => {
 	}
 }
 
-const groupClickHandler = (item: DataListGroup) => {
-	if (item.expandable) item.isCollapsed = !item.isCollapsed
-}
-
 defineSlots<{
 	header?: () => any
 	item?: (props: { item: DataListItem }) => any
@@ -50,11 +45,10 @@ defineSlots<{
 			<div v-if="items && items.length > 0" class="DataList__content" :class="size">
 				<template v-for="(item, idx) in items" :key="idx">
 					<div v-if="isGroup(item)" class="DataList__group" v-bind="item.extraAttrs">
-						<div class="DataList__groupLabel" :class="size" @click="groupClickHandler(item)">
-							<Icon v-if="item.expandable" :name="item.isCollapsed ? 'chevron_down' : 'chevron_up'" />
+						<div class="DataList__groupLabel" :class="size">
 							<slot name="groupLabel" :group="item">{{ item.name }}</slot>
 						</div>
-						<div v-if="!item.isCollapsed" class="DataList__groupItems">
+						<div class="DataList__groupItems">
 							<div
 								v-for="(groupItem, groupIdx) in item.items"
 								:key="groupIdx"
@@ -93,13 +87,6 @@ defineSlots<{
 .DataList {
 	width: 100%;
 	box-sizing: border-box;
-}
-
-.DataList__groupLabel {
-	display: flex;
-	align-items: center;
-	gap: var(--design-gap-unit);
-	background-color: var(--design-background-color-on-accent-primary);
 }
 
 .DataList__menuHeader,
@@ -141,8 +128,6 @@ defineSlots<{
 	padding: calc(var(--design-gap-unit) / 4);
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
-	--icon-size: 18px;
-	gap: calc(var(--design-gap-unit) / 4);
 }
 
 .DataList__menuHeader.extra-small :deep(*),
@@ -152,7 +137,6 @@ defineSlots<{
 .DataList__empty.extra-small :deep(*) {
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
-	--icon-size: 18px;
 }
 
 /* Small Size Styling */
@@ -165,8 +149,6 @@ defineSlots<{
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
-	--icon-size: 20px;
-	gap: calc(var(--design-gap-unit) / 2);
 }
 
 .DataList__menuHeader.small :deep(*),
@@ -176,7 +158,6 @@ defineSlots<{
 .DataList__empty.small :deep(*) {
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
-	--icon-size: 20px;
 }
 
 /*  */
