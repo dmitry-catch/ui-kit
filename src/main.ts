@@ -19,6 +19,8 @@ import Checkbox from './components/data-entry/Checkbox/Checkbox.vue'
 import SelectableOption from './components/data-entry/Select/SelectableOption/SelectableOption.vue'
 import Select from './components/data-entry/Select/Select.vue'
 import DataList from './components/data-display/DataList/DataList.vue'
+import DataListGroup from './components/data-display/DataList/DataListGroup/DataListGroup.vue'
+import DataListItem from './components/data-display/DataList/DataListItem/DataListItem.vue'
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import OrderableList from './components/data-display/OrderableList/OrderableList.vue'
 import DataGrid from './components/data-display/DataGrid/DataGrid.vue'
@@ -58,6 +60,8 @@ export {
 	//Data display category
 	DataGrid,
 	DataList,
+	DataListGroup,
+	DataListItem,
 	Header,
 	OrderableList,
 	Paragraph,
