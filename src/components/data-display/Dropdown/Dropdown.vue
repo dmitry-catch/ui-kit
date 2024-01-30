@@ -30,8 +30,8 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 defineSlots<{
 	toggle?: () => any
 	header?: () => any
-	item?: () => any
-	groupLabel?: () => any
+	item?: (props: { item: DropdownItemType }) => any
+	groupLabel?: (props: { group: DropdownGroupType }) => any
 	footer?: () => any
 	default?: () => any
 }>()
