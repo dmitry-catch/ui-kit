@@ -46,18 +46,17 @@ defineSlots<{
 	default?: () => any
 }>()
 
-const isDropdownOpen = ref(false)
-const root = ref()
-
 defineExpose({
 	close: () => closeDropdown(),
-	open: () => openDropdown(),
-	isOpen: isDropdownOpen
+	open: () => openDropdown()
 })
 
 const emit = defineEmits(['beforeClose', 'afterClose'])
 
 const { label, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
+
+const isDropdownOpen = ref(false)
+const root = ref()
 
 const toggleDropdown = () => {
 	if (disabled.value || loading.value) return
