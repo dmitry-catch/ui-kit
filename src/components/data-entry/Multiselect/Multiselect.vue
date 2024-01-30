@@ -87,7 +87,6 @@ onMounted(() => {
 						<div>{{ selectedText }}</div>
 					</Tag>
 				</div>
-
 				<Button
 					class="Multiselect__clearHandle icon functional"
 					:class="{ hidden: !hasSelectedValue }"
@@ -95,7 +94,6 @@ onMounted(() => {
 				>
 					<Icon name="close"></Icon>
 				</Button>
-
 				<Button class="Multiselect__dropdownHandle icon functional" @click="toggleDropdown">
 					<Icon v-if="dropdownOpened" name="arrow_down"></Icon>
 					<Icon v-else name="arrow_up"></Icon>

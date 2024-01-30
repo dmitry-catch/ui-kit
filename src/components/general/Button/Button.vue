@@ -197,10 +197,12 @@ const clickOutside = (event: Event) => {
 .Btn__actual.small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-small);
+	--icon-size: 20px;
 }
 
 .Btn__actual.extra-small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-footnote);
+	--icon-size: 18px;
 }
 </style>
