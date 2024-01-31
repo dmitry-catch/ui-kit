@@ -9,15 +9,12 @@ interface SelectProps {
 	options: Array<SelectOptionType>
 	/** Если параметр = true, компонент подсветиться красным. Если тип параметра - строка, то подсказка заменится на эту строку и текст станет красным */
 	invalid?: boolean | string
-	/** Появляется астерикс над лейблом. Лейбл обязателен */
 	required?: boolean
 	loading?: boolean
 	disabled?: boolean
 	label?: string
 	/** Подсказка */
 	hint?: string
-	/** Описание */
-	description?: string
 	placeholder?: string
 	icon?: string
 	/**
@@ -31,21 +28,8 @@ interface SelectProps {
 }
 
 const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
-const {
-	icon,
-	searchType,
-	invalid,
-	required,
-	label,
-	hint,
-	size,
-	placeholder,
-	loading,
-	options,
-	modelValue,
-	disabled,
-	description
-} = toRefs(props)
+const { icon, searchType, invalid, required, label, hint, size, placeholder, loading, options, modelValue, disabled } =
+	toRefs(props)
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: string | number | null): void
 	/** Обработчик события выпадающего меню */
@@ -136,9 +120,6 @@ const root = ref()
 			{{ label }}
 			<span v-if="required" class="danger">&ast;</span>
 		</div>
-		<span v-if="description" class="secondary">
-			{{ description }}
-		</span>
 		<div class="Select__content" :class="{ disabled, invalid }">
 			<Button v-if="searchType == 'input'" class="functional icon" :disabled="disabled" @click="setFocus">
 				<Icon :name="icon ? icon : 'search'" />
@@ -210,7 +191,7 @@ const root = ref()
 			</Dropdown>
 		</div>
 
-		<span v-if="hint && !(typeof invalid == 'string')" class="secondary">{{ hint }}</span>
+		<span v-if="hint && !(typeof invalid == 'string')">{{ hint }}</span>
 		<span v-if="typeof invalid == 'string'" class="danger">{{ invalid }}</span>
 	</div>
 </template>

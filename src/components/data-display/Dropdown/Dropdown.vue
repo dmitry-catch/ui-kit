@@ -362,7 +362,7 @@ onUnmounted(() => {
 }
 
 .Dropdown__item--focused {
-	background: var(--design-background-color-on-accent-primary);
+	background: var(--design-background-color-tertiary);
 }
 
 .Dropdown__menuHeader,
@@ -371,24 +371,15 @@ onUnmounted(() => {
 .Dropdown__contentSubItem,
 .Dropdown_menuFooter,
 .Dropdown__contentDefault {
-	padding: calc(var(--design-gap-unit) / 2) 0;
-	background-color: var(--design-background-color-primary);
-}
-
-.Dropdown__contentItem {
-	padding-left: calc(3 * var(--design-gap-unit));
-	padding-right: calc(3 * var(--design-gap-unit));
+	padding: calc(var(--design-gap-unit) / 2) var(--design-gap-unit);
 }
 
 .Dropdown__contentSubItemField:hover,
 .Dropdown__contentItem:hover {
-	background-color: var(--design-background-color-on-accent-primary);
+	background-color: var(--design-background-color-tertiary);
 	cursor: pointer;
 }
 
-.Dropdown__contentSubItem:hover {
-	background-color: var(--design-background-color-on-accent-primary);
-}
 .Dropdown__content .Dropdown__contentSubItems {
 	border-top: 1px solid var(--design-border-color-primary);
 	border-bottom: 1px solid var(--design-border-color-primary);
@@ -420,7 +411,7 @@ onUnmounted(() => {
 .Dropdown__contentItem[disabled],
 .Dropdown__contentSubItem[disabled],
 .Dropdown__contentSubItems[disabled] {
-	background: var(--design-background-color-on-accent-primary);
+	background: var(--design-background-color-tertiary);
 	cursor: pointer;
 }
 

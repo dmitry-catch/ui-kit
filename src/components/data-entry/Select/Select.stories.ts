@@ -19,8 +19,7 @@ export default {
 		hint: '',
 		label: '',
 		icon: '',
-		placeholder: '',
-		description: ''
+		placeholder: ''
 	},
 	argTypes: {
 		size: {
