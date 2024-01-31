@@ -2,7 +2,7 @@
 import Popover from '../../non-public/Popover/Popover.vue'
 import { ref, toRefs } from 'vue'
 import { ListBoxOption } from './types.js'
-import SelectableOption from '../../data-display/SelectableOption/SelectableOption.vue'
+import SelectableOption from '../../data-entry/Select/SelectableOption/SelectableOption.vue'
 import { useClickOutside } from '../../../utils/useClickOutside.js'
 
 interface ListBoxProps {
