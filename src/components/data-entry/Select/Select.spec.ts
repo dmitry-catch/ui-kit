@@ -1,4 +1,4 @@
-import { render } from '@testing-library/vue'
+import { render, screen } from '@testing-library/vue'
 import { describe, expect, it } from 'vitest'
 
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
@@ -10,7 +10,7 @@ const textProps = {
 	label: 'Label',
 	hint: 'hint',
 	placeholder: 'placeholder',
-	searchType: 'input'
+	search: 'input'
 }
 
 const extendedOptions = [
@@ -29,7 +29,7 @@ const extendedOptions = [
 
 const defaultProps = {
 	modelValue: null,
-	searchType: 'input',
+	search: 'input',
 	size: 'medium',
 	options: [
 		{ name: 'Option 1', value: 1 },
@@ -81,7 +81,7 @@ describe(`Component ${Component.name}`, () => {
 	})
 	it('should open menu after userClick', async () => {
 		const { getByText, getByRole } = render(Component, {
-			props: { ...defaultProps, searchType: 'auto' }
+			props: { ...defaultProps, search: 'auto' }
 		})
 		const button = getByRole('button')
 		await user.click(button)
@@ -89,7 +89,7 @@ describe(`Component ${Component.name}`, () => {
 	})
 	it('should not open menu when disabled', async () => {
 		const { queryByText, getByRole } = render(Component, {
-			props: { ...defaultProps, disabled: true, searchType: 'auto' }
+			props: { ...defaultProps, disabled: true, search: 'auto' }
 		})
 		const button = getByRole('button')
 		await user.click(button)
@@ -98,7 +98,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should have popup search with search auto, if length of options more then 10', async () => {
 		const { container, getByRole } = render(Component, {
-			props: { ...defaultProps, options: extendedOptions, searchType: 'auto' }
+			props: { ...defaultProps, options: extendedOptions, search: 'auto' }
 		})
 		const button = getByRole('button')
 		await user.click(button)
@@ -107,7 +107,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should not have popup search with search auto, if length of options less then 10', async () => {
 		const { container, getByRole } = render(Component, {
-			props: { ...defaultProps, searchType: 'auto' }
+			props: { ...defaultProps, search: 'auto' }
 		})
 		const button = getByRole('button')
 		await user.click(button)
@@ -116,7 +116,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should not open menu while loading', async () => {
 		const { container, queryByText, getByRole } = render(Component, {
-			props: { ...defaultProps, loading: true, searchType: 'auto' }
+			props: { ...defaultProps, loading: true, search: 'auto' }
 		})
 		const button = getByRole('button')
 		await user.click(button)
@@ -129,7 +129,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should change value on choosing', async () => {
 		const { queryByText, getByRole, getByText } = render(Component, {
-			props: { ...defaultProps, searchType: 'auto' }
+			props: { ...defaultProps, search: 'auto' }
 		})
 		const button = getByRole('button')
 		await user.click(button)

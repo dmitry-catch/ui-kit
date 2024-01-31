@@ -7,7 +7,6 @@ import { SelectOptionType } from '../types'
 interface SelectProps {
 	modelValue: string | number | null
 	options: Array<SelectOptionType>
-	/** Если параметр = true, компонент подсветиться красным. Если тип параметра - строка, то подсказка заменится на эту строку и текст станет красным */
 	invalid?: boolean | string
 	required?: boolean
 	loading?: boolean
@@ -23,15 +22,15 @@ interface SelectProps {
 	 * auto - если предоставлено более 10 вариантов, появляется поиск в выпадающем меню
 	 * popup - поиск в выпадающем меню
 	 */
-	searchType?: 'input' | false | 'auto' | 'popup'
+	search?: 'input' | false | 'auto' | 'popup'
 	size?: 'extra-small' | 'small' | 'medium'
 }
 
-const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
-const { icon, searchType, invalid, required, label, hint, size, placeholder, loading, options, modelValue, disabled } =
+const props = withDefaults(defineProps<SelectProps>(), { search: 'input', size: 'medium' })
+const { icon, search, invalid, required, label, hint, size, placeholder, loading, options, modelValue, disabled } =
 	toRefs(props)
 const emit = defineEmits<{
-	(e: 'update:modelValue', value: string | number | null): void
+	(e: 'update:modelValue', value: string | number): void
 	/** Обработчик события выпадающего меню */
 	(e: 'open'): void
 	/** Обработчик события ввода в строке поиска */
@@ -56,7 +55,6 @@ const dropdownRef = ref<InstanceType<typeof Dropdown>>()
 const searchInput = ref('')
 
 const items = ref()
-const dropdownOpen = ref(false)
 
 const pickedItem = computed(() => options.value.find((it) => it.value == modelValue.value))
 const shownName = computed(() => {
@@ -65,12 +63,12 @@ const shownName = computed(() => {
 })
 
 const isSearchVisible = computed(
-	() => searchType.value == 'popup' || (searchType.value == 'auto' && options.value?.length >= 10)
+	() => search.value == 'popup' || (search.value == 'auto' && options.value?.length >= 10)
 )
 
 const clearInput = () => {
 	searchInput.value = ''
-	emit('update:modelValue', null)
+	emit('update:modelValue', '')
 }
 const setFocus = () => {
 	searchRef.value?.focus()
@@ -97,15 +95,13 @@ const onSearch = () => {
 
 const openList = () => {
 	if (!loading.value) {
-		dropdownOpen.value = true
+		dropdownRef.value?.open()
 		emit('open')
 	}
 }
 
 watch(pickedItem, () => {
-	if (pickedItem.value && !isSearchVisible.value) {
-		searchInput.value = shownName.value
-	}
+	if (pickedItem.value && !isSearchVisible.value) searchInput.value = shownName.value
 })
 
 watch(searchInput, () => onSearch())
@@ -120,37 +116,31 @@ const root = ref()
 			{{ label }}
 			<span v-if="required" class="danger">&ast;</span>
 		</div>
-		<div class="Select__content" :class="{ disabled, invalid }">
-			<Button v-if="searchType == 'input'" class="functional icon" :disabled="disabled" @click="setFocus">
+		<div class="Select__content" :class="{ disabled, invalid }" @click="openList">
+			<Button v-if="search == 'input'" class="functional icon" :disabled="disabled" @click="setFocus">
 				<Icon :name="icon ? icon : 'search'" />
 			</Button>
-			<Icon v-if="icon && searchType != 'input'" :name="icon" />
-			<div class="Select__innerContent" @click="openList">
-				<span v-if="!pickedItem && searchType != 'input'" class="secondary">
+			<Icon v-if="icon && search != 'input'" :name="icon" />
+			<div class="Select__innerContent">
+				<span v-if="!pickedItem && search != 'input'" class="secondary">
 					{{ placeholder }}
 				</span>
-				<span v-if="searchType != 'input'">
+				<span v-if="search != 'input'">
 					{{ shownName }}
 				</span>
 				<input
-					v-if="searchType == 'input'"
+					v-if="search == 'input'"
 					ref="searchRef"
 					v-model="searchInput"
 					class="Select__search"
 					:placeholder="placeholder"
 				/>
 			</div>
-			<Button
-				v-if="searchType == 'input' && searchInput"
-				class="icon functional"
-				:size="size"
-				@click="clearInput"
-			>
+			<Button v-if="search == 'input' && searchInput" class="icon functional" :size="size" @click="clearInput">
 				<Icon name="close" />
 			</Button>
 			<Dropdown
 				ref="dropdownRef"
-				v-model="dropdownOpen"
 				variant="functional"
 				:items="items"
 				:size="size"
@@ -160,7 +150,6 @@ const root = ref()
 				title=""
 				:loading="loading"
 				:caret="!loading"
-				@click="() => emit('open')"
 			>
 				<template v-if="slots.listHeader || isSearchVisible" #header>
 					<TextField v-if="isSearchVisible" v-model="searchInput" class="Select__popupSearch">

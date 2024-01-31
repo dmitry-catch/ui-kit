@@ -8,7 +8,6 @@ import { isGroup } from './utils.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
 interface DropdownProps {
-	modelValue?: boolean
 	label?: string
 	caret?: boolean
 	disabled?: boolean
@@ -25,7 +24,7 @@ interface DropdownProps {
 	variant?: 'icon' | 'functional' | 'accent'
 	/** При положительном значении флага ширина выпадающего списка
 	 * будет отталкиваться от ширины родительского компонента "Dropdown", если у этого "родителя"
-	 * стоит position: relative */
+	 * стоит <position: relative> */
 	related?: boolean
 }
 
@@ -51,16 +50,18 @@ defineSlots<{
 	default?: () => unknown
 }>()
 
-const isDropdownOpen = ref()
+const isDropdownOpen = ref(false)
 const root = ref()
 
-const emit = defineEmits<{
-	(e: 'update:modelValue', value: boolean): void
-	(e: 'beforeClose'): void
-	(e: 'afterClose'): void
-}>()
+defineExpose({
+	close: () => closeDropdown(),
+	open: () => openDropdown(),
+	isOpen: isDropdownOpen
+})
 
-const { label, caret, disabled, icon, autoClose, offset, loading, items, variant, related, modelValue } = toRefs(props)
+const emit = defineEmits(['beforeClose', 'afterClose'])
+
+const { label, caret, disabled, icon, autoClose, offset, loading, items, variant, related } = toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
 const toggleDropdown = () => {
@@ -132,14 +133,9 @@ const calculateDropdownPosition = () => {
 }
 
 watch(isDropdownOpen, () => {
-	emit('update:modelValue', isDropdownOpen.value)
 	if (isDropdownOpen.value) {
 		calculateDropdownPosition()
 	}
-})
-
-watch(modelValue, () => {
-	isDropdownOpen.value = modelValue.value
 })
 
 const focusedItemIdx = ref(-1) // no item is focused initially
@@ -205,7 +201,6 @@ const scrollIntoViewIfNeeded = () => {
 }
 
 onMounted(() => {
-	isDropdownOpen.value = modelValue.value ?? false
 	document.addEventListener('mousedown', outsideClickHandler)
 })
 

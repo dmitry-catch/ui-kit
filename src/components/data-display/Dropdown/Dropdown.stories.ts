@@ -36,8 +36,7 @@ export default {
 		icon: 'internet',
 		loading: false,
 		items: dropdownItems,
-		autoClose: true,
-		related: false
+		autoClose: true
 	},
 	argTypes: {
 		size: {

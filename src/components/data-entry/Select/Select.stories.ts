@@ -5,7 +5,7 @@ export default {
 	component: Select,
 	args: {
 		modelValue: null,
-		searchType: 'input',
+		search: 'input',
 		size: 'medium',
 		options: [
 			{ name: 'Option 1', value: 1 },
@@ -26,7 +26,7 @@ export default {
 			control: 'select',
 			options: ['extra-small', 'small', 'medium']
 		},
-		searchType: {
+		search: {
 			control: 'select',
 			options: ['auto', 'input', 'popup', false]
 		}
@@ -43,7 +43,7 @@ export const Sizing: Story = {
 		setup: () => ({ args }),
 		template: `
 		<div  v-bind:style="{display:'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--design-gap-unit)'}">
-			<Select v-bind='args' label="Medium" block />
+			<Select v-bind='args' label="Medium" block/>
 			<Select v-bind='args' label="Small" size='small' block/>
 			<Select v-bind='args' label="Extra-small" size='extra-small' block/>
 		</div>	
@@ -54,7 +54,7 @@ export const Sizing: Story = {
 export const SearchAuto: Story = {
 	args: {
 		modelValue: null,
-		searchType: 'auto',
+		search: 'auto',
 		options: [
 			{ name: 'Option 1', value: 1 },
 			{ name: 'Option 2', value: 2 },
