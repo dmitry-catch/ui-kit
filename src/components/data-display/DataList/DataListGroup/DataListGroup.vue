@@ -1,61 +1,47 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue'
-import { DataListGroupType, DataListItemType } from '../types.js'
-import Icon from '../../../general/Icon/Icon.vue'
+import { computed, ref, toRefs } from 'vue'
+import DataListItem from '../DataListItem/DataListItem.vue'
+import { Group, isGroup } from '@forecsys/collections'
+import DataGroupToggler from '../../../non-public/DataGroupToggler/DataGroupToggler.vue'
 
-const props = defineProps<{
-	group: DataListGroupType
-	expandable?: boolean
-	size?: 'extra-small' | 'small' | 'medium'
-}>()
-
-defineSlots<{
-	/** Заголовок группы */
-	groupLabel?: (props: { group: DataListGroupType }) => any
-	/** Элементы внутри группы */
-	groupItems?: (props: { items: DataListItemType[] }) => any
-}>()
-
-const { group, size, expandable } = toRefs(props)
-
-const isCollapsed = ref(group.value.isCollapsed)
-
-const groupClickHandler = () => {
-	if (expandable.value) {
-		isCollapsed.value = !isCollapsed.value
-	}
+interface DataListGroup {
+	data: any
+	contextMenu?: Array<any>
 }
+
+const props = defineProps<DataListGroup>()
+const emit = defineEmits(['itemClick'])
+const { data, contextMenu } = toRefs(props)
+
+const group = computed(() => data.value as Group<any>)
+const isItem = computed(() => !isGroup(data.value))
+
+const opened = ref(true)
+const itemClick = (data: any) => emit('itemClick', data)
 </script>
 
 <template>
-	<div class="DataList__group" v-bind="group.extraAttrs">
-		<div class="DataList__groupLabel" :size="size" @click="groupClickHandler">
-			<Icon v-if="expandable" :name="isCollapsed ? 'chevron_down' : 'chevron_up'" />
-			<slot name="groupLabel" :group="group">{{ group.name }}</slot>
-		</div>
-		<div v-if="!isCollapsed" class="DataList__groupItems">
-			<slot name="groupItems" :items="group.items"></slot>
-		</div>
-	</div>
+	<DataListItem v-if="isItem" :data="data" :contextMenu="contextMenu" @click="itemClick(data)">
+		<template #content="{ data }">
+			<slot name="content" :data="data"></slot>
+		</template>
+		<template #contextMenuItem="{ data }">
+			<slot name="contextMenuItem" :data="data"></slot>
+		</template>
+	</DataListItem>
+	<template v-else>
+		<DataGroupToggler v-model="opened" :group="group"></DataGroupToggler>
+		<template v-if="opened">
+			<DataListGroup v-for="item of group.data" :data="item" :contextMenu="contextMenu" @itemClick="itemClick">
+				<template #content="{ data }">
+					<slot name="content" :data="data"></slot>
+				</template>
+				<template #contextMenuItem="{ data }">
+					<slot name="contextMenuItem" :data="data"></slot>
+				</template>
+			</DataListGroup>
+		</template>
+	</template>
 </template>
 
-<style scoped>
-.DataList__groupLabel {
-	display: flex;
-	align-items: center;
-	gap: var(--design-gap-unit);
-	background-color: var(--design-background-color-on-accent-primary);
-	padding: calc(var(--design-gap-unit) / 2) calc(3 * var(--design-gap-unit));
-}
-
-.DataList__group {
-	border-top: 1px solid var(--design-border-color-primary);
-	border-bottom: 1px solid var(--design-border-color-primary);
-}
-
-.DataList__groupLabel,
-.DataList__groupLabel :deep(*:not(.Icon path)) {
-	font-weight: 600;
-	color: var(--design-text-color-secondary);
-}
-</style>
+<style></style>

@@ -78,7 +78,7 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 	min-width: 0;
 }
 .Spinner__wheel[variant='dark'][size*='large'] {
-	background-image: url(./src/spinner-large.svg);
+	background-image: url(./assets/spinner-large.svg);
 	background-size: contain;
 	background-repeat: no-repeat;
 	border: none;

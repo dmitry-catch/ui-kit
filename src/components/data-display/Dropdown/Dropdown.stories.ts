@@ -30,13 +30,14 @@ const dropdownGroupItems: DropdownGroupType[] = [
 export default {
 	component: Dropdown,
 	args: {
-		title: 'Dropdown',
+		label: 'Dropdown',
 		disabled: false,
 		caret: true,
 		icon: 'internet',
 		loading: false,
 		items: dropdownItems,
-		autoClose: true
+		autoClose: true,
+		related: false
 	},
 	argTypes: {
 		size: {
