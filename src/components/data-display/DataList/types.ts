@@ -10,5 +10,6 @@ export type DataListGroup = {
 	name?: string
 	items: Array<DataListItem>
 	extraAttrs?: Record<string, any>
+	expandable?: boolean
 	isCollapsed?: boolean
 }
