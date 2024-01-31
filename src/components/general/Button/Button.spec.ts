@@ -21,21 +21,4 @@ describe(`Component ${Component.name}`, () => {
 		const buttonElement = screen.getByRole('button')
 		expect(buttonElement.textContent).eq(Meta.args.default)
 	})
-
-	it('should have class if block prop is true', async () => {
-		const { rerender } = render(Meta.component, {
-			props: {
-				block: false
-			}
-		})
-
-		const buttonElement = screen.getByRole('button')
-		expect(buttonElement?.classList.contains('block')).toBeFalsy()
-
-		await rerender({
-			block: true
-		})
-
-		expect(buttonElement?.classList.contains('block')).toBeTruthy()
-	})
 })
