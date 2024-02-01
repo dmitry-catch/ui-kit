@@ -16,7 +16,7 @@ import Modal from './components/general/Modal/Modal.vue'
 import Spinner from './components/general/Spinner/Spinner.vue'
 import Multiselect from './components/data-entry/Multiselect/Multiselect.vue'
 import Checkbox from './components/data-entry/Checkbox/Checkbox.vue'
-import SelectableOption from './components/data-display/SelectableOption/SelectableOption.vue'
+import SelectableOption from './components/data-entry/Select/SelectableOption/SelectableOption.vue'
 import Select from './components/data-entry/Select/Select.vue'
 import DataList from './components/data-display/DataList/DataList.vue'
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
@@ -50,13 +50,13 @@ export {
 	DatePicker,
 	DateRangePicker,
 	Select,
+	SelectableOption,
 	Multiselect,
 	TextField,
 	Uploader,
 	InputNumber,
 	//Data display category
 	DataGrid,
-	SelectableOption,
 	DataList,
 	Header,
 	OrderableList,

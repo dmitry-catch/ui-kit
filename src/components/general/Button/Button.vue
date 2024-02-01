@@ -12,7 +12,6 @@ interface BtnProps {
 	disabled?: boolean
 	size?: 'medium' | 'small' | 'extra-small'
 	loading?: boolean
-	block?: boolean
 }
 
 const props = withDefaults(defineProps<BtnProps>(), {
@@ -22,7 +21,7 @@ const props = withDefaults(defineProps<BtnProps>(), {
 
 const root = ref()
 
-const { dropdown, disabled, loading, block } = toRefs(props)
+const { dropdown, disabled, loading } = toRefs(props)
 
 const hasDropdown = computed(() => !!dropdown?.value?.length)
 const dropdownOpened = ref(false)
@@ -34,13 +33,8 @@ const clickOutside = (event: Event) => {
 </script>
 
 <template>
-	<div ref="root" class="Btn" :class="{ disabled, block }">
-		<button
-			class="Btn__actual accent"
-			:class="[props.size, { block }]"
-			:disabled="disabled"
-			@click="toggleDropdown"
-		>
+	<div ref="root" class="Btn" :class="{ disabled: disabled }">
+		<button class="Btn__actual accent" :class="[props.size]" :disabled="disabled" @click="toggleDropdown">
 			<Spinner v-if="loading" />
 			<slot name="before"></slot>
 			<slot></slot>
@@ -67,11 +61,6 @@ const clickOutside = (event: Event) => {
 
 .Btn.noBackground {
 	--button-background-color-primary: transparent;
-}
-
-.Btn.block,
-.Btn__actual.block {
-	width: 100%;
 }
 
 .Btn__actual {
@@ -184,6 +173,7 @@ const clickOutside = (event: Event) => {
 	cursor: pointer;
 	border: none;
 	padding: 0;
+	justify-content: start;
 }
 
 .Btn.functional.disabled .Btn__actual {
@@ -207,12 +197,10 @@ const clickOutside = (event: Event) => {
 .Btn__actual.small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-small);
-	--icon-size: 20px;
 }
 
 .Btn__actual.extra-small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-footnote);
-	--icon-size: 18px;
 }
 </style>

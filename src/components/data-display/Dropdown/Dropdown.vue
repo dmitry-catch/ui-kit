@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+import { ref, toRefs, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import DropdownItem from './DropdownItem/DropdownItem.vue'
 import Button from '../../general/Button/Button.vue'
@@ -8,25 +8,16 @@ import { isGroup } from './utils.js'
 import { Keyboard } from '../../../consts/Keyboard'
 
 interface DropdownProps {
-	modelValue?: boolean
-	label?: string
+	title?: string | boolean
 	caret?: boolean
 	disabled?: boolean
 	icon?: string
 	size?: 'extra-small' | 'small' | 'medium'
 	autoClose?: boolean | ('keyboard' | 'outside' | 'item')[]
-	/**
-	 * Отступ от кнопки до контекстного меню (в пикселях)
-	 * @default 2
-	 */
 	offset?: number
 	loading?: boolean
 	items?: Array<DropdownItemType> | Array<DropdownGroupType>
 	variant?: 'icon' | 'functional' | 'accent'
-	/** При положительном значении флага ширина выпадающего списка
-	 * будет отталкиваться от ширины родительского компонента "Dropdown", если у этого "родителя"
-	 * стоит position: relative */
-	related?: boolean
 }
 
 const props = withDefaults(defineProps<DropdownProps>(), {
@@ -37,31 +28,25 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 })
 
 defineSlots<{
-	/** "Контролирующий" элемент. (кнопка выпадающего списка)  */
-	toggle?: () => unknown
-	/** Заголовок контекстного меню  */
-	header?: () => unknown
-	/** Элементы контекстного меню  */
-	item?: (props: { item: DropdownItemType }) => unknown
-	/** Группа элементов контекстного меню  */
-	groupLabel?: (props: { group: DropdownGroupType }) => unknown
-	/** Нижний колонтитул контекстного меню  */
-	footer?: () => unknown
-	/** Передача произвольного контента в контекстное меню */
-	default?: () => unknown
+	toggle?: () => any
+	header?: () => any
+	item?: () => any
+	groupLabel?: () => any
+	footer?: () => any
+	default?: () => any
 }>()
 
-const isDropdownOpen = ref()
+defineExpose({
+	close: () => closeDropdown(),
+	open: () => openDropdown()
+})
+
+const emit = defineEmits(['beforeClose', 'afterClose'])
+
+const { title, caret, disabled, icon, size, autoClose, offset, loading, items, variant } = toRefs(props)
+
+const isDropdownOpen = ref(false)
 const root = ref()
-
-const emit = defineEmits<{
-	(e: 'update:modelValue', value: boolean): void
-	(e: 'beforeClose'): void
-	(e: 'afterClose'): void
-}>()
-
-const { label, caret, disabled, icon, autoClose, offset, loading, items, variant, related, modelValue } = toRefs(props)
-const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
 const toggleDropdown = () => {
 	if (disabled.value || loading.value) return
@@ -75,12 +60,21 @@ const toggleDropdown = () => {
 const closeDropdown = () => {
 	emit('beforeClose')
 	isDropdownOpen.value = false
-	focusedItemIdx.value = -1
 	emit('afterClose')
 }
 
 const openDropdown = () => {
 	isDropdownOpen.value = true
+}
+
+const escapeHandler = (evt: KeyboardEvent) => {
+	if (
+		evt.key === Keyboard.ESC &&
+		isDropdownOpen.value &&
+		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('keyboard')))
+	) {
+		closeDropdown()
+	}
 }
 
 const outsideClickHandler = (evt: MouseEvent) => {
@@ -93,18 +87,9 @@ const outsideClickHandler = (evt: MouseEvent) => {
 	}
 }
 
-const itemClickHandler = (item: DropdownItemType) => {
+const handleClick = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
-		closeDropdown()
-	}
-}
-
-const escapeHandler = () => {
-	if (
-		isDropdownOpen.value &&
-		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('keyboard')))
-	) {
 		closeDropdown()
 	}
 }
@@ -132,160 +117,79 @@ const calculateDropdownPosition = () => {
 }
 
 watch(isDropdownOpen, () => {
-	emit('update:modelValue', isDropdownOpen.value)
 	if (isDropdownOpen.value) {
 		calculateDropdownPosition()
 	}
 })
 
-watch(modelValue, () => {
-	isDropdownOpen.value = modelValue.value
-})
-
-const focusedItemIdx = ref(-1) // no item is focused initially
-
-const allItems = computed(() => {
-	const items: DropdownItemType[] = []
-	props.items?.forEach((item) => {
-		if (isGroup(item)) {
-			items.push(...item.items)
-		} else {
-			items.push(item)
-		}
-	})
-	return items
-})
-
-const focusNextItem = () => {
-	focusedItemIdx.value = (focusedItemIdx.value + 1) % allItems.value.length
-	scrollIntoViewIfNeeded()
-}
-
-const focusPreviousItem = () => {
-	focusedItemIdx.value = (focusedItemIdx.value - 1 + allItems.value.length) % allItems.value.length
-	scrollIntoViewIfNeeded()
-}
-
-const selectFocusedItem = () => {
-	if (focusedItemIdx.value >= 0) {
-		itemClickHandler(allItems.value[focusedItemIdx.value])
-	}
-}
-
-const onKeyDown = (evt: KeyboardEvent) => {
-	switch (evt.key) {
-		case Keyboard.UP:
-			if (focusedItemIdx.value == -1) focusedItemIdx.value = 0
-			focusPreviousItem()
-			evt.preventDefault()
-			break
-		case Keyboard.DOWN:
-			focusNextItem()
-			evt.preventDefault()
-			break
-		case Keyboard.ENTER:
-			selectFocusedItem()
-			evt.preventDefault()
-			break
-		case Keyboard.ESC:
-			escapeHandler()
-			break
-	}
-}
-
-const scrollIntoViewIfNeeded = () => {
-	nextTick(() => {
-		const itemElements = dropdownMenuRef.value?.querySelectorAll(
-			'.Dropdown__contentSubItem, .Dropdown__contentItem'
-		)
-		if (focusedItemIdx.value >= 0 && focusedItemIdx.value < itemElements?.length) {
-			itemElements[focusedItemIdx.value].scrollIntoView({ block: 'nearest' })
-		}
-	})
-}
-
 onMounted(() => {
-	isDropdownOpen.value = modelValue.value ?? false
 	document.addEventListener('mousedown', outsideClickHandler)
+	document.addEventListener('keydown', escapeHandler)
 })
 
 onUnmounted(() => {
 	document.removeEventListener('mousedown', outsideClickHandler)
+	document.removeEventListener('keydown', escapeHandler)
 })
 </script>
 
 <template>
 	<div ref="root" class="Dropdown">
-		<div
-			ref="dropdownFieldRef"
-			class="Dropdown__button"
-			tabindex="0"
-			:size="size"
-			@click="toggleDropdown"
-			@keydown="onKeyDown"
-		>
+		<div ref="dropdownFieldRef" class="Dropdown__button" @click="toggleDropdown" :class="size">
 			<slot name="toggle">
 				<Button class="Dropdown__field" :class="variant" :disabled="disabled" :loading="loading" :size="size">
 					<Icon
 						v-if="icon"
 						:name="icon"
 						class="Dropdown__icon Dropdown__fieldLabelIcon"
-						:class="[{ onAccent: variant == 'accent' }]"
-						:size="size"
+						:class="[{ onAccent: variant == 'accent' }, size]"
 					/>
-					<template v-if="!variant?.includes('icon')">{{ label }}</template>
+					<template v-if="!variant?.includes('icon')">{{ title }}</template>
 					<Icon
 						v-if="caret && !variant?.includes('icon')"
-						:name="isDropdownOpen ? 'chevron_up' : 'chevron_down'"
+						name="chevron_down"
 						class="Dropdown__icon Dropdown__fieldIcon"
-						:class="[{ onAccent: variant == 'accent' }]"
-						:size="size"
+						:class="[{ onAccent: variant == 'accent' }, size]"
 					/>
 				</Button>
 			</slot>
 		</div>
 		<div
 			v-if="isDropdownOpen"
-			ref="dropdownMenuRef"
 			class="Dropdown__menu"
-			:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }]"
-			:size="size"
+			:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }, size]"
+			ref="dropdownMenuRef"
 		>
-			<div class="Dropdown__menuHeader" :size="size">
+			<div class="Dropdown__menuHeader" :class="size">
 				<slot name="header"></slot>
 			</div>
-			<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }]" :size="size">
+			<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }, size]">
 				<slot>
 					<template v-if="items && items.length > 0">
 						<template v-for="(item, idx) in items" :key="idx">
 							<div v-if="isGroup(item)" v-bind="item.extraAttrs" class="Dropdown__contentSubItems">
-								<div class="Dropdown__contentSubItemsLabel" :size="size">
+								<div class="Dropdown__contentSubItemsLabel" :class="size">
 									<slot name="groupLabel" :group="item">{{ item.name }}</slot>
 								</div>
 								<div
 									v-for="(subItem, idx) in item.items"
 									:key="idx"
+									@click="handleClick(subItem)"
 									class="Dropdown__contentSubItemField"
-									:class="{
-										'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(subItem)
-									}"
-									@click="itemClickHandler(subItem)"
 								>
 									<div
 										v-if="$slots.item"
 										v-bind="subItem.extraAttrs"
+										:class="[size, subItem.wrapperClass]"
 										class="Dropdown__contentSubItem"
-										:class="[subItem.wrapperClass]"
-										:size="size"
 									>
 										<slot name="item" :item="subItem" v-bind="subItem.extraAttrs"></slot>
 									</div>
 									<DropdownItem
 										v-else
 										v-bind="subItem.extraAttrs"
+										:class="[subItem.wrapperClass, size]"
 										class="Dropdown__contentSubItem"
-										:class="[subItem.wrapperClass]"
-										:size="size"
 									>
 										{{ subItem.label }}
 									</DropdownItem>
@@ -295,26 +199,18 @@ onUnmounted(() => {
 								<div
 									v-if="$slots.item"
 									v-bind="item.extraAttrs"
+									:class="[size, item.wrapperClass]"
 									class="Dropdown__contentItem"
-									:class="[
-										item.wrapperClass,
-										{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
-									]"
-									:size="size"
-									@click="itemClickHandler(item)"
+									@click="handleClick(item)"
 								>
 									<slot name="item" :item="item"></slot>
 								</div>
 								<DropdownItem
 									v-else
 									v-bind="item.extraAttrs"
+									:class="[item.wrapperClass, size]"
 									class="Dropdown__contentItem"
-									:class="[
-										item.wrapperClass,
-										{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
-									]"
-									:size="size"
-									@click="itemClickHandler(item)"
+									@click="handleClick(item)"
 								>
 									{{ item.label }}
 								</DropdownItem>
@@ -324,7 +220,7 @@ onUnmounted(() => {
 				</slot>
 			</div>
 			<div>
-				<div class="Dropdown_menuFooter" :size="size">
+				<div class="Dropdown_menuFooter" :class="size">
 					<slot name="footer"></slot>
 				</div>
 			</div>
@@ -336,7 +232,6 @@ onUnmounted(() => {
 .Dropdown {
 	width: max-content;
 	box-sizing: border-box;
-	position: v-bind(menuWidthStyling);
 }
 
 .Dropdown__button {
@@ -351,18 +246,11 @@ onUnmounted(() => {
 }
 
 .Dropdown__menu {
-	position: absolute;
-	width: 100%;
-	left: 0%;
 	border-radius: var(--design-border-radius-control);
 	max-height: 322px;
 	overflow: auto;
 	box-shadow: var(--dropdown-box-shadow);
 	border: 1px solid var(--design-border-color-primary);
-}
-
-.Dropdown__item--focused {
-	background: var(--design-background-color-on-accent-primary);
 }
 
 .Dropdown__menuHeader,
@@ -371,24 +259,15 @@ onUnmounted(() => {
 .Dropdown__contentSubItem,
 .Dropdown_menuFooter,
 .Dropdown__contentDefault {
-	padding: calc(var(--design-gap-unit) / 2) 0;
-	background-color: var(--design-background-color-primary);
-}
-
-.Dropdown__contentItem {
-	padding-left: calc(3 * var(--design-gap-unit));
-	padding-right: calc(3 * var(--design-gap-unit));
+	padding: calc(var(--design-gap-unit) / 2) var(--design-gap-unit);
 }
 
 .Dropdown__contentSubItemField:hover,
 .Dropdown__contentItem:hover {
-	background-color: var(--design-background-color-on-accent-primary);
+	background-color: var(--design-background-color-tertiary);
 	cursor: pointer;
 }
 
-.Dropdown__contentSubItem:hover {
-	background-color: var(--design-background-color-on-accent-primary);
-}
 .Dropdown__content .Dropdown__contentSubItems {
 	border-top: 1px solid var(--design-border-color-primary);
 	border-bottom: 1px solid var(--design-border-color-primary);
@@ -420,7 +299,7 @@ onUnmounted(() => {
 .Dropdown__contentItem[disabled],
 .Dropdown__contentSubItem[disabled],
 .Dropdown__contentSubItems[disabled] {
-	background: var(--design-background-color-on-accent-primary);
+	background: var(--design-background-color-tertiary);
 	cursor: pointer;
 }
 
@@ -433,7 +312,8 @@ onUnmounted(() => {
 /* Size Styling */
 
 /* Extra-Small Size Styling */
-.Dropdown__menu[size='extra-small'] :deep(.DropdownItem > *) {
+
+.Dropdown__menu.extra-small :deep(.DropdownItem > *) {
 	--icon-size: 20px;
 	font-size: var(--design-font-size-footnote);
 	padding: calc(var(--design-gap-unit) / 4);
@@ -441,53 +321,73 @@ onUnmounted(() => {
 	gap: calc(var(--design-gap-unit) / 2);
 }
 
-.Dropdown__menu[size='extra-small'],
-.Dropdown__contentItem[size='extra-small'],
-.Dropdown__contentSubItemsLabel[size='extra-small'],
-.Dropdown__contentSubItem[size='extra-small'],
-.Dropdown_menuFooter[size='extra-small'],
-.Dropdown__contentDefault[size='extra-small'] {
+.Dropdown__menuHeader.extra-small,
+.Dropdown__contentItem.extra-small,
+.Dropdown__contentSubItemsLabel.extra-small,
+.Dropdown__contentSubItem.extra-small,
+.Dropdown_menuFooter.extra-small,
+.Dropdown__contentDefault.extra-small {
 	padding: calc(var(--design-gap-unit) / 4);
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
 }
 
-.Dropdown__button[size='extra-small'] :deep(*),
-.Dropdown__menu[size='extra-small'] :deep(*) {
+.Dropdown__button.extra-small {
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
 }
 
-.Dropdown__icon[size='extra-small'] {
+.Dropdown__button.extra-small :deep(*),
+.Dropdown__menuHeader.extra-small :deep(*),
+.Dropdown__contentItem.extra-small :deep(*),
+.Dropdown__contentSubItemsLabel.extra-small :deep(*),
+.Dropdown__contentSubItem.extra-small :deep(*),
+.Dropdown_menuFooter.extra-small :deep(*),
+.Dropdown__contentDefault.extra-small :deep(*) {
+	font-size: var(--design-font-size-footnote);
+	line-height: var(--design-line-height-footnote);
+}
+
+.Dropdown__icon.extra-small {
 	--icon-size: 18px;
 }
 
 /* Small Size Styling */
 
-.Dropdown__menu[size='small'] :deep(.DropdownItem > *) {
+.Dropdown__menu.small :deep(.DropdownItem > *) {
 	font-size: var(--design-font-size-small);
 	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
 	gap: calc(var(--design-gap-unit) / 2);
 }
 
-.Dropdown__menuHeader[size='small'],
-.Dropdown__contentItem[size='small'],
-.Dropdown__contentSubItemsLabel[size='small'],
-.Dropdown__contentSubItem[size='small'],
-.Dropdown_menuFooter[size='small'],
-.Dropdown__contentDefault[size='small'] {
+.Dropdown__menuHeader.small,
+.Dropdown__contentItem.small,
+.Dropdown__contentSubItemsLabel.small,
+.Dropdown__contentSubItem.small,
+.Dropdown_menuFooter.small,
+.Dropdown__contentDefault.small {
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
 }
 
-.Dropdown__button[size='small'] :deep(*),
-.Dropdown__menu[size='small'] :deep(*) {
+.Dropdown__button.small {
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 }
 
-.Dropdown__icon[size='small'] {
+.Dropdown__button.small :deep(*),
+.Dropdown__menuHeader.small :deep(*),
+.Dropdown__contentItem.small :deep(*),
+.Dropdown__contentSubItemsLabel.small :deep(*),
+.Dropdown__contentSubItem.small :deep(*),
+.Dropdown_menuFooter.small :deep(*),
+.Dropdown__contentDefault.small :deep(*) {
+	font-size: var(--design-font-size-small);
+	line-height: var(--design-line-height-small);
+}
+
+.Dropdown__icon.small {
 	--icon-size: 20px;
 }
 
