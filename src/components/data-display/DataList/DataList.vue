@@ -20,14 +20,14 @@ const props = withDefaults(defineProps<DataListProps>(), {
 })
 
 const emit = defineEmits<{
-	(event: 'click', item: DataListItem, e: MouseEvent): void
+	(event: 'click', payload: { item: DataListItem; evt: MouseEvent }): void
 }>()
 
 const { items, loading, hover, expandable } = toRefs(props)
 
-const handleClick = (e: MouseEvent, item: DataListItem) => {
+const handleClick = (evt: MouseEvent, item: DataListItem) => {
 	item.action?.(item)
-	emit('click', item, e)
+	emit('click', { evt, item })
 }
 
 const groupClickHandler = (item: DataListGroup) => {
@@ -43,7 +43,7 @@ defineSlots<{
 	groupLabel?: (props: { group: DataListGroup }) => any
 	/** Нижний колонтитул списка элементов  */
 	footer?: () => any
-	/** Placeholder при пустом списке элементов */
+	/** Передача произвольного контента в список элементов */
 	empty?: () => any
 }>()
 </script>
