@@ -7,11 +7,9 @@ import Icon from '../../general//Icon/Icon.vue'
 
 export interface DataListProps {
 	loading?: boolean
-	/** Подсвечивание элементов при наведении. */
 	hover?: boolean
 	size?: 'extra-small' | 'small' | 'medium'
 	items?: Array<DataListItem> | Array<DataListGroup>
-	/** Возможность сворачивания групп. */
 	expandable?: boolean
 }
 
@@ -20,14 +18,14 @@ const props = withDefaults(defineProps<DataListProps>(), {
 })
 
 const emit = defineEmits<{
-	(event: 'click', payload: { item: DataListItem; evt: MouseEvent }): void
+	(e: 'click', item: DataListItem): void
 }>()
 
 const { items, loading, hover, expandable } = toRefs(props)
 
-const handleClick = (evt: MouseEvent, item: DataListItem) => {
+const handleClick = (item: DataListItem) => {
 	item.action?.(item)
-	emit('click', { evt, item })
+	emit('click', item)
 }
 
 const groupClickHandler = (item: DataListGroup) => {
@@ -35,15 +33,10 @@ const groupClickHandler = (item: DataListGroup) => {
 }
 
 defineSlots<{
-	/** Заголовок списка с элементами  */
 	header?: () => any
-	/** Элементы списка  */
 	item?: (props: { item: DataListItem }) => any
-	/** Группа элементов списка  */
 	groupLabel?: (props: { group: DataListGroup }) => any
-	/** Нижний колонтитул списка элементов  */
 	footer?: () => any
-	/** Передача произвольного контента в список элементов */
 	empty?: () => any
 }>()
 </script>
@@ -70,7 +63,7 @@ defineSlots<{
 								class="DataList__item"
 								:class="[groupItem.wrapperClass, { 'DataList__item--hover': hover }]"
 								:size="size"
-								@click="handleClick($event, groupItem)"
+								@click="handleClick(groupItem)"
 							>
 								<slot name="item" :item="groupItem">{{ groupItem.label }}</slot>
 							</div>
@@ -82,7 +75,7 @@ defineSlots<{
 							class="DataList__item"
 							:class="[item.wrapperClass, { 'DataList__item--hover': hover }]"
 							:size="size"
-							@click="handleClick($event, item)"
+							@click="handleClick(item)"
 						>
 							<slot name="item" :item="item">{{ item.label }}</slot>
 						</div>
