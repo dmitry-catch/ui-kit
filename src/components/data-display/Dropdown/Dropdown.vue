@@ -93,7 +93,7 @@ const outsideClickHandler = (evt: MouseEvent) => {
 	}
 }
 
-const handleClick = (item: DropdownItemType) => {
+const itemClickHandler = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
 		closeDropdown()
@@ -168,7 +168,7 @@ const focusPreviousItem = () => {
 
 const selectFocusedItem = () => {
 	if (focusedItemIdx.value >= 0) {
-		handleClick(allItems.value[focusedItemIdx.value])
+		itemClickHandler(allItems.value[focusedItemIdx.value])
 	}
 }
 
@@ -269,7 +269,7 @@ onUnmounted(() => {
 									:class="{
 										'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(subItem)
 									}"
-									@click="handleClick(subItem)"
+									@click="itemClickHandler(subItem)"
 								>
 									<div
 										v-if="$slots.item"
@@ -301,7 +301,7 @@ onUnmounted(() => {
 										{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
 									]"
 									:size="size"
-									@click="handleClick(item)"
+									@click="itemClickHandler(item)"
 								>
 									<slot name="item" :item="item"></slot>
 								</div>
@@ -314,7 +314,7 @@ onUnmounted(() => {
 										{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
 									]"
 									:size="size"
-									@click="handleClick(item)"
+									@click="itemClickHandler(item)"
 								>
 									{{ item.label }}
 								</DropdownItem>
