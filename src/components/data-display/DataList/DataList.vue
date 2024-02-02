@@ -144,6 +144,7 @@ defineSlots<{
 }
 
 /* Size Styling */
+
 /* Extra-Small Size Styling */
 
 .DataList__menuHeader[size='extra-small'],
