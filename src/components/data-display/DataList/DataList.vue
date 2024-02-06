@@ -34,6 +34,13 @@ const groupClickHandler = (item: DataListGroup) => {
 	if (expandable.value) item.isCollapsed = !item.isCollapsed
 }
 
+const handleMouseDown = (evt: MouseEvent) => {
+	const target = evt.target as HTMLElement
+	if (target.classList.contains('DataList__groupLabel')) {
+		evt.preventDefault()
+	}
+}
+
 defineSlots<{
 	/** Заголовок списка с элементами  */
 	header?: () => any
@@ -58,7 +65,12 @@ defineSlots<{
 			<div v-if="items && items.length > 0" class="DataList__content" :size="size">
 				<template v-for="(item, idx) in items" :key="idx">
 					<div v-if="isGroup(item)" class="DataList__group" v-bind="item.extraAttrs">
-						<div class="DataList__groupLabel" :size="size" @click="groupClickHandler(item)">
+						<div
+							class="DataList__groupLabel"
+							:size="size"
+							@mousedown="handleMouseDown"
+							@click="groupClickHandler(item)"
+						>
 							<Icon v-if="expandable" :name="item.isCollapsed ? 'chevron_down' : 'chevron_up'" />
 							<slot name="groupLabel" :group="item">{{ item.name }}</slot>
 						</div>
