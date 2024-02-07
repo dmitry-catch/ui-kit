@@ -2,28 +2,23 @@
 import { computed, inject, Ref, toRefs } from 'vue'
 import { TabsProvide } from './tabs.provide'
 
-interface TabProps {
-	value?: string | number | null
-}
-const props = withDefaults(defineProps<TabProps>(), { value: null })
+const props = defineProps({ value: { default: () => null } })
 
 const { value } = toRefs(props)
-const selectedValue = inject(TabsProvide.selectedTab) as Ref
-const pressed = computed(() => selectedValue?.value == value.value)
-const selectValue = (inject(TabsProvide.selectTab) ??
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	console.warn('Tab is used outside of context. Wrap Tab in Tabs component')) as Function
+const selectedValue = computed(() => (inject(TabsProvide.selectedTab) as Ref<any>).value)
+const selectValue =
+	inject(TabsProvide.selectTab) ?? console.warn('Tab is used outside of context. Wrap Tab in Tabs component')
 </script>
 
 <template>
-	<button class="Tab accent" :class="{ pressed: pressed }" @click="selectValue(value)">
+	<button class="Tab accent" :class="{ pressed: selectedValue === value }" @click="selectValue(value)">
 		<slot name="before"></slot>
 		<slot></slot>
 		<slot name="after"></slot>
 	</button>
 </template>
 
-<style scoped>
+<style>
 .Tab {
 	display: flex;
 	gap: var(--design-gap-unit);
@@ -33,7 +28,6 @@ const selectValue = (inject(TabsProvide.selectTab) ??
 	border-bottom: 3px solid rgba(0, 0, 0, 0);
 	box-sizing: border-box;
 	align-content: center;
-	padding-bottom: calc(1.5 * var(--design-gap-unit));
 }
 
 .Tab:hover {
