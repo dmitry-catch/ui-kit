@@ -433,6 +433,7 @@ onUnmounted(() => {
 }
 
 /* Size Styling */
+
 /* Extra-Small Size Styling */
 .Dropdown__menu[size='extra-small'] :deep(.DropdownItem > *) {
 	--icon-size: 20px;
