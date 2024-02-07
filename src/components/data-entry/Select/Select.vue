@@ -292,7 +292,6 @@ const root = ref()
 	display: flex;
 	padding: calc(1.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
 }
-
 .Select__popupSearchButton {
 	margin-right: var(--design-gap-unit);
 }
