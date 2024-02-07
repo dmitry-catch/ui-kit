@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Ref, computed, onMounted, onUnmounted, ref, toRefs, watch } from 'vue'
-import { useModalContext } from '../../../utils/useModalContext.js'
-import { handleKeyboardEvent } from '../../../utils/keyboardEventHandler.js'
-import { Keyboard } from '../../../consts/Keyboard.js'
-import { Modal, Surface, Button, Icon } from '../../../main.js'
+import { computed, onMounted, onUnmounted, watch, ref, toRefs } from 'vue'
+import { handleKeyboardEvent } from '../../../utils/keyboardEventHandler'
+import { Keyboard } from '../../../consts/Keyboard'
+import { Modal, Surface, Button, Icon } from '../../../main'
 
 interface DrawerProps {
 	open: boolean
@@ -14,8 +13,6 @@ interface DrawerProps {
 	placement?: 'top' | 'bottom' | 'right' | 'left'
 	/** Продвинутые параметры: number\string размер компонента */
 	size?: 'small' | 'medium' | 'large' | 'full' | number | string
-	/** Флаг отвечающий за расположение drawer'a. При дефолтном значении false относительно документа, при значении = true относительно родителя  */
-	relative?: boolean
 }
 const props = withDefaults(defineProps<DrawerProps>(), {
 	autofocus: true,
@@ -25,21 +22,20 @@ const props = withDefaults(defineProps<DrawerProps>(), {
 	backdrop: true
 })
 const emit = defineEmits<{
-	(e: 'close'): void
-	(e: 'open'): void
+	(e: 'onClose'): void
+	(e: 'onOpen'): void
 }>()
 
 defineSlots<{
 	header?: string
-	default?: () => unknown
-	footer?: () => unknown
+	default?: () => any
+	footer?: () => any
 }>()
 
-const { open, backdrop, keyboard, placement, size, autofocus, relative } = toRefs(props)
+const { open, backdrop, keyboard, placement, size, autofocus } = toRefs(props)
 
 const root = ref()
 const visibleContainerRef = ref()
-const ModalRef = ref()
 const focus = () => root.value.focus()
 const horizontal = computed(() => ['top', 'bottom'].includes(placement.value))
 const sizesContsts = ['small', 'medium', 'large', 'full']
@@ -58,29 +54,24 @@ const innerStyling = computed(() => {
 })
 
 const handleEscape = () => {
-	if (keyboard.value) emit('close')
+	if (keyboard.value) emit('onClose')
 }
 
 const clickOutside = (event: MouseEvent) => {
-	// @ts-expect-error event.path old chrome compatability
-	const path = event.path || event.composedPath()
-	return !(
-		visibleContainerRef.value === event.target ||
-		visibleContainerRef.value?.$el.contains(event.target) ||
-		path.includes(visibleContainerRef.value?.$el)
-	)
+	return !(visibleContainerRef.value === event.target || visibleContainerRef.value?.$el.contains(event.target))
 }
 
 const handleClickOutside = (event: MouseEvent) => {
-	if (clickOutside(event) && backdrop.value != 'static') emit('close')
+	if (clickOutside(event) && backdrop.value != 'static') emit('onClose')
 }
 
 const keyboardEvent = (e: KeyboardEvent) => {
+	e.preventDefault()
 	handleKeyboardEvent({ event: e, key: Keyboard.ESC, callback: handleEscape })
 }
 
 onMounted(() => {
-	emit('open')
+	emit('onOpen')
 	if (backdrop.value != 'static') root.value.addEventListener('click', handleClickOutside)
 	if (autofocus.value) focus()
 	if (keyboard.value) root.value.addEventListener('keyup', keyboardEvent)
@@ -89,24 +80,20 @@ onUnmounted(() => {
 	if (root.value?.hasEventListener('click')) root.value.removeEventListener('click', handleClickOutside)
 	if (root.value?.hasEventListener('keyup')) root.value.removeEventListener('keyup', keyboardEvent)
 })
-useModalContext(root)
 </script>
 <template>
-	<div ref="root" class="Drawer" :hidden="!open">
+	<div ref="root" class="Drawer">
 		<Modal
 			v-if="open"
-			ref="ModalRef"
 			class="Drawer__modal"
-			:class="{ backdrop, horizontal, relative }"
+			:class="{ backdrop, horizontal: horizontal }"
 			:anchor="placement"
-			:relative="relative"
-			:keyboard="keyboard"
 			@onDialogKeyDown="keyboardEvent"
 		>
 			<Surface ref="visibleContainerRef" class="Drawer__surface" :size="innerDefaultSize" :style="innerStyling">
 				<div class="Drawer__head">
 					<span class="Drawer__header accent text-large"><slot name="header"></slot></span>
-					<Button class="icon functional" @click="emit('close')"><Icon name="close" /></Button>
+					<Button class="icon functional" @click="emit('onClose')"><Icon name="close" /></Button>
 				</div>
 				<div class="Drawer_content">
 					<slot></slot>
@@ -119,14 +106,8 @@ useModalContext(root)
 	</div>
 </template>
 <style scoped>
-.Drawer {
-	height: 100%;
-	width: 100%;
-	position: absolute;
-}
 .Drawer__modal {
 	max-width: 100%;
-	height: 100%;
 }
 .Drawer__surface {
 	height: 100vh;
@@ -174,29 +155,15 @@ useModalContext(root)
 .Drawer__surface[size='medium'] {
 	min-width: 15rem;
 }
-
-.Drawer__modal.relative .Drawer__surface[size='medium'] {
-	min-width: 15%;
-}
 .Drawer__modal.horizontal .Drawer__surface[size='medium'] {
 	min-height: 15rem;
-}
-.Drawer__modal.horizontal.relative .Drawer__surface[size='medium'] {
-	min-height: 15%;
 }
 
 .Drawer__surface[size='large'] {
 	min-width: 30rem;
 }
-.Drawer__modal.relative .Drawer__surface[size='large'] {
-	min-width: 30%;
-}
 .Drawer__modal.horizontal .Drawer__surface[size='large'] {
 	min-height: 30rem;
-}
-
-.Drawer__modal.horizontal.relative .Drawer__surface[size='large'] {
-	min-height: 30%;
 }
 
 .Drawer__surface[size='full'] {
@@ -204,14 +171,5 @@ useModalContext(root)
 }
 .Drawer__modal.horizontal .Drawer__surface[size='full'] {
 	height: 100vw;
-}
-
-.Drawer__modal.horizontal.relative {
-	max-height: min-content;
-	height: min-content;
-	width: 100%;
-}
-.Drawer__modal.horizontal.relative .Drawer__surface {
-	width: 100%;
 }
 </style>

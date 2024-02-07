@@ -202,10 +202,8 @@ const root = ref()
 					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 				></template>
 				<template v-if="slots.listFooter || items?.length == 0" #footer>
-					<span v-if="items?.length == 0 && !searchInput" class="itemHint">Нет элементов</span>
-					<span v-if="items?.length == 0 && searchInput" class="itemHint"
-						>Нет совпадений «{{ searchInput }}»</span
-					>
+					<span v-if="items?.length == 0 && !searchInput">Нет элементов</span>
+					<span v-if="items?.length == 0 && searchInput">Нет совпадений «{{ searchInput }}»</span>
 					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 					<slot name="listFooter"></slot>
 				</template>
@@ -246,12 +244,6 @@ const root = ref()
 	text-align: start;
 }
 
-.itemHint {
-	display: block;
-	padding: 0 calc(3 * var(--design-gap-unit));
-	margin-bottom: var(--design-gap-unit);
-}
-
 .Select__content.disabled * {
 	color: var(--design-text-color-secondary);
 }
@@ -290,7 +282,7 @@ const root = ref()
 }
 .Select__popupSearch {
 	display: flex;
-	padding: calc(1.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+	padding: calc(2 * var(--design-gap-unit)) var(--design-gap-unit);
 }
 .Select__popupSearchButton {
 	margin-right: var(--design-gap-unit);

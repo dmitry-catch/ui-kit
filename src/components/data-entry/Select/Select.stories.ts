@@ -87,20 +87,3 @@ export const ListItemsSlotted: Story = {
 	  `
 	})
 }
-
-export const EmptyOptions: Story = {
-	args: {
-		searchType: 'popup',
-		options: []
-	},
-	render: (args) => ({
-		components: { Select },
-		setup() {
-			return { args }
-		},
-		template: `
-		<Select v-bind="args">
-		</Select>
-	  `
-	})
-}

@@ -359,6 +359,8 @@ onUnmounted(() => {
 	overflow: auto;
 	box-shadow: var(--dropdown-box-shadow);
 	border: 1px solid var(--design-border-color-primary);
+	z-index: var(--dropdown-z-index);
+	min-width: max-content;
 }
 
 .Dropdown__item--focused {
@@ -431,7 +433,6 @@ onUnmounted(() => {
 }
 
 /* Size Styling */
-
 /* Extra-Small Size Styling */
 .Dropdown__menu[size='extra-small'] :deep(.DropdownItem > *) {
 	--icon-size: 20px;
