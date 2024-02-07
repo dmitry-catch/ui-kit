@@ -26,7 +26,7 @@ interface TagProps {
 
 const props = withDefaults(defineProps<TagProps>(), { color: 'gray', size: 'medium' })
 const emit = defineEmits<{
-	(e: 'onClose'): void
+	(e: 'close'): void
 }>()
 
 const { color, closable, squared } = toRefs(props)
@@ -36,7 +36,7 @@ const { color, closable, squared } = toRefs(props)
 	<div class="Tag text-medium" :class="{ 'Tag--squared': squared }" :color="color" :size="size">
 		<Icon v-if="icon" :name="icon" />
 		<slot></slot>
-		<Button v-if="closable" class="icon functional" @click="emit('onClose')">
+		<Button v-if="closable" class="icon functional" @click="emit('close')">
 			<Icon name="close" />
 		</Button>
 	</div>

@@ -6,5 +6,8 @@ interface handleKeyboardEventProps {
 	callback: () => void
 }
 export const handleKeyboardEvent = ({ event, key, callback }: handleKeyboardEventProps) => {
-	if (event.code == key) callback()
+	if (event.code == key) {
+		event.preventDefault()
+		callback()
+	}
 }

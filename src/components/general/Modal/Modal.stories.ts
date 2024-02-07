@@ -4,6 +4,7 @@ import Modal from './Modal.vue'
 export default {
 	component: Modal,
 	args: {
+		relative: false,
 		default: 'Press "Esc" to exit',
 		anchor: 'center',
 		//@ts-expect-error argument for wrapper
