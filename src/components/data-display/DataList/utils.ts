@@ -1,5 +1,5 @@
-import { DataListGroupType, DataListItemType } from './types.js'
+import { DataListGroup, DataListItem } from './types.js'
 
-export const isGroup = (itemOrGroup: DataListItemType | DataListGroupType): itemOrGroup is DataListGroupType => {
+export const isGroup = (itemOrGroup: DataListItem | DataListGroup): itemOrGroup is DataListGroup => {
 	return 'items' in itemOrGroup
 }

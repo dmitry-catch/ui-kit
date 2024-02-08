@@ -1,14 +1,14 @@
-export type DataListItemType = {
+export type DataListItem = {
 	label: string
 	value?: any
-	action?: (item: DataListItemType) => void
+	action?: (item: DataListItem) => void
 	extraAttrs?: Record<string, any>
 	wrapperClass?: string
 }
 
-export type DataListGroupType = {
+export type DataListGroup = {
 	name?: string
-	items: Array<DataListItemType>
+	items: Array<DataListItem>
 	extraAttrs?: Record<string, any>
 	isCollapsed?: boolean
 }

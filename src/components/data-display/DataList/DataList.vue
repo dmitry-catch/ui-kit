@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import { DataListItemType, DataListGroupType } from './types.js'
+import { DataListItem, DataListGroup } from './types.js'
 import { isGroup } from './utils.js'
 import Spinner from '../../general/Spinner/Spinner.vue'
-import DataListGroup from './DataListGroup/DataListGroup.vue'
+import Icon from '../../general//Icon/Icon.vue'
 
 export interface DataListProps {
 	loading?: boolean
 	/** Подсвечивание элементов при наведении. */
 	hover?: boolean
 	size?: 'extra-small' | 'small' | 'medium'
-	items?: Array<DataListItemType> | Array<DataListGroupType>
+	items?: Array<DataListItem> | Array<DataListGroup>
 	/** Возможность сворачивания групп. */
 	expandable?: boolean
 }
@@ -20,17 +20,17 @@ const props = withDefaults(defineProps<DataListProps>(), {
 })
 
 const emit = defineEmits<{
-	(event: 'click', item: DataListItemType, e: MouseEvent): void
+	(event: 'click', item: DataListItem, e: MouseEvent): void
 }>()
 
 const { items, loading, hover, expandable } = toRefs(props)
 
-const handleClick = (e: MouseEvent, item: DataListItemType) => {
+const handleClick = (e: MouseEvent, item: DataListItem) => {
 	item.action?.(item)
 	emit('click', item, e)
 }
 
-const groupClickHandler = (item: DataListGroupType) => {
+const groupClickHandler = (item: DataListGroup) => {
 	if (expandable.value) item.isCollapsed = !item.isCollapsed
 }
 
@@ -45,9 +45,9 @@ defineSlots<{
 	/** Заголовок списка с элементами  */
 	header?: () => any
 	/** Элементы списка  */
-	item?: (props: { item: DataListItemType }) => any
+	item?: (props: { item: DataListItem }) => any
 	/** Группа элементов списка  */
-	groupLabel?: (props: { group: DataListGroupType }) => any
+	groupLabel?: (props: { group: DataListGroup }) => any
 	/** Нижний колонтитул списка элементов  */
 	footer?: () => any
 	/** Placeholder при пустом списке элементов */
@@ -64,21 +64,19 @@ defineSlots<{
 			</div>
 			<div v-if="items && items.length > 0" class="DataList__content" :size="size">
 				<template v-for="(item, idx) in items" :key="idx">
-					<DataListGroup
-						v-if="isGroup(item)"
-						:group="item"
-						:expandable="expandable"
-						:hover="hover"
-						:size="size"
-						@click="groupClickHandler(item)"
-						@mousedown="handleMouseDown"
-					>
-						<template #groupLabel="{ group }">
-							<slot name="groupLabel" :group="group">{{ group.name }}</slot>
-						</template>
-						<template #groupItems="{ items }">
+					<div v-if="isGroup(item)" class="DataList__group" v-bind="item.extraAttrs">
+						<div
+							class="DataList__groupLabel"
+							:size="size"
+							@mousedown="handleMouseDown"
+							@click="groupClickHandler(item)"
+						>
+							<Icon v-if="expandable" :name="item.isCollapsed ? 'chevron_down' : 'chevron_up'" />
+							<slot name="groupLabel" :group="item">{{ item.name }}</slot>
+						</div>
+						<div v-if="!item.isCollapsed" class="DataList__groupItems">
 							<div
-								v-for="(groupItem, groupIdx) in items"
+								v-for="(groupItem, groupIdx) in item.items"
 								:key="groupIdx"
 								v-bind="groupItem.extraAttrs"
 								class="DataList__item"
@@ -88,8 +86,8 @@ defineSlots<{
 							>
 								<slot name="item" :item="groupItem">{{ groupItem.label }}</slot>
 							</div>
-						</template>
-					</DataListGroup>
+						</div>
+					</div>
 					<template v-else>
 						<div
 							v-bind="item.extraAttrs"
@@ -142,8 +140,8 @@ defineSlots<{
 	border-bottom: 1px solid var(--design-border-color-primary);
 }
 
-.DataList__content .DataList__group ~ :deep(.DataList__group),
-.DataList__menuHeader:empty + .DataList__content :deep(.DataList__group) {
+.DataList__content .DataList__group ~ .DataList__group,
+.DataList__menuHeader:empty + .DataList__content .DataList__group {
 	border-top: none;
 }
 

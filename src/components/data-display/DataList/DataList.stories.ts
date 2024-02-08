@@ -1,15 +1,15 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import DataList from './DataList.vue'
-import { DataListGroupType, DataListItemType } from './types.js'
+import { DataListGroup, DataListItem } from './types.js'
 
-const dataListItems: DataListItemType[] = [
+const dataListItems: DataListItem[] = [
 	{ label: 'Item 1', value: 'value1', action: () => console.log('selected Item 1.') },
 	{ label: 'Item 2', value: 'value2', action: () => console.log('selected Item 2.') },
 	{ label: 'Item 3', value: 'value3', action: () => console.log('selected Item 3.') },
 	{ label: 'Item 4', value: 'value4', action: () => console.log('selected Item 4.') }
 ]
 
-const dataListGroupItems: DataListGroupType[] = [
+const dataListGroupItems: DataListGroup[] = [
 	{
 		name: 'Group1',
 		items: [
