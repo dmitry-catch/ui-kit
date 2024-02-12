@@ -85,10 +85,8 @@ const openDropdown = () => {
 }
 
 const outsideClickHandler = (evt: MouseEvent) => {
-	const target = evt.target as HTMLElement
-	const popoverContent = document.querySelector('.Popover__content')
 	if (
-		!popoverContent?.contains(target) &&
+		!root.value.contains(evt.target) &&
 		isDropdownOpen.value &&
 		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('outside')))
 	) {
