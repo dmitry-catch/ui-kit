@@ -38,16 +38,12 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: var(--design-gap-unit);
 }
 
-.Spinner.backdrop {
+.Spinner.backdrop::backdrop {
 	background: var(--design-background-color-modal-shadow);
 }
 
-.Spinner.backdrop .Spinner__wheel {
-	border-top-color: var(--design-background-color-modal-shadow);
-}
 .Spinner.vertical {
 	flex-direction: column;
 }
