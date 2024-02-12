@@ -11,7 +11,7 @@ import { DataGridColumn } from './types.js'
 export interface Props {
 	columns: Array<DataGridColumn>
 	dataSource: Array<any>
-	rowKey: (data: any) => string
+	yye: (data: any) => string
 	allowSelection: boolean
 	selectedRows: Array<any>
 	pageSize: number
