@@ -322,9 +322,7 @@ const IconNames: string[] = [
 	'youtube',
 	'zap',
 	'zoom_in',
-	'zoom_out',
-	'menu-expand',
-	'menu-collapse'
+	'zoom_out'
 ]
 
 /**
