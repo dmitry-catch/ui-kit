@@ -191,9 +191,4 @@ defineSlots<{
 .DataList__menuFooter:empty {
 	padding: 0;
 }
-.DataList__content :deep(.DataList__groupLabel *) {
-	--icon-size: 20px;
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
-}
 </style>
