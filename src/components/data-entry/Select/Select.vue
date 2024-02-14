@@ -28,12 +28,9 @@ interface SelectProps {
 	 */
 	searchType?: 'input' | false | 'auto' | 'popup'
 	size?: 'extra-small' | 'small' | 'medium'
-	/** Добавляет ограничение на минимальное колличество символов */
 	searchMinLength?: number
-	/** Добавляет счётчик символов и ограничение в попап поиск и просто ограничение в инпут поиск */
 	searchMaxLength?: number
-	/** Плейсхолдер для поиска во контекстном меню */
-	popupPlaceholder?: string
+	popupSearchPlaceholder?: string
 }
 
 const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
@@ -53,7 +50,7 @@ const {
 	description,
 	searchMinLength,
 	searchMaxLength,
-	popupPlaceholder
+	popupSearchPlaceholder
 } = toRefs(props)
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: string | number | null): void
@@ -198,7 +195,7 @@ const root = ref()
 						class="Select__popupSearch"
 						:minLength="searchMinLength"
 						:maxLength="searchMaxLength"
-						:placeholder="popupPlaceholder"
+						:placeholder="popupSearchPlaceholder"
 					>
 						<template #before>
 							<Icon name="search" class="Select__popupSearchButton" />
