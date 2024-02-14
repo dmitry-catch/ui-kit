@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, toRefs, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
-import { useModalContext } from '../../../utils/useModalContext'
 import Icon from '../../general/Icon/Icon.vue'
 import DropdownItem from './DropdownItem/DropdownItem.vue'
 import Button from '../../general/Button/Button.vue'
@@ -216,8 +215,6 @@ onMounted(() => {
 onUnmounted(() => {
 	document.removeEventListener('mousedown', outsideClickHandler)
 })
-
-useModalContext(root)
 </script>
 
 <template>
