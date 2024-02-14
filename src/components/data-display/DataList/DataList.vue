@@ -119,6 +119,14 @@ defineSlots<{
 	box-sizing: border-box;
 }
 
+.DataList__groupLabel {
+	display: flex;
+	align-items: center;
+	gap: var(--design-gap-unit);
+	background-color: var(--design-background-color-on-accent-primary);
+	padding: calc(var(--design-gap-unit) / 2) calc(3 * var(--design-gap-unit));
+}
+
 .DataList__menuHeader,
 .DataList__menuFooter,
 .DataList__empty {
@@ -129,9 +137,20 @@ defineSlots<{
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
 }
 
-.DataList__content :deep(.DataList__group ~ .DataList__group),
+.DataList__group {
+	border-top: 1px solid var(--design-border-color-primary);
+	border-bottom: 1px solid var(--design-border-color-primary);
+}
+
+.DataList__content .DataList__group ~ :deep(.DataList__group),
 .DataList__menuHeader:empty + .DataList__content :deep(.DataList__group) {
 	border-top: none;
+}
+
+.DataList__groupLabel,
+.DataList__groupLabel :deep(*:not(.Icon path)) {
+	font-weight: 600;
+	color: var(--design-text-color-secondary);
 }
 
 .DataList__item--hover:hover {

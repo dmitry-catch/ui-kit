@@ -53,12 +53,6 @@ const groupClickHandler = () => {
 	border-bottom: 1px solid var(--design-border-color-primary);
 }
 
-.DataList__groupLabel :deep(*) {
-	--icon-size: 20px;
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
-}
-
 .DataList__groupLabel,
 .DataList__groupLabel :deep(*:not(.Icon path)) {
 	font-weight: 600;
