@@ -28,8 +28,8 @@ interface SelectProps {
 	 */
 	searchType?: 'input' | false | 'auto' | 'popup'
 	size?: 'extra-small' | 'small' | 'medium'
-	searchMinLength?: number
-	searchMaxLength?: number
+	searchMinLength: number
+	searchMaxLength: number
 	popupSearchPlaceholder?: string
 }
 
