@@ -247,7 +247,7 @@ onUnmounted(() => {
 				</Button>
 			</slot>
 		</div>
-		<Popover v-if="isDropdownOpen" :offset="offset" :parentNode="related ? root.parentNode : null">
+		<Popover v-if="isDropdownOpen" :offset="offset">
 			<div
 				ref="dropdownMenuRef"
 				class="Dropdown__menu"

@@ -28,9 +28,6 @@ interface SelectProps {
 	 */
 	searchType?: 'input' | false | 'auto' | 'popup'
 	size?: 'extra-small' | 'small' | 'medium'
-	searchMinLength: number
-	searchMaxLength: number
-	popupSearchPlaceholder?: string
 }
 
 const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
@@ -47,10 +44,7 @@ const {
 	options,
 	modelValue,
 	disabled,
-	description,
-	searchMinLength,
-	searchMaxLength,
-	popupSearchPlaceholder
+	description
 } = toRefs(props)
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: string | number | null): void
@@ -163,8 +157,6 @@ const root = ref()
 					v-model="searchInput"
 					class="Select__search"
 					:placeholder="placeholder"
-					:minlength="searchMinLength"
-					:maxlength="searchMaxLength"
 				/>
 			</div>
 			<Button
@@ -181,6 +173,7 @@ const root = ref()
 				variant="functional"
 				:items="items"
 				:size="size"
+				:offset="12"
 				related
 				:disabled="disabled"
 				title=""
@@ -189,14 +182,7 @@ const root = ref()
 				@click="() => emit('open')"
 			>
 				<template v-if="slots.listHeader || isSearchVisible" #header>
-					<TextField
-						v-if="isSearchVisible"
-						v-model="searchInput"
-						class="Select__popupSearch"
-						:minLength="searchMinLength"
-						:maxLength="searchMaxLength"
-						:placeholder="popupSearchPlaceholder"
-					>
+					<TextField v-if="isSearchVisible" v-model="searchInput" class="Select__popupSearch">
 						<template #before>
 							<Icon name="search" class="Select__popupSearchButton" />
 						</template>
@@ -212,7 +198,7 @@ const root = ref()
 				<template v-if="slots.listItem" #item="itemProps">
 					<slot name="listItem" :listItem="itemProps"></slot>
 				</template>
-				<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
+				<template v-if="slots.groupLabel" #groupLabel="groupProps"
 					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 				></template>
 				<template v-if="slots.listFooter || items?.length == 0" #footer>
