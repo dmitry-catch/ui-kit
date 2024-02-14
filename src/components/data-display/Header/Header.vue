@@ -53,16 +53,4 @@ h4 {
 	line-height: 24px;
 	font-weight: 600;
 }
-
-h5 {
-	font-size: 14px;
-	line-height: 24px;
-	font-weight: 600;
-}
-
-h5 {
-	font-size: 12px;
-	line-height: 20px;
-	font-weight: 600;
-}
 </style>
