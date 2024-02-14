@@ -5,7 +5,6 @@ import DataGrid from '../src/components/data-display/DataGrid/DataGrid.vue'
 import ButtonStand from './ButtonStand.vue'
 
 const filters = ref(value(true))
-
 watchEffect(() => console.log('filters', filters.value))
 const test = ref<any[]>([])
 const date = ref(new Date())
