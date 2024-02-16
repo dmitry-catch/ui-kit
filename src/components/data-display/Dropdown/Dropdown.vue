@@ -11,7 +11,6 @@ import Popover from '../../non-public/Popover/Popover.vue'
 
 interface DropdownProps {
 	modelValue?: boolean
-	pickedItem?: DropdownItemType
 	label?: string
 	caret?: boolean
 	disabled?: boolean
@@ -59,13 +58,11 @@ const root = ref()
 
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: boolean): void
-	(e: 'setPickedItem', value: DropdownItemType): void
 	(e: 'beforeClose'): void
 	(e: 'afterClose'): void
 }>()
 
-const { label, caret, disabled, icon, autoClose, offset, loading, items, variant, related, modelValue, pickedItem } =
-	toRefs(props)
+const { label, caret, disabled, icon, autoClose, offset, loading, items, variant, related, modelValue } = toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
 const toggleDropdown = () => {
@@ -103,7 +100,6 @@ const outsideClickHandler = (evt: MouseEvent) => {
 const handleClick = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
-		emit('setPickedItem', item)
 		closeDropdown()
 	}
 }
@@ -293,7 +289,6 @@ useModalContext(root)
 										<DropdownItem
 											v-else
 											v-bind="subItem.extraAttrs"
-											:picked="pickedItem == subItem"
 											class="Dropdown__contentSubItem"
 											:class="[subItem.wrapperClass]"
 											:size="size"
@@ -319,7 +314,6 @@ useModalContext(root)
 									<DropdownItem
 										v-else
 										v-bind="item.extraAttrs"
-										:picked="pickedItem == item"
 										class="Dropdown__contentItem"
 										:class="[
 											item.wrapperClass,

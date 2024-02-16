@@ -31,7 +31,6 @@ export default {
 	component: Dropdown,
 	args: {
 		label: 'Dropdown',
-		pickedItem: null,
 		disabled: false,
 		caret: true,
 		icon: 'internet',
@@ -53,17 +52,7 @@ export default {
 			control: 'select',
 			options: [true, 'keyboard', 'outside', 'item']
 		}
-	},
-	render: (args) => ({
-		components: { Dropdown },
-		setup() {
-			return { args }
-		},
-		template: `
-		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
-		</Dropdown>
-	  `
-	})
+	}
 } satisfies Meta<typeof Dropdown>
 
 type Story = StoryObj<typeof Dropdown>
@@ -77,7 +66,7 @@ export const CustomItems: Story = {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
+		<Dropdown v-bind="args">
 		  <template #item="{ item }">
 			<i>{{ item.label }}</i>
 		  </template>
@@ -102,7 +91,7 @@ export const CustomGroups: Story = {
 			return { args }
 		},
 		template: `
-	  <Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
+	  <Dropdown v-bind="args">
 		<template #groupLabel="{ group }">
 		  <i>{{ group.name }}</i>
 		</template>
@@ -118,7 +107,7 @@ export const CustomToggle: Story = {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
+		<Dropdown v-bind="args">
 			<template #toggle>
 				<Icon name='edit' />
 			</template>
@@ -143,7 +132,7 @@ export const MiscellaneousContent: Story = {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
+		<Dropdown v-bind="args">
 			<template #header>
 				<b>Dropdown header</b>
 			</template>
