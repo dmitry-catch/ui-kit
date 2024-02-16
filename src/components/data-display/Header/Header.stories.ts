@@ -11,35 +11,17 @@ export default {
 
 type Story = StoryObj<typeof Header>
 
-export const Default_Header1: Story = {}
+const createHeaderStory = (level: number, defaultText: string): Story => ({
+	args: {
+		level,
+		default: defaultText
+	}
+})
 
-export const Header2: Story = {
-	args: {
-		level: 2,
-		default: 'I am header 2'
-	}
-}
-export const Header3: Story = {
-	args: {
-		level: 3,
-		default: 'I am header 3'
-	}
-}
-export const Header4: Story = {
-	args: {
-		level: 4,
-		default: 'I am header 4'
-	}
-}
-export const Header5: Story = {
-	args: {
-		level: 5,
-		default: 'I am header 5'
-	}
-}
-export const Header6: Story = {
-	args: {
-		level: 6,
-		default: 'I am header 6'
-	}
-}
+export const Default_Header1 = createHeaderStory(1, 'I am header 1')
+
+export const Header2 = createHeaderStory(2, 'I am header 2')
+export const Header3 = createHeaderStory(3, 'I am header 3')
+export const Header4 = createHeaderStory(4, 'I am header 4')
+export const Header5 = createHeaderStory(5, 'I am header 5')
+export const Header6 = createHeaderStory(6, 'I am header 6')
