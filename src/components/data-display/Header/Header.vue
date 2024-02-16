@@ -60,7 +60,7 @@ h5 {
 	font-weight: 600;
 }
 
-h6 {
+h5 {
 	font-size: 12px;
 	line-height: 20px;
 	font-weight: 600;
