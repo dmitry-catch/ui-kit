@@ -16,9 +16,8 @@ export default defineComponent({
 	}
 })
 </script>
-
 <template>
-	<slot></slot>
+	<template />
 </template>
 
 <style>
@@ -44,7 +43,7 @@ h2 {
 }
 
 h3 {
-	font-size: 18px;
+	font-size: 28px;
 	line-height: 28px;
 	font-weight: 600;
 }
