@@ -84,7 +84,6 @@ const items = ref()
 const dropdownOpen = ref(false)
 
 const pickedItem = computed(() => options.value.find((it) => it.value == modelValue.value))
-const pickedDropdownItem = computed(() => items.value.find((it: DropdownItemType) => it.value == modelValue.value))
 const shownName = computed(() => {
 	if (String(pickedItem.value?.name).length >= 50) return String(pickedItem.value?.name.padEnd(50, '...'))
 	return pickedItem.value?.name ? pickedItem.value?.name : ''
@@ -116,10 +115,9 @@ const optionsHandler = () => {
 const onSearch = () => {
 	emit('search', searchInput.value)
 	if (!searchInput.value) optionsHandler()
-	if (searchType.value && searchType.value != 'auto')
-		items.value = items.value.filter((item: DropdownItemType) =>
-			item.label.toLowerCase().includes(searchInput.value?.toLowerCase())
-		)
+	items.value = items.value.filter((item: DropdownItemType) =>
+		item.label.toLowerCase().includes(searchInput.value?.toLowerCase())
+	)
 }
 
 const openList = () => {
@@ -186,7 +184,6 @@ const root = ref()
 				variant="functional"
 				:items="items"
 				:size="size"
-				:pickedItem="pickedDropdownItem"
 				related
 				:disabled="disabled"
 				title=""
