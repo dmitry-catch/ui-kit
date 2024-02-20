@@ -80,11 +80,11 @@ const searchRef = ref()
 const dropdownRef = ref<InstanceType<typeof Dropdown>>()
 const searchInput = ref('')
 
-const items = ref<DropdownItemType[]>([])
+const items = ref()
 const dropdownOpen = ref(false)
 
 const pickedItem = computed(() => options.value.find((it) => it.value == modelValue.value))
-const selectedDropdownItem = computed(() => [items?.value.find((it: DropdownItemType) => it.value == modelValue.value)])
+const pickedDropdownItem = computed(() => items.value.find((it: DropdownItemType) => it.value == modelValue.value))
 const shownName = computed(() => {
 	if (String(pickedItem.value?.name).length >= 50) return String(pickedItem.value?.name.padEnd(50, '...'))
 	return pickedItem.value?.name ? pickedItem.value?.name : ''
@@ -183,10 +183,10 @@ const root = ref()
 			<Dropdown
 				ref="dropdownRef"
 				v-model="dropdownOpen"
-				v-model:selected="selectedDropdownItem"
 				variant="functional"
 				:items="items"
 				:size="size"
+				:pickedItem="pickedDropdownItem"
 				related
 				:disabled="disabled"
 				title=""
