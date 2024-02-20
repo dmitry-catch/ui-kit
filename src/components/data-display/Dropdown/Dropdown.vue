@@ -12,7 +12,7 @@ import Popover from '../../non-public/Popover/Popover.vue'
 interface DropdownProps {
 	modelValue?: boolean
 	/** Выделенный галкой выбранный пункт контектсного меню */
-	selected?: DropdownItemType[]
+	selected?: DropdownItemType[] | null
 	/** Поддержка выбора нескольких пунктов меню */
 	isMultiple?: boolean
 	label?: string
@@ -87,19 +87,17 @@ const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative')
 const toggleDropdown = () => {
 	if (disabled.value || loading.value) return
 	if (isDropdownOpen.value) {
-		closeDropdown('item')
+		closeDropdown()
 	} else {
 		openDropdown()
 	}
 }
 
-const closeDropdown = (closeType: 'keyboard' | 'outside' | 'item') => {
-	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes(closeType))) {
-		emit('beforeClose')
-		isDropdownOpen.value = false
-		focusedItemIdx.value = -1
-		emit('afterClose')
-	}
+const closeDropdown = () => {
+	emit('beforeClose')
+	isDropdownOpen.value = false
+	focusedItemIdx.value = -1
+	emit('afterClose')
 }
 
 const openDropdown = () => {
@@ -109,14 +107,18 @@ const openDropdown = () => {
 const outsideClickHandler = (evt: MouseEvent) => {
 	const target = evt.target as HTMLElement
 	const popoverContent = document.querySelector('.Popover__content')
-	if (!popoverContent?.contains(target) && isDropdownOpen.value) {
-		closeDropdown('outside')
+	if (
+		!popoverContent?.contains(target) &&
+		isDropdownOpen.value &&
+		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('outside')))
+	) {
+		closeDropdown()
 	}
 }
 
 const handleClick = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
-	{
+	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
 		if (selected.value) {
 			let resultSelected = [item]
 			if (isMultiple.value) {
@@ -126,16 +128,21 @@ const handleClick = (item: DropdownItemType) => {
 				emit('update:selected', resultSelected)
 			} else {
 				emit('update:selected', resultSelected)
-				closeDropdown('item')
+				closeDropdown()
 			}
 		} else {
-			closeDropdown('item')
+			closeDropdown()
 		}
 	}
 }
 
 const escapeHandler = () => {
-	if (isDropdownOpen.value) closeDropdown('keyboard')
+	if (
+		isDropdownOpen.value &&
+		(autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('keyboard')))
+	) {
+		closeDropdown()
+	}
 }
 
 const dropdownMenuRef = ref()
