@@ -31,15 +31,14 @@ export default {
 	component: Dropdown,
 	args: {
 		label: 'Dropdown',
-		selected: [],
+		pickedItem: null,
 		disabled: false,
 		caret: true,
 		icon: 'internet',
 		loading: false,
 		items: dropdownItems,
 		autoClose: true,
-		related: false,
-		isMultiple: false
+		related: false
 	},
 	argTypes: {
 		size: {
@@ -61,7 +60,7 @@ export default {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args" v-model:selected="args.selected" >
+		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
 		</Dropdown>
 	  `
 	})
@@ -78,7 +77,7 @@ export const CustomItems: Story = {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args"  v-model:selected="args.selected">
+		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
 		  <template #item="{ item }">
 			<i>{{ item.label }}</i>
 		  </template>
@@ -103,7 +102,7 @@ export const CustomGroups: Story = {
 			return { args }
 		},
 		template: `
-	  <Dropdown v-bind="args"  v-model:selected="args.selected">
+	  <Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
 		<template #groupLabel="{ group }">
 		  <i>{{ group.name }}</i>
 		</template>
@@ -119,7 +118,7 @@ export const CustomToggle: Story = {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args"  v-model:selected="args.selected">
+		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
 			<template #toggle>
 				<Icon name='edit' />
 			</template>
@@ -144,7 +143,7 @@ export const MiscellaneousContent: Story = {
 			return { args }
 		},
 		template: `
-		<Dropdown v-bind="args"  v-model:selected="args.selected">
+		<Dropdown v-bind="args" @setPickedItem="(item)=>args.pickedItem = item">
 			<template #header>
 				<b>Dropdown header</b>
 			</template>

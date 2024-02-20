@@ -11,10 +11,7 @@ import Popover from '../../non-public/Popover/Popover.vue'
 
 interface DropdownProps {
 	modelValue?: boolean
-	/** Выделенный галкой выбранный пункт контектсного меню */
-	selected?: DropdownItemType[]
-	/** Поддержка выбора нескольких пунктов меню */
-	isMultiple?: boolean
+	pickedItem?: DropdownItemType
 	label?: string
 	caret?: boolean
 	disabled?: boolean
@@ -62,26 +59,13 @@ const root = ref()
 
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: boolean): void
-	(e: 'update:selected', value: DropdownItemType[]): void
+	(e: 'setPickedItem', value: DropdownItemType): void
 	(e: 'beforeClose'): void
 	(e: 'afterClose'): void
 }>()
 
-const {
-	label,
-	caret,
-	disabled,
-	icon,
-	autoClose,
-	offset,
-	loading,
-	items,
-	variant,
-	related,
-	modelValue,
-	selected,
-	isMultiple
-} = toRefs(props)
+const { label, caret, disabled, icon, autoClose, offset, loading, items, variant, related, modelValue, pickedItem } =
+	toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
 const toggleDropdown = () => {
@@ -119,16 +103,8 @@ const outsideClickHandler = (evt: MouseEvent) => {
 const handleClick = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
-		let resultSelected = [item]
-		if (isMultiple.value) {
-			if (selected.value?.includes(item))
-				resultSelected = [...selected.value.filter((it) => it.value != item.value)]
-			else resultSelected = [...selected.value, item]
-			emit('update:selected', resultSelected)
-		} else {
-			emit('update:selected', resultSelected)
-			closeDropdown()
-		}
+		emit('setPickedItem', item)
+		closeDropdown()
 	}
 }
 
@@ -173,12 +149,6 @@ watch(isDropdownOpen, () => {
 watch(modelValue, () => {
 	isDropdownOpen.value = modelValue.value
 })
-
-// watch(selected, () => {
-// 	if(!Array.isArray(selected.value)){
-
-// 	}
-// })
 
 const focusedItemIdx = ref(-1) // no item is focused initially
 
@@ -323,7 +293,7 @@ useModalContext(root)
 										<DropdownItem
 											v-else
 											v-bind="subItem.extraAttrs"
-											:picked="selected?.includes(subItem)"
+											:picked="pickedItem == subItem"
 											class="Dropdown__contentSubItem"
 											:class="[subItem.wrapperClass]"
 											:size="size"
@@ -349,7 +319,7 @@ useModalContext(root)
 									<DropdownItem
 										v-else
 										v-bind="item.extraAttrs"
-										:picked="selected?.includes(item)"
+										:picked="pickedItem == item"
 										class="Dropdown__contentItem"
 										:class="[
 											item.wrapperClass,
