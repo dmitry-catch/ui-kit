@@ -10,7 +10,7 @@ interface DropdownItemProps {
 	isDefault?: boolean
 }
 
-const props = withDefaults(defineProps<DropdownItemProps>(), { isDefault: true })
+const props = withDefaults(defineProps<DropdownItemProps>(), { picked: false, isDefault: true })
 
 defineSlots<{
 	default?: () => unknown
