@@ -12,7 +12,7 @@ import Popover from '../../non-public/Popover/Popover.vue'
 interface DropdownProps {
 	modelValue?: boolean
 	/** Выделенный галкой выбранный пункт контектсного меню */
-	selected?: DropdownItemType[] | null
+	selected?: DropdownItemType[]
 	/** Поддержка выбора нескольких пунктов меню */
 	isMultiple?: boolean
 	label?: string
@@ -119,18 +119,14 @@ const outsideClickHandler = (evt: MouseEvent) => {
 const handleClick = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes('item'))) {
-		if (selected.value) {
-			let resultSelected = [item]
-			if (isMultiple.value) {
-				if (selected.value?.includes(item))
-					resultSelected = [...selected.value.filter((it) => it?.value != item.value)]
-				else resultSelected = [...selected?.value, item]
-				emit('update:selected', resultSelected)
-			} else {
-				emit('update:selected', resultSelected)
-				closeDropdown()
-			}
+		let resultSelected = [item]
+		if (isMultiple.value) {
+			if (selected.value?.includes(item))
+				resultSelected = [...selected.value.filter((it) => it.value != item.value)]
+			else resultSelected = [...selected.value, item]
+			emit('update:selected', resultSelected)
 		} else {
+			emit('update:selected', resultSelected)
 			closeDropdown()
 		}
 	}
