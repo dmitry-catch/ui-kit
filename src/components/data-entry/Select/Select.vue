@@ -206,7 +206,6 @@ const root = ref()
 						<template #before>
 							<Icon name="search" class="Select__popupSearchButton" />
 						</template>
-
 						<template #after>
 							<Button v-if="searchInput" class="icon functional" :size="size" @click="clearInput">
 								<Icon name="close" />
