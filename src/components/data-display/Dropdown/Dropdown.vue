@@ -174,6 +174,12 @@ watch(modelValue, () => {
 	isDropdownOpen.value = modelValue.value
 })
 
+// watch(selected, () => {
+// 	if(!Array.isArray(selected.value)){
+
+// 	}
+// })
+
 const focusedItemIdx = ref(-1) // no item is focused initially
 
 const allItems = computed(() => {
