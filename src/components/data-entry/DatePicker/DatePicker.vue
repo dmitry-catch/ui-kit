@@ -37,9 +37,9 @@ const { autofocus, modelValue, disabled } = toRefs(props)
 
 const internalValue = ref<Date | null>(handleInitialDateValue(modelValue.value))
 
-const day = ref<number | null>()
-const month = ref<number | null>()
-const year = ref<number | null>()
+const day = ref<number | undefined>()
+const month = ref<number | undefined>()
+const year = ref<number | undefined>()
 
 const dayRef = ref()
 const monthRef = ref()
@@ -51,9 +51,9 @@ const isCalendarOpen = ref(false)
 const focus = () => dayRef.value.focus()
 
 const handleCalendarReset = () => {
-	day.value = null
-	month.value = null
-	year.value = null
+	day.value = undefined
+	month.value = undefined
+	year.value = undefined
 	handleCalendarClose()
 }
 
@@ -106,13 +106,11 @@ watch(internalValue, () => {
 })
 
 watch([day, month, year], () => {
-	if (day.value && month.value && year.value) {
-		const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
-		newInternalValue.setDate(Number(day.value))
-		newInternalValue.setMonth(Number(month.value) - 1)
-		newInternalValue.setFullYear(Number(year.value))
-		internalValue.value = new Date(newInternalValue.toDateString())
-	}
+	const newInternalValue = internalValue.value instanceof Date ? internalValue.value : new Date()
+	newInternalValue.setDate(Number(day.value))
+	newInternalValue.setMonth(Number(month.value) - 1)
+	newInternalValue.setFullYear(Number(year.value))
+	internalValue.value = new Date(newInternalValue.toDateString())
 })
 
 watch(modelValue, (value) => {
@@ -121,13 +119,13 @@ watch(modelValue, (value) => {
 	}
 })
 
-const handleKeyboard = (event: KeyboardEvent) => {
+const handleBackspace = (event: KeyboardEvent) => {
 	if (!disabled.value && event.key == Keyboard.BACKSPACE) handleCalendarReset()
 }
 
 onMounted(() => {
 	if (autofocus.value) focus()
-	root.value.addEventListener('keydown', handleKeyboard)
+	root.value.addEventListener('keydown', handleBackspace)
 	if (modelValue.value != handleInternalValue(internalValue.value)) {
 		internalValue.value = handleInitialDateValue(modelValue.value)
 	}
@@ -139,9 +137,9 @@ provide('datepicker-root', root)
 </script>
 <template>
 	<div ref="root" class="DatePicker Field" :class="{ disabled: disabled, invalid: invalid }">
-		<span v-if="label" class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
-		<span v-if="description" class="Field__description text-small">{{ description }}</span>
-		<div class="Field__visibleInput" @click="focus">
+		<span class="DatePicker__label Field__label" :class="{ required: required }">{{ label }}</span>
+		<span class="Field__description text-small">{{ description }}</span>
+		<div class="Field__visibleInput">
 			<div class="Field__beforeWrapper">
 				<slot name="before"></slot>
 			</div>
@@ -204,7 +202,7 @@ provide('datepicker-root', root)
 						year ? String(year)?.padStart(4, '0').slice(-4) : DateLocalization[2]
 					}}</span>
 				</label>
-				<div v-if="$slots.after" class="Field__afterWrapper">
+				<div class="Field__afterWrapper">
 					<slot name="after"></slot>
 				</div>
 			</div>
@@ -228,7 +226,7 @@ provide('datepicker-root', root)
 				:handleCalendarClose="handleCalendarClose"
 			/>
 		</Popover>
-		<span v-if="hint" class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
+		<span class="DatePicker__hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
 	</div>
 </template>
 <style scoped>

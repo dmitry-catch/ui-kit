@@ -92,7 +92,7 @@ onUnmounted(() => {
 useModalContext(root)
 </script>
 <template>
-	<div ref="root" class="Drawer" :hidden="!open" :class="{ backdrop, relative }">
+	<div ref="root" class="Drawer" :hidden="!open">
 		<Modal
 			v-if="open"
 			ref="ModalRef"
@@ -146,10 +146,9 @@ useModalContext(root)
 	background: none;
 }
 
-.Drawer.backdrop.relative {
-	background: var(--design-background-color-milk-modal-shadow);
+.Drawer__modal.backdrop::backdrop {
+	background: var(--design-background-color-modal-shadow);
 }
-
 .Drawer__modal.horizontal .Drawer__surface {
 	height: fit-content;
 	width: 100vw;

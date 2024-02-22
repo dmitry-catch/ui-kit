@@ -1,7 +1,6 @@
 .Field {
 	display: flex;
 	flex-flow: column;
-	gap: var(--design-gap-unit);
 }
 
 .Field.disabled {
