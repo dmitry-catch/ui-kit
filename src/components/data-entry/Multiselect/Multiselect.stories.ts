@@ -40,19 +40,6 @@ export const Default: Story = {}
 
 export const Searchable: Story = { args: { searchType: 'popup' } }
 
-export const LegacyLabelSlot: Story = {
-	render: (args) => ({
-		components: { Multiselect },
-		setup: () => ({ args }),
-		template: `
-	
-			<Multiselect v-bind='args' block >
-			<template #label>Some label</template> 
-			</Multiselect>
-			`
-	})
-}
-
 export const Sizing: Story = {
 	render: (args) => ({
 		components: { Multiselect },

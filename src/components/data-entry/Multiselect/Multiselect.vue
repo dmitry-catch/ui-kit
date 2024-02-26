@@ -66,19 +66,17 @@ const emit = defineEmits<{
 }>()
 
 const slots = defineSlots<{
-	/**  Заголовок */
-	label?: string | unknown
 	/**  Невыбираемый фиксированный первый элемент выпадающего списка */
 	listHeader?: string | unknown
-	/**  Внутреннее наполнение выпадающего списка */
+	/** Внутреннее наполнение выпадающего списка */
 	listDefault?: unknown
 	/**  Кастомный компонент для элемента выпадающего списка (передаётся параметр listItem типа DropdownItemType) */
 	listItem?: (listItem: unknown) => unknown
 	/**  Заголовок для группы элементов списка */
 	listGroupLabel?: (listGroupLabel: unknown) => string | unknown
-	/**  Невыбираемый фиксированный последний элемент выпадающего списка */
+	/**   Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
-	/**  Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
+	/** Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
 	empty?: string | unknown
 }>()
 const searchRef = ref()
@@ -157,11 +155,6 @@ const root = ref()
 	<div ref="root" class="Multiselect" :size="size">
 		<div v-if="label" class="Multiselect__Label">
 			{{ label }}
-			<span v-if="required" class="danger">&ast;</span>
-		</div>
-		<!-- legacy support -->
-		<div v-if="$slots.label && !label" class="Multiselect__Label">
-			<slot name="label"></slot>
 			<span v-if="required" class="danger">&ast;</span>
 		</div>
 		<span v-if="description" class="secondary">
