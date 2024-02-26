@@ -68,8 +68,6 @@ const emit = defineEmits<{
 const slots = defineSlots<{
 	/**  Заголовок */
 	label?: string | unknown
-	/**Описание */
-	description?: string | unknown
 	/**  Невыбираемый фиксированный первый элемент выпадающего списка */
 	listHeader?: string | unknown
 	/**  Внутреннее наполнение выпадающего списка */
@@ -169,10 +167,6 @@ const root = ref()
 		<span v-if="description" class="secondary">
 			{{ description }}
 		</span>
-		<span v-if="$slots.description && !description" class="secondary">
-			<slot name="description"></slot>
-		</span>
-
 		<div class="Multiselect__content" :class="{ disabled, invalid }">
 			<Button v-if="searchType == 'input'" class="functional icon" :disabled="disabled" @click="setFocus">
 				<Icon :name="icon ? icon : 'search'" />
