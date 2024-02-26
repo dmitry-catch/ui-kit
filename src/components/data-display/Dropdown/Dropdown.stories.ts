@@ -39,7 +39,7 @@ export default {
 		items: dropdownItems,
 		autoClose: true,
 		related: false,
-		multiple: false
+		isMultiple: false
 	},
 	argTypes: {
 		size: {

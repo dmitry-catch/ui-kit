@@ -14,7 +14,7 @@ interface DropdownProps {
 	/** Выделенный галкой выбранный пункт контектсного меню */
 	selected?: DropdownItemType[]
 	/** Поддержка выбора нескольких пунктов меню */
-	multiple?: boolean
+	isMultiple?: boolean
 	label?: string
 	caret?: boolean
 	disabled?: boolean
@@ -62,6 +62,7 @@ const root = ref()
 
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: boolean): void
+	(e: 'update:selected', value: DropdownItemType[]): void
 	(e: 'beforeClose'): void
 	(e: 'afterClose'): void
 }>()
@@ -79,7 +80,7 @@ const {
 	related,
 	modelValue,
 	selected,
-	multiple
+	isMultiple
 } = toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
@@ -116,7 +117,20 @@ const outsideClickHandler = (evt: MouseEvent) => {
 const handleClick = (item: DropdownItemType) => {
 	if (!item.extraAttrs?.disabled) item.action?.(item)
 	{
-		if (!selected.value || !multiple.value) closeDropdown('item')
+		if (selected.value) {
+			let resultSelected = [item]
+			if (isMultiple.value) {
+				if (selected.value?.includes(item))
+					resultSelected = [...selected.value.filter((it) => it?.value != item.value)]
+				else resultSelected = [...selected?.value, item]
+				emit('update:selected', resultSelected)
+			} else {
+				emit('update:selected', resultSelected)
+				closeDropdown('item')
+			}
+		} else {
+			closeDropdown('item')
+		}
 	}
 }
 

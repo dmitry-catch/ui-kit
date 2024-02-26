@@ -103,9 +103,8 @@ const setFocus = () => {
 	openList()
 }
 
-const optionsHandler = (initOptions: SelectOptionType[] | null = null) => {
-	initOptions = initOptions ?? options.value
-	items.value = initOptions.map((option) => ({
+const optionsHandler = () => {
+	items.value = options.value.map((option) => ({
 		label: option.name,
 		value: option.value,
 		action: (item: DropdownItemType) => {
@@ -118,10 +117,8 @@ const onSearch = () => {
 	emit('search', searchInput.value)
 	if (!searchInput.value) optionsHandler()
 	if (searchType.value && searchType.value != 'auto')
-		optionsHandler(
-			options.value.filter((option: SelectOptionType) =>
-				option.name.toLowerCase().includes(searchInput.value?.toLowerCase())
-			)
+		items.value = items.value.filter((item: DropdownItemType) =>
+			item.label.toLowerCase().includes(searchInput.value?.toLowerCase())
 		)
 }
 
@@ -186,7 +183,7 @@ const root = ref()
 			<Dropdown
 				ref="dropdownRef"
 				v-model="dropdownOpen"
-				:selected="selectedDropdownItem"
+				v-model:selected="selectedDropdownItem"
 				variant="functional"
 				:items="items"
 				:size="size"
