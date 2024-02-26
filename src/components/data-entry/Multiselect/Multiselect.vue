@@ -1,11 +1,11 @@
-<script setup lang="ts" generic="Value extends string | number">
+<script setup lang="ts">
 import { ref, toRefs, computed, watch, onMounted } from 'vue'
-import { Dropdown, Button, Icon } from '../../../main'
+import { Dropdown, Button, Icon, TextField } from '../../../main'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
 import { SelectOptionType } from '../types'
-import SearchPopup from './components/SearchPopup.vue'
 
-interface MultiselectProps {
+interface SelectProps {
+	modelValue: Array<string | number>
 	options: Array<SelectOptionType>
 	/** Если параметр = true, компонент подсветиться красным. Если тип параметра - строка, то подсказка заменится на эту строку и текст станет красным */
 	invalid?: boolean | string
@@ -21,11 +21,12 @@ interface MultiselectProps {
 	placeholder?: string
 	icon?: string
 	/**
-	 * false - поиск недоступен - default
+	 * false - поиск недоступен
+	 * input - поле ввода всегда видно
 	 * auto - если предоставлено более 10 вариантов, появляется поиск в выпадающем меню
 	 * popup - поиск в выпадающем меню
 	 */
-	searchType?: false | 'auto' | 'popup'
+	searchType?: 'input' | false | 'auto' | 'popup'
 	size?: 'extra-small' | 'small' | 'medium'
 	/** Добавляет ограничение на минимальное колличество символов */
 	searchMinLength?: number
@@ -35,7 +36,7 @@ interface MultiselectProps {
 	popupPlaceholder?: string
 }
 
-const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium' })
+const props = withDefaults(defineProps<SelectProps>(), { searchType: false, size: 'medium' })
 
 const {
 	icon,
@@ -48,6 +49,7 @@ const {
 	placeholder,
 	loading,
 	options,
+	modelValue,
 	disabled,
 	description,
 	searchMinLength,
@@ -56,13 +58,12 @@ const {
 } = toRefs(props)
 
 const emit = defineEmits<{
+	(e: 'update:modelValue', value: Array<string | number>): void
 	/** Обработчик события выпадающего меню */
 	(e: 'open'): void
 	/** Обработчик события ввода в строке поиска */
 	(e: 'search', value: string): void
 }>()
-
-const modelValue = defineModel<Array<Value>>({ required: true })
 
 const slots = defineSlots<{
 	/**  Заголовок */
@@ -82,7 +83,7 @@ const slots = defineSlots<{
 	/**  Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
 	empty?: string | unknown
 }>()
-
+const searchRef = ref()
 const dropdownRef = ref<InstanceType<typeof Dropdown>>()
 const searchInput = ref('')
 
@@ -104,13 +105,21 @@ const isSearchVisible = computed(
 
 const clearInput = () => {
 	searchInput.value = ''
-	modelValue.value = []
+	emit('update:modelValue', [])
+}
+const setFocus = () => {
+	searchRef.value?.focus()
+	openList()
 }
 
 const processItemClick = (item: DropdownItemType) => {
 	const isPicked = modelValue.value.includes(item.value)
-	if (!isPicked) modelValue.value = [...modelValue.value, item.value]
-	else modelValue.value = modelValue.value.filter((it) => it !== item.value)
+	if (!isPicked) emit('update:modelValue', [...modelValue.value, item.value])
+	else
+		emit(
+			'update:modelValue',
+			modelValue.value.filter((it) => it !== item.value)
+		)
 }
 
 const optionsHandler = (initOptions: SelectOptionType[] | null = null) => {
@@ -165,44 +174,92 @@ const root = ref()
 		</span>
 
 		<div class="Multiselect__content" :class="{ disabled, invalid }">
-			<Icon v-if="icon" :name="icon" />
+			<Button v-if="searchType == 'input'" class="functional icon" :disabled="disabled" @click="setFocus">
+				<Icon :name="icon ? icon : 'search'" />
+			</Button>
+			<Icon v-if="icon && searchType != 'input'" :name="icon" />
 			<div class="Multiselect__innerContent" @click="openList">
-				<span v-if="modelValue?.length == 0" class="secondary">
+				<span v-if="modelValue?.length == 0 && searchType != 'input'" class="secondary">
 					{{ placeholder }}
 				</span>
-				<span v-if="shownName" class="Multiselect_name">
+				<span v-if="searchType != 'input' && shownName" class="Multiselect_name">
 					{{ shownName }}
-					<Button v-if="shownName" class="icon functional" :disabled="disabled" @click="clearInput"
-						><Icon name="close"
-					/></Button>
+					<Button v-if="shownName" class="icon functional" @click="clearInput"><Icon name="close" /></Button>
 				</span>
+				<input
+					v-if="searchType == 'input'"
+					ref="searchRef"
+					v-model="searchInput"
+					class="Multiselect__search"
+					:placeholder="placeholder"
+					:minlength="searchMinLength"
+					:maxlength="searchMaxLength"
+				/>
 			</div>
-			<Button v-if="shownName" class="icon functional" :size="size" :disabled="disabled" @click="clearInput">
+			<Button v-if="shownName" class="icon functional" :size="size" @click="clearInput">
 				<Icon name="close" />
 			</Button>
-			<SearchPopup
+			<Dropdown
+				ref="dropdownRef"
 				v-model="dropdownOpen"
-				v-model:searchInput="searchInput"
-				v-model:searchPopupRef="dropdownRef"
-				:size="size"
-				:disabled="disabled"
-				:loading="loading"
+				v-model:selected="selectedItems"
+				variant="functional"
+				:offset="2"
 				:items="items"
-				:selectedItems="selectedItems"
-				:searchMinLength="searchMinLength"
-				:searchMaxLength="searchMaxLength"
-				:popupPlaceholder="popupPlaceholder"
-				:isSearchVisible="isSearchVisible"
-				@clearInput="clearInput"
-				@open="() => emit('open')"
+				:size="size"
+				related
+				:disabled="disabled"
+				title=""
+				multiple
+				:loading="loading"
+				:caret="!loading"
+				@click="() => emit('open')"
 			>
-				<template v-if="$slots.listHeader" #listHeader><slot name="listHeader"></slot></template>
-				<template v-if="$slots.listGroupLabel" #listGroupLabel><slot name="listGroupLabel"></slot></template>
-				<template v-if="$slots.listItem" #listItem><slot name="listItem"></slot></template>
-				<template v-if="$slots.listDefault" #listDefault><slot name="listDefault"></slot></template>
-				<template v-if="$slots.listFooter" #listFooter><slot name="listFooter"></slot></template>
-				<template v-if="$slots.empty" #empty><slot name="empty"></slot></template>
-			</SearchPopup>
+				<template v-if="slots.listHeader || isSearchVisible" #header>
+					<TextField
+						v-if="isSearchVisible"
+						v-model="searchInput"
+						class="Multiselect__popupSearch"
+						:minLength="searchMinLength"
+						:maxLength="searchMaxLength"
+						:placeholder="popupPlaceholder"
+					>
+						<template #before>
+							<Icon name="search" class="Multiselect__popupSearchButton" />
+						</template>
+
+						<template #after>
+							<Button v-if="searchInput" class="icon functional" :size="size" @click="clearInput">
+								<Icon name="close" />
+							</Button>
+						</template>
+					</TextField>
+					<slot name="listHeader"></slot>
+				</template>
+				<slot name="listDefault"></slot>
+				<template v-if="slots.listItem" #item="{ item }">
+					<slot name="listItem" :listItem="item"></slot>
+				</template>
+				<template v-else #item="{ item }">
+					<div class="Multiselect__Checkbox">
+						<span class="checkbox__visible" :visible="selectedItems.includes(item)">
+							<Icon class="checkbox__checked" name="check"></Icon>
+						</span>
+						{{ item.label }}
+					</div>
+				</template>
+				<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
+					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
+				></template>
+				<template v-if="slots.listFooter || items?.length == 0" #footer>
+					<span v-if="items?.length == 0 && !searchInput" class="itemHint">Нет элементов</span>
+					<span v-if="items?.length == 0 && searchInput" class="itemHint"
+						>Нет совпадений «{{ searchInput }}»</span
+					>
+					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
+					<slot name="listFooter"></slot>
+				</template>
+			</Dropdown>
 		</div>
 
 		<span v-if="hint && !(typeof invalid == 'string')" class="secondary">{{ hint }}</span>
@@ -222,7 +279,6 @@ const root = ref()
 	gap: var(--design-gap-unit);
 }
 .Multiselect__content {
-	height: 32px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -250,6 +306,36 @@ const root = ref()
 	text-align: start;
 }
 
+.Multiselect__Checkbox {
+	display: flex;
+	gap: calc(1.5 * var(--design-gap-unit));
+	align-content: center;
+}
+.checkbox__visible {
+	width: var(--design-current-line-height);
+	height: var(--design-current-line-height);
+	border-radius: var(--design-border-radius-control);
+	border: var(--design-border-color-primary) solid 1px;
+	display: inline-block;
+	box-sizing: border-box;
+}
+.checkbox__checked {
+	visibility: hidden;
+	--icon-color: var(--design-background-color-on-accent-primary);
+	--icon-size: var(--design-current-line-height);
+}
+
+.checkbox__visible[visible='true'] > .checkbox__checked {
+	visibility: initial;
+	background: var(--design-background-color-accent-primary);
+}
+
+.itemHint {
+	display: block;
+	padding: 0 calc(3 * var(--design-gap-unit));
+	margin-bottom: var(--design-gap-unit);
+}
+
 .Multiselect__content.disabled * {
 	color: var(--design-text-color-secondary);
 }
@@ -260,12 +346,10 @@ const root = ref()
 	box-shadow: 0px 0px 0px 3px rgba(210, 40, 53, 0.2);
 }
 .Multiselect[size='extra-small'] > .Multiselect__content {
-	height: calc(0.5 * 32px);
 	padding: calc(0.5 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
 	gap: calc(0.5 * var(--design-gap-unit));
 }
 .Multiselect[size='small'] > .Multiselect__content {
-	height: calc(0.75 * 32px);
 	padding: calc(0.75 * var(--design-gap-unit)) calc(1.75 * var(--design-gap-unit));
 	gap: calc(0.75 * var(--design-gap-unit));
 }
@@ -278,5 +362,22 @@ const root = ref()
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
 	--icon-size: var(--design-font-size-large);
+}
+
+.Multiselect__search,
+.Multiselect__search:focus,
+.Multiselect__search:hover {
+	border: none;
+	outline: none;
+	background: var(--design-background-color-primary);
+	width: 100%;
+}
+.Multiselect__popupSearch {
+	display: flex;
+	padding: calc(1.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+}
+
+.Multiselect__popupSearchButton {
+	margin-right: var(--design-gap-unit);
 }
 </style>

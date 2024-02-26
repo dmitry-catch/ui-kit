@@ -28,7 +28,7 @@ export default {
 		},
 		searchType: {
 			control: 'select',
-			options: ['auto', 'popup', false]
+			options: ['auto', 'input', 'popup', false]
 		}
 	},
 	component: Multiselect
