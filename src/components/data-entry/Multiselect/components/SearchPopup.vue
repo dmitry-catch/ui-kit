@@ -5,7 +5,7 @@ import { Dropdown, Button, Icon, TextField } from '../../../../main'
 
 interface SearchPopupProps {
 	items?: DropdownItemType[]
-	selected?: DropdownItemType[]
+	selectedItems?: DropdownItemType[]
 	size?: 'extra-small' | 'small' | 'medium'
 	disabled?: boolean
 	loading?: boolean
@@ -15,12 +15,21 @@ interface SearchPopupProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
-	searchVisible?: boolean
+	isSearchVisible?: boolean
 }
 
 const props = defineProps<SearchPopupProps>()
-const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupPlaceholder, searchVisible, selected } =
-	toRefs(props)
+const {
+	items,
+	size,
+	disabled,
+	loading,
+	searchMinLength,
+	searchMaxLength,
+	popupPlaceholder,
+	isSearchVisible,
+	selectedItems
+} = toRefs(props)
 
 const emit = defineEmits<{
 	(e: 'clearInput'): void
@@ -50,7 +59,7 @@ const slots = defineSlots<{
 	<Dropdown
 		ref="searchPopupRef"
 		v-model="dropdownOpen"
-		v-model:selected="selected"
+		v-model:selected="selectedItems"
 		class="SearchPopup"
 		variant="functional"
 		:offset="2"
@@ -64,9 +73,9 @@ const slots = defineSlots<{
 		:caret="!loading"
 		@click="() => emit('open')"
 	>
-		<template v-if="slots.listHeader || searchVisible" #header>
+		<template v-if="slots.listHeader || isSearchVisible" #header>
 			<TextField
-				v-if="searchVisible"
+				v-if="isSearchVisible"
 				v-model="searchInput"
 				class="SearchPopup__input"
 				:minLength="searchMinLength"
@@ -91,7 +100,7 @@ const slots = defineSlots<{
 		</template>
 		<template v-else #item="{ item }">
 			<div class="SearchPopup__checkbox">
-				<span class="SearchPopup__checkboxVisible" :visible="selected.includes(item)">
+				<span class="SearchPopup__checkboxVisible" :visible="selectedItems.includes(item)">
 					<Icon class="SearchPopup__checkboxChecked" name="check"></Icon>
 				</span>
 				{{ item.label }}

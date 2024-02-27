@@ -188,11 +188,11 @@ const root = ref()
 				:disabled="disabled"
 				:loading="loading"
 				:items="items"
-				:selected="selectedItems"
+				:selectedItems="selectedItems"
 				:searchMinLength="searchMinLength"
 				:searchMaxLength="searchMaxLength"
 				:popupPlaceholder="popupPlaceholder"
-				:searchVisible="isSearchVisible"
+				:isSearchVisible="isSearchVisible"
 				@clearInput="clearInput"
 				@open="() => emit('open')"
 			>
@@ -247,7 +247,6 @@ const root = ref()
 }
 .Multiselect__innerContent {
 	width: 100%;
-	height: 100%;
 	text-align: start;
 }
 
