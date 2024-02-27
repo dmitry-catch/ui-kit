@@ -184,7 +184,6 @@ const root = ref()
 			<Button v-if="shownName" class="icon functional" :size="size" :disabled="disabled" @click="clearInput">
 				<Icon name="close" />
 			</Button>
-
 			<SearchPopup
 				v-model="dropdownOpen"
 				v-model:searchInput="searchInput"
