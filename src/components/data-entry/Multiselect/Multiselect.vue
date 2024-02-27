@@ -1,13 +1,9 @@
-<script setup lang="ts" generic="TValue extends string | number | unknown">
+<script setup lang="ts" generic="Value extends string | number">
 import { ref, toRefs, computed, watch, onMounted } from 'vue'
 import { Dropdown, Button, Icon } from '../../../main'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
+import { SelectOptionType } from '../types'
 import SearchPopup from './components/SearchPopup.vue'
-
-interface SelectOptionType {
-	name: string
-	value: TValue
-}
 
 interface MultiselectProps {
 	options: Array<SelectOptionType>
@@ -66,7 +62,7 @@ const emit = defineEmits<{
 	(e: 'search', value: string): void
 }>()
 
-const modelValue = defineModel<Array<TValue>>({ required: true })
+const modelValue = defineModel<Array<Value>>({ required: true })
 
 const slots = defineSlots<{
 	/**  Заголовок */
