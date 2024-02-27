@@ -43,15 +43,15 @@ onMounted(() => {
 <template>
 	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
 		<span class="Field__label">
-			<slot v-if="$slots.label" name="label">{{ label }}</slot>
+			<slot name="label">{{ label }}</slot>
 			<span v-if="required" class="Field__requiredStar">*</span>
 		</span>
 		<span class="Field__description text-small">
-			<slot v-if="$slots.description" name="description">{{ description }}</slot>
+			<slot name="description">{{ description }}</slot>
 		</span>
 		<span class="Field__visibleInput">
 			<span class="Field__beforeWrapper">
-				<slot v-if="$slots.before" name="before"></slot>
+				<slot name="before"></slot>
 			</span>
 			<input
 				v-bind="$attrs"
@@ -64,12 +64,12 @@ onMounted(() => {
 				:autofocus="autofocus"
 			/>
 			<span class="Field__afterWrapper">
-				<slot v-if="$slots.after" name="after"></slot>
+				<slot name="after"></slot>
 			</span>
 		</span>
 		<span class="Field__below text-small">
 			<span class="Field__validationMessage danger">
-				<slot v-if="$slots.validationHint" name="validationHint"></slot>
+				<slot name="validationHint"></slot>
 			</span>
 			<CharCounter
 				v-if="maxLength != null"

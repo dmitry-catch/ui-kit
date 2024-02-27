@@ -5,7 +5,6 @@ import { computed, toRefs } from 'vue'
 interface CheckboxProps {
 	modelValue: boolean
 	value?: any
-	disabled?: boolean
 }
 
 const props = withDefaults(defineProps<CheckboxProps>(), { value: true })
@@ -24,14 +23,8 @@ const internalValue = computed({
 
 <template>
 	<label class="Checkbox">
-		<input
-			v-model="internalValue"
-			type="checkbox"
-			:value="value"
-			:disabled="disabled"
-			class="Checkbox__input visually-hidden"
-		/>
-		<span class="Checkbox__visible" :disabled="disabled">
+		<input v-model="internalValue" type="checkbox" :value="value" class="Checkbox__input visually-hidden" />
+		<span class="Checkbox__visible">
 			<Icon class="Checkbox__checked" name="check"></Icon>
 		</span>
 		<span class="Checkbox__label">
@@ -66,14 +59,6 @@ const internalValue = computed({
 
 .Checkbox__input:checked + .Checkbox__visible {
 	background: var(--design-background-color-accent-primary);
-}
-
-.Checkbox__visible[disabled='true'],
-.Checkbox__input:checked + .Checkbox__visible[disabled='true'] {
-	background: var(--design-background-color-disabled-primary);
-}
-.Checkbox__visible[disabled='true'] .Checkbox__checked {
-	--icon-color: var(--design-text-color-on-accent-secondary);
 }
 
 .Checkbox__input:checked + .Checkbox__visible .Checkbox__checked {

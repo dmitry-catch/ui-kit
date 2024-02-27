@@ -4,8 +4,7 @@ import Checkbox from './Checkbox.vue'
 export default {
 	component: Checkbox,
 	args: {
-		modelValue: false,
-		disabled: false
+		modelValue: false
 	}
 } satisfies Meta<typeof Checkbox>
 
