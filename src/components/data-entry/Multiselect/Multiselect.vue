@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TValue">
+<script setup lang="ts" generic="TValue extends string | number | unknown">
 import { ref, toRefs, computed, watch, onMounted } from 'vue'
 import { Dropdown, Button, Icon } from '../../../main'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
