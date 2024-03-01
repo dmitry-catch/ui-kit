@@ -48,7 +48,7 @@ const { color, closable, squared } = toRefs(props)
 	gap: var(--design-gap-unit);
 	border-radius: var(--design-border-radius-tag);
 	background: var(--design-background-color-secondary);
-	padding: calc(0.75 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
+	padding: var(--design-gap-unit) calc(2.5 * var(--design-gap-unit));
 	color: var(--design-text-color-on-accent-primary);
 	::v-deep(*) {
 		color: var(--design-text-color-on-accent-primary);
