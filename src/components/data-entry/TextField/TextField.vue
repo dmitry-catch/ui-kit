@@ -27,18 +27,6 @@ const props = withDefaults(defineProps<TextFieldProps>(), {
 	label: '',
 	description: ''
 })
-
-const slots = defineSlots<{
-	/** Заголовок */
-	label?: string
-	/** Описание между загголовком и полем */
-	description?: string
-	/** Валидационная подсказка под полем */
-	validationHint?: string
-	before?: unknown
-	after?: unknown
-}>()
-
 const emit = defineEmits(['update:modelValue'])
 
 const { modelValue, tabindex, maxLength, label, invalid, placeholder, description, autofocus, required } = toRefs(props)
@@ -55,15 +43,15 @@ onMounted(() => {
 <template>
 	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
 		<span class="Field__label">
-			<slot v-if="slots.label" name="label">{{ label }}</slot>
+			<slot v-if="$slots.label" name="label">{{ label }}</slot>
 			<span v-if="required" class="Field__requiredStar">*</span>
 		</span>
 		<span class="Field__description text-small">
-			<slot v-if="slots.description" name="description">{{ description }}</slot>
+			<slot v-if="$slots.description" name="description">{{ description }}</slot>
 		</span>
 		<span class="Field__visibleInput">
 			<span class="Field__beforeWrapper">
-				<slot v-if="slots.before" name="before"></slot>
+				<slot v-if="$slots.before" name="before"></slot>
 			</span>
 			<input
 				v-bind="$attrs"
@@ -76,12 +64,12 @@ onMounted(() => {
 				:autofocus="autofocus"
 			/>
 			<span class="Field__afterWrapper">
-				<slot v-if="slots.after" name="after"></slot>
+				<slot v-if="$slots.after" name="after"></slot>
 			</span>
 		</span>
 		<span class="Field__below text-small">
 			<span class="Field__validationMessage danger">
-				<slot v-if="slots.validationHint" name="validationHint"></slot>
+				<slot v-if="$slots.validationHint" name="validationHint"></slot>
 			</span>
 			<CharCounter
 				v-if="maxLength != null"
