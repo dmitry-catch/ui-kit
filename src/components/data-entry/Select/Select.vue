@@ -315,7 +315,6 @@ const root = ref()
 .Select__popupSearch {
 	display: flex;
 	padding: calc(1.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
-	padding-bottom: 0;
 }
 
 .Select__popupSearchButton {

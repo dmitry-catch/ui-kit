@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Drawer from './Drawer.vue'
-import { Button, Icon, Select, InputNumber, TextField, DatePicker } from '../../../main'
+import { Button, Icon, Select, InputNumber, TextField } from '../../../main'
 
 export default {
 	component: Drawer,
@@ -144,13 +144,12 @@ export const WithFooter = {
 export const WithPopupElements = {
 	args: { backdrop: true, size: 'large', selectedValue: 1 },
 	render: (args) => ({
-		components: { Drawer, Button, Select, InputNumber, TextField, DatePicker },
+		components: { Drawer, Button, Select, InputNumber, TextField },
 		setup: () => ({ args }),
 		template: `
       <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
 	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with header!</Button>
         <Drawer v-bind='args'  @close='()=>args.open = false'>
-			<DatePicker label="Date picker" />
 			<TextField label="Text field"/>
 			<label>Input number</label>
 			<InputNumber/>

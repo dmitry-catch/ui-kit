@@ -2,7 +2,6 @@
 import { onMounted, provide, ref, toRefs, watch } from 'vue'
 import { callSelectOnElement, handleInitialDateValue, handleInternalValue } from './utils.js'
 import { DateLocalizationRu } from '../../../consts/localization.ru.js'
-import { useModalContext } from '../../../utils/useModalContext.ts'
 import { Keyboard } from '../../../consts/Keyboard'
 import CalendarPopup from '../../non-public/CalendarPopup/CalendarPopup.vue'
 import Popover from '../../non-public/Popover/Popover.vue'
@@ -135,9 +134,8 @@ onMounted(() => {
 	handleInternalValueChange()
 })
 
-const root = ref<HTMLElement>()
+const root = ref()
 provide('datepicker-root', root)
-useModalContext(root)
 </script>
 <template>
 	<div ref="root" class="DatePicker Field" :class="{ disabled: disabled, invalid: invalid }">

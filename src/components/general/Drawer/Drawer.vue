@@ -145,9 +145,6 @@ useModalContext(root)
 .Drawer__modal::backdrop {
 	background: none;
 }
-.Drawer__modal.backdrop::backdrop {
-	background: var(--design-background-color-modal-shadow);
-}
 
 .Drawer.backdrop.relative {
 	background: var(--design-background-color-milk-modal-shadow);

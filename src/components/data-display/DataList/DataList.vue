@@ -196,19 +196,4 @@ defineSlots<{
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
 }
-
-.DataList__loading {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-::-webkit-scrollbar {
-	width: 12px;
-}
-::-webkit-scrollbar-thumb {
-	border: 4px solid white;
-}
 </style>

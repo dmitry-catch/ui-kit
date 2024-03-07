@@ -23,7 +23,9 @@ const props = withDefaults(defineProps<TextFieldProps>(), {
 	autofocus: false,
 	required: false,
 	invalid: false,
-	readonly: false
+	readonly: false,
+	label: '',
+	description: ''
 })
 
 const slots = defineSlots<{
