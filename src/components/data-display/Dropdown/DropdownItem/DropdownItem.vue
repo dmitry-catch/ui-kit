@@ -38,6 +38,7 @@ const { disabled } = toRefs(props)
 		min-width: calc(3 * var(--design-gap-unit));
 	}
 }
+
 .DropdownItem--disabled {
 	background: var(--design-background-color-tertiary);
 	color: var(--design-background-color-disabled-primary);
