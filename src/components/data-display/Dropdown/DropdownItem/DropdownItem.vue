@@ -30,12 +30,10 @@ const { disabled } = toRefs(props)
 .DropdownItem {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
 	gap: var(--design-gap-unit);
 	cursor: pointer;
 	.icon:deep(*) {
 		color: var(--design-text-color-accent);
-		min-width: calc(3 * var(--design-gap-unit));
 	}
 }
 

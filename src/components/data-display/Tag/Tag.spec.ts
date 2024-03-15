@@ -36,7 +36,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should call close action on close button click', async () => {
 		const spy = vi.fn()
-		const { getByRole } = render(Component, { props: { closable: true, onOnClose: spy } })
+		const { getByRole } = render(Component, { props: { closable: true, onClose: spy } })
 
 		const button = getByRole('button')
 		if (button) {
