@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Drawer from './Drawer.vue'
-import { Button, Icon, Select, InputNumber, TextField, DatePicker, Dropdown } from '../../../main'
+import { Button, Icon, Select, InputNumber, TextField, DatePicker } from '../../../main'
 
 export default {
 	component: Drawer,
@@ -144,20 +144,18 @@ export const WithFooter = {
 export const WithPopupElements = {
 	args: { backdrop: true, size: 'large', selectedValue: 1 },
 	render: (args) => ({
-		components: { Drawer, Button, Select, InputNumber, TextField, DatePicker, Dropdown },
+		components: { Drawer, Button, Select, InputNumber, TextField, DatePicker },
 		setup: () => ({ args }),
 		template: `
       <div :style="{display: 'flex', gap: 'var(--design-gap-unit)'}">
 	   <Button @click="()=>args.open = !args.open">Click here to open the Drawer with header!</Button>
-        <Drawer v-bind='args'  @close='()=>args.open = false' size="200px">
+        <Drawer v-bind='args'  @close='()=>args.open = false'>
 			<DatePicker label="Date picker" />
 			<TextField label="Text field"/>
 			<label>Input number</label>
 			<InputNumber/>
-			<Select label="Select" v-model="args.selectedValue" :options="[{name: 'option1option1option1option1option1 option1option1 option1 option1', value:'1'},
-			{name: 'option2', value:'2'},{name: 'option3', value:'3'}]"/>
-			<Dropdown related v-model="args.selectedValue" :items="[{label: 'option1option1option1option1option1 option1option1 option1 option1', value:'1'},
-			{label: 'option2', value:'2'},{label: 'option3', value:'3'}]"/>
+			<Select label="Select" v-model="args.selectedValue" :options="[{name: 'option1', value:'1'},{name: 'option2', value:'2'},{name: 'option3', value:'3'}]"/>
+			
 		</Drawer>
       </div>
     `

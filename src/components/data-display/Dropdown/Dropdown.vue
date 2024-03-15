@@ -261,11 +261,11 @@ useModalContext(root)
 				</Button>
 			</slot>
 		</div>
-		<Popover v-if="isDropdownOpen" :offset="offset" :parentNode="related ? root.parentNode : root">
+		<Popover v-if="isDropdownOpen" :offset="offset" :parentNode="related ? root.parentNode : null">
 			<div
 				ref="dropdownMenuRef"
 				class="Dropdown__menu"
-				:related="related"
+				related
 				:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }]"
 				:size="size"
 			>
@@ -385,7 +385,7 @@ useModalContext(root)
 	background-color: var(--design-background-color-primary);
 }
 
-.Dropdown__menu[related='true'] {
+.Dropdown__menu[related] {
 	min-width: 0%;
 }
 
