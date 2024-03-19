@@ -363,7 +363,6 @@ useModalContext(root)
 .Dropdown__button {
 	display: flex;
 	justify-content: space-between;
-	cursor: pointer;
 }
 
 .Dropdown__fieldLabel {

@@ -46,8 +46,6 @@ const groupClickHandler = () => {
 	gap: var(--design-gap-unit);
 	background-color: var(--design-background-color-on-accent-primary);
 	padding: calc(var(--design-gap-unit) / 2) calc(3 * var(--design-gap-unit));
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
 }
 
 .DataList__group {

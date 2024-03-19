@@ -63,7 +63,7 @@ const { color, closable, squared } = toRefs(props)
 	padding: calc(0.1 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
 }
 .Tag[size='small'] {
-	padding: calc(0.75 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
+	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
 }
 .Tag[size='large'] {
 	padding: calc(1.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
