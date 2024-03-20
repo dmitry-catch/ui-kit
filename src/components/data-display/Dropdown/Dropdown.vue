@@ -494,7 +494,7 @@ useModalContext(root)
 
 .Dropdown__menu[size='small'] :deep(.DropdownItem > *) {
 	font-size: var(--design-font-size-small);
-	padding: calc(0.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
 	gap: calc(var(--design-gap-unit) / 2);
 }
 
@@ -506,7 +506,7 @@ useModalContext(root)
 .Dropdown__contentDefault[size='small'] {
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
-	padding: calc(0.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 2);
 }
 
 .Dropdown__button[size='small'] :deep(*),
