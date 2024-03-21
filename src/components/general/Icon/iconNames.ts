@@ -1,7 +1,3 @@
-/**
- * Actual for 16/11/2023
- * Except typewriter-24px.png and mic-24px-1.svg
- *
 export const iconNames: string[] = [
 	'Crown',
 	'access',
