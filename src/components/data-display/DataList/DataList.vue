@@ -74,7 +74,7 @@ defineSlots<{
 						@mousedown="handleMouseDown"
 					>
 						<template #groupLabel="{ group }">
-							<slot name="groupLabel" :group="group">{{ group.key }}</slot>
+							<slot name="groupLabel" :group="group">{{ group.name }}</slot>
 						</template>
 						<template #groupItems="{ items }">
 							<div
@@ -126,7 +126,7 @@ defineSlots<{
 }
 
 .DataList__item {
-	padding: calc(var(--design-gap-unit) / 2) 0 calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
+	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
 }
 
 .DataList__content :deep(.DataList__group ~ .DataList__group),
@@ -136,10 +136,6 @@ defineSlots<{
 
 .DataList__item--hover:hover {
 	background-color: var(--design-background-color-on-accent-primary);
-}
-
-.DataList__item {
-	margin: calc(0.5 * var(--design-gap-unit)) 0;
 }
 
 /* Size Styling */

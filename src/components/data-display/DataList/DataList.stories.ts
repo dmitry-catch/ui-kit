@@ -11,15 +11,15 @@ const dataListItems: DataListItemType[] = [
 
 const dataListGroupItems: DataListGroupType[] = [
 	{
-		key: 'Group1',
-		data: [
+		name: 'Group1',
+		items: [
 			{ label: 'SubItem 1.1', value: 'value1.1', action: () => console.log('selected option 1.1.') },
 			{ label: 'SubItem 1.2', value: 'value1.2', action: () => console.log('selected option 1.2.') }
 		]
 	},
 	{
-		key: 'Group2',
-		data: [
+		name: 'Group2',
+		items: [
 			{ label: 'SubItem 2.2', value: 'value1.1', action: () => console.log('selected option 1.1.') },
 			{ label: 'SubItem 2.2', value: 'value1.2', action: () => console.log('selected option 1.2.') }
 		]
@@ -93,7 +93,7 @@ export const CustomGroups: Story = {
 		template: `
 	  	<DataList v-bind="args">
 			<template #groupLabel="{ group }">
-			  <i>{{ group.key }}</i>
+			  <i>{{ group.name }}</i>
 			</template>
 	  	</DataList>
 	  `
@@ -113,7 +113,7 @@ export const CollapseGroups: Story = {
 		template: `
 	  	<DataList v-bind="args">
 			<template #groupLabel="{ group }">
-			  <div>{{ group.key }}</div>
+			  <div>{{ group.name }}</div>
 			</template>
 	  	</DataList>
 	  `
@@ -145,7 +145,7 @@ export const MiscellaneousContent: Story = {
 				<div>{{ item.label }}</div>
 			</template>
 			<template #groupLabel="{ group }">
-				<div>{{ group.key }}</div>
+				<div>{{ group.name }}</div>
 			</template>
 			<template #footer>
 				<i>Footer</i>

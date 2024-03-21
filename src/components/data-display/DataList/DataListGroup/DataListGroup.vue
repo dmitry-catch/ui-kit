@@ -31,10 +31,10 @@ const groupClickHandler = () => {
 	<div class="DataList__group" v-bind="group.extraAttrs">
 		<div class="DataList__groupLabel" :size="size" @click="groupClickHandler">
 			<Icon v-if="expandable" :name="isCollapsed ? 'chevron_down' : 'chevron_up'" />
-			<slot name="groupLabel" :group="group">{{ group.key }}</slot>
+			<slot name="groupLabel" :group="group">{{ group.name }}</slot>
 		</div>
 		<div v-if="!isCollapsed" class="DataList__groupItems">
-			<slot name="groupItems" :items="group.data"></slot>
+			<slot name="groupItems" :items="group.items"></slot>
 		</div>
 	</div>
 </template>

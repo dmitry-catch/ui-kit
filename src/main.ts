@@ -19,6 +19,7 @@ import Checkbox from './components/data-entry/Checkbox/Checkbox.vue'
 import SelectableOption from './components/data-display/SelectableOption/SelectableOption.vue'
 import Select from './components/data-entry/Select/Select.vue'
 import DataList from './components/data-display/DataList/DataList.vue'
+import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import OrderableList from './components/data-display/OrderableList/OrderableList.vue'
 import DataGrid from './components/data-display/DataGrid/DataGrid.vue'
 import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
@@ -28,9 +29,6 @@ import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePi
 import InputNumber from './components/data-entry/InputNumber/InputNumber.vue'
 import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
 import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
-
-import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
-import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
 
 export {
 	//General category
@@ -71,7 +69,5 @@ export {
 	//Other
 	Localization,
 	FieldLocalization,
-	DateLocalization,
-	DataListGroupType,
-	DataListItemType
+	DateLocalization
 }
