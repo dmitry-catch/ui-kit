@@ -48,6 +48,7 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 .Spinner.backdrop .Spinner__wheel {
 	border-top-color: var(--design-background-color-modal-shadow);
 }
+
 .Spinner.vertical {
 	flex-direction: column;
 }
