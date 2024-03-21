@@ -126,7 +126,7 @@ defineSlots<{
 }
 
 .DataList__item {
-	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
+	padding: calc(var(--design-gap-unit) / 2) 0 calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
 }
 
 .DataList__content :deep(.DataList__group ~ .DataList__group),
@@ -183,6 +183,10 @@ defineSlots<{
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 	--icon-size: 20px;
+}
+
+.DataList__item:first-child {
+	padding-top: 0;
 }
 
 /*  */
