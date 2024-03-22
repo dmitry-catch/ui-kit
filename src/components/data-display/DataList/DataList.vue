@@ -137,6 +137,9 @@ defineSlots<{
 .DataList__item--hover:hover {
 	background-color: var(--design-background-color-on-accent-primary);
 }
+.DataList__item {
+	margin: calc(0.5 * var(--design-gap-unit)) 0;
+}
 
 /* Size Styling */
 /* Extra-Small Size Styling */

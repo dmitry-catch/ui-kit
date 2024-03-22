@@ -50,9 +50,9 @@ const groupClickHandler = () => {
 	line-height: var(--design-line-height-footnote);
 }
 
-.DataList__group,
-.DataList__groupItems {
-	padding-top: calc(0.5 * var(--design-gap-unit));
+.DataList__group {
+	border-top: 1px solid var(--design-border-color-primary);
+	border-bottom: 1px solid var(--design-border-color-primary);
 }
 
 .DataList__groupLabel :deep(*) {
