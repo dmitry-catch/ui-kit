@@ -52,16 +52,16 @@ onMounted(() => {
 
 <template>
 	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
-		<span v-if="slots.label || required" class="Field__label">
-			<slot name="label">{{ label }}</slot>
+		<span class="Field__label">
+			<slot v-if="slots.label" name="label">{{ label }}</slot>
 			<span v-if="required" class="Field__requiredStar">*</span>
 		</span>
-		<span v-if="slots.description" class="Field__description text-small">
-			<slot name="description">{{ description }}</slot>
+		<span class="Field__description text-small">
+			<slot v-if="slots.description" name="description">{{ description }}</slot>
 		</span>
 		<span class="Field__visibleInput">
-			<span v-if="slots.before" class="Field__beforeWrapper">
-				<slot name="before"></slot>
+			<span class="Field__beforeWrapper">
+				<slot v-if="slots.before" name="before"></slot>
 			</span>
 			<input
 				v-bind="$attrs"
@@ -73,13 +73,13 @@ onMounted(() => {
 				:tabindex="tabindex"
 				:autofocus="autofocus"
 			/>
-			<span v-if="slots.after" class="Field__afterWrapper">
-				<slot name="after"></slot>
+			<span class="Field__afterWrapper">
+				<slot v-if="slots.after" name="after"></slot>
 			</span>
 		</span>
-		<span v-if="slots.validationHint || maxLength != null" class="Field__below text-small">
+		<span class="Field__below text-small">
 			<span class="Field__validationMessage danger">
-				<slot name="validationHint"></slot>
+				<slot v-if="slots.validationHint" name="validationHint"></slot>
 			</span>
 			<CharCounter
 				v-if="maxLength != null"
