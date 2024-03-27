@@ -58,7 +58,6 @@ const { color, closable, squared } = toRefs(props)
 .Tag--squared {
 	border-radius: 4px;
 }
-
 .Tag[size='extra-small'] {
 	padding: calc(0.1 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
 }
