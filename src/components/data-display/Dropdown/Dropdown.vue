@@ -28,7 +28,6 @@ interface DropdownProps {
 	offset?: number
 	loading?: boolean
 	items?: Array<DropdownItemType> | Array<DropdownGroupType>
-	placement?: "bottom-start" | "bottom-end"	
 	variant?: 'icon' | 'functional' | 'accent'
 	/** При положительном значении флага ширина выпадающего списка
 	 * будет отталкиваться от ширины родительского компонента "Dropdown", если у этого "родителя"
@@ -80,8 +79,7 @@ const {
 	related,
 	modelValue,
 	selected,
-	multiple,
-	placement
+	multiple
 } = toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
@@ -268,7 +266,6 @@ useModalContext(root)
 				ref="dropdownMenuRef"
 				class="Dropdown__menu"
 				:related="related"
-				:placement="placement ? placement: 'bottom-start'"
 				:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }]"
 				:size="size"
 			>
@@ -393,10 +390,6 @@ useModalContext(root)
 	min-width: 0%;
 }
 
-.Dropdown__menu[placement='bottom-end']{
-	left: auto;
-	right: 0%;
-}
 .Dropdown__item--focused {
 	background: var(--design-background-color-on-accent-primary);
 }
@@ -409,6 +402,11 @@ useModalContext(root)
 .Dropdown__contentDefault {
 	padding: calc(var(--design-gap-unit) / 2) 0;
 	background-color: var(--design-background-color-primary);
+}
+
+.Dropdown__contentItem {
+	padding-left: calc(3 * var(--design-gap-unit));
+	padding-right: calc(3 * var(--design-gap-unit));
 }
 
 .Dropdown__contentSubItemField:hover,
@@ -428,10 +426,6 @@ useModalContext(root)
 .Dropdown__content .Dropdown__contentSubItems ~ .Dropdown__contentSubItems,
 .Dropdown__menuHeader:empty + .Dropdown__content .Dropdown__contentSubItems {
 	border-top: none;
-}
-
-.Dropdown__content {
-	padding: var(--design-gap-unit) 0;
 }
 
 .Dropdown__contentSubItemsLabel :deep(*),
@@ -475,12 +469,13 @@ useModalContext(root)
 	gap: calc(var(--design-gap-unit) / 2);
 }
 
-.Dropdown__menuHeader[size='extra-small'],
+.Dropdown__menu[size='extra-small'],
 .Dropdown__contentItem[size='extra-small'],
 .Dropdown__contentSubItemsLabel[size='extra-small'],
 .Dropdown__contentSubItem[size='extra-small'],
-.Dropdown_menuFooter[size='extra-small'] {
-	padding: calc(0.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+.Dropdown_menuFooter[size='extra-small'],
+.Dropdown__contentDefault[size='extra-small'] {
+	padding: calc(var(--design-gap-unit) / 4);
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
 }
@@ -507,7 +502,8 @@ useModalContext(root)
 .Dropdown__contentItem[size='small'],
 .Dropdown__contentSubItemsLabel[size='small'],
 .Dropdown__contentSubItem[size='small'],
-.Dropdown_menuFooter[size='small'] {
+.Dropdown_menuFooter[size='small'],
+.Dropdown__contentDefault[size='small'] {
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 	padding: calc(0.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
@@ -521,10 +517,6 @@ useModalContext(root)
 
 .Dropdown__icon[size='small'] {
 	--icon-size: 20px;
-}
-
-.Dropdown__contentItem {
-	padding: calc(0.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
 }
 
 /*  */

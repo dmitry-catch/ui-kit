@@ -198,7 +198,6 @@ const root = ref()
 				:searchMaxLength="searchMaxLength"
 				:popupPlaceholder="popupPlaceholder"
 				:searchVisible="isSearchVisible"
-				class="Multiselect__searchPopup"
 				@clearInput="clearInput"
 				@open="() => emit('open')"
 			>
@@ -285,9 +284,5 @@ const root = ref()
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
 	--icon-size: var(--design-font-size-large);
-}
-
-.Multiselect__searchPopup:deep(.SearchPopup__input) {
-	padding-bottom: 0px;
 }
 </style>

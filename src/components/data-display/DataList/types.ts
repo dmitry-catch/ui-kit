@@ -7,8 +7,8 @@ export type DataListItemType = {
 }
 
 export type DataListGroupType = {
-	key?: string
-	data: Array<DataListItemType>
+	name?: string
+	items: Array<DataListItemType>
 	extraAttrs?: Record<string, any>
 	isCollapsed?: boolean
 }

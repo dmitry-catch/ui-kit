@@ -53,10 +53,6 @@ export default {
 		autoClose: {
 			control: 'select',
 			options: [true, 'keyboard', 'outside', 'item']
-		},
-		placement: {
-			control: 'select',
-			options: ['bottom-start', 'bottom-end']
 		}
 	},
 	render: (args) => ({
