@@ -32,8 +32,8 @@ interface DropdownProps {
 	 ** "start" - от начала родительского компонента
 	 ** "end" - до конца родительского компонента
 	 * @default "start"
-	 */
-	placement?: 'start' | 'end'
+	 */	
+	placement?: "start" | "end"	
 	variant?: 'icon' | 'functional' | 'accent'
 	/** При положительном значении флага ширина выпадающего списка
 	 * будет отталкиваться от ширины родительского компонента "Dropdown", если у этого "родителя"
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 	caret: true,
 	size: 'medium',
 	autoClose: true,
-	placement: 'start',
+	placement:'start',
 	offset: 2
 })
 
@@ -399,7 +399,7 @@ useModalContext(root)
 	min-width: 0%;
 }
 
-.Dropdown__menu[placement='end'] {
+.Dropdown__menu[placement='end']{
 	left: auto;
 	right: 0%;
 }
