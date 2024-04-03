@@ -56,7 +56,7 @@ export default {
 		},
 		placement: {
 			control: 'select',
-			options: ['start', 'end']
+			options: ['bottom-start', 'bottom-end']
 		}
 	},
 	render: (args) => ({
