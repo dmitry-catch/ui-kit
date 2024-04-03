@@ -11,7 +11,7 @@ import Popover from '../../non-public/Popover/Popover.vue'
 
 interface DropdownProps {
 	modelValue?: boolean
-	/** Выделенный галкой выбранный пункт контектстного меню */
+	/** Выделенный галкой выбранный пункт контектсного меню */
 	selected?: DropdownItemType[]
 	/** Поддержка выбора нескольких пунктов меню */
 	multiple?: boolean
@@ -28,11 +28,6 @@ interface DropdownProps {
 	offset?: number
 	loading?: boolean
 	items?: Array<DropdownItemType> | Array<DropdownGroupType>
-	/** Позволяет задать расположение выпадающего списка под родительским компонентом:
-	 ** "start" - от начала родительского компонента
-	 ** "end" - до конца родительского компонента
-	 * @default "start"
-	 */	
 	placement?: "start" | "end"	
 	variant?: 'icon' | 'functional' | 'accent'
 	/** При положительном значении флага ширина выпадающего списка
