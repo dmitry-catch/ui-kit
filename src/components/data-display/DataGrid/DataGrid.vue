@@ -127,7 +127,7 @@ const changePage = (value: number) => {
 	/*noinspection CssInvalidFunction*/
 	--datagrid-table-cell-padding: var(
 		--design-table-cell-padding,
-		var(--design-gap-unit) calc(2 * var(--design-gap-unit))
+		calc(1.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit))
 	);
 	width: 100%;
 	height: 100%;

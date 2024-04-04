@@ -177,15 +177,14 @@ const clickSort = (event: MouseEvent) => {
 	display: flex;
 	flex-flow: row;
 	padding: var(--datagrid-table-cell-padding);
-	background-color: var(--design-background-color-primary);
+	background: var(--design-background-color-primary);
 	width: 100%;
 	height: 100%;
 	min-height: 26px;
 	box-sizing: border-box;
 	gap: calc(1.5 * var(--design-gap-unit));
 	align-items: center;
-	justify-content: space-between;
-	z-index: 1000;
+	justify-content: center;
 }
 
 .DataGridHeader__actions {

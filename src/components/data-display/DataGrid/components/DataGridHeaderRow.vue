@@ -52,7 +52,7 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 <template>
 	<tr ref="root" class="DataGridHeaderRow">
 		<td v-if="detailsColumn" class="DataGridHeaderRow__cell"></td>
-		<td class="DataGridHeaderRow__cell DataGridHeaderRow__SelectCell"></td>
+		<td class="DataGridHeaderRow__cell"></td>
 		<DataGridHeader
 			v-for="column of columns"
 			:key="column.field"
@@ -67,11 +67,6 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 <style>
 .DataGridHeaderRow {
 	display: contents;
-	position: fixed;
-}
-.DataGridHeaderRow__SelectCell {
-	z-index: 1000;
-	background: var(--design-background-color-primary);
 }
 
 .DataGridHeaderRow__cell {

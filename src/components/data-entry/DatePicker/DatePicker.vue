@@ -249,10 +249,6 @@ useModalContext(root)
 	margin-left: auto;
 }
 
-.Field__visibleInput {
-	gap: var(--design-gap-unit);
-}
-
 .DatePicker__visible:focus {
 	outline: none;
 }
