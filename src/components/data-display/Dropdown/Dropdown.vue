@@ -40,7 +40,7 @@ interface DropdownProps {
 	 * стоит position: relative */
 	related?: boolean
 }
-
+ 
 const props = withDefaults(defineProps<DropdownProps>(), {
 	caret: true,
 	size: 'medium',
