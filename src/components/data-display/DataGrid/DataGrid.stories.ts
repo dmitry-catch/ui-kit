@@ -26,7 +26,7 @@ export const Default: Story = {
 						ok: true,
 						fail: false
 					},
-					template: (it: boolean) => (it ? 'ok' : 'fail'),
+					template: (it: boolean) => (it ? 'ok ads d asd ' : 'fail as dsa dasd as d'),
 					value: true,
 					date: new Date(2023, 3, 2)
 				},
@@ -43,7 +43,7 @@ export const Default: Story = {
 			const dataSource = computed(() =>
 				[...Array(10).keys()].map((i) => ({
 					id: i,
-					name: 'name ' + i,
+					name: 'nameadsd a asdasda sdfkjgd fgfgd fdgfdg dsd as das sdssssss dasd sa ds ' + i,
 					field: options.value[i % 4].field,
 					value: Boolean(i % 2),
 					date: options.value[i % 4].date
@@ -72,12 +72,15 @@ export const Default: Story = {
 			return { options, grouped, filters, sort }
 		},
 		template: `
+		<div :style="{height: '400px'}">
 			<DataGrid
 				:columns='options'
 				:data-source='grouped'
 				:row-key='(data) => data.id'
 				v-model:filters='filters'
 				v-model:sort='sort'
-			/>`
+				:allowSelection='true'
+			/>
+		</div>`
 	})
 }

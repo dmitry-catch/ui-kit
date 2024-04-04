@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 	description: '',
 	modelValue: undefined
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'resetAction'])
 
 const { autofocus, modelValue, disabled } = toRefs(props)
 
@@ -55,6 +55,7 @@ const handleCalendarReset = () => {
 	day.value = null
 	month.value = null
 	year.value = null
+	emit('resetAction')
 	handleCalendarClose()
 }
 
@@ -247,6 +248,10 @@ useModalContext(root)
 	height: var(--design-current-line-height);
 	cursor: pointer;
 	margin-left: auto;
+}
+
+.Field__visibleInput {
+	gap: var(--design-gap-unit);
 }
 
 .DatePicker__visible:focus {

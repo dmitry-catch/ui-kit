@@ -61,6 +61,7 @@ const selected = computed({
 <style>
 .DataGridRow {
 	display: contents;
+	text-align: left;
 }
 
 .DataGridRow:nth-child(2n) .DataGridRow__cell {

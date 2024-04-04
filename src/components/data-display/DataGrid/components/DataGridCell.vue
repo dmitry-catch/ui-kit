@@ -30,9 +30,8 @@ const cellComponent = (item: any, column: DataGridColumn) => {
 .DataGridCell {
 	display: block;
 	padding: var(--datagrid-table-cell-padding);
-	-webkit-line-clamp: 3;
+	border-bottom: var(--design-border-color-primary) 1px solid;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	border-bottom: var(--design-border-color-primary) 1px solid;
 }
 </style>
