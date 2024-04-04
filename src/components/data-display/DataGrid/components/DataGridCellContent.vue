@@ -16,6 +16,7 @@ const template = (value: any) => {
 }
 
 const contentMaxHeight = ref('calc(2 * var(--design-current-line-height))')
+
 const expand = () => {
 	if (contentMaxHeight.value == 'none') contentMaxHeight.value = 'calc(2 * var(--design-current-line-height))'
 	else contentMaxHeight.value = 'none'
