@@ -146,6 +146,7 @@ const changePage = (value: number) => {
 		repeat(calc(var(--datagrid-columns-count) - var(--datagrid-content-columns-count)), min-content)
 		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
 	background: var(--design-background-color-primary);
+	overflow: auto;
 }
 .DataGrid__table[allowPagination='true'] {
 	max-height: calc(100% - 72px);
