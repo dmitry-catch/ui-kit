@@ -87,7 +87,7 @@ const changePage = (value: number) => {
 
 <template>
 	<div ref="root" class="DataGrid">
-		<table class="DataGrid__table" :allowPagination="allowPagination">
+		<table class="DataGrid__table">
 			<thead class="DataGrid__thead">
 				<DataGridHeaderRow
 					v-model:columns="internalColumns"
@@ -147,9 +147,6 @@ const changePage = (value: number) => {
 		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
 	background: var(--design-background-color-primary);
 	overflow: auto;
-}
-.DataGrid__table[allowPagination='true'] {
-	max-height: calc(100% - 72px);
 }
 
 .DataGrid__header {
