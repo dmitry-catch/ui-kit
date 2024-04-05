@@ -52,11 +52,11 @@ onMounted(() => {
 
 <template>
 	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
-		<span v-if="slots.label || label || required" class="Field__label">
+		<span v-if="slots.label || required" class="Field__label">
 			<slot name="label">{{ label }}</slot>
 			<span v-if="required" class="Field__requiredStar">*</span>
 		</span>
-		<span v-if="slots.description || description" class="Field__description text-small">
+		<span v-if="slots.description" class="Field__description text-small">
 			<slot name="description">{{ description }}</slot>
 		</span>
 		<span class="Field__visibleInput">

@@ -72,7 +72,7 @@ export const Default: Story = {
 			return { options, grouped, filters, sort }
 		},
 		template: `
-		<div :style="{height: '800px'}">
+		<div :style="{height: '400px'}">
 			<DataGrid
 				:columns='options'
 				:data-source='grouped'

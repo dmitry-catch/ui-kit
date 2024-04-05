@@ -140,8 +140,6 @@ watch(pickedItem, () => {
 
 watch(searchInput, () => onSearch())
 
-watch([options, loading], () => optionsHandler())
-
 onMounted(() => optionsHandler())
 
 const root = ref()

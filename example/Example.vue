@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
 import DataGrid from '../src/components/data-display/DataGrid/DataGrid.vue'
 import ButtonStand from './ButtonStand.vue'
-import Select from '../src/components/data-entry/Select/Select.vue'
 
 const filters = ref(value(true))
 
@@ -61,18 +60,6 @@ watchEffect(() => {
 watchEffect(() => {
 	console.log(linqSort(sort.value))
 })
-
-onMounted(() => {
-	fetch('https://dummyjson.com/products')
-		.then((it) => it.json())
-		.then((it) => {
-			const data = it.products
-			options1.value = data.map((prod) => ({ name: prod.title, value: prod.title }))
-		})
-})
-
-const options1 = ref([])
-const value1 = ref(null)
 </script>
 
 <template>
@@ -80,7 +67,6 @@ const value1 = ref(null)
 	<input type="date" />
 	<input type="number" />
 	<div style="width: 468px">
-		<Select v-model="value1" :options="options1" />
 		<DatePicker v-model="date" :hint="'string'" :description="'string'" :invalid="false" :disabled="true" />
 	</div>
 

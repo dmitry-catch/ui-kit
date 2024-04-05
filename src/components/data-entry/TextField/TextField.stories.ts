@@ -55,9 +55,3 @@ export const TabIndex: Story = {
 		tabindex: 1
 	}
 }
-
-export const WithLabel: Story = {
-	args: {
-		label: 'Some label'
-	}
-}

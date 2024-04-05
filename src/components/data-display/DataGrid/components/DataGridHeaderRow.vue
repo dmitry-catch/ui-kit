@@ -69,14 +69,8 @@ const { dragHandleMousedown, clickHandler } = useDragging({
 	display: contents;
 	position: fixed;
 }
-.DataGridRow__detailsCell,
-.DataGridRow__selectCell,
-.DataGridHeaderRow__cell {
-	border-bottom: var(--design-border-color-primary) 1px solid;
-}
-.DataGridHeaderRow__SelectCell,
-.DataGridRow__detailsCell {
-	z-index: 999;
+.DataGridHeaderRow__SelectCell {
+	z-index: 1000;
 	background: var(--design-background-color-primary);
 }
 

@@ -185,7 +185,7 @@ const clickSort = (event: MouseEvent) => {
 	gap: calc(1.5 * var(--design-gap-unit));
 	align-items: center;
 	justify-content: space-between;
-	z-index: 999;
+	z-index: 1000;
 }
 
 .DataGridHeader__actions {
@@ -205,8 +205,5 @@ const clickSort = (event: MouseEvent) => {
 
 .DataGridHeader__search {
 	min-width: 100px;
-}
-.DataGridHeader__name {
-	text-align: start;
 }
 </style>
