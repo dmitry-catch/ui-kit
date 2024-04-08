@@ -133,6 +133,7 @@ const changePage = (value: number) => {
 	height: 100%;
 	overflow: auto;
 }
+
 .DataGrid__table {
 	width: 100%;
 	height: 100%;
