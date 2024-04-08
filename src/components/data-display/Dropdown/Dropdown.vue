@@ -39,9 +39,6 @@ interface DropdownProps {
 	 * будет отталкиваться от ширины родительского компонента "Dropdown", если у этого "родителя"
 	 * стоит position: relative */
 	related?: boolean
-	/** "Область просмотра"
-	 * Контейнер, относительно которого будет производиться observe */
-	viewport?: HTMLElement | null
 }
 
 const props = withDefaults(defineProps<DropdownProps>(), {
@@ -49,8 +46,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 	size: 'medium',
 	autoClose: true,
 	placement: 'start',
-	offset: 2,
-	viewport: null
+	offset: 2
 })
 
 defineSlots<{
@@ -91,8 +87,7 @@ const {
 	modelValue,
 	selected,
 	multiple,
-	placement,
-	viewport
+	placement
 } = toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
@@ -139,7 +134,6 @@ const escapeHandler = () => {
 
 const dropdownMenuRef = ref()
 const dropdownFieldRef = ref()
-const dropdownMenuWrapperRef = ref()
 
 const isEnoughSpaceForMenu = ref(true)
 const dropdownHeigth = ref(0)
@@ -233,44 +227,12 @@ const scrollIntoViewIfNeeded = () => {
 	})
 }
 
-let observer: IntersectionObserver | null = null
-
-const createObserver = () => {
-	if (dropdownMenuWrapperRef.value) {
-		observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					isDropdownOpen.value = entry.isIntersecting
-				})
-			},
-			{
-				root: viewport.value ?? null
-			}
-		)
-		observer.observe(dropdownMenuWrapperRef.value)
-	}
-}
-
-watch(isDropdownOpen, (newValue) => {
-	if (newValue) {
-		nextTick().then(() => {
-			createObserver()
-		})
-	} else {
-		if (observer) {
-			observer.disconnect()
-			observer = null
-		}
-	}
-})
-
 onMounted(() => {
 	isDropdownOpen.value = modelValue.value ?? false
 	document.addEventListener('mousedown', outsideClickHandler)
 })
 
 onUnmounted(() => {
-	observer?.disconnect()
 	document.removeEventListener('mousedown', outsideClickHandler)
 })
 
@@ -307,102 +269,96 @@ useModalContext(root)
 				</Button>
 			</slot>
 		</div>
-		<div ref="dropdownMenuWrapperRef">
-			<Popover v-if="isDropdownOpen" :offset="offset" :parentNode="related ? root.parentNode : root">
-				<div
-					ref="dropdownMenuRef"
-					class="Dropdown__menu"
-					:related="related"
-					:placement="placement"
-					:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }]"
-					:size="size"
-				>
-					<div class="Dropdown__menuHeader" :size="size">
-						<slot name="header"></slot>
-					</div>
-					<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }]" :size="size">
-						<slot>
-							<template v-if="items && items.length > 0">
-								<template v-for="(item, idx) in items" :key="idx">
-									<div
-										v-if="isGroup(item)"
-										v-bind="item.extraAttrs"
-										class="Dropdown__contentSubItems"
-									>
-										<div class="Dropdown__contentSubItemsLabel" :size="size">
-											<slot name="groupLabel" :group="item">{{ item.name }}</slot>
-										</div>
-										<div
-											v-for="(subItem, idx) in item.items"
-											:key="idx"
-											class="Dropdown__contentSubItemField"
-											:class="{
-												'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(subItem)
-											}"
-											@click="handleClick(subItem)"
-										>
-											<div
-												v-if="$slots.item"
-												v-bind="subItem.extraAttrs"
-												class="Dropdown__contentSubItem"
-												:class="[subItem.wrapperClass]"
-												:size="size"
-											>
-												<slot name="item" :item="subItem" v-bind="subItem.extraAttrs"></slot>
-											</div>
-											<DropdownItem
-												v-else
-												v-bind="subItem.extraAttrs"
-												:picked="selected?.includes(subItem)"
-												class="Dropdown__contentSubItem"
-												:class="[subItem.wrapperClass]"
-												:size="size"
-											>
-												{{ subItem.label }}
-											</DropdownItem>
-										</div>
+		<Popover v-if="isDropdownOpen" :offset="offset" :parentNode="related ? root.parentNode : root">
+			<div
+				ref="dropdownMenuRef"
+				class="Dropdown__menu"
+				:related="related"
+				:placement="placement"
+				:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }]"
+				:size="size"
+			>
+				<div class="Dropdown__menuHeader" :size="size">
+					<slot name="header"></slot>
+				</div>
+				<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }]" :size="size">
+					<slot>
+						<template v-if="items && items.length > 0">
+							<template v-for="(item, idx) in items" :key="idx">
+								<div v-if="isGroup(item)" v-bind="item.extraAttrs" class="Dropdown__contentSubItems">
+									<div class="Dropdown__contentSubItemsLabel" :size="size">
+										<slot name="groupLabel" :group="item">{{ item.name }}</slot>
 									</div>
-									<template v-else>
+									<div
+										v-for="(subItem, idx) in item.items"
+										:key="idx"
+										class="Dropdown__contentSubItemField"
+										:class="{
+											'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(subItem)
+										}"
+										@click="handleClick(subItem)"
+									>
 										<div
 											v-if="$slots.item"
-											v-bind="item.extraAttrs"
-											class="Dropdown__contentItem"
-											:class="[
-												item.wrapperClass,
-												{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
-											]"
+											v-bind="subItem.extraAttrs"
+											class="Dropdown__contentSubItem"
+											:class="[subItem.wrapperClass]"
 											:size="size"
-											@click="handleClick(item)"
 										>
-											<slot name="item" :item="item"></slot>
+											<slot name="item" :item="subItem" v-bind="subItem.extraAttrs"></slot>
 										</div>
 										<DropdownItem
 											v-else
-											v-bind="item.extraAttrs"
-											:picked="selected?.includes(item)"
-											class="Dropdown__contentItem"
-											:class="[
-												item.wrapperClass,
-												{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
-											]"
+											v-bind="subItem.extraAttrs"
+											:picked="selected?.includes(subItem)"
+											class="Dropdown__contentSubItem"
+											:class="[subItem.wrapperClass]"
 											:size="size"
-											@click="handleClick(item)"
 										>
-											{{ item.label }}
+											{{ subItem.label }}
 										</DropdownItem>
-									</template>
+									</div>
+								</div>
+								<template v-else>
+									<div
+										v-if="$slots.item"
+										v-bind="item.extraAttrs"
+										class="Dropdown__contentItem"
+										:class="[
+											item.wrapperClass,
+											{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
+										]"
+										:size="size"
+										@click="handleClick(item)"
+									>
+										<slot name="item" :item="item"></slot>
+									</div>
+									<DropdownItem
+										v-else
+										v-bind="item.extraAttrs"
+										:picked="selected?.includes(item)"
+										class="Dropdown__contentItem"
+										:class="[
+											item.wrapperClass,
+											{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
+										]"
+										:size="size"
+										@click="handleClick(item)"
+									>
+										{{ item.label }}
+									</DropdownItem>
 								</template>
 							</template>
-						</slot>
-					</div>
-					<div>
-						<div class="Dropdown_menuFooter" :size="size">
-							<slot name="footer"></slot>
-						</div>
+						</template>
+					</slot>
+				</div>
+				<div>
+					<div class="Dropdown_menuFooter" :size="size">
+						<slot name="footer"></slot>
 					</div>
 				</div>
-			</Popover>
-		</div>
+			</div>
+		</Popover>
 	</div>
 </template>
 
