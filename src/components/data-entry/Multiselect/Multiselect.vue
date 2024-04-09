@@ -146,8 +146,6 @@ const openList = () => {
 
 watch(searchInput, () => onSearch())
 
-watch([loading, options], () => optionsHandler())
-
 onMounted(() => optionsHandler())
 
 const root = ref()
