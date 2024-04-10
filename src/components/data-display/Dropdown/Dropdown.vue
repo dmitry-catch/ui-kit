@@ -237,21 +237,17 @@ let observer: IntersectionObserver | null = null
 
 const createObserver = () => {
 	if (dropdownMenuWrapperRef.value) {
-		try {
-			observer = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((entry) => {
-						isDropdownOpen.value = entry.isIntersecting
-					})
-				},
-				{
-					root: viewport.value ?? null
-				}
-			)
-			observer.observe(dropdownMenuWrapperRef.value)
-		} catch (error) {
-			console.log(error)
-		}
+		observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					isDropdownOpen.value = entry.isIntersecting
+				})
+			},
+			{
+				root: viewport.value ?? null
+			}
+		)
+		observer.observe(dropdownMenuWrapperRef.value)
 	}
 }
 

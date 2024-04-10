@@ -1,8 +1,10 @@
 import { render } from '@testing-library/vue'
 import { describe, it, expect, vi } from 'vitest'
-import { composeStory } from '../../../../storybook/utils/composeStory.js'
+//import { composeStory } from '../../../../storybook/utils/composeStory.js'
+
 import Meta, { Default, WithHeader, WithFooter, WithContent } from './Drawer.stories.js'
 import { userEvent as user } from '@testing-library/user-event'
+import { composeStory } from '@storybook/vue3'
 
 const Component = composeStory(Default, Meta)
 
