@@ -46,7 +46,6 @@ const IconNames: string[] = [
 	'bold',
 	'book',
 	'bookmark',
-	'bookmark_accent',
 	'box',
 	'briefcase',
 	'brush',
