@@ -148,7 +148,7 @@ useModalContext(content)
 	opacity: 0;
 }
 
-.tippedContent:hover + .Tooltip[open='false'] {
+.tippedContent:hover ~ .Tooltip[open='false'] {
 	visibility: visible;
 	opacity: 1;
 }

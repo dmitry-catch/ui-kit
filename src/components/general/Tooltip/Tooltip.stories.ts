@@ -22,14 +22,10 @@ export default {
 		components: { Tooltip, Button },
 		setup: () => ({ args }),
 		template: `
-      <div :style="{width: '400px', height: '100px', border: '1px solid gray', display: 'flex',
-	   flexDirection: 'row', justifyContent: 'space-between', position: 'relative',
+      <div :style="{width: '200px', height: '100px', border: '1px solid gray', display: 'flex',
+	   flexDirection: 'column', justifyContent: 'center', position: 'relative',
 	    alignItems: 'center', overflow: 'hidden'}">
         <Tooltip v-model="args.open" v-bind="args" > 
-            <template #tooltip>Tooltip</template>
-            <Button class="accent">Button</Button>
-        </Tooltip>
-		        <Tooltip v-model="args.open" v-bind="args" > 
             <template #tooltip>Tooltip</template>
             <Button class="accent">Button</Button>
         </Tooltip>

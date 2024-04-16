@@ -183,7 +183,7 @@ const clickSort = (event: MouseEvent) => {
 	min-height: 26px;
 	box-sizing: border-box;
 	gap: calc(1.5 * var(--design-gap-unit));
-	align-items: start;
+	align-items: center;
 	justify-content: space-between;
 	z-index: 999;
 }
