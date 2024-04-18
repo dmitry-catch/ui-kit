@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Uploader from './Uploader.vue'
-import Button from '../../general/Button/Button.vue'
-import Icon from '../../general/Icon/Icon.vue'
+import { Button, Icon } from '../../../main'
 
 export default {
 	component: Uploader,

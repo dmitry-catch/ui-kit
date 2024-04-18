@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import Icon from '../../../general/Icon/Icon.vue'
+import { Icon } from '../../../../main'
 
 interface DropdownItemProps {
 	disabled?: boolean

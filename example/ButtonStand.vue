@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Button from '../src/components/general/Button/Button.vue'
-import Icon from '../src/components/general/Icon/Icon.vue'
+import { Button, Icon } from '../src/main.js'
 
 const onClick = () => {
 	alert('CLICK')
