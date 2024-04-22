@@ -6,13 +6,13 @@ import Icon from '../../general/Icon/Icon.vue'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
 import SearchPopup from './components/SearchPopup.vue'
 
-export interface SelectOptionType<TValue> {
+interface SelectOptionType {
 	name: string
 	value: TValue
 }
 
 interface MultiselectProps {
-	options: Array<SelectOptionType<TValue>>
+	options: Array<SelectOptionType>
 	/** Если параметр = true, компонент подсветиться красным. Если тип параметра - строка, то подсказка заменится на эту строку и текст станет красным */
 	invalid?: boolean | string
 	/** Появляется астерикс над лейблом. Лейбл обязателен */
@@ -100,7 +100,7 @@ const selectedItems = computed(() => items.value.filter((it) => modelValue.value
 const shownName = computed(() => {
 	if (!modelValue.value.length) return ''
 	if (modelValue.value.length === 1)
-		return options.value.find((it: SelectOptionType<TValue>) => modelValue.value.includes(it.value))?.name
+		return options.value.find((it: SelectOptionType) => modelValue.value.includes(it.value))?.name
 	return `${modelValue.value.length} значения`
 })
 
@@ -119,7 +119,7 @@ const processItemClick = (item: DropdownItemType) => {
 	else modelValue.value = modelValue.value.filter((it) => it !== item.value)
 }
 
-const optionsHandler = (initOptions: SelectOptionType<TValue>[] | null = null) => {
+const optionsHandler = (initOptions: SelectOptionType[] | null = null) => {
 	initOptions = initOptions ?? options.value
 	items.value = initOptions.map((option) => ({
 		label: option.name,
@@ -133,7 +133,7 @@ const onSearch = () => {
 	if (!searchInput.value) optionsHandler()
 	if (searchType.value && searchType.value != 'auto')
 		optionsHandler(
-			options.value.filter((option: SelectOptionType<TValue>) =>
+			options.value.filter((option: SelectOptionType) =>
 				option.name.toLowerCase().includes(searchInput.value?.toLowerCase())
 			)
 		)
