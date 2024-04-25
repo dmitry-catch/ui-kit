@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, toRefs, computed, watch, onMounted } from 'vue'
-import Dropdown from '../../data-display/Dropdown/Dropdown.vue'
-import Button from '../../general/Button/Button.vue'
-import Icon from '../../general/Icon/Icon.vue'
-import TextField from '../TextField/TextField.vue'
+import { Dropdown, Button, Icon, TextField } from '../../../main'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
 import { SelectOptionType } from '../types'
 

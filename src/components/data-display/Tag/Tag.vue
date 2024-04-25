@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
-import Icon from '../../general/Icon/Icon.vue'
-import Button from '../../general/Button/Button.vue'
+import { Icon, Button } from '../../../main'
 
 interface TagProps {
 	color?:

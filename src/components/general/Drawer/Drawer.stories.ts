@@ -1,12 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Drawer from './Drawer.vue'
-import Button from '../Button/Button.vue'
-import Icon from '../Icon/Icon.vue'
-import Select from '../../data-entry/Select/Select.vue'
-import InputNumber from '../../data-entry/InputNumber/InputNumber.vue'
-import TextField from '../../data-entry/TextField/TextField.vue'
-import DatePicker from '../../data-entry/DatePicker/DatePicker.vue'
-import Dropdown from '../../data-display/Dropdown/Dropdown.vue'
+import { Button, Icon, Select, InputNumber, TextField, DatePicker, Dropdown } from '../../../main'
 
 export default {
 	component: Drawer,

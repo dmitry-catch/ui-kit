@@ -3,10 +3,7 @@ import { computed, onMounted, onUnmounted, ref, toRefs } from 'vue'
 import { useModalContext } from '../../../utils/useModalContext.js'
 import { handleKeyboardEvent } from '../../../utils/keyboardEventHandler.js'
 import { Keyboard } from '../../../consts/Keyboard.js'
-import Modal from '../Modal/Modal.vue'
-import Surface from '../../layout/Surface/Surface.vue'
-import Button from '../Button/Button.vue'
-import Icon from '../Icon/Icon.vue'
+import { Modal, Surface, Button, Icon } from '../../../main.js'
 
 interface DrawerProps {
 	open: boolean
