@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '../../../main.ts'
+import Icon from '../../general/Icon/Icon.vue'
 import { toRefs } from 'vue'
 
 interface DropdownSelectableOptionProps {

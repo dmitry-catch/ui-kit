@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { toRefs } from 'vue'
 import { DropdownItemType } from '../../../data-display/Dropdown/types'
-import { Dropdown, Button, Icon, TextField } from '../../../../main'
+import Dropdown from '../../../data-display/Dropdown/Dropdown.vue'
+import Button from '../../../general/Button/Button.vue'
+import Icon from '../../../general/Icon/Icon.vue'
+import TextField from '../../TextField/TextField.vue'
 
 interface SearchPopupProps {
 	items?: DropdownItemType[]

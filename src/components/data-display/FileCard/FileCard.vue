@@ -2,7 +2,9 @@
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
 import { byteConverter } from '../../../utils/byteConverter'
 import { toRefs } from 'vue'
-import { Button, Icon, Spinner } from '../../../main'
+import Button from '../../general/Button/Button.vue'
+import Icon from '../../general/Icon/Icon.vue'
+import Spinner from '../../general/Spinner/Spinner.vue'
 
 interface FileCardProps {
 	file: File
