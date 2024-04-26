@@ -28,37 +28,45 @@ const open = defineModel<boolean>({ type: Boolean })
 
 const tippedContent = ref<HTMLElement>()
 const content = ref<HTMLElement>()
+const contentWidth = ref<number>()
+const contentHeight = ref<number>()
 
 const tippedContentRect = computed(() => tippedContent.value?.getBoundingClientRect() ?? {})
 const topOffset = computed(() => {
-	const contentHeight = Number(content.value?.getBoundingClientRect().height) ?? 0
-	const sizeDifference = Number(tippedContentRect.value?.height) - contentHeight
+	const tipHeight = contentHeight.value ?? Number(content.value?.getBoundingClientRect().height)
+	const sizeDifference = Math.abs(Number(tippedContentRect.value?.height) - tipHeight)
 	switch (placement.value) {
 		case 'top':
-			return Number(tippedContentRect.value?.top) - contentHeight - 4 - offset.value + 'px'
+			return Math.abs(Number(tippedContentRect.value?.top)) - Math.abs(tipHeight) - 4 - offset.value + 'px'
 		case 'bottom':
-			return Number(tippedContentRect.value?.bottom) + 4 + offset.value + 'px'
+			return Math.abs(Number(tippedContentRect.value?.bottom)) + 4 + offset.value + 'px'
 		default:
 			return tippedContentRect.value?.top + sizeDifference / 2 + 'px'
 	}
 })
+
 const leftOffset = computed(() => {
-	const sizeDifference = Number(tippedContentRect.value?.width) - Number(content.value?.getBoundingClientRect().width)
-	const contentWidth = Number(content.value?.getBoundingClientRect().width) ?? 0
+	const elementWidth = contentWidth.value ?? Number(content.value?.scrollWidth)
+	const initialLeft = elementWidth / 2
+	const tippedX = Math.abs(Number(tippedContentRect.value?.x))
 	switch (placement.value) {
 		case 'left':
-			return Number(tippedContentRect.value?.x) - Number(contentWidth) - offset.value - 4 + 'px'
+			return tippedX - Math.abs(elementWidth) - offset.value - 4 + 'px'
 		case 'right':
-			return Number(tippedContentRect.value?.x) + Number(tippedContentRect.value?.width) + offset.value + 4 + 'px'
+			return tippedX + Math.abs(Number(tippedContentRect.value?.width)) + offset.value + 4 + 'px'
 		default:
-			return Number(tippedContentRect.value?.x) + sizeDifference / 2 + 'px'
+			return tippedX - initialLeft + Number(tippedContentRect.value?.width) / 2 + 'px'
 	}
 })
+const onHover = () => {
+	contentWidth.value = Number(content.value?.offsetWidth)
+	contentHeight.value = Number(content.value?.clientHeight)
+}
 
 useModalContext(content)
 </script>
 <template>
-	<div ref="tippedContent" class="tippedContent" data-testid="trigger">
+	<div ref="tippedContent" class="tippedContent" data-testid="trigger" @mouseover="onHover">
 		<slot name="default"> </slot>
 	</div>
 	<div

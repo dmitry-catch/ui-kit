@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CharCounter from '../../data-display/CharCounter/CharCounter.vue'
+import CharCounter from './components/CharCounter.vue'
 import { computed, onMounted, ref, toRefs } from 'vue'
 
 interface TextFieldProps {
