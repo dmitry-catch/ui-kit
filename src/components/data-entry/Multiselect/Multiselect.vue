@@ -98,12 +98,10 @@ const dropdownOpen = ref(false)
 const selectedItems = computed(() => items.value.filter((it) => modelValue.value.includes(it.value)))
 
 const shownName = computed(() => {
-	const selectedItemsCount = modelValue.value.length
-	if (!selectedItemsCount) return ''
-	if (selectedItemsCount === 1) {
-		return options.value.find((it) => modelValue.value.includes(it.value))?.name || ''
-	}
-	return `${selectedItemsCount} ${selectedItemsCount > 4 ? 'значений' : 'значения'}`
+	if (!modelValue.value.length) return ''
+	if (modelValue.value.length === 1)
+		return options.value.find((it: SelectOptionType<TValue>) => modelValue.value.includes(it.value))?.name
+	return `${modelValue.value.length} значения`
 })
 
 const isSearchVisible = computed(
@@ -182,11 +180,14 @@ const root = ref()
 				</span>
 				<span v-if="shownName" class="Multiselect_name">
 					{{ shownName }}
-					<Button v-if="shownName" class="icon functional" :disabled="disabled" @click="clearInput">
-						<Icon name="close" />
-					</Button>
+					<Button v-if="shownName" class="icon functional" :disabled="disabled" @click="clearInput"
+						><Icon name="close"
+					/></Button>
 				</span>
 			</div>
+			<Button v-if="shownName" class="icon functional" :size="size" :disabled="disabled" @click="clearInput">
+				<Icon name="close" />
+			</Button>
 
 			<SearchPopup
 				v-model="dropdownOpen"
