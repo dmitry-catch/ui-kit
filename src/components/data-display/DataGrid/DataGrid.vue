@@ -147,7 +147,6 @@ const changePage = (value: number) => {
 	background: var(--design-background-color-primary);
 	overflow: unset;
 }
-
 .DataGrid__table[allowPagination='true'] {
 	max-height: calc(100% - 72px);
 }
