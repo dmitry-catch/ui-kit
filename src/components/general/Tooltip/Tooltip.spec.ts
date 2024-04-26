@@ -6,8 +6,7 @@ import Meta, { Default } from './Tooltip.stories.js'
 
 const Component = composeStory(Default, Meta)
 
-//TODO починить тесты
-describe.todo(`Component ${Component.name}`, () => {
+describe(`Component ${Component.name}`, () => {
 	it('it should be rendered', () => render(Component))
 
 	describe.each(['bottom', 'top', 'right', 'left'])('Placement', (placement: string): void => {
