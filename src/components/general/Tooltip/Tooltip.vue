@@ -59,6 +59,31 @@ const leftOffset = computed(() => {
 	}
 })
 
+// const topOffset = computed(() => {
+// 	const tipHeight = contentHeight.value ?? Number(content.value?.getBoundingClientRect().height)
+// 	const sizeDifference = Number(container.value?.offsetHeight) - tipHeight
+// 	switch (placement.value) {
+// 		case 'top':
+// 			return -tipHeight - offset.value - 4 + 'px'
+// 		case 'bottom':
+// 			return tipHeight + sizeDifference + 4 + offset.value + 'px'
+// 		default:
+// 			return sizeDifference / 2 + 'px'
+// 	}
+// })
+
+// const leftOffset = computed(() => {
+// 	const elementWidth = contentWidth.value ?? Number(content.value?.offsetWidth)
+// 	const sizeDifference = Number(Number(container.value?.offsetWidth) - elementWidth) / 2
+// 	switch (placement.value) {
+// 		case 'left':
+// 			return -Math.abs(Number(content.value?.offsetWidth)) - 4 + 'px'
+// 		case 'right':
+// 			return Math.abs(Number(container.value?.offsetWidth)) + 4 + 'px'
+// 		default:
+// 			return sizeDifference + 'px'
+// 	}
+// })
 const onHover = () => {
 	open.value = true
 	contentWidth.value = Number(content.value?.offsetWidth)
@@ -164,5 +189,13 @@ useModalContext(content)
 		visibility: hidden;
 		opacity: 0;
 	}
+}
+.TooltipContainer:hover + .Tooltip[open='false'] {
+	visibility: visible;
+	opacity: 1;
+}
+.ba {
+	word-break: break-all;
+	max-width: 100px;
 }
 </style>
