@@ -9,6 +9,8 @@ interface TooltipProps {
 	// Отсрочка появления подсказки в мс
 	delay?: number
 	disabled?: boolean
+	// Передать класс всплывающей подсказки
+	className?: string
 	// отступ подсказки от элемента в px
 	offset?: number
 }
@@ -22,7 +24,7 @@ const slots = defineSlots<{
 
 const props = withDefaults(defineProps<TooltipProps>(), { placement: 'top', arrowed: true, delay: 50, offset: 0 })
 
-const { placement, arrowed, delay, disabled, offset } = toRefs(props)
+const { placement, arrowed, delay, disabled, offset, className } = toRefs(props)
 
 const open = defineModel<boolean>({ type: Boolean })
 
@@ -76,6 +78,7 @@ useModalContext(content)
 				v-if="!disabled"
 				ref="content"
 				class="Tooltip"
+				:class="className"
 				data-testid="content"
 				:style="{ transitionDuration: delay + 'ms' }"
 				:placement
