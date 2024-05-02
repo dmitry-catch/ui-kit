@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { defineProps, toRefs, computed } from 'vue'
 import { Icon, Button } from '../../../main'
+import { Notification } from '../types'
 
 interface ToastProps {
-	id: string | number
-	message: string
-	type: 'success' | 'warning' | 'error' | 'info'
+	notification: Notification
 }
 
-const emit = defineEmits<{ (e: 'close', value: string | number): void }>()
+const emit = defineEmits<{ (e: 'close', value: Notification): void }>()
 
 const props = defineProps<ToastProps>()
 
-const { id, message, type } = toRefs(props)
+const { notification } = toRefs(props)
 
 const icon = computed(() => {
-	if (type.value == 'error' || type.value == 'warning') return 'warning'
+	if (notification.value.type == 'error' || notification.value.type == 'warning') return 'warning'
 	return 'check_circled'
 })
 </script>
 <template>
-	<div class="Toast" :class="type">
+	<div class="Toast" :class="notification.type">
 		<Icon :name="icon" />
-		<span class="message">{{ message }}</span>
-		<Button class="icon functional control" @click="() => emit('close', id)">
+		<span class="message">{{ notification.message }}</span>
+		<Button class="icon functional control" @click="() => emit('close', notification)">
 			<Icon name="close" />
 		</Button>
 	</div>

@@ -12,9 +12,7 @@ export default {
 	component: Toast,
 	args: {
 		onClose: (notification) => console.log('Close action ' + notification.id),
-		id: toastVariants[0].id,
-		message: toastVariants[0].message,
-		type: toastVariants[0].type
+		notification: toastVariants[0]
 	}
 } satisfies Meta<typeof Tag>
 
@@ -33,7 +31,7 @@ export const Variants: Story = {
 					v-for='toast in toastVariants'
 					:title='toast'
 				>
-					<Toast v-bind="toast" @close="(id) => console.log('Close action ' + id)"/>
+					<Toast :notification="toast" @close="(notification) => console.log('Close action ' + notification.id)"/>
 				</div>
 			</div>`
 	})
