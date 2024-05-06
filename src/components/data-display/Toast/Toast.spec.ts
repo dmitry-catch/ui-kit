@@ -20,7 +20,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('should change class when toast variant different', () => {
 		const { container } = render(Component, {
-			props: { type: 'warning', message: 'message' }
+			props: { notification: { type: 'warning', message: 'message' } }
 		})
 		const toast = container.querySelector('.Toast')
 		expect(toast).toBeTruthy()
@@ -30,7 +30,7 @@ describe(`Component ${Component.name}`, () => {
 	it('should call close action on close button click', async () => {
 		const spy = vi.fn()
 		const { getByRole } = render(Component, {
-			props: { type: 'warning', message: 'message', onClose: spy }
+			props: { notification: { type: 'warning', message: 'message' }, onClose: spy }
 		})
 
 		const button = getByRole('button')
