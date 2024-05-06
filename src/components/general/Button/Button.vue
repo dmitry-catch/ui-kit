@@ -209,6 +209,7 @@ const clickOutside = (event: Event) => {
 }
 
 /* Size Styling */
+
 /* Small Size Styling */
 
 .Btn.icon.small .Btn__actual {
