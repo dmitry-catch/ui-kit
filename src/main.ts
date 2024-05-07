@@ -30,7 +30,6 @@ import InputNumber from './components/data-entry/InputNumber/InputNumber.vue'
 import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
 import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
 import Tooltip from './components/general/Tooltip/Tooltip.vue'
-import Toast from './components/data-display/Toast/Toast.vue'
 
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
@@ -62,7 +61,6 @@ export {
 	InputNumber,
 	//Data display category
 	DataGrid,
-	Toast,
 	SelectableOption,
 	CharCounter,
 	DataList,
