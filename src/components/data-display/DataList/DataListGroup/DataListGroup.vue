@@ -12,7 +12,7 @@ const props = defineProps<{
 	isLoading?: boolean
 	isCompleted?: boolean
 	lazy?: boolean
-	current?: DataListGroupType | DataListItemType<any>[]
+	current?: DataListGroupType
 }>()
 
 const emit = defineEmits<{

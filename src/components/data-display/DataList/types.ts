@@ -8,16 +8,16 @@ export type DataListItemType<T> = {
 	wrapperClass?: string
 }
 
-export type DataListGroupType<T = any> = {
+export type DataListGroupType = {
 	key?: string
-	data: Array<DataListItemType<T>>
+	data: Array<DataListItemType<any>>
 	extraAttrs?: Record<string, any>
 	isCollapsed?: boolean
 }
 
 export type ContextGroupType = {
 	type: 'group'
-	current: Ref<DataListGroupType<any>> | Ref<null>
+	current: Ref<DataListGroupType> | Ref<null>
 	loading: Ref<boolean>
 	completed: Ref<boolean>
 }
