@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import DataList from './DataList.vue'
 import { ContextType, DataListGroupType, DataListItemType } from './types.js'
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const dataListItems: DataListItemType<any>[] = [
 	{ label: 'Item 1', value: 'value1', action: () => console.log('selected Item 1.') },
 	{ label: 'Item 2', value: 'value2', action: () => console.log('selected Item 2.') },
 	{ label: 'Item 3', value: 'value3', action: () => console.log('selected Item 3.') },
-	{ label: 'Item 4', value: 'value4', action: () => console.log('selected Item 4.') }
+	{ label: 'Item 4', value: 'value4', action: () => console.log('selected Item 4.') },
 ]
 
 const dataListGroupItems: DataListGroupType[] = [
@@ -30,9 +30,11 @@ const dataListGroupItems: DataListGroupType[] = [
 const dataListLazyGroups: DataListGroupType[] = [
 	{
 		key: 'Group1',
-		data: [],
-		isCollapsed: true
-	}
+		data: [
+		
+		],
+		isCollapsed:true
+	}, 
 ]
 
 const dataListLazyItems: DataListItemType<any>[] = [
@@ -40,7 +42,7 @@ const dataListLazyItems: DataListItemType<any>[] = [
 	{ label: 'Item 1.2', value: 'value1.2', action: () => console.log('selected option 1.2.') },
 	{ label: 'Item 1.3', value: 'value1.3', action: () => console.log('selected option 1.3.') },
 	{ label: 'Item 1.4', value: 'value1.4', action: () => console.log('selected option 1.4.') },
-	{ label: 'Item 1.5', value: 'value1.5', action: () => console.log('selected option 1.5.') }
+	{ label: 'Item 1.5', value: 'value1.5', action: () => console.log('selected option 1.5.') },
 ]
 
 const dataListItemsToAdd: DataListItemType<any>[] = [
@@ -53,11 +55,11 @@ const dataListItemsToAdd: DataListItemType<any>[] = [
 	{ label: 'Item 1.7', value: 'value1.7', action: () => console.log('selected option 1.7.') },
 	{ label: 'Item 1.8', value: 'value1.1', action: () => console.log('selected option 1.1.') },
 	{ label: 'Item 1.9', value: 'value1.2', action: () => console.log('selected option 1.2.') },
-	{ label: 'Item 1.10', value: 'value1.3', action: () => console.log('selected option 1.3.') }
+	{ label: 'Item 1.10', value: 'value1.3', action: () => console.log('selected option 1.3.') },
 ]
 
 export default {
-	component: DataList as any,
+	component:  DataList as any,
 	args: {
 		data: dataListItems,
 		loading: false,
@@ -187,18 +189,19 @@ export const MiscellaneousContent: Story = {
 }
 
 export const LazyGroups: Story = {
-	render: () => ({
+	render:() =>({
 		components: { DataList },
-		setup: () => {
+		setup: () =>{
 			const data = ref(dataListLazyGroups)
-			const loadData = async (context: ContextType) => {
-				if (context.type === 'group') {
+			const loadData = async(context: ContextType) => {
+				if(context.type === 'group')
+				{
 					context.loading.value = true
-					await new Promise((resolve) => setTimeout(resolve, 3000))
+					await new Promise(resolve => setTimeout(resolve, 3000))
 					if (context.current.value && context.current.value.data.length === 5) {
 						context.current.value.data.push(...dataListItemsToAdd.slice(5, 10))
 						context.completed.value = true
-					} else if (context.current.value && context.current.value.data.length < 5) {
+					}else if (context.current.value && context.current.value.data.length < 5) {
 						context.current.value.data = dataListItemsToAdd.slice(0, 5)
 						context.completed.value = false
 					}
@@ -220,18 +223,19 @@ export const LazyGroups: Story = {
 }
 
 export const LazyItems: Story = {
-	render: () => ({
+	render:() =>({
 		components: { DataList },
-		setup: () => {
+		setup: () =>{
 			const data = ref(dataListLazyItems)
-			const loadData = async (context: ContextType) => {
-				if (context.type === 'list') {
+			const loadData = async(context: ContextType) => {
+				if(context.type === 'list')
+				{
 					context.loading.value = true
-					await new Promise((resolve) => setTimeout(resolve, 3000))
+					await new Promise(resolve => setTimeout(resolve, 3000))
 					if (context.current.value && context.current.value.length === 5) {
 						context.current.value.push(...dataListItemsToAdd.slice(5))
 						context.completed.value = true
-					} else if (context.current.value && context.current.value.length < 5) {
+					}else if (context.current.value && context.current.value.length < 5) {
 						context.current.value = dataListItemsToAdd.slice(0, 5)
 						context.completed.value = false
 					}

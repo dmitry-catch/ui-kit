@@ -2,8 +2,8 @@
 import { ref, toRefs } from 'vue'
 import { DataListGroupType, DataListItemType } from '../types.js'
 import Icon from '../../../general/Icon/Icon.vue'
-import Spinner from '../../../general/Spinner/Spinner.vue'
-import Button from '../../../general/Button/Button.vue'
+import Spinner from '../../../general/Spinner/Spinner.vue';
+import Button from '../../../general/Button/Button.vue';
 
 const props = defineProps<{
 	group: DataListGroupType
@@ -30,13 +30,14 @@ const { group, size, expandable, isLoading, isCompleted, lazy, current } = toRef
 
 const isCollapsed = ref(group.value.isCollapsed)
 
+
 const groupClickHandler = () => {
 	if (expandable.value) {
 		isCollapsed.value = !isCollapsed.value
 	}
 }
 const load = (group: DataListGroupType) => {
-	if (!isCollapsed.value) {
+	if (!isCollapsed.value){
 		emit('load', group)
 	}
 }
@@ -44,7 +45,7 @@ const load = (group: DataListGroupType) => {
 
 <template>
 	<div class="DataList__group" v-bind="group.extraAttrs">
-		<div class="DataList__groupLabel" :size="size" @click=";[groupClickHandler(), load(group)]">
+		<div class="DataList__groupLabel" :size="size" @click="[groupClickHandler(), load(group)]">
 			<Icon v-if="expandable" :name="isCollapsed ? 'chevron_down' : 'chevron_up'" />
 			<slot name="groupLabel" :group="group">{{ group.key }}</slot>
 		</div>
@@ -61,6 +62,7 @@ const load = (group: DataListGroupType) => {
 </template>
 
 <style scoped>
+
 .DataList__loadMore {
 	display: flex;
 	justify-content: center;

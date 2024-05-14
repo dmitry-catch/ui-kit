@@ -17,12 +17,13 @@ export interface DataListProps {
 	lazy?: boolean
 }
 
+
 const props = withDefaults(defineProps<DataListProps>(), {
 	size: 'medium'
 })
 
 const emit = defineEmits<{
-	(event: 'click', item: DataListItemType<T>, e: MouseEvent): void
+	(event: 'click', item: DataListItemType<T>, e: MouseEvent): void,
 	(event: 'load', context: ContextType): void
 }>()
 
@@ -31,21 +32,21 @@ const { loading, hover, expandable, lazy } = toRefs(props)
 const data = defineModel<Array<DataListItemType<T> | DataListGroupType>>('data')
 
 const groupContext: ContextType = {
-	type: 'group',
+	type:'group',
 	current: ref(null),
 	loading: ref(false),
 	completed: ref(false)
 }
 
-const listContext: ContextType = {
-	type: 'list',
+const listContext: ContextType ={
+	type:'list',
 	current: ref(null),
 	loading: ref(false),
 	completed: ref(false)
 }
 
-const loadGroup = (item: DataListGroupType) => {
-	if (!item.isCollapsed) {
+const loadGroup = (item: DataListGroupType ) => {
+	if (!item.isCollapsed){
 		groupContext.current.value = item
 		emit('load', groupContext)
 	}
@@ -106,7 +107,7 @@ defineSlots<{
 						:isCompleted="groupContext.completed.value"
 						:lazy="lazy"
 						@load="loadGroup(item)"
-						@click=";[groupClickHandler(item), loadGroup(item)]"
+						@click="[groupClickHandler(item), loadGroup(item)]"
 						@mousedown="handleMouseDown"
 					>
 						<template #groupLabel="{ group }">
@@ -137,13 +138,7 @@ defineSlots<{
 							<slot name="item" :item="item">{{ item.label }}</slot>
 						</div>
 						<div v-if="idx === data.length - 1 && lazy" class="DataList__loadMore">
-							<Button
-								v-if="!listContext.completed.value && !listContext.loading.value"
-								@click.stop="loadList(data)"
-								:size="'small'"
-								class="functional"
-								>Загрузить еще</Button
-							>
+							<Button v-if="!listContext.completed.value && !listContext.loading.value" @click.stop="loadList(data)" :size="'small'" class="functional">Загрузить еще</Button>
 							<Spinner v-if="listContext.loading.value" class="DataList__loading" />
 						</div>
 					</template>
@@ -187,6 +182,7 @@ defineSlots<{
 .DataList__loadMore {
 	display: flex;
 	justify-content: center;
+	
 }
 /* Size Styling */
 
