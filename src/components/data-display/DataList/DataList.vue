@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T ">
 import { toRefs, ref } from 'vue'
-import { DataListItemType, DataListGroupType, DataListLoadContext } from './types.js'
+import { DataListItemType, DataListGroupType, ContextType } from './types.js'
 import { isGroup } from './utils.js'
 import Spinner from '../../general/Spinner/Spinner.vue'
 import Button from '../../general/Button/Button.vue'
@@ -23,21 +23,21 @@ const props = withDefaults(defineProps<DataListProps>(), {
 
 const emit = defineEmits<{
 	(event: 'click', item: DataListItemType<T>, e: MouseEvent): void
-	(event: 'load', context: DataListLoadContext): void
+	(event: 'load', context: ContextType): void
 }>()
 
 const { loading, hover, expandable, lazy } = toRefs(props)
 
 const data = defineModel<Array<DataListItemType<T> | DataListGroupType>>('data')
 
-const groupContext: DataListLoadContext = {
+const groupContext: ContextType = {
 	type: 'group',
 	current: ref(null),
 	loading: ref(false),
 	completed: ref(false)
 }
 
-const listContext: DataListLoadContext = {
+const listContext: ContextType = {
 	type: 'list',
 	current: ref(null),
 	loading: ref(false),

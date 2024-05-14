@@ -15,18 +15,18 @@ export type DataListGroupType<T = any> = {
 	isCollapsed?: boolean
 }
 
-export type DataGroupTypeContext<T = any> = {
+export type ContextGroupType = {
 	type: 'group'
-	current: Ref<DataListGroupType<T>> | Ref<null>
+	current: Ref<DataListGroupType<any>> | Ref<null>
 	loading: Ref<boolean>
 	completed: Ref<boolean>
 }
 
-export type DataListTypeContext<T = any> = {
+export type ContextListType = {
 	type: 'list'
-	current: Ref<DataListItemType<T>[]> | Ref<null>
+	current: Ref<DataListItemType<any>[]> | Ref<null>
 	loading: Ref<boolean>
 	completed: Ref<boolean>
 }
 
-export type DataListLoadContext<T = any> = DataGroupTypeContext<T> | DataListTypeContext<T>
+export type ContextType = ContextGroupType | ContextListType

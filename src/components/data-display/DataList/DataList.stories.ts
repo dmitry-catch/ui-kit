@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import DataList from './DataList.vue'
-import { DataListLoadContext, DataListGroupType, DataListItemType } from './types.js'
+import { ContextType, DataListGroupType, DataListItemType } from './types.js'
 import { ref } from 'vue'
 
 const dataListItems: DataListItemType<any>[] = [
@@ -191,7 +191,7 @@ export const LazyGroups: Story = {
 		components: { DataList },
 		setup: () => {
 			const data = ref(dataListLazyGroups)
-			const loadData = async (context: DataListLoadContext) => {
+			const loadData = async (context: ContextType) => {
 				if (context.type === 'group') {
 					context.loading.value = true
 					await new Promise((resolve) => setTimeout(resolve, 3000))
@@ -224,7 +224,7 @@ export const LazyItems: Story = {
 		components: { DataList },
 		setup: () => {
 			const data = ref(dataListLazyItems)
-			const loadData = async (context: DataListLoadContext) => {
+			const loadData = async (context: ContextType) => {
 				if (context.type === 'list') {
 					context.loading.value = true
 					await new Promise((resolve) => setTimeout(resolve, 3000))
