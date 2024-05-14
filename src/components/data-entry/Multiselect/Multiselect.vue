@@ -240,7 +240,8 @@ const root = ref()
 	border-radius: var(--design-border-radius-control);
 	border: 1px solid var(--design-border-color-baseline);
 	background: var(--design-background-color-primary);
-	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit)) 0 calc(2 * var(--design-gap-unit));
+	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
+	padding-left: var(--design-gap-unit);
 	position: relative;
 	cursor: pointer;
 }

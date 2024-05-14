@@ -1,8 +1,9 @@
-<script setup lang="ts">
-import { toRefs } from 'vue'
-import { DataListItemType, DataListGroupType } from './types.js'
+<script setup lang="ts" generic="T ">
+import { toRefs, ref } from 'vue'
+import { DataListItemType, DataListGroupType, DataListLoadContext } from './types.js'
 import { isGroup } from './utils.js'
 import Spinner from '../../general/Spinner/Spinner.vue'
+import Button from '../../general/Button/Button.vue'
 import DataListGroup from './DataListGroup/DataListGroup.vue'
 
 export interface DataListProps {
@@ -10,9 +11,10 @@ export interface DataListProps {
 	/** Подсвечивание элементов при наведении. */
 	hover?: boolean
 	size?: 'extra-small' | 'small' | 'medium'
-	items?: Array<DataListItemType> | Array<DataListGroupType>
 	/** Возможность сворачивания групп. */
 	expandable?: boolean
+	/** Возможность ленивой загрузки данных. */
+	lazy?: boolean
 }
 
 const props = withDefaults(defineProps<DataListProps>(), {
@@ -20,12 +22,41 @@ const props = withDefaults(defineProps<DataListProps>(), {
 })
 
 const emit = defineEmits<{
-	(event: 'click', item: DataListItemType, e: MouseEvent): void
+	(event: 'click', item: DataListItemType<T>, e: MouseEvent): void
+	(event: 'load', context: DataListLoadContext): void
 }>()
 
-const { items, loading, hover, expandable } = toRefs(props)
+const { loading, hover, expandable, lazy } = toRefs(props)
 
-const handleClick = (e: MouseEvent, item: DataListItemType) => {
+const data = defineModel<Array<DataListItemType<T> | DataListGroupType>>('data')
+
+const groupContext: DataListLoadContext = {
+	type: 'group',
+	current: ref(null),
+	loading: ref(false),
+	completed: ref(false)
+}
+
+const listContext: DataListLoadContext = {
+	type: 'list',
+	current: ref(null),
+	loading: ref(false),
+	completed: ref(false)
+}
+
+const loadGroup = (item: DataListGroupType) => {
+	if (!item.isCollapsed) {
+		groupContext.current.value = item
+		emit('load', groupContext)
+	}
+}
+
+const loadList = (list: DataListItemType<T>[]) => {
+	listContext.current.value = list
+	emit('load', listContext)
+}
+
+const handleClick = (e: MouseEvent, item: DataListItemType<T>) => {
 	item.action?.(item)
 	emit('click', item, e)
 }
@@ -45,7 +76,7 @@ defineSlots<{
 	/** Заголовок списка с элементами  */
 	header?: () => any
 	/** Элементы списка  */
-	item?: (props: { item: DataListItemType }) => any
+	item?: (props: { item: DataListItemType<T> }) => any
 	/** Группа элементов списка  */
 	groupLabel?: (props: { group: DataListGroupType }) => any
 	/** Нижний колонтитул списка элементов  */
@@ -62,15 +93,20 @@ defineSlots<{
 			<div class="DataList__menuHeader" :size="size">
 				<slot name="header"></slot>
 			</div>
-			<div v-if="items && items.length > 0" class="DataList__content" :size="size">
-				<template v-for="(item, idx) in items" :key="idx">
+			<div v-if="data && data.length > 0" class="DataList__content" :size="size">
+				<template v-for="(item, idx) in data" :key="idx">
 					<DataListGroup
 						v-if="isGroup(item)"
 						:group="item"
 						:expandable="expandable"
 						:hover="hover"
 						:size="size"
-						@click="groupClickHandler(item)"
+						:current="groupContext.current.value || undefined"
+						:isLoading="groupContext.loading.value"
+						:isCompleted="groupContext.completed.value"
+						:lazy="lazy"
+						@load="loadGroup(item)"
+						@click=";[groupClickHandler(item), loadGroup(item)]"
 						@mousedown="handleMouseDown"
 					>
 						<template #groupLabel="{ group }">
@@ -100,6 +136,16 @@ defineSlots<{
 						>
 							<slot name="item" :item="item">{{ item.label }}</slot>
 						</div>
+						<div v-if="idx === data.length - 1 && lazy" class="DataList__loadMore">
+							<Button
+								v-if="!listContext.completed.value && !listContext.loading.value"
+								@click.stop="loadList(data)"
+								:size="'small'"
+								class="functional"
+								>Загрузить еще</Button
+							>
+							<Spinner v-if="listContext.loading.value" class="DataList__loading" />
+						</div>
 					</template>
 				</template>
 			</div>
@@ -126,8 +172,7 @@ defineSlots<{
 }
 
 .DataList__item {
-	padding: var(--design-gap-unit) 0 var(--design-gap-unit) calc(var(--design-gap-unit) * 2);
-	border-bottom: var(--design-border-color-baseline) 1px solid;
+	padding: calc(var(--design-gap-unit) / 2) 0 calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
 }
 
 .DataList__content :deep(.DataList__group ~ .DataList__group),
@@ -139,6 +184,10 @@ defineSlots<{
 	background-color: var(--design-background-color-on-accent-primary);
 }
 
+.DataList__loadMore {
+	display: flex;
+	justify-content: center;
+}
 /* Size Styling */
 
 /* Extra-Small Size Styling */
@@ -185,11 +234,6 @@ defineSlots<{
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 	--icon-size: 20px;
-}
-
-.DataList[size='small'] :deep(.DataList__groupLabel) {
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
 }
 
 /*  */
