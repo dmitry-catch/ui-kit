@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import DataList from './DataList.vue'
-import { DataListLoadContext, DataListGroupType, DataListItemType } from './types.js'
-import { ref } from 'vue'
+import { DataListGroupType, DataListItemType } from './types.js'
 
-const dataListItems: DataListItemType<any>[] = [
+const dataListItems: DataListItemType[] = [
 	{ label: 'Item 1', value: 'value1', action: () => console.log('selected Item 1.') },
 	{ label: 'Item 2', value: 'value2', action: () => console.log('selected Item 2.') },
 	{ label: 'Item 3', value: 'value3', action: () => console.log('selected Item 3.') },
@@ -27,53 +26,13 @@ const dataListGroupItems: DataListGroupType[] = [
 	}
 ]
 
-const dataListLazyGroups: DataListGroupType[] = [
-	{
-		key: 'Group1',
-		data: [],
-		isCollapsed: true
-	},
-	{
-		key: 'Group2',
-		data: [],
-		isCollapsed: true
-	},
-	{
-		key: 'Group3',
-		data: [],
-		isCollapsed: true
-	}
-]
-
-const dataListLazyItems: DataListItemType<any>[] = [
-	{ label: 'Item 1.1', value: 'value1.1', action: () => console.log('selected option 1.1.') },
-	{ label: 'Item 1.2', value: 'value1.2', action: () => console.log('selected option 1.2.') },
-	{ label: 'Item 1.3', value: 'value1.3', action: () => console.log('selected option 1.3.') },
-	{ label: 'Item 1.4', value: 'value1.4', action: () => console.log('selected option 1.4.') },
-	{ label: 'Item 1.5', value: 'value1.5', action: () => console.log('selected option 1.5.') }
-]
-
-const dataListItemsToAdd: DataListItemType<any>[] = [
-	{ label: 'Item 1.1', value: 'value1.1', action: () => console.log('selected option 1.1.') },
-	{ label: 'Item 1.2', value: 'value1.2', action: () => console.log('selected option 1.2.') },
-	{ label: 'Item 1.3', value: 'value1.3', action: () => console.log('selected option 1.3.') },
-	{ label: 'Item 1.4', value: 'value1.4', action: () => console.log('selected option 1.4.') },
-	{ label: 'Item 1.5', value: 'value1.5', action: () => console.log('selected option 1.5.') },
-	{ label: 'Item 1.6', value: 'value1.6', action: () => console.log('selected option 1.6.') },
-	{ label: 'Item 1.7', value: 'value1.7', action: () => console.log('selected option 1.7.') },
-	{ label: 'Item 1.8', value: 'value1.1', action: () => console.log('selected option 1.1.') },
-	{ label: 'Item 1.9', value: 'value1.2', action: () => console.log('selected option 1.2.') },
-	{ label: 'Item 1.10', value: 'value1.3', action: () => console.log('selected option 1.3.') }
-]
-
 export default {
-	component: DataList as any,
+	component: DataList,
 	args: {
-		data: dataListItems,
+		items: dataListItems,
 		loading: false,
 		hover: false,
-		expandable: false,
-		lazy: false
+		expandable: false
 	},
 	argTypes: {
 		size: {
@@ -118,13 +77,13 @@ export const CustomItems: Story = {
 
 export const Groups: Story = {
 	args: {
-		data: dataListGroupItems
+		items: dataListGroupItems
 	}
 }
 
 export const CustomGroups: Story = {
 	args: {
-		data: dataListGroupItems
+		items: dataListGroupItems
 	},
 	render: (args) => ({
 		components: { DataList },
@@ -143,7 +102,7 @@ export const CustomGroups: Story = {
 
 export const CollapseGroups: Story = {
 	args: {
-		data: dataListGroupItems,
+		items: dataListGroupItems,
 		expandable: true
 	},
 	render: (args) => ({
@@ -163,14 +122,14 @@ export const CollapseGroups: Story = {
 
 export const EmptyPlaceholder: Story = {
 	args: {
-		data: [],
+		items: [],
 		empty: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.'
 	}
 }
 
 export const MiscellaneousContent: Story = {
 	args: {
-		data: [...dataListItems, ...dataListGroupItems]
+		items: [...dataListItems, ...dataListGroupItems]
 	},
 	render: (args) => ({
 		components: { DataList },
@@ -193,70 +152,5 @@ export const MiscellaneousContent: Story = {
 			</template>
 		</DataList>
 	  `
-	})
-}
-
-export const LazyGroups: Story = {
-	render: () => ({
-		components: { DataList },
-		setup: () => {
-			const data = ref(dataListLazyGroups)
-			const loadData = async (context: DataListLoadContext<any>) => {
-				if (context.type === 'group') {
-					context.loading = true
-					await new Promise((resolve) => setTimeout(resolve, 3000))
-					if (context.current && context.current.data.length === 5) {
-						context.current.data.push(...dataListItemsToAdd.slice(5, 10))
-						context.completed = true
-					} else if (context.current && context.current.data.length < 5) {
-						context.current.data = dataListItemsToAdd.slice(0, 5)
-						context.completed = false
-					}
-					context.loading = false
-				}
-			}
-			return { data, loadData }
-		},
-		template: `
-		<DataList
-			:data="data"
-			@load="loadData"
-			lazy="true"
-			expandable="true"
-		>
-			
-		</DataList>`
-	})
-}
-
-export const LazyItems: Story = {
-	render: () => ({
-		components: { DataList },
-		setup: () => {
-			const data = ref(dataListLazyItems)
-			const loadData = async (context: DataListLoadContext<any>) => {
-				if (context.type === 'list') {
-					context.loading = true
-					await new Promise((resolve) => setTimeout(resolve, 3000))
-					if (context.current && context.current.length === 5) {
-						context.current.push(...dataListItemsToAdd.slice(5))
-						context.completed = true
-					} else if (context.current && context.current.length < 5) {
-						context.current = dataListItemsToAdd.slice(0, 5)
-						context.completed = false
-					}
-					context.loading = false
-				}
-			}
-			return { data, loadData }
-		},
-		template: `
-		<DataList
-			:data="data"
-			@load="loadData"
-			lazy="true"
-		>
-			
-		</DataList>`
 	})
 }
