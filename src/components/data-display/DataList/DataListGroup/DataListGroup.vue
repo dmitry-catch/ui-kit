@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts">
 import { ref, toRefs } from 'vue'
 import { DataListGroupType, DataListItemType } from '../types.js'
 import Icon from '../../../general/Icon/Icon.vue'
@@ -12,7 +12,7 @@ const props = defineProps<{
 	isLoading?: boolean
 	isCompleted?: boolean
 	lazy?: boolean
-	current?: DataListGroupType | DataListItemType<T>[]
+	current?: DataListGroupType | DataListItemType<any>[]
 }>()
 
 const emit = defineEmits<{
@@ -23,7 +23,7 @@ defineSlots<{
 	/** Заголовок группы */
 	groupLabel?: (props: { group: DataListGroupType }) => any
 	/** Элементы внутри группы */
-	groupItems?: (props: { items: DataListItemType<T>[] }) => any
+	groupItems?: (props: { items: DataListItemType<any>[] }) => any
 }>()
 
 const { group, size, expandable, isLoading, isCompleted, lazy, current } = toRefs(props)
