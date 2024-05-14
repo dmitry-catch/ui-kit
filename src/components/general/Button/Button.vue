@@ -204,24 +204,11 @@ const clickOutside = (event: Event) => {
 	padding: 0;
 }
 
-.Btn.icon.accent .Btn__actual path {
-	fill: var(--button-text-color-secondary);
-}
-
-/* Size Styling */
-/* Small Size Styling */
-
-.Btn.icon.small .Btn__actual {
-	padding: calc(var(--design-gap-unit) / 2);
-}
-
 .Btn__actual.small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-small);
 	--icon-size: 20px;
 }
-
-/* Extra-Small Size Styling */
 
 .Btn__actual.extra-small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
