@@ -126,6 +126,7 @@ defineSlots<{
 }
 
 .DataList__item {
+	padding: var(--design-gap-unit) 0 var(--design-gap-unit) calc(var(--design-gap-unit) * 2);
 	border-bottom: var(--design-border-color-baseline) 1px solid;
 }
 
