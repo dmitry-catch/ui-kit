@@ -1,6 +1,6 @@
-<script setup lang="ts">
-import { toRefs } from 'vue'
-import { DataListItemType, DataListGroupType } from './types.js'
+<script setup lang="ts" generic="T extends string">
+import { toRefs, reactive } from 'vue'
+import { DataListItemType, DataListGroupType, DataListLoadContext } from './types.js'
 import { isGroup } from './utils.js'
 import Spinner from '../../general/Spinner/Spinner.vue'
 import DataListGroup from './DataListGroup/DataListGroup.vue'
@@ -10,9 +10,9 @@ export interface DataListProps {
 	/** Подсвечивание элементов при наведении. */
 	hover?: boolean
 	size?: 'extra-small' | 'small' | 'medium'
-	items?: Array<DataListItemType> | Array<DataListGroupType>
 	/** Возможность сворачивания групп. */
 	expandable?: boolean
+	/** Возможность ленивой загрузки данных. */
 }
 
 const props = withDefaults(defineProps<DataListProps>(), {
@@ -20,17 +20,36 @@ const props = withDefaults(defineProps<DataListProps>(), {
 })
 
 const emit = defineEmits<{
-	(event: 'click', item: DataListItemType, e: MouseEvent): void
+	(event: 'click', item: DataListItemType<T>, e: MouseEvent): void
+	(event: 'load', context: DataListLoadContext<T>): void
 }>()
 
-const { items, loading, hover, expandable } = toRefs(props)
+const { loading, hover, expandable } = toRefs(props)
 
-const handleClick = (e: MouseEvent, item: DataListItemType) => {
+const data = defineModel<DataListItemType<T>[] | DataListGroupType<T>[]>('data', { default: [] })
+
+const listContext: DataListLoadContext<T> = reactive({
+	type: 'list',
+	current: [],
+	loading: false,
+	completed: false
+})
+
+const loadGroup = (groupContext: DataListLoadContext<T>) => {
+	emit('load', groupContext)
+}
+
+const loadList = (list: DataListItemType<T>[]) => {
+	listContext.current = list
+	emit('load', listContext)
+}
+
+const handleClick = (e: MouseEvent, item: DataListItemType<T>) => {
 	item.action?.(item)
 	emit('click', item, e)
 }
 
-const groupClickHandler = (item: DataListGroupType) => {
+const groupClickHandler = (item: DataListGroupType<T>) => {
 	if (expandable.value) item.isCollapsed = !item.isCollapsed
 }
 
@@ -45,9 +64,13 @@ defineSlots<{
 	/** Заголовок списка с элементами  */
 	header?: () => any
 	/** Элементы списка  */
-	item?: (props: { item: DataListItemType }) => any
+	item?: (props: { item: DataListItemType<T> }) => any
 	/** Группа элементов списка  */
-	groupLabel?: (props: { group: DataListGroupType }) => any
+	groupLabel?: (props: { group: DataListGroupType<T> }) => any
+	/** Загрузить еще список */
+	loadMore?: (props: { loadList: (list: DataListItemType<T>[]) => void; context: DataListLoadContext<T> }) => any
+	/** Загрузить еще группу */
+	loadMoreGroup?: (props: { loadGroup: () => void; groupContext: DataListLoadContext<T> }) => any
 	/** Нижний колонтитул списка элементов  */
 	footer?: () => any
 	/** Placeholder при пустом списке элементов */
@@ -62,15 +85,16 @@ defineSlots<{
 			<div class="DataList__menuHeader" :size="size">
 				<slot name="header"></slot>
 			</div>
-			<div v-if="items && items.length > 0" class="DataList__content" :size="size">
-				<template v-for="(item, idx) in items" :key="idx">
+			<div v-if="data && data.length > 0" class="DataList__content" :size="size">
+				<template v-for="(item, idx) in data" :key="idx">
 					<DataListGroup
 						v-if="isGroup(item)"
 						:group="item"
 						:expandable="expandable"
 						:hover="hover"
 						:size="size"
-						@click="groupClickHandler(item)"
+						@load="loadGroup($event)"
+						@click="groupClickHandler(item), loadGroup($event)"
 						@mousedown="handleMouseDown"
 					>
 						<template #groupLabel="{ group }">
@@ -89,6 +113,9 @@ defineSlots<{
 								<slot name="item" :item="groupItem">{{ groupItem.label }}</slot>
 							</div>
 						</template>
+						<template #loadMoreGroup="{ loadGroup, groupContext }">
+							<slot name="loadMoreGroup" :loadGroup="loadGroup" :groupContext="groupContext"> </slot>
+						</template>
 					</DataListGroup>
 					<template v-else>
 						<div
@@ -99,6 +126,15 @@ defineSlots<{
 							@click="handleClick($event, item)"
 						>
 							<slot name="item" :item="item">{{ item.label }}</slot>
+						</div>
+						<div class="DataList__loadMore">
+							<slot
+								v-if="idx === data.length - 1"
+								name="loadMore"
+								:loadList="loadList"
+								:context="listContext"
+							>
+							</slot>
 						</div>
 					</template>
 				</template>
@@ -126,7 +162,7 @@ defineSlots<{
 }
 
 .DataList__item {
-	border-bottom: var(--design-border-color-baseline) 1px solid;
+	padding: calc(var(--design-gap-unit) / 2) 0 calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 1.5);
 }
 
 .DataList__content :deep(.DataList__group ~ .DataList__group),
@@ -138,6 +174,10 @@ defineSlots<{
 	background-color: var(--design-background-color-on-accent-primary);
 }
 
+.DataList__loadMore {
+	display: flex;
+	justify-content: center;
+}
 /* Size Styling */
 
 /* Extra-Small Size Styling */
@@ -184,11 +224,6 @@ defineSlots<{
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
 	--icon-size: 20px;
-}
-
-.DataList[size='small'] :deep(.DataList__groupLabel) {
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
 }
 
 /*  */

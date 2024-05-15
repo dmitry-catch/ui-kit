@@ -1,15 +1,18 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import DataList from './DataList.vue'
-import { DataListGroupType, DataListItemType } from './types.js'
+import { DataListLoadContext, DataListGroupType, DataListItemType } from './types.js'
+import { ref } from 'vue'
+import Spinner from '../../general/Spinner/Spinner.vue'
+import Button from '../../general/Button/Button.vue'
 
-const dataListItems: DataListItemType[] = [
+const dataListItems: DataListItemType<string>[] = [
 	{ label: 'Item 1', value: 'value1', action: () => console.log('selected Item 1.') },
 	{ label: 'Item 2', value: 'value2', action: () => console.log('selected Item 2.') },
 	{ label: 'Item 3', value: 'value3', action: () => console.log('selected Item 3.') },
 	{ label: 'Item 4', value: 'value4', action: () => console.log('selected Item 4.') }
 ]
 
-const dataListGroupItems: DataListGroupType[] = [
+const dataListGroupItems: DataListGroupType<string>[] = [
 	{
 		key: 'Group1',
 		data: [
@@ -26,10 +29,36 @@ const dataListGroupItems: DataListGroupType[] = [
 	}
 ]
 
+const dataListLazyGroups: DataListGroupType<string>[] = [
+	{
+		key: 'Group1',
+		data: [],
+		isCollapsed: true
+	},
+	{
+		key: 'Group2',
+		data: [],
+		isCollapsed: true
+	},
+	{
+		key: 'Group3',
+		data: [],
+		isCollapsed: true
+	}
+]
+
+const dataListLazyGroupItems: DataListItemType<string>[] = [
+	{ label: 'Item 1.1', value: 'value1.1', action: () => console.log('selected option 1.1.') },
+	{ label: 'Item 1.2', value: 'value1.2', action: () => console.log('selected option 1.2.') },
+	{ label: 'Item 1.3', value: 'value1.3', action: () => console.log('selected option 1.3.') },
+	{ label: 'Item 1.4', value: 'value1.4', action: () => console.log('selected option 1.4.') },
+	{ label: 'Item 1.5', value: 'value1.5', action: () => console.log('selected option 1.5.') }
+]
+
 export default {
 	component: DataList,
 	args: {
-		items: dataListItems,
+		data: dataListItems,
 		loading: false,
 		hover: false,
 		expandable: false
@@ -77,13 +106,13 @@ export const CustomItems: Story = {
 
 export const Groups: Story = {
 	args: {
-		items: dataListGroupItems
+		data: dataListGroupItems
 	}
 }
 
 export const CustomGroups: Story = {
 	args: {
-		items: dataListGroupItems
+		data: dataListGroupItems
 	},
 	render: (args) => ({
 		components: { DataList },
@@ -102,7 +131,7 @@ export const CustomGroups: Story = {
 
 export const CollapseGroups: Story = {
 	args: {
-		items: dataListGroupItems,
+		data: dataListGroupItems,
 		expandable: true
 	},
 	render: (args) => ({
@@ -122,14 +151,14 @@ export const CollapseGroups: Story = {
 
 export const EmptyPlaceholder: Story = {
 	args: {
-		items: [],
+		data: [],
 		empty: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.'
 	}
 }
 
 export const MiscellaneousContent: Story = {
 	args: {
-		items: [...dataListItems, ...dataListGroupItems]
+		data: [...dataListItems, ...dataListGroupItems]
 	},
 	render: (args) => ({
 		components: { DataList },
@@ -152,5 +181,77 @@ export const MiscellaneousContent: Story = {
 			</template>
 		</DataList>
 	  `
+	})
+}
+
+export const LazyGroups: Story = {
+	render: () => ({
+		components: { DataList, Spinner, Button },
+		setup: () => {
+			const data = ref(dataListLazyGroups)
+			const loadData = async (context: DataListLoadContext<string>) => {
+				if (context.type === 'group') {
+					context.loading = true
+					await new Promise((resolve) => setTimeout(resolve, 3000))
+					if (context.current && context.current.data.length === 5) {
+						context.current.data.push(
+							...dataListLazyGroupItems.map((item, idx) => ({ ...item, label: `Item 1.${idx + 6}` }))
+						)
+						context.completed = true
+					} else if (context.current && context.current.data.length < 5) {
+						context.current.data = dataListLazyGroupItems.slice(0, 5)
+						context.completed = false
+					}
+					context.loading = false
+				}
+			}
+			return { data, loadData }
+		},
+		template: `
+		<DataList
+			:data="data"
+			@load="loadData"
+			expandable="true"
+		>
+		<template #loadMoreGroup ="{ loadGroup, groupContext }">
+			<Button v-if="!groupContext.completed && !groupContext.loading" class="functional" @click="loadGroup(groupContext)" >Загрузить еще</Button>
+			<Spinner v-else-if="groupContext.loading" />
+		</DataList>`
+	})
+}
+
+export const LazyItems: Story = {
+	render: () => ({
+		components: { DataList, Button, Spinner },
+		setup: () => {
+			const data = ref(dataListItems)
+			const loadData = async (context: DataListLoadContext<string>) => {
+				if (context.type === 'list') {
+					context.loading = true
+					await new Promise((resolve) => setTimeout(resolve, 3000))
+					if (context.current && context.current.length === 4) {
+						context.current.push(
+							...dataListItems.map((item, idx) => ({ ...item, label: `Item ${idx + 5}` }))
+						)
+						context.completed = true
+					} else if (context.current && context.current.length < 4) {
+						context.current = dataListItems.slice(0, 4)
+						context.completed = false
+					}
+					context.loading = false
+				}
+			}
+			return { data, loadData }
+		},
+		template: `
+		<DataList
+			:data="data"
+			@load="loadData"
+		>
+		<template #loadMore ="{ loadList, context }">
+				<Button v-if="!context.completed && !context.loading" class="functional" @click="loadList(data)" >Загрузить еще</Button>
+				<Spinner v-else-if="context.loading" />
+		</template>
+		</DataList>`
 	})
 }

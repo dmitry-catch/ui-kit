@@ -1,98 +1,43 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue'
-import { comparator, groupBy, linqFilter, linqSort, predicate, value } from '@forecsys/collections'
-import DataGrid from '../src/components/data-display/DataGrid/DataGrid.vue'
-import ButtonStand from './ButtonStand.vue'
-import Select from '../src/components/data-entry/Select/Select.vue'
+import { ref } from 'vue'
+import DataList from '../src/components/data-display/DataList/DataList.vue'
+import { DataListLoadContext, DataListItemType, DataListGroupType } from '../src/components/data-display/DataList/types'
+import Button from '../src/components/general/Button/Button.vue'
+import Spinner from '../src/components/general/Spinner/Spinner.vue'
 
-const filters = ref(value(true))
+const dataListLazyItems: Array<DataListItemType<string> | DataListGroupType<string>> = [
+	{ label: 'Item 1', value: 'value1', action: () => console.log('selected option 1.1.') },
+	{ label: 'Item 2', value: 'value2', action: () => console.log('selected option 1.2.') },
+	{ label: 'Item 3', value: 'value3', action: () => console.log('selected option 1.3.') },
+	{ label: 'Item 4', value: 'value4', action: () => console.log('selected option 1.4.') },
+	{ label: 'Item 5', value: 'value5', action: () => console.log('selected option 1.5.') }
+]
 
-watchEffect(() => console.log('filters', filters.value))
-const test = ref<any[]>([])
-const date = ref(new Date())
-const addToList = ({ data }: any) => {
-	test.value.push(data.value)
+const data = ref(dataListLazyItems)
+
+const loadData = async (context: DataListLoadContext) => {
+	if (context.type === 'list') {
+		context.loading = true
+		await new Promise((resolve) => setTimeout(resolve, 3000))
+		if (context.current && context.current.length === 5) {
+			context.current.push(...dataListLazyItems.map((item, idx) => ({ ...item, label: `Item ${idx + 6}` })))
+			context.completed = true
+			context.loading = false
+		}
+	}
 }
-const options = ref([
-	{ name: 'name', field: 'name', value: false, action: addToList, date: new Date(2023, 3, 3) },
-	{ name: 'field', field: 'field', value: true, action: addToList, date: new Date(2023, 3, 3) },
-	{
-		name: 'value',
-		field: 'value',
-		type: 'enum',
-		filterEnum: {
-			ok: true,
-			fail: false
-		},
-		template: (it: boolean) => (it ? 'ok' : 'fail'),
-		value: true,
-		action: addToList,
-		date: new Date(2023, 3, 2)
-	},
-	{ name: 'action', field: 'action', value: false, action: addToList, date: new Date(2023, 3, 2) },
-	{ name: 'date', field: 'date', value: false, action: addToList, date: new Date(2023, 3, 2), type: 'date' }
-])
-
-const range = ref<Array<number>>([])
-for (let i = 0; i < 100; i++) range.value.push(i)
-const dataSource = computed<Array<any>>(() =>
-	range.value.map((i) => ({
-		id: i,
-		name: 'name ' + i,
-		field: options.value[i % 4].field,
-		value: Boolean(i % 2),
-		action: addToList,
-		date: options.value[i % 4].date
-	}))
-)
-const filterPredicate = ref(predicate(filters.value))
-watchEffect(() => {
-	filterPredicate.value = predicate(filters.value)
-})
-const sort = ref([])
-const filtered = computed(() => dataSource.value.filter(filterPredicate.value).sort(comparator(sort.value)), {
-	onTrigger: console.log
-})
-const grouped = computed(() => groupBy(filtered.value, [{ direction: 'asc', target: 'field' }]))
-
-watchEffect(() => {
-	console.log(linqFilter(filters.value))
-})
-watchEffect(() => {
-	console.log(linqSort(sort.value))
-})
-
-onMounted(() => {
-	fetch('https://dummyjson.com/products')
-		.then((it) => it.json())
-		.then((it) => {
-			const data = it.products
-			options1.value = data.map((prod) => ({ name: prod.title, value: prod.title }))
-		})
-})
-
-const options1 = ref([])
-const value1 = ref(null)
 </script>
 
 <template>
-	<ButtonStand />
-	<input type="date" />
-	<input type="number" />
-	<div style="width: 468px">
-		<Select v-model="value1" :options="options1" />
-		<DatePicker v-model="date" :hint="'string'" :description="'string'" :invalid="false" :disabled="true" />
-	</div>
-
 	<div>
-		<DataGrid
-			v-model:filters="filters"
-			v-model:sort="sort"
-			:columns="options"
-			:data-source="grouped"
-			:rowKey="(data: any) => data.id"
-		>
-		</DataGrid>
+		<DataList :data="data" :expandable="true" @load="loadData">
+			<template #loadMore="{ loadList, context }">
+				<Button v-if="!context.completed && !context.loading" class="functional" @click="loadList(data)"
+					>Загрузить еще</Button
+				>
+				<Spinner v-else-if="context.loading" class="DataList__loading" />
+			</template>
+		</DataList>
 	</div>
 </template>
 
