@@ -210,7 +210,7 @@ export const LazyGroups: Story = {
 		components: { DataList, Spinner, Button },
 		setup: () => {
 			const data = ref(dataListLazyGroups)
-
+			
 			return { data, args }
 		},
 		template: `
@@ -236,7 +236,9 @@ export const LazyItems: Story = {
 				context.loading = true
 				await new Promise((resolve) => setTimeout(resolve, 3000))
 				if (context.current && context.current.length === 4) {
-					context.current.push(...dataListItems.map((item, idx) => ({ ...item, label: `Item ${idx + 5}` })))
+					context.current.push(
+						...dataListItems.map((item, idx) => ({ ...item, label: `Item ${idx + 5}` }))
+					)
 					context.completed = true
 				} else if (context.current && context.current.length < 4) {
 					context.current = dataListItems.slice(0, 4)
@@ -250,7 +252,7 @@ export const LazyItems: Story = {
 		components: { DataList, Button, Spinner },
 		setup: () => {
 			const data = ref(dataListItems)
-
+			
 			return { data, args }
 		},
 		template: `
