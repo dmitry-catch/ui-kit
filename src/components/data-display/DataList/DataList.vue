@@ -12,6 +12,7 @@ export interface DataListProps {
 	size?: 'extra-small' | 'small' | 'medium'
 	/** Возможность сворачивания групп. */
 	expandable?: boolean
+	/** Возможность ленивой загрузки данных. */
 }
 
 const props = withDefaults(defineProps<DataListProps>(), {
