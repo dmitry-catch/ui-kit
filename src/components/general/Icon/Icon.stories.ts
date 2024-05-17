@@ -325,7 +325,8 @@ const IconNames: string[] = [
 	'zoom_in',
 	'zoom_out',
 	'menu-expand',
-	'menu-collapse'
+	'menu-collapse',
+	'main_menu'
 ]
 
 /**
