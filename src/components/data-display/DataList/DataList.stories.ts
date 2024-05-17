@@ -174,7 +174,7 @@ export const MiscellaneousContent: Story = {
 export const LazyGroups: Story = {
 	args: {
 		data: dataListLazyGroups,
-		loadMore: `<Button class="functional" @click="load()" >Загрузить еще</Button>`,
+		loadMore: `<Button class="functional" @click="load(data)" >Загрузить еще</Button>`,
 		onLoad: async (context: DataListLoadContext<string>) => {
 			if (context.type === 'group') {
 				context.loading = true
@@ -214,7 +214,7 @@ export const LazyGroups: Story = {
 
 export const LazyItems: Story = {
 	args: {
-		loadMore: `<Button class="functional" @click="load()" >Загрузить еще</Button>`,
+		loadMore: `<Button class="functional" @click="load(data)" >Загрузить еще</Button>`,
 		data: dataListItems,
 		onLoad: async (context: DataListLoadContext<string>) => {
 			if (context.type === 'list') {

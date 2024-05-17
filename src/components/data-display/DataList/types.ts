@@ -1,5 +1,5 @@
 export type DataListItemType<T = any> = {
-	label: string
+	label?: string
 	value?: T
 	action?: (item: DataListItemType<T>) => void
 	extraAttrs?: Record<string, any>

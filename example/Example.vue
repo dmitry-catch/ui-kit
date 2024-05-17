@@ -31,7 +31,7 @@ const loadData = async (context: DataListLoadContext) => {
 	<div>
 		<DataList :data="data" :expandable="true" @load="loadData">
 			<template #loadMore="{ load }">
-				<Button class="functional" @click="load">Загрузить еще</Button>
+				<Button class="functional" @click="load(data)">Загрузить еще</Button>
 			</template>
 		</DataList>
 	</div>

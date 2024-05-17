@@ -68,7 +68,7 @@ defineSlots<{
 	/** Группа элементов списка  */
 	groupLabel?: (props: { group: DataListGroupType<T> }) => any
 	/** Загрузить еще список */
-	loadMore?: (props: { load: () => void }) => any
+	loadMore?: (props: { load: (list: DataListItemType<T>[]) => void }) => any
 	/** Нижний колонтитул списка элементов  */
 	footer?: () => any
 	/** Placeholder при пустом списке элементов */
@@ -129,7 +129,7 @@ defineSlots<{
 							<slot
 								v-if="!listContext.completed && !listContext.loading"
 								name="loadMore"
-								:load="() => loadList(data)"
+								:load="loadList"
 							>
 								<Button class="functional" @click="loadList(data)">Загрузить еще</Button>
 							</slot>
