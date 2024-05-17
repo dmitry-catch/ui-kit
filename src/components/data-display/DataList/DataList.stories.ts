@@ -5,18 +5,25 @@ import { ref } from 'vue'
 import Spinner from '../../general/Spinner/Spinner.vue'
 import Button from '../../general/Button/Button.vue'
 
-const fillData = (size: number) =>
-	Array(size)
-		.fill(0)
-		.map((_, idx) => ({ label: `Item ${idx + 1}`, value: `value${idx + 1}` }))
-
-const dataListItems: DataListItemType<string>[] = fillData(4)
+const dataListItems: DataListItemType<string>[] = Array(4)
+	.fill(0)
+	.map((_, idx) => ({
+		label: `Item ${idx + 1}`,
+		value: `value${idx + 1}`,
+		action: () => console.log(`selected option 1.${idx + 1}.`)
+	}))
 
 const dataListGroupItems: DataListGroupType<string>[] = Array(2)
 	.fill(0)
 	.map((_, idx) => ({
 		key: `Group ${idx + 1}`,
-		data: fillData(2)
+		data: Array(2)
+			.fill(0)
+			.map((_, idx) => ({
+				label: `Item 1.${idx + 1}`,
+				value: `value1.${idx + 1}`,
+				action: () => console.log(`selected option 1.${idx + 1}.`)
+			}))
 	}))
 
 const dataListLazyGroups: DataListGroupType<string>[] = Array(3)
@@ -27,7 +34,13 @@ const dataListLazyGroups: DataListGroupType<string>[] = Array(3)
 		isCollapsed: true
 	}))
 
-const dataListLazyGroupItems: DataListItemType<string>[] = fillData(5)
+const dataListLazyGroupItems: DataListItemType<string>[] = Array(5)
+	.fill(0)
+	.map((_, idx) => ({
+		label: `Item 1.${idx + 1}`,
+		value: `value1.${idx + 1}`,
+		action: () => console.log(`selected option 1.${idx + 1}.`)
+	}))
 
 export default {
 	component: DataList,
@@ -181,7 +194,7 @@ export const LazyGroups: Story = {
 				await new Promise((resolve) => setTimeout(resolve, 3000))
 				if (context.current && context.current.data.length === 5) {
 					context.current.data.push(
-						...dataListLazyGroupItems.map((item, idx) => ({ ...item, label: `Item ${idx + 6}` }))
+						...dataListLazyGroupItems.map((item, idx) => ({ ...item, label: `Item 1.${idx + 6}` }))
 					)
 					context.completed = true
 				} else if (context.current && context.current.data.length < 5) {
