@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, toRefs, computed, watch, onMounted } from 'vue'
+import { ref, toRefs, computed, watch, onMounted, reactive } from 'vue'
 import Dropdown from '../../data-display/Dropdown/Dropdown.vue'
 import Button from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import TextField from '../TextField/TextField.vue'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
-import { SelectOptionType } from '../types'
+import { SelectLoadContext, SelectOptionType } from '../types'
+import Spinner from '../../general/Spinner/Spinner.vue'
 
 interface SelectProps {
 	modelValue: string | number | null
@@ -64,6 +65,8 @@ const emit = defineEmits<{
 	(e: 'open'): void
 	/** Обработчик события ввода в строке поиска */
 	(e: 'search', value: string): void
+	/** Обработчик загрузки данных */
+	(e: 'load', context: SelectLoadContext): void
 }>()
 const slots = defineSlots<{
 	/**  Невыбираемый фиксированный первый элемент выпадающего списка */
@@ -74,6 +77,8 @@ const slots = defineSlots<{
 	listItem?: (listItem: unknown) => unknown
 	/**  Заголовок для группы элементов списка */
 	listGroupLabel?: (listGroupLabel: unknown) => string | unknown
+	/** Загрузить еще */
+	loadMore?: (props: { load: () => void }) => unknown
 	/**   Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
 	/** Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
@@ -96,6 +101,12 @@ const shownName = computed(() => {
 const isSearchVisible = computed(
 	() => searchType.value == 'popup' || (searchType.value == 'auto' && options.value?.length >= 10)
 )
+
+const listContext: SelectLoadContext = reactive({
+	current: options.value,
+	loading: false,
+	completed: false
+})
 
 const clearInput = () => {
 	searchInput.value = ''
@@ -135,6 +146,10 @@ const openList = () => {
 	}
 }
 
+const loadList = () => {
+	emit('load', listContext)
+}
+
 watch(pickedItem, () => {
 	if (pickedItem.value && !isSearchVisible.value) {
 		searchInput.value = shownName.value
@@ -143,7 +158,7 @@ watch(pickedItem, () => {
 
 watch(searchInput, () => onSearch())
 
-watch([options, loading], () => optionsHandler())
+watch([options.value, loading], () => optionsHandler())
 
 onMounted(() => optionsHandler())
 
@@ -163,7 +178,7 @@ const root = ref()
 				<Icon :name="icon ? icon : 'search'" />
 			</Button>
 			<Icon v-if="icon && searchType != 'input'" :name="icon" />
-			<div class="Select__innerContent" @click="openList">
+			<div class="Select__innerContent" @click=";[loadList(), openList()]">
 				<span v-if="!pickedItem && searchType != 'input'" class="secondary">
 					{{ placeholder }}
 				</span>
@@ -230,13 +245,24 @@ const root = ref()
 				<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 				></template>
-				<template v-if="slots.listFooter || items?.length == 0" #footer>
-					<span v-if="items?.length == 0 && !searchInput" class="itemHint">Нет элементов</span>
+				<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #footer>
+					<span v-if="items?.length == 0 && !searchInput && !listContext.loading" class="itemHint"
+						>Нет элементов</span
+					>
 					<span v-if="items?.length == 0 && searchInput" class="itemHint"
 						>Нет совпадений «{{ searchInput }}»</span
 					>
 					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 					<slot name="listFooter"></slot>
+					<slot
+						v-if="!listContext.completed && !listContext.loading"
+						class="DataList__loading"
+						name="loadMore"
+						:load="() => loadList()"
+					>
+						<Button class="functional" @click="loadList">Загрузить еще</Button>
+					</slot>
+					<Spinner v-if="listContext.loading" class="DataList__loading" />
 				</template>
 			</Dropdown>
 		</div>

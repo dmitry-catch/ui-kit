@@ -54,6 +54,7 @@ const icon = computed(() => {
 	}
 	.message {
 		text-wrap: wrap;
+		word-break: break-all;
 	}
 }
 .success {
