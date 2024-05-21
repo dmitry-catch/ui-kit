@@ -260,7 +260,6 @@ const root = ref()
 						name="loadMore"
 						:load="() => loadList()"
 					>
-						<Button class="functional" @click="loadList">Загрузить еще</Button>
 					</slot>
 					<Spinner v-if="listContext.loading" class="DataList__loading" />
 				</template>
