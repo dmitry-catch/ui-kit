@@ -107,7 +107,10 @@ const slots = defineSlots<{
 		<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 			><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 		></template>
-		<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #footer>
+		<template v-if="slots.loadMore" #loadMore>
+			<slot name="loadMore"></slot>
+		</template>
+		<template v-if="slots.listFooter || items?.length == 0" #footer>
 			<span v-if="items?.length == 0 && !searchInput && !slots.loadMore" class="SearchPopup__itemHint"
 				>Нет элементов</span
 			>
@@ -116,7 +119,6 @@ const slots = defineSlots<{
 			>
 			<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 			<slot name="listFooter"></slot>
-			<slot name="loadMore"></slot>
 		</template>
 	</Dropdown>
 </template>

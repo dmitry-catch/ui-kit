@@ -245,8 +245,8 @@ const root = ref()
 				<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 				></template>
-				<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #footer>
-					<span v-if="items?.length == 0 && !searchInput && !listContext.loading" class="itemHint"
+				<template v-if="slots.listFooter || items?.length == 0" #footer>
+					<span v-if="items?.length == 0 && !searchInput && !slots.loadMore" class="itemHint"
 						>Нет элементов</span
 					>
 					<span v-if="items?.length == 0 && searchInput" class="itemHint"
@@ -254,9 +254,10 @@ const root = ref()
 					>
 					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 					<slot name="listFooter"></slot>
+				</template>
+				<template v-if="slots.loadMore" #loadMore>
 					<slot
 						v-if="!listContext.completed && !listContext.loading"
-						class="DataList__loading"
 						name="loadMore"
 						:load="() => loadList()"
 					>

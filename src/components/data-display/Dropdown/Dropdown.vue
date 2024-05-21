@@ -62,6 +62,8 @@ defineSlots<{
 	item?: (props: { item: DropdownItemType }) => unknown
 	/** Группа элементов контекстного меню  */
 	groupLabel?: (props: { group: DropdownGroupType }) => unknown
+	/** Загзрузить еще */
+	loadMore?: () => unknown
 	/** Нижний колонтитул контекстного меню  */
 	footer?: () => unknown
 	/** Передача произвольного контента в контекстное меню */
@@ -398,6 +400,9 @@ useModalContext(root)
 								</template>
 							</template>
 						</slot>
+						<div class="Dropdown__loadMore">
+							<slot name="loadMore"></slot>
+						</div>
 					</div>
 					<div>
 						<div class="Dropdown_menuFooter" :size="size">
