@@ -443,6 +443,11 @@ useModalContext(root)
 	background-color: var(--design-background-color-primary);
 }
 
+.Dropdown__loadMore {
+	display: flex;
+	justify-content: center;
+}
+
 .Dropdown__menu[related='true'] {
 	min-width: 0%;
 }
