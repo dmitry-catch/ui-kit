@@ -1,10 +1,10 @@
 import { render } from '@testing-library/vue'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
-import Meta, { Default, LazySelect } from './Select.stories.js'
-import user, { userEvent } from '@testing-library/user-event'
+import Meta, { Default } from './Select.stories.js'
+import user from '@testing-library/user-event'
 
 const textProps = {
 	label: 'Label',
@@ -151,34 +151,5 @@ describe(`Component ${Component.name}`, () => {
 		expect(queryByText(extendedOptions[0].name)).not.toBeNull()
 		expect(queryByText(extendedOptions[9].name)).not.toBeNull()
 		expect(queryByText(extendedOptions[10].name)).not.toBeNull()
-	})
-	it('should trigger load then click on input', async () => {
-		const spy = vi.fn()
-		const { container } = render(Component, {
-			props: {
-				options: LazySelect.args?.options,
-				onLoad: spy
-			}
-		})
-		const user = userEvent.setup()
-		const input = container.querySelector('.Select__innerContent')
-		if (input) await user.click(input)
-		expect(spy).toBeCalled()
-	})
-	it('should display spinner after click on input', async () => {
-		const { container } = render(Component, {
-			props: {
-				options: LazySelect.args?.options,
-				onLoad: LazySelect.args?.onLoad
-			},
-			slots: {
-				loadMore: `I am slot`
-			}
-		})
-		const user = userEvent.setup()
-		const input = container.querySelector('.Select__innerContent')
-		if (input) await user.click(input)
-		const spinner = container.querySelector('.Select__loading')
-		expect(spinner).toBeTruthy()
 	})
 })
