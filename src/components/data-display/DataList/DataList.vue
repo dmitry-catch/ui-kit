@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="T extends string">
 import { toRefs, reactive } from 'vue'
 import { DataListItemType, DataListGroupType, DataListLoadContext } from './types.js'
 import { isGroup } from './utils.js'
