@@ -5,10 +5,11 @@ import Button from '../Button/Button.vue'
 export default {
 	component: Tooltip,
 	args: {
-		open: false,
+		open: true,
 		arrowed: true,
 		placement: 'top',
 		delay: 50,
+		className: null,
 		disabled: false
 	},
 	argTypes: {
@@ -22,8 +23,13 @@ export default {
 		setup: () => ({ args }),
 		template: `
       <div :style="{width: '400px', height: '500px', border: '1px solid gray', display: 'flex',
-	   flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }">
-		<Tooltip v-model="args.open" v-bind="args"> 
+	   flexDirection: 'row', justifyContent: 'space-between', position: 'relative',
+	    alignItems: 'center', overflow: 'hidden'}">
+		<Tooltip v-model="args.open" v-bind="args" > 
+            <template #tooltip>Tooltip dasd as das dsa dsad asdssdds</template>
+            <Button class="accent">Button</Button>
+        </Tooltip>
+		<Tooltip v-model="args.open" v-bind="args" > 
             <template #tooltip>Tooltip dasd as das dsa dsad asdssdds</template>
             <Button class="accent">Button</Button>
         </Tooltip>
