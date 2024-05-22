@@ -10,8 +10,8 @@ export const sizeParameters = {
 		INDENT_VALUE: 3
 	},
 	'extra-small': {
-		TOGGLE_LINE_HEIGHT: 16,
-		TOGGLE_WIDTH: 28,
+		TOGGLE_LINE_HEIGHT: 14,
+		TOGGLE_WIDTH: 26,
 		INDENT_VALUE: 2
 	}
 }

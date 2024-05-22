@@ -1,7 +1,7 @@
-<script setup lang="ts" generic="T extends string">
+<script setup lang="ts" generic="T">
 import { toRefs, reactive } from 'vue'
 import { DataListItemType, DataListGroupType, DataListLoadContext } from './types.js'
-import { isGroup } from './utils.js'
+import { isArrayList, isGroup, isList } from './utils.js'
 import Spinner from '../../general/Spinner/Spinner.vue'
 import DataListGroup from './DataListGroup/DataListGroup.vue'
 import Button from '../../general/Button/Button.vue'
@@ -39,9 +39,11 @@ const loadGroup = (groupContext: DataListLoadContext<T>) => {
 	emit('load', groupContext)
 }
 
-const loadList = (list: DataListItemType<T>[]) => {
-	listContext.current = list
-	emit('load', listContext)
+const loadList = (list: DataListItemType<T>[] | DataListGroupType<T>[]) => {
+	if (isArrayList(list)) {
+		listContext.current = list
+		emit('load', listContext)
+	}
 }
 
 const handleClick = (e: MouseEvent, item: DataListItemType<T>) => {
@@ -115,7 +117,7 @@ defineSlots<{
 							<slot name="loadMore" :load="loadGroup"> </slot>
 						</template>
 					</DataListGroup>
-					<template v-else>
+					<template v-else-if="isList(item)">
 						<div
 							v-bind="item.extraAttrs"
 							class="DataList__item"

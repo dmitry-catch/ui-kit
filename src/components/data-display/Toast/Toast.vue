@@ -47,14 +47,12 @@ const icon = computed(() => {
 	border: var(--notification-message-border-color) 1px solid;
 	border-radius: var(--design-border-radius-control);
 	box-shadow: 0px 32px 64px 0px rgba(33, 44, 58, 0.16);
-
 	.control {
 		align-self: start;
 		justify-self: end;
 	}
 	.message {
 		text-wrap: wrap;
-		word-break: break-all;
 	}
 }
 .success {
