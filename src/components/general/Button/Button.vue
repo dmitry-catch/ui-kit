@@ -211,15 +211,14 @@ const clickOutside = (event: Event) => {
 /* Size Styling */
 /* Small Size Styling */
 
+.Btn.icon.small .Btn__actual {
+	padding: calc(var(--design-gap-unit) / 2);
+}
+
 .Btn__actual.small {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-small);
 	--icon-size: 20px;
-}
-
-.Btn.icon .Btn__actual.small {
-	padding: calc(var(--design-gap-unit) / 2);
-	--icon-size: 24px;
 }
 
 /* Extra-Small Size Styling */
