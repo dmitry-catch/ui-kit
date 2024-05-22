@@ -6,7 +6,7 @@ export default {
 	args: {
 		modelValue: true,
 		disabled: false,
-		block: false,
+		fullWidth: false,
 		checkedChildren: '',
 		unCheckedChildren: '',
 		iconChildren: false
@@ -46,7 +46,7 @@ export const TextContent: Story = {
 	args: {
 		checkedChildren: 'Open',
 		unCheckedChildren: 'Close',
-		block: true
+		fullWidth: true
 	},
 	render: (args) => ({
 		components: { Toggle },
@@ -69,9 +69,9 @@ export const IconContent: Story = {
 	}
 }
 
-export const block: Story = {
+export const FullWidth: Story = {
 	args: {
-		block: true
+		fullWidth: true
 	}
 }
 

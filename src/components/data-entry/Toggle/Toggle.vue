@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRefs } from 'vue'
+import { computed, ref, watch, toRefs } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import { ToggleProps } from './types.js'
 import { sizeParameters } from './sizeParameters.js'
@@ -8,13 +8,14 @@ const props = withDefaults(defineProps<ToggleProps>(), {
 	size: 'medium'
 })
 
-const { disabled, block, checkedChildren, unCheckedChildren, iconChildren, size } = toRefs(props)
-
-const model = defineModel<boolean>()
+const { modelValue, disabled, fullWidth, checkedChildren, unCheckedChildren, iconChildren, size } = toRefs(props)
 
 const emits = defineEmits<{
+	(e: 'update:modelValue', value: boolean): void
 	(e: 'click'): void
 }>()
+
+const isChecked = ref(modelValue.value)
 
 const rootToggle = ref<HTMLElement | null>(null)
 
@@ -24,9 +25,17 @@ const lineSize = ref(currentSize.value.TOGGLE_LINE_HEIGHT)
 const fixWidth = ref(currentSize.value.TOGGLE_WIDTH)
 const indent = ref(currentSize.value.INDENT_VALUE)
 
+watch(
+	() => modelValue.value,
+	(newValue) => {
+		isChecked.value = newValue
+	}
+)
+
 const toggle = () => {
 	if (!disabled.value) {
-		model.value = !model.value
+		isChecked.value = !isChecked.value
+		emits('update:modelValue', isChecked.value)
 		emits('click')
 	}
 }
@@ -34,9 +43,9 @@ const toggle = () => {
 // Dynamic styles
 
 const backgroundStyle = computed(() => ({
-	width: block.value ? `auto` : `${fixWidth.value}px`,
+	width: fullWidth.value ? `auto` : `${fixWidth.value}px`,
 	height: `${lineSize.value}px`,
-	background: model.value ? `var(--design-text-color-accent)` : `var(--design-border-color-primary)`,
+	background: isChecked.value ? `var(--design-text-color-accent)` : `var(--design-border-color-primary)`,
 	opacity: disabled.value ? '0.7' : '1',
 	cursor: !disabled.value ? 'pointer' : 'not-allowed'
 }))
@@ -47,13 +56,13 @@ const dotStyle = computed(() => {
 		background: 'var(--design-text-color-on-accent-primary)',
 		width: `${lineSize.value - 2 * indent.value}px`,
 		height: `${lineSize.value - 2 * indent.value}px`,
-		'margin-left': model.value ? `${offsetWidth - (lineSize.value - indent.value)}px` : `${indent.value}px`
+		'margin-left': isChecked.value ? `${offsetWidth - (lineSize.value - indent.value)}px` : `${indent.value}px`
 	}
 })
 
 const contentStyle = computed(() => ({
-	right: model.value ? `${lineSize.value - (iconChildren.value ? 6 : 0)}px` : 'auto',
-	left: model.value ? 'auto' : `${lineSize.value - (iconChildren.value ? 6 : 0)}px`
+	right: isChecked.value ? `${lineSize.value - (iconChildren.value ? 6 : 0)}px` : 'auto',
+	left: isChecked.value ? 'auto' : `${lineSize.value - (iconChildren.value ? 6 : 0)}px`
 }))
 </script>
 
@@ -64,7 +73,7 @@ const contentStyle = computed(() => ({
 		:style="backgroundStyle"
 		role="switch"
 		tabindex="0"
-		:aria-checked="model"
+		:aria-checked="isChecked"
 		:aria-readonly="disabled"
 		@keyup.enter.prevent="toggle"
 		@click="toggle"
@@ -74,10 +83,10 @@ const contentStyle = computed(() => ({
 				<Icon
 					v-if="iconChildren"
 					class="icon"
-					:name="model ? checkedChildren ?? '' : unCheckedChildren ?? ''"
+					:name="isChecked ? checkedChildren ?? '' : unCheckedChildren ?? ''"
 				/>
 				<span v-else class="description">
-					{{ model ? checkedChildren : unCheckedChildren }}
+					{{ isChecked ? checkedChildren : unCheckedChildren }}
 				</span>
 			</span>
 		</span>
