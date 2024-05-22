@@ -156,6 +156,14 @@ const onBlur = () => {
 	align-items: center;
 }
 
+.InputNumber__arrowIcon:hover {
+	background-color: var(--design-background-color-primary);
+}
+
+.InputNumber__arrowIcon:active {
+	background-color: var(--design-background-color-on-accent-primary);
+}
+
 .InputNumber__arrowAdd {
 	border-left: 1px solid var(--design-border-color-tertiary);
 }
