@@ -34,6 +34,9 @@ const selected = computed({
 
 <template>
 	<tr class="DataGridRow">
+		<td class="DataGridRow__cell DataGridRow__selectCell">
+			<Checkbox v-if="selectColumn" v-model="selected"></Checkbox>
+		</td>
 		<td v-if="detailsColumn" class="DataGridRow__cell DataGridRow__detailsCell">
 			<span class="DataGridRow__detailsToggler">
 				<Button class="icon functional noBackground" @click="detailsVisible = !detailsVisible">
@@ -41,9 +44,6 @@ const selected = computed({
 					<Icon v-else name="chevron_forward"></Icon>
 				</Button>
 			</span>
-		</td>
-		<td class="DataGridRow__cell DataGridRow__selectCell">
-			<Checkbox v-if="selectColumn" v-model="selected"></Checkbox>
 		</td>
 		<DataGridCell
 			v-for="column of columns"
@@ -64,12 +64,8 @@ const selected = computed({
 	text-align: left;
 }
 
-.DataGridRow:nth-child(2n) .DataGridRow__cell {
-	background: var(--design-background-color-tertiary);
-}
-
 .DataGridRow:hover .DataGridRow__cell {
-	background: var(--design-background-color-secondary);
+	background: var(--design-background-color-tertiary);
 }
 
 .DataGridRow__details {

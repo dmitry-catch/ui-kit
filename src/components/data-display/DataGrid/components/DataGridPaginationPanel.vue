@@ -58,11 +58,12 @@ const toLastPage = () => updatePage(totalPages.value)
 		</div>
 		<div class="DataGridPaginationPanel__buttons">
 			<Button
-				v-for="button of buttons"
+				v-for="(button, index) of buttons"
+				:key="index"
 				class="DataGridPaginationPanel__button functional"
 				:class="{ 'DataGridPaginationPanel__button--current': button === currentPage }"
-				@click="buttonClick(button)"
 				:disabled="totalPages < button"
+				@click="buttonClick(button)"
 			>
 				<span
 					:class="{ 'DataGridPaginationPanel__buttonText--current': button === currentPage }"
@@ -75,8 +76,8 @@ const toLastPage = () => updatePage(totalPages.value)
 			<Button
 				v-if="!isLastTheTotalButton"
 				class="DataGridPaginationPanel__button functional"
-				@click="toLastPage"
 				:class="{ 'DataGridPaginationPanel__button--current': totalPages === currentPage }"
+				@click="toLastPage"
 			>
 				<span
 					class="accent"
@@ -112,6 +113,7 @@ const toLastPage = () => updatePage(totalPages.value)
 	justify-content: space-between;
 	align-items: center;
 	padding: calc(2 * var(--design-gap-unit));
+	z-index: 1000;
 }
 
 .DataGridPaginationPanel__buttons {
