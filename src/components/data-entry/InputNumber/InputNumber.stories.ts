@@ -34,7 +34,7 @@ export const Prefix: Story = {
 
 export const Postfix: Story = {
 	args: {
-		postfix: '@'
+		postfix: '+'
 	}
 }
 
