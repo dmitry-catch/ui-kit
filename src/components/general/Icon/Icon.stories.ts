@@ -195,7 +195,7 @@ const IconNames: string[] = [
 	'menu-expand',
 	'message',
 	'messages',
-	'mic-1',
+	'mic-24px-1.svg',
 	'mic',
 	'mic_off',
 	'mission',
@@ -345,7 +345,7 @@ const IconNames: string[] = [
 
 /**
  * Actual for 16/11/2023
- * Except typewriter-24px.png
+ * Except typewriter-24px.png and mic-24px-1.svg
  */
 export const AllIcons: Story = {
 	render: (args) => ({
