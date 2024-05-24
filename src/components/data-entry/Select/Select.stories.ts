@@ -1,5 +1,16 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Select from './Select.vue'
+import { ref } from 'vue'
+import { SelectLoadContext, SelectOptionType } from '../types'
+import { Button } from '../../../main'
+
+const data = ref<SelectOptionType[]>([])
+const fillData = (size: number) =>
+	Array(size)
+		.fill(0)
+		.map((_, idx) => ({ name: `Option ${idx + 1}`, value: idx + 1 }))
+
+const selectOptions: SelectOptionType[] = fillData(5)
 
 export default {
 	component: Select,
@@ -102,5 +113,39 @@ export const EmptyOptions: Story = {
 		<Select v-bind="args">
 		</Select>
 	  `
+	})
+}
+
+export const LazySelect: Story = {
+	args: {
+		loadMore: '<Button class="functional" @click="load()">Загрузить еще</Button>',
+		options: data.value,
+		onLoad: async (context: SelectLoadContext) => {
+			context.loading = true
+			await new Promise((resolve) => setTimeout(resolve, 1000))
+			if (context.current.length === 5) {
+				context.current.push(
+					...context.current.map((item, idx) => ({ ...item, name: `Option ${idx + 6}`, value: idx + 6 }))
+				)
+				context.completed = true
+			} else if (context.current.length < 5) {
+				context.current.push(...selectOptions)
+				context.completed = false
+			}
+			context.loading = false
+		}
+	},
+	render: (args) => ({
+		components: { Select, Button },
+		setup() {
+			return { args }
+		},
+		template: `
+		<Select v-bind="args">
+		  <template #loadMore="{ load }">
+		  ${args.loadMore}
+		  </template>
+		</Select>
+		  `
 	})
 }
