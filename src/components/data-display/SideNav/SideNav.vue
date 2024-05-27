@@ -52,6 +52,10 @@ defineSlots<{
 	height: 64px;
 	border-bottom: 1px solid var(--design-border-color-baseline);
 	padding: calc(2.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
+	.icon {
+		fill: var(--design-text-color-danger);
+		cursor: pointer;
+	}
 }
 .SideNav {
 	height: 100vh;
