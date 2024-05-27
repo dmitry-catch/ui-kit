@@ -8,6 +8,7 @@ interface Props {
 }
 
 const page = defineModel<number>({ required: true })
+
 const props = defineProps<Props>()
 
 const totalPages = computed(() => Math.ceil(props.totalElements / props.pageSize))
