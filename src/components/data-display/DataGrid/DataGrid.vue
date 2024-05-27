@@ -70,8 +70,8 @@ watch(
 )
 
 const internalColumns = ref(columns.value)
-
 watch(columns, () => (internalColumns.value = columns.value))
+
 watch(internalColumns, (newValue) => emit('update:columns', newValue))
 </script>
 
