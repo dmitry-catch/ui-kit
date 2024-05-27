@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, toRefs } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
-export interface SideNavItemProps {
+interface SideNavItemProps {
 	icon: string
 	isCollapsed?: boolean
 	active?: boolean
 }
 
-const props = defineProps<SideNavItemProps>()
+const props = withDefaults(defineProps<SideNavItemProps>(), {})
 const { icon, isCollapsed, active } = toRefs(props)
 
 const isCollapsedItems = ref(false)
