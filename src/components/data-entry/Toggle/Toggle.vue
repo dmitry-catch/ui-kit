@@ -1,24 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
 import { ToggleProps } from './types.js'
-
-const sizeParameters = {
-	medium: {
-		TOGGLE_LINE_HEIGHT: 30,
-		TOGGLE_WIDTH: 55,
-		INDENT_VALUE: 4
-	},
-	small: {
-		TOGGLE_LINE_HEIGHT: 24,
-		TOGGLE_WIDTH: 44,
-		INDENT_VALUE: 3
-	},
-	'extra-small': {
-		TOGGLE_LINE_HEIGHT: 16,
-		TOGGLE_WIDTH: 28,
-		INDENT_VALUE: 2
-	}
-}
+import { sizeParameters } from './sizeParameters.js'
 
 const props = withDefaults(defineProps<ToggleProps>(), {
 	size: 'medium'
