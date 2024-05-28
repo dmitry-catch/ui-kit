@@ -1,13 +1,15 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 import Toggle from './Toggle.vue'
-import Icon from '../../general/Icon/Icon.vue'
 
 export default {
 	component: Toggle,
 	args: {
 		modelValue: true,
 		disabled: false,
-		block: false
+		block: false,
+		checkedChildren: '',
+		unCheckedChildren: '',
+		iconChildren: false
 	},
 	argTypes: {
 		size: {
@@ -42,6 +44,8 @@ export const DisabledSwicthOff: Story = {
 
 export const TextContent: Story = {
 	args: {
+		checkedChildren: 'Open',
+		unCheckedChildren: 'Close',
 		block: true
 	},
 	render: (args) => ({
@@ -51,36 +55,18 @@ export const TextContent: Story = {
 		},
 		template: `
 		<div :style="{ width: 85 + 'px'}">
-		    <Toggle v-bind="args">
-				<template #checked>
-					Open
-				</template>
-				<template #unchecked>
-					Close
-				</template>
-			</Toggle>
+		    <Toggle v-bind="args" />
 		</div>
 	  `
 	})
 }
 
 export const IconContent: Story = {
-	render: (args) => ({
-		components: { Toggle, Icon },
-		setup() {
-			return { args }
-		},
-		template: `
-		<Toggle v-bind="args">
-			<template #checked>
-				<Icon name="check" />
-			</template>
-			<template #unchecked>
-				<Icon name="close" />
-			</template>
-		</Toggle>
-	  `
-	})
+	args: {
+		checkedChildren: 'check',
+		unCheckedChildren: 'close',
+		iconChildren: true
+	}
 }
 
 export const block: Story = {
@@ -94,28 +80,25 @@ export const Small: Story = {
 		size: 'small'
 	},
 	render: (args) => ({
-		components: { Toggle, Icon },
+		components: { Toggle },
 		setup() {
 			return { args }
 		},
 		template: `
-		<Toggle v-bind="args" />
-		<Toggle v-bind="args">
-			<template #checked>
-				<Icon name="add" />
-			</template>
-			<template #unchecked>
-				<Icon name="remove" />
-			</template>
-		</Toggle>
-		<Toggle v-bind="args">
-			<template #checked>
-				{{ 1 }}
-			</template>
-			<template #unchecked>
-				{{ 0 }}
-			</template>
-		</Toggle>
+		    <Toggle
+                v-bind="args"
+                checkedChildren="1"
+                unCheckedChildren="0"
+                :style="{ marginBottom: 8 + 'px'}"
+            />
+		    <Toggle
+                v-bind="args"
+                checkedChildren="add"
+                unCheckedChildren="remove"
+                iconChildren
+                :style="{ marginBottom: 8 + 'px'}"
+            />
+		    <Toggle v-bind="args" />
 	  `
 	})
 }
@@ -125,28 +108,25 @@ export const ExtraSmall: Story = {
 		size: 'extra-small'
 	},
 	render: (args) => ({
-		components: { Toggle, Icon },
+		components: { Toggle },
 		setup() {
 			return { args }
 		},
 		template: `
-		<Toggle v-bind="args" />
-		<Toggle v-bind="args">
-			<template #checked>
-				<Icon name="chevron_up" />
-			</template>
-			<template #unchecked>
-				<Icon name="chevron_down" />
-			</template>
-		</Toggle>
-		<Toggle v-bind="args">
-			<template #checked>
-				{{ 1 }}
-			</template>
-			<template #unchecked>
-				{{ 0 }}
-			</template>
-		</Toggle>
+		    <Toggle 
+                v-bind="args"
+                checkedChildren="Y"
+                unCheckedChildren="N"
+                :style="{ marginBottom: 4 + 'px'}"
+            />
+		    <Toggle
+                v-bind="args"
+                checkedChildren="chevron_up"
+                unCheckedChildren="chevron_down"
+                iconChildren
+                :style="{ marginBottom: 4 + 'px'}"
+            />
+		    <Toggle v-bind="args" />
 	  `
 	})
 }

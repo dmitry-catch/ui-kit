@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
+import Icon from '../../general/Icon/Icon.vue'
 import { ToggleProps } from './types.js'
 import { sizeParameters } from './sizeParameters.js'
 
@@ -7,7 +8,7 @@ const props = withDefaults(defineProps<ToggleProps>(), {
 	size: 'medium'
 })
 
-const { disabled, block, size } = toRefs(props)
+const { disabled, block, checkedChildren, unCheckedChildren, iconChildren, size } = toRefs(props)
 
 const model = defineModel<boolean>()
 
@@ -51,8 +52,8 @@ const dotStyle = computed(() => {
 })
 
 const contentStyle = computed(() => ({
-	right: model.value ? `${lineSize.value - 2}px` : 'auto',
-	left: model.value ? 'auto' : `${lineSize.value - 2}px`
+	right: model.value ? `${lineSize.value - (iconChildren.value ? 6 : 0)}px` : 'auto',
+	left: model.value ? 'auto' : `${lineSize.value - (iconChildren.value ? 6 : 0)}px`
 }))
 </script>
 
@@ -70,8 +71,14 @@ const contentStyle = computed(() => ({
 	>
 		<span aria-hidden="true" :style="dotStyle" class="dot">
 			<span class="content" :size="size" :style="contentStyle">
-				<slot v-if="model" name="checked"></slot>
-				<slot v-else name="unchecked"></slot>
+				<Icon
+					v-if="iconChildren"
+					class="icon"
+					:name="model ? checkedChildren ?? '' : unCheckedChildren ?? ''"
+				/>
+				<span v-else class="description">
+					{{ model ? checkedChildren : unCheckedChildren }}
+				</span>
 			</span>
 		</span>
 	</span>
@@ -97,34 +104,31 @@ const contentStyle = computed(() => ({
 		position: absolute;
 		user-select: none;
 		white-space: nowrap;
-		color: var(--design-text-color-inverted);
 	}
 
 	.content :deep(*) {
+		color: var(--design-text-color-inverted);
 		fill: var(--design-text-color-inverted);
-		--icon-size: 20px;
 	}
 
-	.content[size='small'] {
+	.content[size='small'] .description {
 		font-size: 14px;
 	}
 
-	.content[size='extra-small'] {
+	.content[size='small'] .icon {
+		--icon-size: 20px;
+	}
+
+	.content[size='extra-small'] .description {
 		font-size: 10px;
+		line-height: 14;
 	}
 
-	.content[size='small'] :deep(.Icon) {
-		--icon-size: 16px;
-
-		/* TODO: Temporary. While no fix Icon component */
-		transform: translateY(-10%);
-	}
-
-	.content[size='extra-small'] :deep(.Icon) {
-		--icon-size: 10px;
-
-		/* TODO: Temporary. While no fix Icon component */
-		transform: translateY(-80%);
+	/* TODO: Temporary. While no fix Icon component */
+	.content[size='extra-small'] .icon {
+		--icon-size: 12px;
+		padding: 0 2px;
+		transform: translateY(-45%);
 	}
 }
 </style>
