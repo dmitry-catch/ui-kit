@@ -39,7 +39,6 @@ export const Interactive: Story = {
 			<Item id="1" icon="bar_chart">Item 1</Item>
 			<Menu id="2" icon="bar_chart" title="Item 2">
 				<Item id="2.1">Item 2.1</Item>
-				<Item id="2.2">Item 2.2</Item>
 			</Menu>
 			<template #footer>Footer</template>
 		</Sidenav>`
