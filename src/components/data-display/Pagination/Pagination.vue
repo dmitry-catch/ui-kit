@@ -13,6 +13,9 @@ const props = defineProps<Props>()
 const totalPages = computed(() => Math.ceil(props.totalElements / props.pageSize))
 const visibleButtons = computed(() => Array.from({ length: Math.min(totalPages.value, 5) }, (_, i) => i + 1))
 const currentPage = ref(page.value + 1)
+const entryAmount = computed(() =>
+	currentPage.value * props.pageSize > props.totalElements ? props.totalElements : currentPage.value * props.pageSize
+)
 
 const buttons = computed(() =>
 	visibleButtons.value.map((_, index, arr) =>
@@ -51,7 +54,7 @@ const toLastPage = () => updatePage(totalPages.value)
 <template>
 	<div class="Pagination">
 		<div>
-			<span> Записей: {{ currentPage * pageSize }} из {{ totalElements }} </span>
+			<span> Записей: {{ entryAmount }} из {{ totalElements }} </span>
 		</div>
 		<div v-if="totalPages > 1" class="Pagination__buttons">
 			<Button

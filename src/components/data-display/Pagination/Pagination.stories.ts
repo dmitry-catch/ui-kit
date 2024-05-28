@@ -5,7 +5,7 @@ export default {
 	component: Pagination,
 	args: {
 		modelValue: 1,
-		totalElements: 100,
+		totalElements: 29,
 		pageSize: 10
 	}
 } satisfies Meta<typeof Pagination>
