@@ -17,7 +17,7 @@ export default {
 		disabled: false,
 		required: false,
 		autofocus: false,
-		maxlength: 1000,
+		maxlength: 100,
 		tabindex: 0,
 		cols: 100,
 		rows: 1,
@@ -46,56 +46,48 @@ type Story = StoryObj<typeof Textarea>
 
 export const Default: Story = {}
 
-/** Прозрачный фон */
 export const Transparent: Story = {
 	args: {
 		transparent: true
 	}
 }
 
-/** Без рамки */
 export const Borderless: Story = {
 	args: {
-		bordered: false
+		bordered: true
 	}
 }
 
-/** Без `placeholder`'а */
 export const WithoutPlaceholder: Story = {
 	args: {
 		placeholder: ''
 	}
 }
 
-/** С возможностью растягивания поля */
 export const Resizable: Story = {
 	args: {
 		resizable: 'both'
 	}
 }
 
-/** Фокус в textarea по умолчанию */
 export const Autofocus: Story = {
 	args: {
 		autofocus: true
 	}
 }
 
-/** Блокирует доступ и изменение `textarea` */
 export const Disabled: Story = {
 	args: {
 		disabled: true
 	}
 }
 
-/** Только просмотр */
 export const Readonly: Story = {
 	args: {
 		readonly: true
 	}
 }
 
-/** Добавляет счетчик символов и задает ограничение `max` символов */
 export const WithMaxlength: Story = {
 	args: {
 		maxlength: 50,
@@ -103,16 +95,6 @@ export const WithMaxlength: Story = {
 	}
 }
 
-/** Размер `extra-small` */
-export const ExtraSmallSize: Story = {
-	args: {
-		size: 'extra-small',
-		maxlength: 10,
-		showCounter: true
-	}
-}
-
-/** Размер `small` */
 export const SmallSize: Story = {
 	args: {
 		size: 'small',
@@ -121,7 +103,14 @@ export const SmallSize: Story = {
 	}
 }
 
-/** Кастомная настройка ширины и высоты поля `textarea`  */
+export const ExtraSmallSize: Story = {
+	args: {
+		size: 'extra-small',
+		maxlength: 10,
+		showCounter: true
+	}
+}
+
 export const CustomRowsCols: Story = {
 	args: {
 		rows: 5,
