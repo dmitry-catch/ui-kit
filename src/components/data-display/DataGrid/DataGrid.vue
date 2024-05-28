@@ -5,7 +5,6 @@ import DataGridHeaderRow from './components/DataGridHeaderRow.vue'
 import { useFilterContext } from './utils/useFilterContext.js'
 import { useSortingContext } from './utils/useSortingContext.js'
 import { DataGridColumn } from './types.js'
-import DataGridRowGroup from './components/DataGridRowGroup.vue'
 
 export interface Props {
 	columns: Array<DataGridColumn>
@@ -14,6 +13,7 @@ export interface Props {
 	allowSelection: boolean
 	selectedRows: Array<any>
 	allowPagination: boolean
+	currentPage: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
