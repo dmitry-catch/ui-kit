@@ -51,10 +51,7 @@ const toLastPage = () => updatePage(totalPages.value)
 <template>
 	<div class="Pagination">
 		<div>
-			<span>
-				Записей: {{ currentPage * pageSize > totalElements ? totalElements : currentPage * pageSize }} из
-				{{ totalElements }}
-			</span>
+			<span> Записей: {{ currentPage * pageSize }} из {{ totalElements }} </span>
 		</div>
 		<div v-if="totalPages > 1" class="Pagination__buttons">
 			<Button
