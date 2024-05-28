@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
-
-import { Sidenav } from '../../../main.js'
+import Sidenav from './Sidenav.vue'
+import { Toggle, Item, Menu } from './index.js'
 
 export default {
 	component: Sidenav,
@@ -26,7 +26,7 @@ export const Interactive: Story = {
 		collapsed: false
 	},
 	render: (args) => ({
-		components: { Sidenav, SidenavItem: Sidenav.Item, SidenavMenu: Sidenav.Menu, SidenavToggle: Sidenav.Toggle },
+		components: { Sidenav, Toggle, Item, Menu },
 		setup() {
 			return {
 				args
@@ -35,12 +35,12 @@ export const Interactive: Story = {
 		template: `
 		<Sidenav v-bind="args">
 			<template #header>Header</template>
-			<SidenavToggle @click="args.collapsed = !args.collapsed">Menu</SidenavToggle>
-			<SidenavItem id="1" icon="bar_chart">Item 1</SidenavItem>
-			<SidenavMenu id="2" icon="bar_chart" title="Item 2">
-				<SidenavItem id="2.1">Item 2.1</SidenavItem>
-				<SidenavItem id="2.2">Item 2.2</SidenavItem>
-			</SidenavMenu>
+			<Toggle @click="args.collapsed = !args.collapsed">Menu</Toggle>
+			<Item id="1" icon="bar_chart">Item 1</Item>
+			<Menu id="2" icon="bar_chart" title="Item 2">
+				<Item id="2.1">Item 2.1</Item>
+				<Item id="2.2">Item 2.2</Item>
+			</Menu>
 			<template #footer>Footer</template>
 		</Sidenav>`
 	})
