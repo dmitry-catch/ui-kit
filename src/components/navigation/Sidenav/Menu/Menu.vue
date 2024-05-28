@@ -35,41 +35,41 @@ const slots = defineSlots<{
 
 <template>
 	<div class="Menu" :class="{ active: isActive }">
-		<div class="NavigationMenu" @click="openMenu">
-			<div class="NavigationMenu__title" :class="{ collapsed: collapsed, active: isActive }">
+		<div class="NavigationItem" @click="openMenu">
+			<div class="NavigationItem__title" :class="{ collapsed: collapsed, active: isActive }">
 				<slot name="icon">
-					<Icon class="NavigationMenu__title__icon" :name="icon"></Icon>
+					<Icon class="NavigationItem__title__icon" :name="icon"></Icon>
 				</slot>
 				<span
 					v-if="!collapsed"
-					class="NavigationMenu__title__text text-medium accent secondary"
+					class="NavigationItem__title__text text-medium accent secondary"
 					:class="{ active: isActive }"
 					>{{ title }}</span
 				>
 			</div>
 			<Icon
 				v-if="!collapsed && slots.default"
-				class="NavigationMenu__chevron"
+				class="NavigationItem__chevron"
 				:class="{ active: isActive }"
 				:name="open == id ? 'chevron_up' : 'chevron_down'"
 			></Icon>
 		</div>
-		<div v-if="open == id && slots.default" class="NavigationMenu__subitems">
+		<div v-if="open == id && slots.default" class="NavigationItem__subitems">
 			<slot v-if="!collapsed"> </slot>
 		</div>
 	</div>
 </template>
 
 <style scoped>
-.NavigationMenu__title__text.active {
+.NavigationItem__title__text.active {
 	color: var(--design-text-color-accent);
 }
 
-.NavigationMenu__chevron.active {
+.NavigationItem__chevron.active {
 	fill: var(--design-text-color-accent);
 }
 
-.NavigationMenu {
+.NavigationItem {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -83,11 +83,11 @@ const slots = defineSlots<{
 	background-color: var(--design-background-color-primary);
 }
 
-.NavigationMenu__chevron {
+.NavigationItem__chevron {
 	--icon-size: 16px;
 	fill: var(--design-text-color-secondary);
 }
-.NavigationMenu__title {
+.NavigationItem__title {
 	padding: var(--design-gap-unit);
 	padding-left: 0;
 	color: var(--design-text-color-secondary);
@@ -98,37 +98,37 @@ const slots = defineSlots<{
 	cursor: pointer;
 }
 
-.NavigationMenu__subitems {
-	padding-left: calc(4 * var(--design-gap-unit));
+.NavigationItem__subitems {
+	padding-left: calc(5 * var(--design-gap-unit));
 	margin-top: var(--design-gap-unit);
 	display: flex;
 	flex-direction: column;
 	gap: var(--design-gap-unit);
 }
 
-.NavigationMenu__title.collapsed {
+.NavigationItem__title.collapsed {
 	gap: 0;
 	padding-left: var(--design-gap-unit);
 }
 
-.NavigationMenu__title:hover {
+.NavigationItem__title:hover {
 	color: var(--design-text-color-primary);
 }
 
-.NavigationMenu__title:hover :deep(.Icon svg) {
+.NavigationItem__title:hover :deep(.Icon svg) {
 	fill: var(--design-text-color-primary);
 }
 
-.NavigationMenu__title__icon {
+.NavigationItem__title__icon {
 	--icon-size: 24px;
 	fill: var(--design-text-color-secondary);
 }
 
-.NavigationMenu__title.active {
+.NavigationItem__title.active {
 	color: var(--design-text-color-accent);
 }
 
-.NavigationMenu__title.active :deep(.Icon svg) {
+.NavigationItem__title.active :deep(.Icon svg) {
 	color: var(--design-text-color-accent);
 	fill: var(--design-text-color-accent);
 }
