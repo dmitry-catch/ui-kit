@@ -25,7 +25,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<div class="Item" :class="{ active: active == id }" @click="toggleActive">
+	<div class="SidenavItem" :class="{ active: active == id }" @click="toggleActive">
 		<div class="NavigationItem">
 			<div
 				class="NavigationItem__title text-medium secondary"
@@ -50,7 +50,7 @@ const slots = defineSlots<{
 	align-items: center;
 }
 
-.Item {
+.SidenavItem {
 	border-radius: var(--design-border-radius-control);
 }
 
