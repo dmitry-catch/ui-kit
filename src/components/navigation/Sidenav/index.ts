@@ -1,7 +1,7 @@
 import Nav from './Sidenav.vue'
-import Toggle from './components/SidenavToggle.vue'
-import Menu from './components/SidenavMenu.vue'
-import Item from './components/SidenavItem.vue'
+import Toggle from './components/Toggle.vue'
+import Menu from './components/Menu.vue'
+import Item from './components/Item.vue'
 import type { SidenavType } from './types.js'
 
 Nav.Toggle = Toggle

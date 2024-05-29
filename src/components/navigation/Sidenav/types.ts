@@ -1,13 +1,13 @@
 import { ModelRef, Ref } from 'vue'
 import Sidenav from './Sidenav.vue'
-import Toggle from './components/SidenavToggle.vue'
-import Menu from './components/SidenavMenu.vue'
-import Item from './components/SidenavItem.vue'
+import Toggle from './components/Toggle.vue'
+import Menu from './components/Menu.vue'
+import Item from './components/Item.vue'
 
 export interface InjectionTypes {
 	collapsed: Ref<boolean>
 	active: ModelRef<string | undefined>
-	open: ModelRef<Array<string> | undefined>
+	open: ModelRef<string | undefined>
 }
 
 type Sidenav = typeof Sidenav

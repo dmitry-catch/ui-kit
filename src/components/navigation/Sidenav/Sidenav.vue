@@ -2,17 +2,16 @@
 import { provide, toRefs } from 'vue'
 import { injectionKey } from './consts.js'
 
-interface SidenavProps {
+interface SideNavProps {
 	collapsed?: boolean
 }
-const props = withDefaults(defineProps<SidenavProps>(), {
+const props = withDefaults(defineProps<SideNavProps>(), {
 	collapsed: false
 })
 const { collapsed } = toRefs(props)
 
-/** Заголfsdfsdfsовок */
 const active = defineModel<string>('active')
-const open = defineModel<Array<string>>('open')
+const open = defineModel<string>('open')
 
 provide(injectionKey, {
 	collapsed,
