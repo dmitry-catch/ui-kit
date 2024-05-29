@@ -2,7 +2,6 @@ import Icon from './components/general/Icon/Icon.vue'
 import Btn from './components/general/Button/Button.vue'
 import Button from './components/general/Button/Button.vue'
 import Property from './components/data-display/Property/Property.vue'
-import Pagination from './components/data-display/Pagination/Pagination.vue'
 import Paragraph from './components/data-display/Paragraph/Paragraph.vue'
 import Header from './components/data-display/Header/Header.vue'
 import Tag from './components/data-display/Tag/Tag.vue'
@@ -66,7 +65,6 @@ export {
 	InputNumber,
 	//Data display category
 	DataGrid,
-	Pagination,
 	Toast,
 	SelectableOption,
 	CharCounter,

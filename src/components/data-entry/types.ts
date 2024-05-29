@@ -1,10 +1,4 @@
-export interface SelectOptionType<T = any> {
+export interface SelectOptionType {
 	name: string
-	value: T
-}
-
-export type SelectLoadContext<T = any> = {
-	current: Array<SelectOptionType<T>>
-	loading: boolean
-	completed: boolean
+	value: string | number | null
 }
