@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { inject } from 'vue'
-import { dialogContext } from '../../../utils/dialogContext.js'
+import { dialogContext } from './utils.js'
 import Button from '../Button/Button.vue'
-import DialogLayout from './components/DialogLayout.vue'
+import ModalLayout from './ModalLayout/ModalLayout.vue'
 
 const { state, clear, isEmpty } = inject(dialogContext)!
 
@@ -13,7 +13,7 @@ const handleClose = () => {
 </script>
 
 <template>
-	<DialogLayout v-if="!isEmpty" @close="handleClose">
+	<ModalLayout v-if="!isEmpty" @close="handleClose">
 		<template #header>{{ state?.header }}</template>
 		<template #default>{{ state?.content }}</template>
 		<template #controls>
@@ -26,7 +26,7 @@ const handleClose = () => {
 				{{ button?.content }}
 			</Button>
 		</template>
-	</DialogLayout>
+	</ModalLayout>
 </template>
 
 <style scoped></style>
