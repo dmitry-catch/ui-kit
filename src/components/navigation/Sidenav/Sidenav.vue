@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<SidenavProps>(), {
 })
 const { collapsed } = toRefs(props)
 
+/** Заголfsdfsdfsовок */
 const active = defineModel<string>('active')
 const open = defineModel<Array<string>>('open')
 
