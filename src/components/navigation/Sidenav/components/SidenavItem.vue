@@ -2,23 +2,19 @@
 import { inject, toRefs } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import { injectionKey } from '../consts.js'
-import Tag from '../../../data-display/Tag/Tag.vue'
 interface SidenavItemProps {
 	icon?: string
 	id: string
 	disabled?: boolean
-	badge?: string
 }
 
 const props = defineProps<SidenavItemProps>()
-const { icon, disabled, badge } = toRefs(props)
+const { icon, disabled } = toRefs(props)
 
 const { collapsed, active } = inject(injectionKey)!
 
 const toggleActive = () => {
-	if (!disabled.value) {
-		active.value = active.value == props.id ? '' : props.id
-	}
+	active.value = active.value == props.id ? '' : props.id
 }
 
 const slots = defineSlots<{
@@ -29,7 +25,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<div class="Item" :class="{ active: active == id && !disabled, disabled: disabled }" @click="toggleActive">
+	<div class="Item" :class="{ active: active == id && !disabled }" @click="toggleActive">
 		<div
 			class="Item__title text-medium secondary"
 			:class="{ collapsed: collapsed, active: active == id && !disabled, bold: icon, disabled: disabled }"
@@ -38,28 +34,26 @@ const slots = defineSlots<{
 				<Icon class="Item__title__icon" :name="icon"></Icon>
 			</slot>
 			<slot v-if="!collapsed"> </slot>
-			<Tag
-				v-if="!collapsed && badge"
-				:color="active == id ? 'accent' : 'dark'"
-				size="extra-small"
-				class="Item__title__badge"
-				>{{ badge }}</Tag
-			>
 		</div>
 	</div>
 </template>
 
 <style scoped>
+.Item__title.disabled {
+	color: var(--design-text-color-on-accent-secondary);
+	cursor: default;
+}
+
+.Item__title.disabled :deep(.Icon svg) {
+	fill: var(--design-text-color-on-accent-secondary);
+}
+
 .Item__title.disabled:hover {
-	color: var(--design-text-color-secondary);
+	color: var(--design-text-color-on-accent-secondary);
 }
 
 .Item__title.disabled:hover :deep(.Icon svg) {
-	fill: var(--design-text-color-secondary);
-}
-.Item__title.disabled {
-	cursor: default;
-	opacity: 0.5;
+	fill: var(--design-text-color-on-accent-secondary);
 }
 
 .Item__title.bold {
@@ -70,15 +64,6 @@ const slots = defineSlots<{
 	display: flex;
 	align-items: center;
 	border-radius: var(--design-border-radius-control);
-	padding: var(--design-gap-unit);
-}
-
-.Item:hover {
-	background-color: var(--design-background-color-primary);
-}
-
-.Item.disabled:hover {
-	background-color: var(--design-background-color-tertiary);
 }
 
 .Item__title {

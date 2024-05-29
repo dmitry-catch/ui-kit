@@ -73,7 +73,7 @@ defineSlots<{
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		padding: calc(2 * var(--design-gap-unit));
+		padding: calc(3 * var(--design-gap-unit));
 		padding-top: var(--design-gap-unit);
 	}
 

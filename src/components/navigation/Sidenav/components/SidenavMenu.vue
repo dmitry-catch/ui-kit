@@ -2,13 +2,11 @@
 import { computed, inject, toRefs } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import { injectionKey } from '../consts.js'
-import Tag from '../../../data-display/Tag/Tag.vue'
 interface SidenavMenuProps {
 	icon: string
 	title: string
 	id: string
 	disabled?: boolean
-	badge?: string
 }
 
 const props = defineProps<SidenavMenuProps>()
@@ -42,7 +40,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<div class="Menu" :class="{ active: isActive, disabled: disabled }">
+	<div class="Menu" :class="{ active: isActive }">
 		<div class="NavigationMenu" :class="{ disabled: disabled }" @click="toggleMenu">
 			<div class="NavigationMenu__title" :class="{ collapsed: collapsed, active: isActive, disabled: disabled }">
 				<slot name="icon">
@@ -55,7 +53,6 @@ const slots = defineSlots<{
 					>{{ title }}</span
 				>
 			</div>
-			<Tag v-if="badge && !collapsed" :color="isActive ? 'accent' : 'dark'" size="extra-small">{{ badge }}</Tag>
 			<Icon
 				v-if="!collapsed && slots.default"
 				class="NavigationMenu__chevron"
@@ -70,37 +67,53 @@ const slots = defineSlots<{
 </template>
 
 <style scoped>
+.NavigationMenu__title.disabled {
+	cursor: default;
+}
+
+.NavigationMenu__title__text.disabled {
+	color: var(--design-text-color-on-accent-secondary);
+}
+
+.NavigationMenu__title.disabled :deep(.Icon svg) {
+	fill: var(--design-text-color-on-accent-secondary);
+}
+
+.NavigationMenu__title.disabled:hover :deep(.Icon svg) {
+	fill: var(--design-text-color-on-accent-secondary);
+}
+.NavigationMenu__title__text.active {
+	color: var(--design-text-color-accent);
+}
+
+.NavigationMenu__chevron.disabled {
+	fill: var(--design-text-color-on-accent-secondary);
+}
+
+.NavigationMenu__chevron.active {
+	fill: var(--design-text-color-accent);
+}
+
 .NavigationMenu {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.Menu:hover.disabled {
-	background-color: var(--design-background-color-tertiary);
+.NavigationMenu:hover {
+	background-color: var(--design-background-color-primary);
 }
 
-.NavigationMenu__title.disabled:hover :deep(.Icon svg) {
-	fill: var(--design-text-color-secondary);
-}
-.NavigationMenu__title.disabled {
-	cursor: default;
+.NavigationMenu:hover.disabled {
+	background-color: var(--design-background-color-tertiary);
 }
 
 .Menu {
 	border-radius: var(--design-border-radius-control);
-	padding: var(--design-gap-unit);
-}
-.Menu:hover {
-	background-color: var(--design-background-color-primary);
 }
 
 .Menu.active {
 	background-color: var(--design-background-color-primary);
-}
-
-.Menu.disabled {
-	opacity: 0.5;
 }
 
 .NavigationMenu__chevron {
@@ -108,6 +121,7 @@ const slots = defineSlots<{
 	fill: var(--design-text-color-secondary);
 }
 .NavigationMenu__title {
+	padding: var(--design-gap-unit);
 	padding-left: 0;
 	color: var(--design-text-color-secondary);
 	text-decoration: none;
@@ -117,15 +131,12 @@ const slots = defineSlots<{
 	cursor: pointer;
 }
 
-.NavigationMenu__title__text.active {
-	color: var(--design-text-color-accent);
-}
-
 .Menu__subitems {
-	padding-left: calc(3 * var(--design-gap-unit));
+	padding-left: calc(4 * var(--design-gap-unit));
 	margin-top: var(--design-gap-unit);
 	display: flex;
 	flex-direction: column;
+	gap: var(--design-gap-unit);
 }
 
 .NavigationMenu__title.collapsed {

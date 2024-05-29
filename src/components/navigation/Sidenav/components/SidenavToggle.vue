@@ -21,12 +21,14 @@ const slots = defineSlots<{ default?: () => unknown }>()
 <style scoped>
 .Toggle {
 	border-bottom: 1px solid var(--design-border-color-baseline);
-	padding: var(--design-gap-unit);
+	padding: var(--design-gap-unit) 0;
+}
+
+.Toggle__label {
+	margin-right: auto;
 }
 
 .Toggle__chevron {
-	margin-left: auto;
-	padding-right: calc(2 * var(--design-gap-unit));
 	--icon-size: 16px;
 }
 
