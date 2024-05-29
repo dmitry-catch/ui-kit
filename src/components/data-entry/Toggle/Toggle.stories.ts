@@ -102,10 +102,10 @@ export const Small: Story = {
 		<Toggle v-bind="args" />
 		<Toggle v-bind="args">
 			<template #checked>
-				<Icon name="check" />
+				<Icon name="add" />
 			</template>
 			<template #unchecked>
-				<Icon name="close" />
+				<Icon name="remove" />
 			</template>
 		</Toggle>
 		<Toggle v-bind="args">
@@ -133,10 +133,10 @@ export const ExtraSmall: Story = {
 		<Toggle v-bind="args" />
 		<Toggle v-bind="args">
 			<template #checked>
-				<Icon name="check" />
+				<Icon name="chevron_up" />
 			</template>
 			<template #unchecked>
-				<Icon name="close" />
+				<Icon name="chevron_down" />
 			</template>
 		</Toggle>
 		<Toggle v-bind="args">
