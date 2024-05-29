@@ -20,8 +20,10 @@ const toggleMenu = () => {
 	if (!collapsed.value && !disabled.value) {
 		if (!open.value?.includes(props.id)) {
 			open.value?.push(props.id)
+			console.log('open')
 		} else {
 			open.value?.splice(open.value?.indexOf(props.id), 1)
+			console.log('close')
 		}
 	}
 }
@@ -70,7 +72,7 @@ const slots = defineSlots<{
 <style scoped>
 .NavigationMenu {
 	display: flex;
-	gap: var(--design-gap-unit);
+	justify-content: space-between;
 	align-items: center;
 }
 
@@ -104,7 +106,6 @@ const slots = defineSlots<{
 .NavigationMenu__chevron {
 	--icon-size: 16px;
 	fill: var(--design-text-color-secondary);
-	margin-left: auto;
 }
 .NavigationMenu__title {
 	padding-left: 0;
@@ -129,6 +130,7 @@ const slots = defineSlots<{
 
 .NavigationMenu__title.collapsed {
 	gap: 0;
+	padding-left: var(--design-gap-unit);
 }
 
 .NavigationMenu__title:hover :deep(.Icon svg) {

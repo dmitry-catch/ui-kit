@@ -22,13 +22,6 @@ const slots = defineSlots<{ default?: () => unknown }>()
 .Toggle {
 	border-bottom: 1px solid var(--design-border-color-baseline);
 	padding: var(--design-gap-unit);
-	padding-bottom: calc(var(--design-gap-unit) * 2);
-	padding-right: 0;
-	margin-right: var(--design-gap-unit);
-}
-
-.Toggle.collapsed {
-	padding-left: 0;
 }
 
 .Toggle__chevron {

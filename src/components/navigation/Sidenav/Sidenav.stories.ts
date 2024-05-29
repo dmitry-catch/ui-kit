@@ -39,7 +39,7 @@ export const Default: Story = {
 		<Sidenav v-bind="args">
 			<template #header>Header</template>
 			<SidenavToggle @click="args.collapsed = !args.collapsed">Menu</SidenavToggle>
-			<SidenavItem id="1" icon="expand">Item 1</SidenavItem>
+			<SidenavItem id="1" icon="bar_chart">Item 1</SidenavItem>
 			<SidenavMenu id="2" icon="bar_chart" title="Item 2">
 				<SidenavItem id="2.1">Item 2.1</SidenavItem>
 				<SidenavItem id="2.2">Item 2.2</SidenavItem>
@@ -61,7 +61,7 @@ export const Badge: Story = {
 		<Sidenav v-bind="args">
 			<template #header>Header</template>
 			<SidenavToggle @click="args.collapsed = !args.collapsed">Menu</SidenavToggle>
-			<SidenavItem id="1" icon="expand" badge="99">Item 1</SidenavItem>
+			<SidenavItem id="1" icon="bar_chart" badge="99">Item 1</SidenavItem>
 			<SidenavMenu id="2" icon="bar_chart" badge="99" title="Item 2">
 				<SidenavItem id="2.1">Item 2.1</SidenavItem>
 				<SidenavItem id="2.2">Item 2.2</SidenavItem>
@@ -83,7 +83,7 @@ export const Disabled: Story = {
 		<Sidenav v-bind="args">
 			<template #header>Header</template>
 			<SidenavToggle @click="args.collapsed = !args.collapsed">Menu</SidenavToggle>
-			<SidenavItem id="1" icon="expand" :disabled="true" badge="99" >Item 1</SidenavItem>
+			<SidenavItem id="1" icon="bar_chart" :disabled="true" badge="99" >Item 1</SidenavItem>
 			<SidenavMenu id="2" icon="bar_chart" :disabled="true" badge="99" title="Item 2">
 				<SidenavItem disabled id="2.1">Item 2.1</SidenavItem>
 				<SidenavItem disabled id="2.2">Item 2.2</SidenavItem>

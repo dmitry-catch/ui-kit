@@ -67,13 +67,10 @@ const slots = defineSlots<{
 }
 
 .Item {
+	display: flex;
+	align-items: center;
 	border-radius: var(--design-border-radius-control);
 	padding: var(--design-gap-unit);
-}
-
-.Item.collapsed {
-	display: flex;
-	justify-content: center;
 }
 
 .Item:hover {
@@ -89,6 +86,11 @@ const slots = defineSlots<{
 	display: flex;
 	gap: var(--design-gap-unit);
 	cursor: pointer;
+}
+
+.Item__title.collapsed {
+	gap: 0;
+	padding-left: var(--design-gap-unit);
 }
 
 .Item__title:hover {
