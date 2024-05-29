@@ -2,10 +2,11 @@
 import { computed, inject, toRefs } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import { injectionKey } from '../consts.js'
+import { InjectionTypes } from '../types.js'
 interface MenuProps {
 	icon: string
 	title: string
-	id: string
+	id?: string
 }
 
 const props = defineProps<MenuProps>()
