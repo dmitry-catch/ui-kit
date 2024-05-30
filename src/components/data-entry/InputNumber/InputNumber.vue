@@ -110,18 +110,18 @@ const onBlur = () => {
 			/>
 			<span v-if="arrowed" class="InputNumber__arrows" :class="size">
 				<span
-					class="InputNumber__arrowUp"
-					:class="{ 'InputNumber__arrow--disabled': !isNotMaxValue || disabled }"
-					@click="incrementValue"
-				>
-					<Icon name="chevron_up" class="InputNumber__arrowIcon" />
-				</span>
-				<span
-					class="InputNumber__arrowDown"
+					class="InputNumber__arrowRemove"
 					:class="{ 'InputNumber__arrow--disabled': !isNotMinValue || disabled }"
 					@click="decrementValue"
 				>
-					<Icon name="chevron_down" class="InputNumber__arrowIcon" />
+					<Icon name="remove" class="InputNumber__arrowIcon" />
+				</span>
+				<span
+					class="InputNumber__arrowAdd"
+					:class="{ 'InputNumber__arrow--disabled': !isNotMaxValue || disabled }"
+					@click="incrementValue"
+				>
+					<Icon name="add" class="InputNumber__arrowIcon" />
 				</span>
 			</span>
 			<span class="InputNumber__postfix" :class="size">
@@ -145,22 +145,29 @@ const onBlur = () => {
 	outline: none;
 	width: 100%;
 	border-radius: var(--design-border-radius-control);
-	padding: var(--design-gap-unit);
+	padding: var(--design-gap-unit) var(--design-gap-unit) var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 	border: none;
 }
 
 .InputNumber__arrows {
 	--icon-size: 20px;
-	border-left: 1px solid var(--design-border-color-primary);
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 }
 
 .InputNumber__arrowIcon:hover {
-	background-color: var(--design-background-color-primary);
+	fill: var(--design-border-color-secondary);
 }
 
-.InputNumber__arrowIcon:active {
-	background-color: var(--design-background-color-on-accent-primary);
+.InputNumber__arrowAdd {
+	border-left: 1px solid var(--design-border-color-tertiary);
+}
+
+.InputNumber__arrowAdd,
+.InputNumber__arrowRemove {
+	padding: 0 calc(1.5 * var(--design-gap-unit));
+	--icon-size: 16px;
 }
 
 .InputNumber__prefix,
@@ -186,11 +193,10 @@ const onBlur = () => {
 
 .InputNumber__arrow--disabled .InputNumber__arrowIcon {
 	cursor: not-allowed;
-	background-color: var(--design-background-color-on-accent-primary);
 }
 
 .InputNumber__arrow--disabled :deep(.Icon path) {
-	fill: var(--design-background-color-disabled-primary);
+	fill: var(--design-border-color-secondary);
 }
 
 .InputNumber--invalid {
@@ -208,7 +214,8 @@ const onBlur = () => {
 .InputNumber__postfix.small,
 .InputNumber__input.small {
 	font-size: var(--design-font-size-small);
-	padding: calc(var(--design-gap-unit) / 2);
+	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) / 2)
+		var(--design-gap-unit);
 }
 .InputNumber__error.small {
 	font-size: var(--design-font-size-small);
@@ -220,10 +227,8 @@ const onBlur = () => {
 .InputNumber__input.extra-small {
 	--icon-size: 18px;
 	font-size: var(--design-font-size-footnote);
-	padding: calc(var(--design-gap-unit) / 4);
-}
-.InputNumber__arrows.extra-small {
-	--icon-size: 18px;
+	padding: calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 4) calc(var(--design-gap-unit) / 4)
+		calc(var(--design-gap-unit) / 2);
 }
 .InputNumber__error.extra-small {
 	font-size: var(--design-font-size-footnote);

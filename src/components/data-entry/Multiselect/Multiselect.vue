@@ -1,10 +1,12 @@
 <script setup lang="ts" generic="TValue">
-import { ref, toRefs, computed, watch, onMounted } from 'vue'
+import { ref, toRefs, computed, watch, onMounted, reactive } from 'vue'
 import Dropdown from '../../data-display/Dropdown/Dropdown.vue'
 import Button from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import { DropdownItemType } from '../../data-display/Dropdown/types'
 import SearchPopup from './components/SearchPopup.vue'
+import { SelectLoadContext } from '../types'
+import Spinner from '../../general/Spinner/Spinner.vue'
 
 export interface SelectOptionType<TValue> {
 	name: string
@@ -66,6 +68,8 @@ const emit = defineEmits<{
 	(e: 'open'): void
 	/** Обработчик события ввода в строке поиска */
 	(e: 'search', value: string): void
+	/** Обработчик загрузки данных */
+	(e: 'load', context: SelectLoadContext<TValue>): void
 }>()
 
 const modelValue = defineModel<Array<TValue>>({ required: true })
@@ -83,6 +87,8 @@ const slots = defineSlots<{
 	listItem?: (listItem: unknown) => unknown
 	/**  Заголовок для группы элементов списка */
 	listGroupLabel?: (listGroupLabel: unknown) => string | unknown
+	/** Загрузить еще */
+	loadMore?: (props: { load: () => void }) => any
 	/**  Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
 	/**  Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
@@ -148,9 +154,19 @@ const openList = () => {
 	}
 }
 
+const listContext: SelectLoadContext<TValue> = reactive({
+	current: options,
+	loading: false,
+	completed: false
+})
+
+const loadList = () => {
+	emit('load', listContext)
+}
+
 watch(searchInput, () => onSearch())
 
-watch([loading, options], () => optionsHandler())
+watch([loading, options.value], () => optionsHandler())
 
 onMounted(() => optionsHandler())
 
@@ -176,15 +192,15 @@ const root = ref()
 
 		<div class="Multiselect__content" :class="{ disabled, invalid }">
 			<Icon v-if="icon" :name="icon" />
-			<div class="Multiselect__innerContent" @click="openList">
+			<div class="Multiselect__innerContent" @click=";[loadList(), openList()]">
 				<span v-if="modelValue?.length == 0" class="secondary">
 					{{ placeholder }}
 				</span>
 				<span v-if="shownName" class="Multiselect_name">
 					{{ shownName }}
 					<Button v-if="shownName" class="icon functional" :disabled="disabled" @click="clearInput">
-						<Icon name="close" />
-					</Button>
+						<Icon name="close"
+					/></Button>
 				</span>
 			</div>
 
@@ -208,6 +224,16 @@ const root = ref()
 				<template v-if="$slots.listHeader" #listHeader><slot name="listHeader"></slot></template>
 				<template v-if="$slots.listGroupLabel" #listGroupLabel><slot name="listGroupLabel"></slot></template>
 				<template v-if="$slots.listItem" #listItem><slot name="listItem"></slot></template>
+				<template #loadMore
+					><slot
+						v-if="!listContext.completed && !listContext.loading"
+						name="loadMore"
+						:load="() => loadList()"
+					>
+						<Button class="functional" @click="loadList">Загрузить еще</Button>
+					</slot>
+					<Spinner v-if="listContext.loading" class="Multiselect__loading" />
+				</template>
 				<template v-if="$slots.listDefault" #listDefault><slot name="listDefault"></slot></template>
 				<template v-if="$slots.listFooter" #listFooter><slot name="listFooter"></slot></template>
 				<template v-if="$slots.empty" #empty><slot name="empty"></slot></template>
