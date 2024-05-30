@@ -66,4 +66,22 @@ describe('Toggle Component', () => {
 		}
 		expect(clickSpy).toBeCalled()
 	})
+
+	it('it should render with correct children text', async () => {
+		const { container } = render(Toggle, {
+			props: {
+				checkedChildren: 'On',
+				unCheckedChildren: 'Off'
+			}
+		})
+		const description = container.querySelector('.description')
+		expect(description).toBeTruthy()
+		expect(description?.textContent).toBe('Off')
+		const toggle = container.querySelector('.Toggle')
+		if (toggle) {
+			await user.click(toggle)
+		}
+		const updatedDescription = container.querySelector('.description')
+		expect(updatedDescription?.textContent).toBe('On')
+	})
 })
