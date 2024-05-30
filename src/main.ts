@@ -32,7 +32,7 @@ import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
 import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
 import Tooltip from './components/general/Tooltip/Tooltip.vue'
 import Toast from './components/data-display/Toast/Toast.vue'
-import Dialog from './components/general/Dialog/Dialog.vue'
+import { Sidenav } from './components/navigation/Sidenav/index.js'
 
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
@@ -49,11 +49,12 @@ export {
 	Spinner,
 	Drawer,
 	Tooltip,
-	Dialog,
 	//Layout category
 	ContentContainer,
 	ContentBlock,
 	Surface,
+	// Navigation category
+	Sidenav,
 	//Data entry category
 	Checkbox,
 	DatePicker,
