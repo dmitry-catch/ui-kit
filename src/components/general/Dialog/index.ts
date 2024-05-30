@@ -7,7 +7,7 @@ import { DialogType } from './types'
 DialogComponent.useProvider = useDialogProvider
 DialogComponent.useAlert = useAlert
 DialogComponent.useConfirm = useConfirm
-DialogComponent.context = dialogContext
+DialogComponent.dialogContext = dialogContext
 
 const Dialog = DialogComponent as unknown as DialogType
 

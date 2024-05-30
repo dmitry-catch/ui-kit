@@ -25,5 +25,5 @@ export type DialogType = Dialog & {
 	useProvider: useDialogProvider
 	useConfirm: useConfirm
 	useAlert: useAlert
-	context: dialogContext
+	dialogContext: dialogContext
 }
