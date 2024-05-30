@@ -14,13 +14,6 @@ const emits = defineEmits<{
 	(e: 'click'): void
 }>()
 
-defineSlots<{
-	/** Дополнительный контент, если toggle включен  */
-	checked?: () => unknown
-	/** Дополнительный контент, если toggle выключен  */
-	unchecked?: () => unknown
-}>()
-
 const rootToggle = ref<HTMLElement | null>(null)
 
 const toggle = () => {

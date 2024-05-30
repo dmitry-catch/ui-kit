@@ -2,7 +2,6 @@ import Icon from './components/general/Icon/Icon.vue'
 import Btn from './components/general/Button/Button.vue'
 import Button from './components/general/Button/Button.vue'
 import Property from './components/data-display/Property/Property.vue'
-import Pagination from './components/data-display/Pagination/Pagination.vue'
 import Paragraph from './components/data-display/Paragraph/Paragraph.vue'
 import Header from './components/data-display/Header/Header.vue'
 import Tag from './components/data-display/Tag/Tag.vue'
@@ -32,7 +31,7 @@ import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
 import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
 import Tooltip from './components/general/Tooltip/Tooltip.vue'
 import Toast from './components/data-display/Toast/Toast.vue'
-import Dialog from './components/general/Dialog/Dialog.vue'
+import Toggle from './components/data-entry/Toggle/Toggle.vue'
 
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
@@ -49,7 +48,6 @@ export {
 	Spinner,
 	Drawer,
 	Tooltip,
-	Dialog,
 	//Layout category
 	ContentContainer,
 	ContentBlock,
@@ -63,9 +61,9 @@ export {
 	TextField,
 	Uploader,
 	InputNumber,
+	Toggle,
 	//Data display category
 	DataGrid,
-	Pagination,
 	Toast,
 	SelectableOption,
 	CharCounter,
