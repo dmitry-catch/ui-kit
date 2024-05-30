@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/vue3'
 
-import { Sidenav } from './index.js'
+import { Sidenav } from '../../../main.js'
 
 export default {
 	component: Sidenav,
