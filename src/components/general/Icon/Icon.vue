@@ -8,7 +8,7 @@ const svgContent = ref<string>('')
 
 watchEffect(async () => {
 	try {
-		svgContent.value = (await import(`../../../../icons/${name?.value}-24px.svg?raw`)).default
+		svgContent.value = (await import(`../../../icons/${name?.value}-24px.svg?raw`)).default
 	} catch (e) {
 		svgContent.value = ''
 	}
@@ -19,7 +19,7 @@ watchEffect(async () => {
 	<div class="Icon" v-html="svgContent"></div>
 </template>
 
-<style scoped>
+<style>
 .Icon {
 	fill: var(--icon-color, currentColor);
 	width: var(--icon-size, var(--design-current-line-height, 1em));
