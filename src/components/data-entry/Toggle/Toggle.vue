@@ -59,6 +59,7 @@ const extraSmallIndent = computed(() => (rootToggle.value ? `${rootToggle.value.
 		tabindex="0"
 		:aria-checked="model"
 		:aria-readonly="disabled"
+		@keyup.enter.prevent="toggle"
 		@click="toggle"
 	>
 		<span aria-hidden="true" :class="['dot', dotClasses]">
