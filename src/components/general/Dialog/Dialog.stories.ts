@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/vue3'
-import { Dialog } from './index.js'
+import Dialog from './Dialog.vue'
 import DialogConfirm from './components/DialogConfirm.vue'
 import DialogAlert from './components/DialogAlert.vue'
+import { useDialogProvider } from '../../../utils/dialogContext.js'
 
 export default {
 	component: Dialog,
@@ -10,7 +11,7 @@ export default {
 	render: (args) => ({
 		components: { Dialog, DialogConfirm, DialogAlert },
 		setup() {
-			Dialog.useProvider()
+			useDialogProvider()
 			return { args }
 		},
 		template: `
@@ -29,7 +30,5 @@ export default {
 type Story = StoryObj<typeof Dialog>
 /** Контекст компонента <b>Dialog</b> используется в сторе <b>useDialogProvider</b>. <br />
  * Инициализируется на верхнем уровне, затем в дочерних компонентах используются утилиты <b>useConfirm</b> и <b>useAlert</b> для вызова диалогового окна. <br />
- * Для того чтобы напрямую взаимодействовать с контекстом, используется <b>inject(Dialog.dialogContext)</b> .<br />
- * Синтаксис использования: <br /><b>Dialog.useConfirm</b>,<br /> <b>Dialog.useAlert</b>,<br /> <b>Dialog.dialogContext</b>,<br /> <b>Dialog.useProvider</b>.
- */
+ * Для того чтобы напрямую взаимодействовать с контекстом, используется <b>inject(dialogContext)</b>. */
 export const Default: Story = {}

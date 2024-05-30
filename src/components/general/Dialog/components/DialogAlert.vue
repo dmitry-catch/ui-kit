@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog } from '../index.js'
+import { useAlert } from '../../../../utils/useAlert.js'
 import Button from '../../Button/Button.vue'
 
 defineProps<{
@@ -8,7 +8,7 @@ defineProps<{
 	closeBtnText: string
 }>()
 
-const { showAlert } = Dialog.useAlert()
+const { showAlert } = useAlert()
 </script>
 
 <template>

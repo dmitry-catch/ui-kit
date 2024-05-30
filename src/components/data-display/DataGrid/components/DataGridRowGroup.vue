@@ -40,7 +40,8 @@ const itemClick = (data: any) => emit('itemClick', data)
 		<DataGroupToggler v-model="opened" class="DataGridRowGroup__toggler" :group="group"></DataGroupToggler>
 		<template v-if="opened">
 			<DataGridRowGroup
-				v-for="item of group.data"
+				v-for="(item, idx) of group.data"
+				:key="idx"
 				:item="item"
 				:columns="columns"
 				:detailsColumn="detailsColumn"

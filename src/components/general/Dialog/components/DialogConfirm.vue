@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog } from '../index.js'
+import { useConfirm } from '../../../../utils/useConfirm.js'
 import Button from '../../Button/Button.vue'
 
 defineProps<{
@@ -9,7 +9,7 @@ defineProps<{
 	cancelBtnText: string
 }>()
 
-const { showConfirm } = Dialog.useConfirm()
+const { showConfirm } = useConfirm()
 </script>
 
 <template>

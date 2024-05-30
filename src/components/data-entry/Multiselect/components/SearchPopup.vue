@@ -5,6 +5,7 @@ import Dropdown from '../../../data-display/Dropdown/Dropdown.vue'
 import Button from '../../../general/Button/Button.vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import TextField from '../../TextField/TextField.vue'
+import { SelectLoadContext } from '../../types'
 
 interface SearchPopupProps {
 	items?: DropdownItemType[]
@@ -28,6 +29,7 @@ const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupP
 const emit = defineEmits<{
 	(e: 'clearInput'): void
 	(e: 'open'): void
+	(e: 'load', context: SelectLoadContext): void
 }>()
 
 const dropdownOpen = defineModel<boolean>({ required: true })
@@ -43,6 +45,8 @@ const slots = defineSlots<{
 	listItem?: (listItem: unknown) => unknown
 	/**  Заголовок для группы элементов списка */
 	listGroupLabel?: (listGroupLabel: unknown) => string | unknown
+	/** Загрузить еще */
+	loadMore?: () => unknown
 	/**  Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
 	/**  Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
@@ -103,13 +107,16 @@ const slots = defineSlots<{
 		<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 			><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 		></template>
-		<template v-if="slots.listFooter || items?.length == 0" #footer>
-			<span v-if="items?.length == 0 && !searchInput" class="SearchPopup__itemHint">Нет элементов</span>
+		<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #footer>
+			<span v-if="items?.length == 0 && !searchInput && !slots.loadMore" class="SearchPopup__itemHint"
+				>Нет элементов</span
+			>
 			<span v-if="items?.length == 0 && searchInput" class="SearchPopup__itemHint"
 				>Нет совпадений «{{ searchInput }}»</span
 			>
 			<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 			<slot name="listFooter"></slot>
+			<slot name="loadMore"></slot>
 		</template>
 	</Dropdown>
 </template>
