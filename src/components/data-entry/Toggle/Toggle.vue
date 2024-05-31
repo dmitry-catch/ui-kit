@@ -14,6 +14,13 @@ const emits = defineEmits<{
 	(e: 'click'): void
 }>()
 
+defineSlots<{
+	/** Дополнительный контент, если toggle включен  */
+	checked?: () => unknown
+	/** Дополнительный контент, если toggle выключен  */
+	unchecked?: () => unknown
+}>()
+
 const rootToggle = ref<HTMLElement | null>(null)
 
 const toggle = () => {
@@ -38,10 +45,22 @@ const dotClasses = computed(() => ({
 const contentClasses = computed(() => ({
 	[`size-${size.value}`]: true
 }))
+
+const mediumIndent = computed(() => (rootToggle.value ? `${rootToggle.value.offsetWidth - 26}px` : 0))
+const smallIndent = computed(() => (rootToggle.value ? `${rootToggle.value.offsetWidth - 22}px` : 0))
+const extraSmallIndent = computed(() => (rootToggle.value ? `${rootToggle.value.offsetWidth - 14}px` : 0))
 </script>
 
 <template>
-	<span ref="rootToggle" :class="['Toggle', toggleClasses]" tabindex="0" @click="toggle">
+	<span
+		ref="rootToggle"
+		:class="['Toggle', toggleClasses]"
+		role="switch"
+		tabindex="0"
+		:aria-checked="model"
+		:aria-readonly="disabled"
+		@click="toggle"
+	>
 		<span aria-hidden="true" :class="['dot', dotClasses]">
 			<span class="content" :class="contentClasses">
 				<slot v-if="model" name="checked"></slot>
@@ -49,14 +68,6 @@ const contentClasses = computed(() => ({
 			</span>
 		</span>
 	</span>
-	<input
-		v-model="model"
-		type="checkbox"
-		role="switch"
-		:aria-checked="model"
-		:aria-disabled="disabled"
-		:disabled="disabled"
-	/>
 </template>
 
 <style scoped>
@@ -175,13 +186,6 @@ const contentClasses = computed(() => ({
 	}
 }
 
-input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-	position: absolute;
-}
-
 .Toggle.is-disabled {
 	opacity: 0.7;
 	cursor: not-allowed;
@@ -200,15 +204,15 @@ input {
 }
 
 .Toggle.is-block .dot.is-checked.size-medium {
-	margin-left: calc(100% - var(--toggle-height-medium) + var(--toggle-indent-medium));
+	margin-left: v-bind(mediumIndent);
 }
 
 .Toggle.is-block .dot.is-checked.size-small {
-	margin-left: calc(100% - var(--toggle-height-small) + var(--toggle-indent-small));
+	margin-left: v-bind(smallIndent);
 }
 
 .Toggle.is-block .dot.is-checked.size-extra-small {
-	margin-left: calc(100% - var(--toggle-height-extra-small) + var(--toggle-indent-extra-small));
+	margin-left: v-bind(extraSmallIndent);
 }
 
 /* Size */
