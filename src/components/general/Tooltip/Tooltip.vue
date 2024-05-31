@@ -81,7 +81,7 @@ useModalContext(content)
 				:placement
 				:open
 			>
-				<div class="inner"><slot name="tooltip"></slot></div>
+				<div><slot name="tooltip"></slot></div>
 				<svg
 					v-if="arrowed"
 					class="arrow"
@@ -125,9 +125,6 @@ useModalContext(content)
 		}
 		.arrow > path {
 			fill: var(--design-background-color-primary);
-		}
-		.inner {
-			z-index: 999;
 		}
 	}
 	.Tooltip[placement='bottom'] {
