@@ -35,7 +35,6 @@ import Toast from './components/data-display/Toast/Toast.vue'
 import { Sidenav } from './components/navigation/Sidenav/index.js'
 import { Dialog } from './components/general/Dialog/index.js'
 import Placeholder from './components/data-display/Placeholder/Placeholder.vue'
-import Textarea from './components/data-entry/Textarea/Textarea.vue'
 
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
@@ -68,7 +67,6 @@ export {
 	TextField,
 	Uploader,
 	InputNumber,
-	Textarea,
 	//Data display category
 	DataGrid,
 	Pagination,
