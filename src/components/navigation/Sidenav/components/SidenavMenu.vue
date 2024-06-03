@@ -85,7 +85,7 @@ const slots = defineSlots<{
 	cursor: default;
 }
 
-.NavigationMenu__title:hover .NavigationMenu__title__text:not(.active) {
+.NavigationMenu__title:hover .NavigationMenu__title__text {
 	color: var(--design-text-color-primary);
 }
 
