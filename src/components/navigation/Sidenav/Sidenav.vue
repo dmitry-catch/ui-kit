@@ -53,6 +53,7 @@ defineSlots<{
 	padding: calc(2.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
 }
 .Sidenav {
+	height: 100vh;
 	width: 236px;
 	flex-flow: column;
 	display: flex;

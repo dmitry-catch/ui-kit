@@ -35,7 +35,7 @@ describe(`Component ${Component.name}`, () => {
 
 	it('it should count char correct', async () => {
 		const { container } = render(Component, {
-			props: { showCounter: true, maxLength: 20 }
+			props: { showCounter: true, maxlength: 20 }
 		})
 		const charCounter = container.querySelector('.CharCounter')
 		expect(charCounter).toBeTruthy()

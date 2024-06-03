@@ -17,7 +17,7 @@ export default {
 		disabled: false,
 		required: false,
 		autofocus: false,
-		maxLength: 1000,
+		maxlength: 1000,
 		tabindex: 0,
 		cols: 100,
 		rows: 1,
@@ -98,7 +98,7 @@ export const Readonly: Story = {
 /** Добавляет счетчик символов и задает ограничение `max` символов */
 export const WithMaxlength: Story = {
 	args: {
-		maxLength: 50,
+		maxlength: 50,
 		showCounter: true
 	}
 }
@@ -107,7 +107,7 @@ export const WithMaxlength: Story = {
 export const ExtraSmallSize: Story = {
 	args: {
 		size: 'extra-small',
-		maxLength: 10,
+		maxlength: 10,
 		showCounter: true
 	}
 }
@@ -116,7 +116,7 @@ export const ExtraSmallSize: Story = {
 export const SmallSize: Story = {
 	args: {
 		size: 'small',
-		maxLength: 25,
+		maxlength: 25,
 		showCounter: true
 	}
 }

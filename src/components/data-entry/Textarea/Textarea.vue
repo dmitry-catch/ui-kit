@@ -24,7 +24,7 @@ interface TextareaProps {
 	/** Автоматическое получение фокуса  */
 	autofocus?: boolean
 	/** Максимальное число введенных символов  */
-	maxLength?: number
+	maxlength?: number
 	/** Порядок перехода между элементами при нажатии на клавишу Tab  */
 	tabindex?: number
 	/** Ширина поля в символах  */
@@ -56,7 +56,7 @@ const {
 	disabled,
 	required,
 	autofocus,
-	maxLength,
+	maxlength,
 	tabindex,
 	transparent,
 	cols,
@@ -115,7 +115,7 @@ watch(content, () => {
 			}"
 			:placeholder="placeholder"
 			:autofocus="autofocus"
-			:maxlength="maxLength"
+			:maxlength="maxlength"
 			:readonly="readonly"
 			:disabled="disabled"
 			:required="required"
@@ -130,7 +130,7 @@ watch(content, () => {
 		<CharCounter
 			v-if="showCounter"
 			:current="content?.length"
-			:max="maxLength"
+			:max="maxlength"
 			:class="{
 				'text-small': size == 'small',
 				'text-footnote': size == 'extra-small'
