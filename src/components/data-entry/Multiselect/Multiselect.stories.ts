@@ -30,7 +30,9 @@ export default {
 		label: '',
 		icon: '',
 		placeholder: '',
-		description: ''
+		description: '',
+		loadMore: '',
+		onLoad: () => {}
 	},
 	argTypes: {
 		size: {

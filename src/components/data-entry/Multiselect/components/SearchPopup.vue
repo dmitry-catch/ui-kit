@@ -116,7 +116,7 @@ const slots = defineSlots<{
 			>
 			<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 			<slot name="listFooter"></slot>
-			<slot v-if="slots.loadMore" name="loadMore"></slot>
+			<slot name="loadMore"></slot>
 		</template>
 	</Dropdown>
 </template>
