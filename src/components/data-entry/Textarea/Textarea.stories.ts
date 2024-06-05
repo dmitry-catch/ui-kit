@@ -16,8 +16,7 @@ export default {
 		autofocus: false,
 		maxLength: 1000,
 		minLength: 0,
-		minRows: 1,
-		maxRows: 7,
+		rows: 1,
 		transparent: false,
 		showCounter: false
 	},
@@ -115,7 +114,6 @@ export const SmallSize: Story = {
 /** Кастомная настройка высоты поля `textarea`  */
 export const CustomRows: Story = {
 	args: {
-		minRows: 2,
-		maxRows: 3
+		rows: 5
 	}
 }

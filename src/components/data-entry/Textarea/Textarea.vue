@@ -25,17 +25,14 @@ interface TextareaProps {
 	maxLength?: number
 	/** Минимальное число введенных символов  */
 	minLength?: number
-	/** Минимальное число строк текста  */
-	minRows?: number
-	/** Максимальное число строк текста  */
-	maxRows?: number
+	/** Высота поля в строках текста  */
+	rows?: number
 	/** Указывает замещающийся текст  */
 	placeholder?: string
 }
 
 const props = withDefaults(defineProps<TextareaProps>(), {
-	minRows: 1,
-	maxRows: 7,
+	rows: 1,
 	bordered: true,
 	size: 'medium'
 })
@@ -51,8 +48,7 @@ const {
 	maxLength,
 	minLength,
 	transparent,
-	minRows,
-	maxRows,
+	rows,
 	placeholder,
 	showCounter
 } = toRefs(props)
@@ -63,16 +59,7 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
 const adjustHeight = (element: HTMLTextAreaElement) => {
 	element.style.height = 'auto'
-	const scrollHeight = element.scrollHeight
-	const lineHeight = parseInt(window.getComputedStyle(element).lineHeight)
-	const rows = Math.floor(scrollHeight / lineHeight)
-	if (rows > maxRows.value!) {
-		element.style.height = `${lineHeight * maxRows.value!}px`
-		element.style.overflowY = 'auto'
-	} else {
-		element.style.height = `${scrollHeight}px`
-		element.style.overflowY = 'hidden'
-	}
+	element.style.height = `${element.scrollHeight}px`
 }
 
 const handleInput = () => {
@@ -119,7 +106,7 @@ watch(content, () => {
 			:readonly="readonly"
 			:disabled="disabled"
 			:required="required"
-			:rows="minRows"
+			:rows="rows"
 			@input="handleInput"
 		></textarea>
 		<CharCounter v-if="showCounter" :current="content?.length" :max="maxLength" :size="size" />
