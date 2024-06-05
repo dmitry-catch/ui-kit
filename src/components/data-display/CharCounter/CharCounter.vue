@@ -6,27 +6,17 @@ interface CharCounterProps {
 	current?: number
 	/** Число справа. */
 	max?: number
-	size?: 'extra-small' | 'small' | 'medium'
 }
 
 const props = withDefaults(defineProps<CharCounterProps>(), { current: 0, max: 0 })
 
-const { current, max, size } = toRefs(props)
+const { current, max } = toRefs(props)
 const validatedMax = computed(() => Math.max(0, max.value))
 const isOverflow = computed(() => current.value > validatedMax.value)
 </script>
 
 <template>
-	<div
-		class="CharCounter"
-		:class="{
-			danger: isOverflow,
-			'text-small': size == 'small',
-			'text-footnote': size == 'extra-small'
-		}"
-	>
-		{{ `${current} / ${validatedMax}` }}
-	</div>
+	<div class="CharCounter" :class="{ danger: isOverflow }">{{ `${current} / ${validatedMax}` }}</div>
 </template>
 
 <style scoped>
