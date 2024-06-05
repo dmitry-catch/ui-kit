@@ -32,11 +32,8 @@ import Dropdown from './components/data-display/Dropdown/Dropdown.vue'
 import DropdownItem from './components/data-display/Dropdown/DropdownItem/DropdownItem.vue'
 import Tooltip from './components/general/Tooltip/Tooltip.vue'
 import Toast from './components/data-display/Toast/Toast.vue'
-import { Sidenav } from './components/navigation/Sidenav/index.js'
 import { Dialog } from './components/general/Dialog/index.js'
-import Placeholder from './components/data-display/Placeholder/Placeholder.vue'
 import Toggle from './components/data-entry/Toggle/Toggle.vue'
-
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
 
@@ -57,8 +54,6 @@ export {
 	ContentContainer,
 	ContentBlock,
 	Surface,
-	// Navigation category
-	Sidenav,
 	//Data entry category
 	Checkbox,
 	DatePicker,
@@ -84,7 +79,6 @@ export {
 	FileCard,
 	Dropdown,
 	DropdownItem,
-	Placeholder,
 	//Other
 	Localization,
 	FieldLocalization,
