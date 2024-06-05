@@ -258,7 +258,6 @@ const slots = defineSlots<{
 ::-webkit-scrollbar {
 	width: 12px;
 }
-
 ::-webkit-scrollbar-thumb {
 	border: 4px solid white;
 }

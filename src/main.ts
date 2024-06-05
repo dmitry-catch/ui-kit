@@ -36,6 +36,7 @@ import { Sidenav } from './components/navigation/Sidenav/index.js'
 import { Dialog } from './components/general/Dialog/index.js'
 import Placeholder from './components/data-display/Placeholder/Placeholder.vue'
 import Textarea from './components/data-entry/Textarea/Textarea.vue'
+import Toggle from './components/data-entry/Toggle/Toggle.vue'
 
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
@@ -69,6 +70,7 @@ export {
 	Uploader,
 	InputNumber,
 	Textarea,
+	Toggle,
 	//Data display category
 	DataGrid,
 	Pagination,
