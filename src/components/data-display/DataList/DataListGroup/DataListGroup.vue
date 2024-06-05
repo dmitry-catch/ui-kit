@@ -9,14 +9,13 @@ const props = defineProps<{
 	group: DataListGroupType<T>
 	expandable?: boolean
 	size?: 'extra-small' | 'small' | 'medium'
-	lazy?: boolean
 }>()
 
 const emit = defineEmits<{
 	(event: 'load', groupContext: DataListLoadContext<T>): void
 }>()
 
-const slots = defineSlots<{
+defineSlots<{
 	/** Заголовок группы */
 	groupLabel?: (props: { group: DataListGroupType<T> }) => any
 	/** Элементы внутри группы */
@@ -58,10 +57,7 @@ const loadGroup = () => {
 		<div v-if="!isCollapsed" class="DataList__groupItems">
 			<slot name="groupItems" :items="group.data"></slot>
 			<div class="DataList__loadMore">
-				<slot
-					v-if="!groupContext.completed && !groupContext.loading && lazy"
-					name="loadMore"
-					:loadGroup="loadGroup"
+				<slot v-if="!groupContext.completed && !groupContext.loading" name="loadMore" :loadGroup="loadGroup"
 					><Button class="functional" @click="loadGroup()">Загрузить еще</Button>
 				</slot>
 				<Spinner v-if="groupContext.loading" />

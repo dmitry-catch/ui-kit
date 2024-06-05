@@ -13,8 +13,6 @@ export interface DataListProps {
 	size?: 'extra-small' | 'small' | 'medium'
 	/** Возможность сворачивания групп. */
 	expandable?: boolean
-	/** Возможно ленивой загрузки */
-	lazy?: boolean
 }
 
 const props = withDefaults(defineProps<DataListProps>(), {
@@ -64,7 +62,7 @@ const handleMouseDown = (evt: MouseEvent) => {
 	}
 }
 
-const slots = defineSlots<{
+defineSlots<{
 	/** Заголовок списка с элементами  */
 	header?: () => any
 	/** Элементы списка  */
@@ -95,7 +93,6 @@ const slots = defineSlots<{
 						:expandable="expandable"
 						:hover="hover"
 						:size="size"
-						:lazy="lazy"
 						@load="loadGroup($event)"
 						@click="groupClickHandler(item), loadGroup($event)"
 						@mousedown="handleMouseDown"
@@ -116,7 +113,7 @@ const slots = defineSlots<{
 								<slot name="item" :item="groupItem">{{ groupItem.label }}</slot>
 							</div>
 						</template>
-						<template v-if="lazy" #loadMore="{ loadGroup }">
+						<template #loadMore="{ loadGroup }">
 							<slot name="loadMore" :load="loadGroup"> </slot>
 						</template>
 					</DataListGroup>
@@ -130,7 +127,7 @@ const slots = defineSlots<{
 						>
 							<slot name="item" :item="item">{{ item.label }}</slot>
 						</div>
-						<div v-if="idx === data.length - 1 && lazy" class="DataList__loadMore">
+						<div v-if="idx === data.length - 1" class="DataList__loadMore">
 							<slot
 								v-if="!listContext.completed && !listContext.loading"
 								name="loadMore"

@@ -120,7 +120,6 @@ export const LazySelect: Story = {
 	args: {
 		loadMore: '<Button class="functional" @click="load()">Загрузить еще</Button>',
 		options: data.value,
-		lazy: true,
 		onLoad: async (context: SelectLoadContext) => {
 			context.loading = true
 			await new Promise((resolve) => setTimeout(resolve, 1000))

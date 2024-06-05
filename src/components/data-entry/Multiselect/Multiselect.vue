@@ -41,8 +41,6 @@ interface MultiselectProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
-	/** Возможно ленивой загрузки */
-	lazy?: boolean
 }
 
 const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium' })
@@ -219,7 +217,6 @@ const root = ref()
 				:searchMaxLength="searchMaxLength"
 				:popupPlaceholder="popupPlaceholder"
 				:searchVisible="isSearchVisible"
-				:lazy="lazy"
 				class="Multiselect__searchPopup"
 				@clearInput="clearInput"
 				@open="() => emit('open')"
@@ -227,7 +224,7 @@ const root = ref()
 				<template v-if="$slots.listHeader" #listHeader><slot name="listHeader"></slot></template>
 				<template v-if="$slots.listGroupLabel" #listGroupLabel><slot name="listGroupLabel"></slot></template>
 				<template v-if="$slots.listItem" #listItem><slot name="listItem"></slot></template>
-				<template v-if="lazy" #loadMore
+				<template #loadMore
 					><slot
 						v-if="!listContext.completed && !listContext.loading"
 						name="loadMore"
