@@ -157,8 +157,7 @@ describe(`Component ${Component.name}`, () => {
 		const { container } = render(Component, {
 			props: {
 				options: LazySelect.args?.options,
-				onLoad: spy,
-				lazy: true
+				onLoad: spy
 			}
 		})
 		const user = userEvent.setup()
@@ -170,8 +169,7 @@ describe(`Component ${Component.name}`, () => {
 		const { container } = render(Component, {
 			props: {
 				options: LazySelect.args?.options,
-				onLoad: LazySelect.args?.onLoad,
-				lazy: true
+				onLoad: LazySelect.args?.onLoad
 			},
 			slots: {
 				loadMore: `I am slot`
