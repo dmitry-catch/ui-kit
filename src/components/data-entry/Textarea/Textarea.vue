@@ -109,7 +109,15 @@ watch(content, () => {
 			:rows="rows"
 			@input="handleInput"
 		></textarea>
-		<CharCounter v-if="showCounter" :current="content?.length" :max="maxLength" :size="size" />
+		<CharCounter
+			v-if="showCounter"
+			:current="content?.length"
+			:max="maxLength"
+			:class="{
+				'text-small': size == 'small',
+				'text-footnote': size == 'extra-small'
+			}"
+		/>
 	</div>
 </template>
 

@@ -2,20 +2,20 @@ import { Meta, StoryObj } from '@storybook/vue3'
 import Textarea from './Textarea.vue'
 
 const sizes = ['extra-small', 'small', 'medium']
-const resizableOptions = ['horizontal', 'vertical', 'both']
+const resizableOptions = ['none', 'horizontal', 'vertical', 'both']
 
 export default {
 	component: Textarea,
 	args: {
 		bordered: true,
 		size: 'medium',
+		resizable: 'none',
 		placeholder: 'Enter text here...',
 		readonly: false,
 		disabled: false,
 		required: false,
 		autofocus: false,
 		maxLength: 1000,
-		minLength: 0,
 		rows: 1,
 		transparent: false,
 		showCounter: false
