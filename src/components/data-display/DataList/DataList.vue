@@ -95,7 +95,6 @@ const slots = defineSlots<{
 						:expandable="expandable"
 						:hover="hover"
 						:size="size"
-						:lazy="lazy"
 						@load="loadGroup($event)"
 						@click="groupClickHandler(item), loadGroup($event)"
 						@mousedown="handleMouseDown"
