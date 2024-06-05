@@ -19,7 +19,7 @@ watchEffect(async () => {
 	<div class="Icon" v-html="svgContent"></div>
 </template>
 
-<style>
+<style scoped>
 .Icon {
 	fill: var(--icon-color, currentColor);
 	width: var(--icon-size, var(--design-current-line-height, 1em));

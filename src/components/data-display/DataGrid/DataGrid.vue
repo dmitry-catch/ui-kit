@@ -113,7 +113,7 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 		var(--design-gap-unit) calc(2 * var(--design-gap-unit))
 	);
 	width: 100%;
-	height: 100%;
+	height: fit-content;
 	overflow: auto;
 }
 .DataGrid__table {

@@ -37,6 +37,8 @@ interface SelectProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
+	/** Возможно ленивой загрузки */
+	lazy?: boolean
 }
 
 const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
@@ -254,7 +256,7 @@ const root = ref()
 					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 					<slot name="listFooter"></slot>
 					<slot
-						v-if="!listContext.completed && !listContext.loading"
+						v-if="!listContext.completed && !listContext.loading && lazy"
 						name="loadMore"
 						:load="() => loadList()"
 					>
