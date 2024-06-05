@@ -35,8 +35,7 @@ export default {
 		data: dataListItems,
 		loading: false,
 		hover: false,
-		expandable: false,
-		loadMore: ''
+		expandable: false
 	},
 	argTypes: {
 		size: {
@@ -74,9 +73,6 @@ export const CustomItems: Story = {
 		  <template #item="{ item }">
 			<i>{{ item.label }}</i>
 		  </template>
-		  <template #loadMore>
-				<div></div>
-			</template>
 		</DataList>
 	  `
 	})
@@ -102,9 +98,6 @@ export const CustomGroups: Story = {
 			<template #groupLabel="{ group }">
 			  <i>{{ group.key }}</i>
 			</template>
-			<template #loadMore>
-				<div></div>
-			</template>
 	  	</DataList>
 	  `
 	})
@@ -124,9 +117,6 @@ export const CollapseGroups: Story = {
 	  	<DataList v-bind="args">
 			<template #groupLabel="{ group }">
 			  <div>{{ group.key }}</div>
-			</template>
-			<template #loadMore>
-				<div></div>
 			</template>
 	  	</DataList>
 	  `
@@ -163,9 +153,7 @@ export const MiscellaneousContent: Story = {
 			<template #footer>
 				<i>Footer</i>
 			</template>
-			<template #loadMore>
-				<div></div>
-			</template>
+
 		</DataList>
 	  `
 	})

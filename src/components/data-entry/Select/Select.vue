@@ -254,7 +254,7 @@ const root = ref()
 					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 					<slot name="listFooter"></slot>
 					<slot
-						v-if="!listContext.completed && !listContext.loading"
+						v-if="!listContext.completed && !listContext.loading && slots.loadMore"
 						name="loadMore"
 						:load="() => loadList()"
 					>

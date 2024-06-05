@@ -23,7 +23,15 @@ describe(`Component ${Component.name}`, () => {
 	})
 
 	it('should display load more', () => {
-		const { container } = render(Component)
+		const { container } = render(Meta.component, {
+			props: {
+				data: LazyItems.args?.data,
+				onLoad: LazyItems.args?.onLoad
+			},
+			slots: {
+				loadMore: `I am loadMore`
+			}
+		})
 		const loadMore = container.querySelector('.DataList__loadMore')
 		expect(loadMore).toBeTruthy()
 	})

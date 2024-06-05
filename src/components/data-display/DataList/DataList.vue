@@ -62,7 +62,7 @@ const handleMouseDown = (evt: MouseEvent) => {
 	}
 }
 
-defineSlots<{
+const slots = defineSlots<{
 	/** Заголовок списка с элементами  */
 	header?: () => any
 	/** Элементы списка  */
@@ -113,7 +113,7 @@ defineSlots<{
 								<slot name="item" :item="groupItem">{{ groupItem.label }}</slot>
 							</div>
 						</template>
-						<template #loadMore="{ loadGroup }">
+						<template v-if="slots.loadMore" #loadMore="{ loadGroup }">
 							<slot name="loadMore" :load="loadGroup"> </slot>
 						</template>
 					</DataListGroup>
@@ -127,7 +127,7 @@ defineSlots<{
 						>
 							<slot name="item" :item="item">{{ item.label }}</slot>
 						</div>
-						<div v-if="idx === data.length - 1" class="DataList__loadMore">
+						<div v-if="idx === data.length - 1 && slots.loadMore" class="DataList__loadMore">
 							<slot
 								v-if="!listContext.completed && !listContext.loading"
 								name="loadMore"

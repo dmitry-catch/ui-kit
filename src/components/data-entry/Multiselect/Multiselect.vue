@@ -224,7 +224,7 @@ const root = ref()
 				<template v-if="$slots.listHeader" #listHeader><slot name="listHeader"></slot></template>
 				<template v-if="$slots.listGroupLabel" #listGroupLabel><slot name="listGroupLabel"></slot></template>
 				<template v-if="$slots.listItem" #listItem><slot name="listItem"></slot></template>
-				<template #loadMore
+				<template v-if="$slots.loadMore" #loadMore
 					><slot
 						v-if="!listContext.completed && !listContext.loading"
 						name="loadMore"

@@ -37,7 +37,7 @@ describe(`Component ${Component.name}`, () => {
 		const user = userEvent.setup()
 		const input = container.querySelector('.Multiselect__innerContent')
 		if (input) await user.click(input)
-		const spinner = container.querySelector('.Multiselect__loading')
+		const spinner = container.querySelectorAll('.Multiselect__loading')
 		expect(spinner).toBeTruthy()
 	})
 })
