@@ -4,9 +4,11 @@ import CharCounter from '../../data-display/CharCounter/CharCounter.vue'
 
 interface TextareaProps {
 	/** Задает ось resize'а или отключает resize */
-	resizable?: 'horizontal' | 'vertical' | 'both'
+	resizable?: 'none' | 'horizontal' | 'vertical' | 'both'
 	/** Размер текста в поле и в счетчике символов */
 	size?: 'extra-small' | 'small' | 'medium'
+	/** Параметры переноса строк */
+	wrap?: 'soft' | 'hard' | 'off'
 	/** Регулирует прозрачность подложки */
 	transparent?: boolean
 	/** Отображение счетчика символов */
@@ -23,10 +25,16 @@ interface TextareaProps {
 	autofocus?: boolean
 	/** Максимальное число введенных символов  */
 	maxLength?: number
-	/** Минимальное число введенных символов  */
-	minLength?: number
+	/** Порядок перехода между элементами при нажатии на клавишу Tab  */
+	tabindex?: number
+	/** Ширина поля в символах  */
+	cols?: number
 	/** Высота поля в строках текста  */
 	rows?: number
+	/** Связывает текстовое поле с формой по её идентификатору  */
+	form?: string
+	/** Имя поля, предназначено для того, чтобы обработчик формы мог его идентифицировать  */
+	name?: string
 	/** Указывает замещающийся текст  */
 	placeholder?: string
 }
@@ -34,21 +42,27 @@ interface TextareaProps {
 const props = withDefaults(defineProps<TextareaProps>(), {
 	rows: 1,
 	bordered: true,
-	size: 'medium'
+	wrap: 'soft',
+	size: 'medium',
+	resizable: 'none'
 })
 
 const {
 	resizable,
 	size,
+	wrap,
 	bordered,
 	readonly,
 	disabled,
 	required,
 	autofocus,
 	maxLength,
-	minLength,
+	tabindex,
 	transparent,
+	cols,
 	rows,
+	form,
+	name,
 	placeholder,
 	showCounter
 } = toRefs(props)
@@ -102,11 +116,15 @@ watch(content, () => {
 			:placeholder="placeholder"
 			:autofocus="autofocus"
 			:maxlength="maxLength"
-			:minlength="minLength"
 			:readonly="readonly"
 			:disabled="disabled"
 			:required="required"
+			:tabindex="tabindex"
+			:cols="cols"
 			:rows="rows"
+			:form="form"
+			:name="name"
+			:wrap="wrap"
 			@input="handleInput"
 		></textarea>
 		<CharCounter
@@ -132,7 +150,10 @@ watch(content, () => {
 		height: auto;
 		overflow: hidden;
 		box-sizing: border-box;
-		resize: v-bind('resizable ?? "none"');
+		resize: v-bind(resizable);
+	}
+
+	textarea:not([cols]) {
 		width: 100%;
 		max-width: 100%;
 	}

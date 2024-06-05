@@ -3,11 +3,13 @@ import Textarea from './Textarea.vue'
 
 const sizes = ['extra-small', 'small', 'medium']
 const resizableOptions = ['none', 'horizontal', 'vertical', 'both']
+const wrapOptions = ['soft', 'hard', 'off']
 
 export default {
 	component: Textarea,
 	args: {
 		bordered: true,
+		wrap: 'soft',
 		size: 'medium',
 		resizable: 'none',
 		placeholder: 'Enter text here...',
@@ -16,7 +18,11 @@ export default {
 		required: false,
 		autofocus: false,
 		maxLength: 1000,
+		tabindex: 0,
+		cols: 100,
 		rows: 1,
+		form: '',
+		name: 'textarea',
 		transparent: false,
 		showCounter: false
 	},
@@ -28,6 +34,10 @@ export default {
 		resizable: {
 			control: 'select',
 			options: resizableOptions
+		},
+		wrap: {
+			control: 'select',
+			options: wrapOptions
 		}
 	}
 } satisfies Meta<typeof Textarea>
@@ -111,9 +121,10 @@ export const SmallSize: Story = {
 	}
 }
 
-/** Кастомная настройка высоты поля `textarea`  */
-export const CustomRows: Story = {
+/** Кастомная настройка ширины и высоты поля `textarea`  */
+export const CustomRowsCols: Story = {
 	args: {
-		rows: 5
+		rows: 5,
+		cols: 10
 	}
 }
