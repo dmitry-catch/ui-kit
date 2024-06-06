@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import { onMounted, reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 import { DataListGroupType, DataListItemType, DataListLoadContext } from '../types.js'
 import Icon from '../../../general/Icon/Icon.vue'
 import Button from '../../../general/Button/Button.vue'
@@ -47,10 +47,6 @@ const loadGroup = () => {
 		emit('load', groupContext)
 	}
 }
-
-onMounted(() => {
-	loadGroup()
-})
 </script>
 
 <template>
