@@ -37,6 +37,11 @@ const slots = defineSlots<{ default?: () => unknown }>()
 	--icon-size: 16px;
 }
 
+.Toggle__chevron :deep(svg) {
+	width: 16px;
+	height: 16px;
+}
+
 .Toggle:hover :deep(*) {
 	color: var(--design-text-color-primary);
 	fill: var(--design-text-color-primary);

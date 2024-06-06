@@ -20,6 +20,8 @@ interface SearchPopupProps {
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
 	searchVisible?: boolean
+	/** Возможно ленивой загрузки */
+	lazy?: boolean
 }
 
 const props = defineProps<SearchPopupProps>()
@@ -107,16 +109,14 @@ const slots = defineSlots<{
 		<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 			><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 		></template>
-		<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #footer>
-			<span v-if="items?.length == 0 && !searchInput && !slots.loadMore" class="SearchPopup__itemHint"
-				>Нет элементов</span
-			>
+		<template v-if="slots.listFooter || items?.length == 0 || lazy" #footer>
+			<span v-if="items?.length == 0 && !searchInput && !lazy" class="SearchPopup__itemHint">Нет элементов</span>
 			<span v-if="items?.length == 0 && searchInput" class="SearchPopup__itemHint"
 				>Нет совпадений «{{ searchInput }}»</span
 			>
 			<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 			<slot name="listFooter"></slot>
-			<slot name="loadMore"></slot>
+			<slot v-if="lazy" name="loadMore"></slot>
 		</template>
 	</Dropdown>
 </template>

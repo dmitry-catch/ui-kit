@@ -35,8 +35,7 @@ export default {
 		data: dataListItems,
 		loading: false,
 		hover: false,
-		expandable: false,
-		loadMore: ''
+		expandable: false
 	},
 	argTypes: {
 		size: {
@@ -74,9 +73,6 @@ export const CustomItems: Story = {
 		  <template #item="{ item }">
 			<i>{{ item.label }}</i>
 		  </template>
-		  <template #loadMore>
-				<div></div>
-			</template>
 		</DataList>
 	  `
 	})
@@ -102,9 +98,6 @@ export const CustomGroups: Story = {
 			<template #groupLabel="{ group }">
 			  <i>{{ group.key }}</i>
 			</template>
-			<template #loadMore>
-				<div></div>
-			</template>
 	  	</DataList>
 	  `
 	})
@@ -124,9 +117,6 @@ export const CollapseGroups: Story = {
 	  	<DataList v-bind="args">
 			<template #groupLabel="{ group }">
 			  <div>{{ group.key }}</div>
-			</template>
-			<template #loadMore>
-				<div></div>
 			</template>
 	  	</DataList>
 	  `
@@ -163,9 +153,7 @@ export const MiscellaneousContent: Story = {
 			<template #footer>
 				<i>Footer</i>
 			</template>
-			<template #loadMore>
-				<div></div>
-			</template>
+
 		</DataList>
 	  `
 	})
@@ -174,6 +162,7 @@ export const MiscellaneousContent: Story = {
 export const LazyGroups: Story = {
 	args: {
 		data: dataListLazyGroups,
+		lazy: true,
 		loadMore: `<Button class="functional" @click="load()" >Загрузить еще</Button>`,
 		onLoad: async (context: DataListLoadContext<string>) => {
 			if (context.type === 'group') {
@@ -204,6 +193,7 @@ export const LazyGroups: Story = {
 			:data="data"
 			@load="args.onLoad"
 			expandable="true"
+			lazy
 		>
 		<template #loadMore ="{load}">
 			${args.loadMore}
@@ -216,6 +206,7 @@ export const LazyItems: Story = {
 	args: {
 		loadMore: `<Button class="functional" @click="load()" >Загрузить еще</Button>`,
 		data: dataListItems,
+		lazy: true,
 		onLoad: async (context: DataListLoadContext<string>) => {
 			if (context.type === 'list') {
 				context.loading = true
@@ -242,6 +233,7 @@ export const LazyItems: Story = {
 		<DataList
 			v-model:data="data"
 			@load="args.onLoad"
+			lazy
 		>
 		<template #loadMore ="{ load}">
 			${args.loadMore}

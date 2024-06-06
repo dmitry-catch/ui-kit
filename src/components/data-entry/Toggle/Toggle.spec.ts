@@ -7,44 +7,46 @@ import Toggle from './Toggle.vue'
 describe('Toggle Component', () => {
 	it('it should render', () => {
 		const { container } = render(Toggle)
-		const toggleContainer = container.querySelector('.Toggle__wrapper')
-		expect(toggleContainer).toBeTruthy()
+		const toggle = container.querySelector('.Toggle')
+		expect(toggle).toBeTruthy()
 	})
 
-	it('it should render control with default aria-checked value', () => {
+	it('it should render with default aria-checked value', () => {
 		const { container } = render(Toggle)
-		const toggleControl = container.querySelector('input')
-		expect(toggleControl).toBeTruthy()
-		expect(toggleControl?.getAttribute('aria-checked')).toBe('false')
+		const toggle = container.querySelector('.Toggle')
+		expect(toggle).toBeTruthy()
+		expect(toggle?.getAttribute('aria-checked')).toBe('false')
 	})
 
 	it('it should update modelValue on click', async () => {
-		const { container } = render(Toggle, {
-			props: {
-				modelValue: false
-			}
-		})
-		const toggleContainer = container.querySelector('.Toggle__wrapper')
-		if (toggleContainer) {
-			await user.click(toggleContainer)
-		}
-		const toggleControl = container.querySelector('input')
-		expect(toggleControl?.checked).toBe(true)
-	})
-
-	it('it should not update modelValue when disabled', async () => {
+		const spy = vi.fn()
 		const { container } = render(Toggle, {
 			props: {
 				modelValue: false,
+				'onUpdate:modelValue': spy
+			}
+		})
+		const toggle = container.querySelector('.Toggle')
+		if (toggle) {
+			await user.click(toggle)
+		}
+		expect(spy).toBeCalledWith(true)
+	})
+
+	it('it should not update modelValue when disabled', async () => {
+		const spy = vi.fn()
+		const { container } = render(Toggle, {
+			props: {
+				modelValue: false,
+				'onUpdate:modelValue': spy,
 				disabled: true
 			}
 		})
-		const toggleContainer = container.querySelector('.Toggle__wrapper')
-		if (toggleContainer) {
-			await user.click(toggleContainer)
+		const toggle = container.querySelector('.Toggle')
+		if (toggle) {
+			await user.click(toggle)
 		}
-		const toggleControl = container.querySelector('input')
-		expect(toggleControl?.checked).toBe(false)
+		expect(spy).not.toBeCalled()
 	})
 
 	it('it should emit click event on click', async () => {
