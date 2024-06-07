@@ -41,8 +41,6 @@ interface MultiselectProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
-	/** Возможно ленивой загрузки */
-	lazy?: boolean
 }
 
 const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium' })
@@ -199,10 +197,12 @@ const root = ref()
 					{{ placeholder }}
 				</span>
 				<span v-if="shownName" class="Multiselect_name">
-					{{ shownName }}
+					<span class="Multiselect__nameInner">
+						{{ shownName }}
+					</span>
 					<Button v-if="shownName" class="icon functional" :disabled="disabled" @click="clearInput">
-						<Icon name="close"
-					/></Button>
+						<Icon name="close" />
+					</Button>
 				</span>
 			</div>
 
@@ -219,7 +219,6 @@ const root = ref()
 				:searchMaxLength="searchMaxLength"
 				:popupPlaceholder="popupPlaceholder"
 				:searchVisible="isSearchVisible"
-				:lazy="lazy"
 				class="Multiselect__searchPopup"
 				@clearInput="clearInput"
 				@open="() => emit('open')"
@@ -227,8 +226,8 @@ const root = ref()
 				<template v-if="$slots.listHeader" #listHeader><slot name="listHeader"></slot></template>
 				<template v-if="$slots.listGroupLabel" #listGroupLabel><slot name="listGroupLabel"></slot></template>
 				<template v-if="$slots.listItem" #listItem><slot name="listItem"></slot></template>
-				<template v-if="lazy" #loadMore
-					><slot
+				<template #loadMore>
+					<slot
 						v-if="!listContext.completed && !listContext.loading"
 						name="loadMore"
 						:load="() => loadList()"
@@ -281,6 +280,12 @@ const root = ref()
 	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
 	background-color: var(--design-background-color-on-accent-primary);
 	border-radius: var(--design-border-radius-control);
+	max-width: 100%;
+}
+.Multiselect__nameInner {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 .Multiselect__innerContent {
 	width: 100%;

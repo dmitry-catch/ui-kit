@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DataGridColumn } from '../types.js'
-import { computed, onMounted, onUnmounted, ref, toRefs, watchEffect } from 'vue'
+import { computed, ref, toRefs, watchEffect } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import Button from '../../../general/Button/Button.vue'
 import TextField from '../../../data-entry/TextField/TextField.vue'
@@ -77,14 +77,11 @@ const filterListOptions = computed<Array<ListBoxOption>>(() => {
 		})
 	else return []
 })
-const openFilterList = () => {
+const openFilterList = async () => {
 	filterListOpened.value = true
 }
-const closeFilterList = () => {
-	filterListOpened.value = false
-}
 useClickOutside(filterListButton, () => {
-	closeFilterList()
+	filterListOpened.value = false
 })
 
 watchEffect(() => {
@@ -113,14 +110,6 @@ const clickSort = (event: MouseEvent) => {
 		appendSorting([sort.value])
 	} else changeDirection()
 }
-
-onMounted(() => {
-	document.addEventListener('scroll', closeFilterList)
-})
-
-onUnmounted(() => {
-	document.removeEventListener('scroll', closeFilterList)
-})
 </script>
 
 <template>
