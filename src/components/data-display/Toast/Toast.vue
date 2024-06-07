@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs, computed } from 'vue'
+import { defineProps, toRefs, computed } from 'vue'
 import { Icon, Button } from '../../../main'
 
 interface ToastProps {
