@@ -86,7 +86,7 @@ defineSlots<{
 .Sidenav__items {
 	display: flex;
 	flex-direction: column;
-	gap: var(--design-gap-unit);
+	gap: calc(2 * var(--design-gap-unit));
 }
 
 .Sidenav.collapsed {
