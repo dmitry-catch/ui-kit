@@ -23,16 +23,7 @@ describe(`Component ${Component.name}`, () => {
 	})
 
 	it('should display load more', () => {
-		const { container } = render(Meta.component, {
-			props: {
-				data: LazyItems.args?.data,
-				onLoad: LazyItems.args?.onLoad,
-				lazy: true
-			},
-			slots: {
-				loadMore: `I am loadMore`
-			}
-		})
+		const { container } = render(Component)
 		const loadMore = container.querySelector('.DataList__loadMore')
 		expect(loadMore).toBeTruthy()
 	})
@@ -40,8 +31,7 @@ describe(`Component ${Component.name}`, () => {
 	it('should display button slot', () => {
 		const { getByText } = render(Meta.component, {
 			props: {
-				data: LazyItems.args?.data,
-				lazy: true
+				data: LazyItems.args?.data
 			},
 			slots: { loadMore: `I am slot` }
 		})
@@ -52,8 +42,7 @@ describe(`Component ${Component.name}`, () => {
 		const { getByRole, container } = render(Meta.component, {
 			props: {
 				data: LazyItems.args?.data,
-				onLoad: LazyItems.args?.onLoad,
-				lazy: true
+				onLoad: LazyItems.args?.onLoad
 			},
 			slots: {
 				loadMore: `<Button class="functional" @click="load(data)" >Загрузить еще</Button>`
@@ -70,8 +59,7 @@ describe(`Component ${Component.name}`, () => {
 		const { container } = render(Meta.component, {
 			props: {
 				data: LazyGroups.args?.data,
-				onLoad: spy,
-				lazy: true
+				onLoad: spy
 			}
 		})
 		const user = userEvent.setup()

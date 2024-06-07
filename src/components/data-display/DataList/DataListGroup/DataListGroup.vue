@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import { onMounted, reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 import { DataListGroupType, DataListItemType, DataListLoadContext } from '../types.js'
 import Icon from '../../../general/Icon/Icon.vue'
 import Button from '../../../general/Button/Button.vue'
@@ -9,14 +9,13 @@ const props = defineProps<{
 	group: DataListGroupType<T>
 	expandable?: boolean
 	size?: 'extra-small' | 'small' | 'medium'
-	lazy?: boolean
 }>()
 
 const emit = defineEmits<{
 	(event: 'load', groupContext: DataListLoadContext<T>): void
 }>()
 
-const slots = defineSlots<{
+defineSlots<{
 	/** Заголовок группы */
 	groupLabel?: (props: { group: DataListGroupType<T> }) => any
 	/** Элементы внутри группы */
@@ -47,10 +46,6 @@ const loadGroup = () => {
 		emit('load', groupContext)
 	}
 }
-
-onMounted(() => {
-	loadGroup()
-})
 </script>
 
 <template>
@@ -62,10 +57,7 @@ onMounted(() => {
 		<div v-if="!isCollapsed" class="DataList__groupItems">
 			<slot name="groupItems" :items="group.data"></slot>
 			<div class="DataList__loadMore">
-				<slot
-					v-if="!groupContext.completed && !groupContext.loading && lazy"
-					name="loadMore"
-					:loadGroup="loadGroup"
+				<slot v-if="!groupContext.completed && !groupContext.loading" name="loadMore" :loadGroup="loadGroup"
 					><Button class="functional" @click="loadGroup()">Загрузить еще</Button>
 				</slot>
 				<Spinner v-if="groupContext.loading" />
