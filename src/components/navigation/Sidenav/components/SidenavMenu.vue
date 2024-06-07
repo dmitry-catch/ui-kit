@@ -85,6 +85,10 @@ const slots = defineSlots<{
 	cursor: default;
 }
 
+.NavigationMenu__title:hover .NavigationMenu__title__text:not(.active) {
+	color: var(--design-text-color-primary);
+}
+
 .Menu {
 	border-radius: var(--design-border-radius-control);
 	padding: var(--design-gap-unit);
@@ -101,11 +105,21 @@ const slots = defineSlots<{
 	opacity: 0.5;
 }
 
+.NavigationMenu:hover .NavigationMenu__chevron {
+	fill: var(--design-text-color-primary);
+}
+
 .NavigationMenu__chevron {
 	--icon-size: 16px;
 	fill: var(--design-text-color-secondary);
 	margin-left: auto;
 }
+
+.NavigationMenu__chevron :deep(svg) {
+	width: 16px;
+	height: 16px;
+}
+
 .NavigationMenu__title {
 	padding-left: 0;
 	color: var(--design-text-color-secondary);
@@ -114,6 +128,7 @@ const slots = defineSlots<{
 	grid-template-columns: 24px auto;
 	gap: var(--design-gap-unit);
 	cursor: pointer;
+	width: 100%;
 }
 
 .NavigationMenu__title__text.active {

@@ -17,7 +17,7 @@ const { collapsed, active } = inject(injectionKey)!
 
 const toggleActive = () => {
 	if (!disabled.value) {
-		active.value = active.value == props.id ? '' : props.id
+		active.value = props.id
 	}
 }
 

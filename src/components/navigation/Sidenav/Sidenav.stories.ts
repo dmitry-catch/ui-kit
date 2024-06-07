@@ -12,7 +12,7 @@ export default {
 		footer: 'Footer',
 		default: 'Item',
 		style: {
-			'max-height': '400px'
+			height: '400px'
 		}
 	},
 	argTypes: {
