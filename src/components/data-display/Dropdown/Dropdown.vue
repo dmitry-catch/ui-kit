@@ -41,9 +41,7 @@ interface DropdownProps {
 	related?: boolean
 	/** "Область просмотра"
 	 * Контейнер, относительно которого будет производиться observe */
-	viewport?: HTMLElement | null,
-	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
-	visibleSize?: `${number}px` | number
+	viewport?: HTMLElement | null
 }
 
 const props = withDefaults(defineProps<DropdownProps>(), {
@@ -52,25 +50,20 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 	autoClose: true,
 	placement: 'start',
 	offset: 2,
-	viewport: null,
-	visibleSize: 5,
+	viewport: null
 })
 
 defineSlots<{
 	/** "Контролирующий" элемент. (кнопка выпадающего списка)  */
 	toggle?: () => unknown
 	/** Заголовок контекстного меню  */
-	menuHeader?: () => unknown
-	/** Заголовок контента контекстного меню */
-	contentHeader?: () => unknown
+	header?: () => unknown
 	/** Элементы контекстного меню  */
 	item?: (props: { item: DropdownItemType }) => unknown
 	/** Группа элементов контекстного меню  */
 	groupLabel?: (props: { group: DropdownGroupType }) => unknown
-	/** Нижний колонтитул контента контекстного меню  */
-	contentFooter?: () => unknown
 	/** Нижний колонтитул контекстного меню  */
-	menuFooter?: () => unknown
+	footer?: () => unknown
 	/** Передача произвольного контента в контекстное меню */
 	default?: () => unknown
 }>()
@@ -99,8 +92,7 @@ const {
 	selected,
 	multiple,
 	placement,
-	viewport,
-	visibleSize
+	viewport
 } = toRefs(props)
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
@@ -148,95 +140,30 @@ const escapeHandler = () => {
 const dropdownMenuRef = ref()
 const dropdownFieldRef = ref()
 const dropdownMenuWrapperRef = ref()
-const dropdownContentRef = ref()
 
-const below = ref(true)
-const contentHeight = ref(0)
+const isEnoughSpaceForMenu = ref(true)
+const dropdownHeigth = ref(0)
 const totalOffset = ref('')
-const dropdownHeight = ref((typeof visibleSize.value === "string") ? visibleSize.value :  '160px');
 
 const calculateDropdownPosition = () => {
+	nextTick(() => {
 		if (dropdownMenuRef.value && dropdownFieldRef.value) {
-			
-			const dropdownMenuHeight = Number(dropdownHeight.value.slice(0, -2))
+			const dropdownMenuRect = dropdownMenuRef.value.getBoundingClientRect()
 			const dropdownFieldRect = dropdownFieldRef.value.getBoundingClientRect()
-
-			const spaceAbove = dropdownFieldRect.top - offset.value
 			const spaceBelow = window.innerHeight - dropdownFieldRect.bottom
-			
-			const isEnoughSpaceBelow = spaceBelow > dropdownMenuHeight
-			const isEnoughSpaceAbove = spaceAbove > dropdownMenuHeight
-			
-			below.value = isEnoughSpaceBelow || isEnoughSpaceBelow
-			contentHeight.value = root.value.getBoundingClientRect().height
-
-			if(isEnoughSpaceAbove === isEnoughSpaceBelow && isEnoughSpaceBelow === false) {
-				below.value = spaceBelow >= spaceAbove
-				
-				dropdownHeight.value = below.value 
-					?  `${spaceBelow - contentHeight.value}px`
-					:  `${spaceAbove - contentHeight.value}px`			
-			}
-
-			totalOffset.value = below.value
-				? `${offset.value}`
-				: `${contentHeight.value + offset.value}`
+			isEnoughSpaceForMenu.value = spaceBelow >= dropdownMenuRect.height + offset.value
+			dropdownHeigth.value = root.value.getBoundingClientRect().height
+			totalOffset.value = isEnoughSpaceForMenu.value
+				? `${offset.value}px`
+				: `${dropdownHeigth.value + offset.value}px`
 		}
-	}
-
-
-const calculateContentHeight = () => {
-		const DEFAULT_HEIGHT = 160
-		const DEFAULT_GROUPS_COUNT = 2
-		
-		if ( !items.value || items.value.length == 0 ) {
-			contentHeight.value = DEFAULT_HEIGHT;
-			return;
-		}
-
-		const dropdownContent = dropdownContentRef.value as HTMLDivElement
-		const contentClass = (isGroup(items.value[0])) ? 'Dropdown__contentSubItems' : 'Dropdown__contentItem'
-		const itemsCount = (isGroup(items.value[0])) ? DEFAULT_GROUPS_COUNT : visibleSize.value as number
-	
-		
-		const contentItems = Array.from(dropdownContent.children).filter((el) => el.classList.contains(contentClass))
-
-		if(contentItems.length === 0) {
-			contentHeight.value = DEFAULT_HEIGHT;
-			return;
-		}
-
-		const contentElements = (contentItems.length >= itemsCount) ?
-								[dropdownContent, contentItems[itemsCount -1]] : 
-								[dropdownContent, contentItems[contentItems.length - 1]]
-
-		
-		const topElementPosition = contentElements[0].getBoundingClientRect().top
-		const bottomElementPosition = contentElements[1].getBoundingClientRect().bottom
-		contentHeight.value = bottomElementPosition - topElementPosition
-	}
-
-const calculateDropdownHeight = () => {
-		if(visibleSize.value.toString().endsWith('px')) {
-			dropdownHeight.value = visibleSize.value as `${number}px`
-			return
-		}
-		const dropdownHeaderHeight = dropdownMenuRef.value.children[0].getBoundingClientRect().height;
-		const dropdownFooterHeight = dropdownMenuRef.value.children[2].getBoundingClientRect().height;	
-
-		dropdownHeight.value = `${dropdownHeaderHeight + dropdownFooterHeight + contentHeight.value}px` 
+	})
 }
 
 watch(isDropdownOpen, () => {
 	emit('update:modelValue', isDropdownOpen.value)
 	if (isDropdownOpen.value) {
-		nextTick(() => {
-			if (!visibleSize.value.toString().endsWith('px')) {
-				calculateContentHeight()
-			}
-			calculateDropdownHeight()
-			calculateDropdownPosition()
-		})
+		calculateDropdownPosition()
 	}
 })
 
@@ -391,17 +318,13 @@ useModalContext(root)
 					class="Dropdown__menu"
 					:related="related"
 					:placement="placement"
-					:class="[{ 'Dropdown__menu--up': !below }]"
+					:class="[{ 'Dropdown__menu--up': !isEnoughSpaceForMenu }]"
 					:size="size"
 				>
 					<div class="Dropdown__menuHeader" :size="size">
-						<slot name="menuHeader"></slot>
+						<slot name="header"></slot>
 					</div>
-					<div class="Dropdown__contentWrapper">
-					<div ref="dropdownContentRef" class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }]" :size="size">
-						<div class="Dropdown__contentHeader" :size="size">
-							<slot name="contentHeader"></slot>
-						</div>
+					<div class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }]" :size="size">
 						<slot>
 							<template v-if="items && items.length > 0">
 								<template v-for="(item, idx) in items" :key="idx">
@@ -475,13 +398,11 @@ useModalContext(root)
 								</template>
 							</template>
 						</slot>
-					<div class="Dropdown__contentFooter" :size="size">
-						<slot name="contentFooter"></slot>
 					</div>
-				</div>
-				</div>
-					<div class="Dropdown__menuFooter" :size="size">
-						<slot name="menuFooter"></slot>
+					<div>
+						<div class="Dropdown_menuFooter" :size="size">
+							<slot name="footer"></slot>
+						</div>
 					</div>
 				</div>
 			</Popover>
@@ -509,27 +430,17 @@ useModalContext(root)
 }
 
 .Dropdown__menu {
-	box-sizing: border-box;
 	position: absolute;
-	display: flex;
-	flex-direction: column;
-	top:0;
 	width: 100%;
 	left: 0%;
-	max-height: calc(v-bind(dropdownHeight) + var(--design-gap-unit));
 	border-radius: var(--design-border-radius-control);
-	overflow: hidden;
+	max-height: 322px;
+	overflow: auto;
 	box-shadow: var(--dropdown-box-shadow);
 	border: 1px solid var(--design-border-color-primary);
 	z-index: var(--dropdown-z-index);
 	min-width: max-content;
 	background-color: var(--design-background-color-primary);
-	padding: 2px 0;
-}
-
-.Dropdown__contentWrapper {
-	overflow: auto;
-	height: auto;
 }
 
 .Dropdown__menu[related='true'] {
@@ -548,15 +459,10 @@ useModalContext(root)
 .Dropdown__contentItem,
 .Dropdown__contentSubItemsLabel,
 .Dropdown__contentSubItem,
-.Dropdown__menuFooter,
-.Dropdown__contentFooter
+.Dropdown_menuFooter,
 .Dropdown__contentDefault {
-	gap: calc(var(--design-gap-unit) / 2) 0;
+	padding: calc(var(--design-gap-unit) / 2) 0;
 	background-color: var(--design-background-color-primary);
-}
-
-.Dropdown__menuHeader {
-	padding-bottom: calc(var(--design-gap-unit));
 }
 
 .Dropdown__contentSubItemField:hover,
@@ -579,7 +485,7 @@ useModalContext(root)
 }
 
 .Dropdown__content {
-	overflow: hidden;
+	padding: var(--design-gap-unit) 0;
 }
 
 .Dropdown__contentSubItemsLabel :deep(*),
@@ -611,10 +517,6 @@ useModalContext(root)
 .Dropdown__contentSubItem[disabled] :deep(*),
 .Dropdown__contentSubItems[disabled] :deep(*) {
 	color: var(--design-background-color-disabled-primary);
-}
-
-.Dropdown__menuFooter {
-	position: relative;
 }
 
 /* Size Styling */

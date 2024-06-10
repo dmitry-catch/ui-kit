@@ -39,15 +39,13 @@ interface MultiselectProps {
 	searchMinLength?: number
 	/** Добавляет счётчик символов и ограничение в попап поиск и просто ограничение в инпут поиск */
 	searchMaxLength?: number
-	/** Плейсхолдер для поиска в контекстном меню */
+	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
 	/** Возможно ленивой загрузки */
 	lazy?: boolean
-	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
-	visibleSize?: string | number
 }
 
-const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium', visibleSize: 5 })
+const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium' })
 
 const {
 	icon,
@@ -64,8 +62,7 @@ const {
 	description,
 	searchMinLength,
 	searchMaxLength,
-	popupPlaceholder,
-	visibleSize
+	popupPlaceholder
 } = toRefs(props)
 
 const emit = defineEmits<{
@@ -96,8 +93,6 @@ const slots = defineSlots<{
 	loadMore?: (props: { load: () => void }) => any
 	/**  Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
-	/**  Место под фиксированный футер для контекстного меню */
-	menuFooter?: string | unknown
 	/**  Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
 	empty?: string | unknown
 }>()
@@ -176,6 +171,7 @@ watch(searchInput, () => onSearch())
 watch([loading, options.value], () => optionsHandler())
 
 onMounted(() => optionsHandler())
+
 const root = ref()
 </script>
 <template>
@@ -227,7 +223,6 @@ const root = ref()
 				:searchVisible="isSearchVisible"
 				:lazy="lazy"
 				class="Multiselect__searchPopup"
-				:visibleSize="visibleSize"
 				@clearInput="clearInput"
 				@open="() => emit('open')"
 			>
@@ -246,7 +241,6 @@ const root = ref()
 				</template>
 				<template v-if="$slots.listDefault" #listDefault><slot name="listDefault"></slot></template>
 				<template v-if="$slots.listFooter" #listFooter><slot name="listFooter"></slot></template>
-				<template v-if="$slots.menuFooter" #menuFooter><slot name="menuFooter"></slot></template>
 				<template v-if="$slots.empty" #empty><slot name="empty"></slot></template>
 			</SearchPopup>
 		</div>
@@ -324,10 +318,12 @@ const root = ref()
 .Multiselect[size='small']:deep(*) {
 	font-size: var(--design-font-size-small);
 	line-height: var(--design-line-height-small);
+	--icon-size: var(--design-line-height-hint);
 }
 .Multiselect[size='extra-small']:deep(*) {
 	font-size: var(--design-font-size-footnote);
 	line-height: var(--design-line-height-footnote);
+	--icon-size: var(--design-font-size-large);
 }
 
 .Multiselect__searchPopup:deep(.SearchPopup__input) {

@@ -1,10 +1,9 @@
 import { render } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
 
 import Meta, { Default } from './Dropdown.stories.js'
-import { DropdownItemType } from './types.js'
 
 const Component = composeStory(Default, Meta)
 

@@ -19,15 +19,13 @@ interface SearchPopupProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
-	searchVisible?: boolean,
-	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
-	visibleSize?: string | number
+	searchVisible?: boolean
 	/** Возможно ленивой загрузки */
 	lazy?: boolean
 }
 
 const props = defineProps<SearchPopupProps>()
-const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupPlaceholder, searchVisible, selected, visibleSize } =
+const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupPlaceholder, searchVisible, selected } =
 	toRefs(props)
 
 const emit = defineEmits<{
@@ -53,8 +51,6 @@ const slots = defineSlots<{
 	loadMore?: () => unknown
 	/**  Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
-	/**  Место под фиксированный футер для контекстного меню */
-	menuFooter?: string | unknown
 	/**  Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
 	empty?: string | unknown
 }>()
@@ -75,10 +71,9 @@ const slots = defineSlots<{
 		multiple
 		:loading="loading"
 		:caret="!loading"
-		:visibleSize="visibleSize"
 		@click="() => emit('open')"
 	>
-		<template v-if="slots.listHeader || searchVisible" #menuHeader>
+		<template v-if="slots.listHeader || searchVisible" #header>
 			<TextField
 				v-if="searchVisible"
 				v-model="searchInput"
@@ -114,7 +109,7 @@ const slots = defineSlots<{
 		<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 			><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 		></template>
-		<template v-if="slots.listFooter || items?.length == 0 || lazy" #contentFooter>
+		<template v-if="slots.listFooter || items?.length == 0 || lazy" #footer>
 			<span v-if="items?.length == 0 && !searchInput && !lazy" class="SearchPopup__itemHint">Нет элементов</span>
 			<span v-if="items?.length == 0 && searchInput" class="SearchPopup__itemHint"
 				>Нет совпадений «{{ searchInput }}»</span
@@ -122,9 +117,6 @@ const slots = defineSlots<{
 			<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 			<slot name="listFooter"></slot>
 			<slot v-if="lazy" name="loadMore"></slot>
-		</template>
-		<template v-if="slots.menuFooter" #menuFooter>
-			<slot name="menuFooter"></slot>
 		</template>
 	</Dropdown>
 </template>

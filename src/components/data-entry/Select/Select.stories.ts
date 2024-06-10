@@ -21,16 +21,7 @@ export default {
 		options: [
 			{ name: 'Option 1', value: 1 },
 			{ name: 'Option 2', value: 2 },
-			{ name: 'Option 3', value: 3 },
-			{ name: 'Option 1', value: 1 },
-			{ name: 'Option 2', value: 2 },
-			{ name: 'Option 3', value: 3 },
-			{ name: 'Option 4', value: 4 },
-			{ name: 'Option 5', value: 5 },
-			{ name: 'Option 6', value: 6 },
-			{ name: 'Option 7', value: 7 },
-			{ name: 'Option 8', value: 8 },
-			{ name: 'Option 9', value: 9 }
+			{ name: 'Option 3', value: 3 }
 		],
 		disabled: false,
 		invalid: false,

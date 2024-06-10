@@ -36,14 +36,12 @@ interface SelectProps {
 	/** Добавляет счётчик символов и ограничение в попап поиск и просто ограничение в инпут поиск */
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
-	popupPlaceholder?: string,
-	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
-	visibleSize?: string | number
+	popupPlaceholder?: string
 	/** Возможно ленивой загрузки */
 	lazy?: boolean
 }
 
-const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium', visibleSize: 5 })
+const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
 const {
 	icon,
 	searchType,
@@ -59,8 +57,7 @@ const {
 	description,
 	searchMinLength,
 	searchMaxLength,
-	popupPlaceholder,
-	visibleSize
+	popupPlaceholder
 } = toRefs(props)
 const emit = defineEmits<{
 	/** Обработчик события выпадающего меню */
@@ -83,8 +80,6 @@ const slots = defineSlots<{
 	loadMore?: (props: { load: () => void }) => unknown
 	/**   Невыбираемый фиксированный последний элемент выпадающего списка */
 	listFooter?: string | unknown
-	/**  Место под фиксированный футер для контекстного меню */
-	menuFooter?: string | unknown
 	/** Подсказка при отсутсвии совпадения поискового запроса и эементов списка */
 	empty?: string | unknown
 }>()
@@ -95,7 +90,7 @@ const searchInput = ref('')
 const items = ref<DropdownItemType[]>([])
 const dropdownOpen = ref(false)
 
-const modelValue = defineModel<TValue | null>({ required: true })
+const modelValue = defineModel<TValue>({ required: true })
 
 const pickedItem = computed(() => options.value.find((it) => it.value == modelValue.value))
 const selectedDropdownItem = computed(() => [items?.value.find((it: DropdownItemType) => it.value == modelValue.value)])
@@ -221,10 +216,9 @@ const root = ref()
 				title=""
 				:loading="loading"
 				:caret="!loading"
-				:visibleSize="visibleSize"
 				@click="() => emit('open')"
 			>
-				<template v-if="slots.listHeader || isSearchVisible" #menuHeader>
+				<template v-if="slots.listHeader || isSearchVisible" #header>
 					<TextField
 						v-if="isSearchVisible"
 						v-model="searchInput"
@@ -252,7 +246,7 @@ const root = ref()
 				<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
 					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
 				></template>
-				<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #contentFooter>
+				<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #footer>
 					<span v-if="items?.length == 0 && !searchInput && !listContext.loading" class="itemHint"
 						>Нет элементов</span
 					>
@@ -269,9 +263,6 @@ const root = ref()
 						<Button class="functional" @click="loadList">Загрузить еще</Button>
 					</slot>
 					<Spinner v-if="listContext.loading" class="Select__loading" />
-				</template>
-				<template v-if="slots.menuFooter" #menuFooter>
-					<slot name="menuFooter"></slot>
 				</template>
 			</Dropdown>
 		</div>

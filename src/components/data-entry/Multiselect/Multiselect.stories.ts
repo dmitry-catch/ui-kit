@@ -8,21 +8,20 @@ const data = ref<SelectOptionType[]>([])
 const fillData = (size: number) =>
 	Array(size)
 		.fill(0)
-		.map((_, idx) => ({
-			 name: `Option ${((idx % 4) === 0) 
-								? `some very very some very very some very very long string ${idx + 1}` 
-								: idx + 1}`,
-								 value: idx + 1 
-							}))
+		.map((_, idx) => ({ name: `Option ${idx + 1}`, value: idx + 1 }))
 
-const selectOptions: SelectOptionType[] = fillData(20)
+const selectOptions: SelectOptionType[] = fillData(5)
 
 export default {
 	args: {
 		modelValue: [],
 		searchType: false,
 		size: 'medium',
-		options: selectOptions,
+		options: [
+			{ name: 'Option 1', value: 1 },
+			{ name: 'Option 2', value: 2 },
+			{ name: 'Option 3', value: 3 }
+		],
 		disabled: false,
 		invalid: false,
 		required: false,
@@ -31,7 +30,7 @@ export default {
 		label: '',
 		icon: '',
 		placeholder: '',
-		description: '',
+		description: ''
 	},
 	argTypes: {
 		size: {
@@ -66,9 +65,6 @@ export const LegacyLabelSlot: Story = {
 }
 
 export const Sizing: Story = {
-	args: {
-		visibleSize: '1000px'
-	},
 	render: (args) => ({
 		components: { Multiselect },
 		setup: () => ({ args }),
@@ -111,7 +107,7 @@ export const ListItemsSlotted: Story = {
 		template: `
 		<Multiselect v-bind="args">
 		  <template #listItem="{ listItem }">
-			<i>listItem</i>
+			<i>{{ listItem }}</i>
 		  </template>
 		</Multiselect>
 	  `
