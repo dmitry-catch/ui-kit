@@ -37,7 +37,7 @@ const slots = defineSlots<{
 	after?: unknown
 }>()
 
-const emit = defineEmits(['update:modelValue', 'focus', 'blur'])
+const emit = defineEmits(['update:modelValue'])
 
 const { modelValue, tabindex, maxLength, label, invalid, placeholder, description, autofocus, required } = toRefs(props)
 const internalValue = computed({ get: () => modelValue.value, set: (value) => emit('update:modelValue', value) })
@@ -48,24 +48,10 @@ const focus = () => inputElement.value.focus()
 onMounted(() => {
 	if (autofocus.value) focus()
 })
-
-const root = ref<HTMLElement>()
-
-const focusHandler = (event: FocusEvent) => {
-	if (root.value?.contains(event.relatedTarget as HTMLElement)) return
-
-	emit('focus', event)
-}
-
-const blurHandler = (event: FocusEvent) => {
-	if (root.value?.contains(event.relatedTarget as HTMLElement)) return
-
-	emit('blur', event)
-}
 </script>
 
 <template>
-	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }" ref="root">
+	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
 		<span v-if="slots.label || label || required" class="Field__label">
 			<slot name="label">{{ label }}</slot>
 			<span v-if="required" class="Field__requiredStar">*</span>
@@ -86,8 +72,6 @@ const blurHandler = (event: FocusEvent) => {
 				:placeholder="placeholder"
 				:tabindex="tabindex"
 				:autofocus="autofocus"
-				@focus="focusHandler"
-				@blur="blurHandler"
 			/>
 			<span v-if="slots.after" class="Field__afterWrapper">
 				<slot name="after"></slot>
