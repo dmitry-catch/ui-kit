@@ -37,15 +37,13 @@ interface SelectProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string,
-	/**  Ограничение размера выпадающего списка по высоте в px*/
-	height?: number | null
-	/**  Ограничение размера выпадающего списка по колличеству элементов*/
-	visibleItems?: number | null
-	/** Флаг для ленивой загрузки */
+	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
+	visibleSize?: string | number
+	/** Возможно ленивой загрузки */
 	lazy?: boolean
 }
 
-const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium'})
+const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium', visibleSize: 5 })
 const {
 	icon,
 	searchType,
@@ -62,8 +60,7 @@ const {
 	searchMinLength,
 	searchMaxLength,
 	popupPlaceholder,
-	height,
-	visibleItems
+	visibleSize
 } = toRefs(props)
 const emit = defineEmits<{
 	/** Обработчик события выпадающего меню */
@@ -224,8 +221,7 @@ const root = ref()
 				title=""
 				:loading="loading"
 				:caret="!loading"
-				:height="height"
-				:visibleSize="visibleItems"
+				:visibleSize="visibleSize"
 				@click="() => emit('open')"
 			>
 				<template v-if="slots.listHeader || isSearchVisible" #menuHeader>

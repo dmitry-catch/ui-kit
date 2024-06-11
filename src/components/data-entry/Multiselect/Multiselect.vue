@@ -41,15 +41,13 @@ interface MultiselectProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска в контекстном меню */
 	popupPlaceholder?: string
-	/** Флаг для ленивой загрузки */
+	/** Возможно ленивой загрузки */
 	lazy?: boolean
-	/**  Ограничение размера выпадающего списка по высоте в px*/
-	height?: number | null
-	/**  Ограничение размера выпадающего списка по колличеству элементов*/
-	visibleItems?: number | null
+	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
+	visibleSize?: string | number
 }
 
-const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium' })
+const props = withDefaults(defineProps<MultiselectProps>(), { searchType: false, size: 'medium', visibleSize: 5 })
 
 const {
 	icon,
@@ -67,8 +65,7 @@ const {
 	searchMinLength,
 	searchMaxLength,
 	popupPlaceholder,
-	height,
-	visibleItems
+	visibleSize
 } = toRefs(props)
 
 const emit = defineEmits<{
@@ -230,8 +227,7 @@ const root = ref()
 				:searchVisible="isSearchVisible"
 				:lazy="lazy"
 				class="Multiselect__searchPopup"
-				:height="height"
-				:visibleItems="visibleItems"
+				:visibleSize="visibleSize"
 				@clearInput="clearInput"
 				@open="() => emit('open')"
 			>

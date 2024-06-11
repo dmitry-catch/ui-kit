@@ -42,20 +42,18 @@ interface DropdownProps {
 	/** "Область просмотра"
 	 * Контейнер, относительно которого будет производиться observe */
 	viewport?: HTMLElement | null,
-	/**  Ограничение размера выпадающего списка по высоте в px*/
-	height?: number | null
-	/**  Ограничение размера выпадающего списка по колличеству элементов*/
-	visibleItems?: number | null
+	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
+	visibleSize?: `${number}px` | number
 }
 
 const props = withDefaults(defineProps<DropdownProps>(), {
 	caret: true,
 	size: 'medium',
 	autoClose: true,
-	offset: 4,
 	placement: 'start',
+	offset: 2,
 	viewport: null,
-	visibleItems: 5,
+	visibleSize: 5,
 })
 
 defineSlots<{
@@ -92,6 +90,7 @@ const {
 	disabled,
 	icon,
 	autoClose,
+	offset,
 	loading,
 	items,
 	variant,
@@ -101,11 +100,8 @@ const {
 	multiple,
 	placement,
 	viewport,
-	height,
-	offset,
-	visibleItems
+	visibleSize
 } = toRefs(props)
-
 const menuWidthStyling = computed(() => (related.value ? 'initial' : 'relative'))
 
 const toggleDropdown = () => {
@@ -153,114 +149,93 @@ const dropdownMenuRef = ref()
 const dropdownFieldRef = ref()
 const dropdownMenuWrapperRef = ref()
 const dropdownContentRef = ref()
-const totalOffsetInPx = ref(`${offset.value}px`)
+
 const below = ref(true)
-const dropdownHeight = ref(height.value  ??  160);
-const dropdownHeightInPx = ref(`${dropdownHeight.value}px`)
+const contentHeight = ref(0)
+const totalOffset = ref('')
+const dropdownHeight = ref((typeof visibleSize.value === "string") ? visibleSize.value :  '160px');
 
-const calculateDropdownPosition = (currentDropdownHeight: number) => {
-	if (!(dropdownMenuRef.value && dropdownFieldRef.value)) 
-			return {
-				dropdownHeight: currentDropdownHeight,
-				totalOffset:offset.value
-			}
+const calculateDropdownPosition = () => {
+		if (dropdownMenuRef.value && dropdownFieldRef.value) {
+			
+			const dropdownMenuHeight = Number(dropdownHeight.value.slice(0, -2))
+			const dropdownFieldRect = dropdownFieldRef.value.getBoundingClientRect()
 
+			const spaceAbove = dropdownFieldRect.top - offset.value
+			const spaceBelow = window.innerHeight - dropdownFieldRect.bottom
+			
+			const isEnoughSpaceBelow = spaceBelow > dropdownMenuHeight
+			const isEnoughSpaceAbove = spaceAbove > dropdownMenuHeight
+			
+			below.value = isEnoughSpaceBelow || isEnoughSpaceBelow
+			contentHeight.value = root.value.getBoundingClientRect().height
+
+			if(isEnoughSpaceAbove === isEnoughSpaceBelow && isEnoughSpaceBelow === false) {
+				below.value = spaceBelow >= spaceAbove
 				
-	const rootHeight = root.value.getBoundingClientRect().height
-		
-	const dropdownFieldRect = dropdownFieldRef.value.getBoundingClientRect()
-
-	const spaceAbove = dropdownFieldRect.top
-	const spaceBelow = window.innerHeight - dropdownFieldRect.bottom
-	
-	below.value = isPositionedBelow(dropdownFieldRef.value, currentDropdownHeight) 
-
-	const dropdownHeight = below.value 
-		?  calculateDropdownHeight(spaceBelow, currentDropdownHeight, rootHeight)
-		:  calculateDropdownHeight(spaceAbove, currentDropdownHeight, rootHeight)	
-
-	const totalOffset = below.value
-		? offset.value
-		: rootHeight + offset.value
-	
-		return {dropdownHeight, totalOffset}
-}
-
-const isPositionedBelow = (element: HTMLElement, height: number) => {			
-			const spaceBelow = getSpaceBelow(element) 
-			if(isEnoughSpace(spaceBelow, height))
-				return true
-
-			const spaceAbove = getSpaceAbove(element)
-			if(isEnoughSpace(spaceAbove, height)) {
-				return false
+				dropdownHeight.value = below.value 
+					?  `${spaceBelow - contentHeight.value}px`
+					:  `${spaceAbove - contentHeight.value}px`			
 			}
 
-			return spaceBelow >= spaceAbove	
-}
+			totalOffset.value = below.value
+				? `${offset.value}`
+				: `${contentHeight.value + offset.value}`
+		}
+	}
 
-const calculateDropdownHeight = (wrapperHeight: number, componentHeight: number, marginHeight: number): number => {
-	return isEnoughSpace(wrapperHeight, componentHeight) 
-				? componentHeight 
-				: wrapperHeight - marginHeight
-}
 
-const getSpaceAbove = (element: HTMLElement) => element.getBoundingClientRect().top
-
-const getSpaceBelow = (element: HTMLElement) => window.innerHeight - element.getBoundingClientRect().bottom
-
-const isEnoughSpace = (wrapperHeight: number, contentHeight: number) => wrapperHeight > contentHeight
-
-const getContentHeight = () => {
+const calculateContentHeight = () => {
 		const DEFAULT_HEIGHT = 160
 		const DEFAULT_GROUPS_COUNT = 2
 		
 		if ( !items.value || items.value.length == 0 ) {
-			return DEFAULT_HEIGHT
+			contentHeight.value = DEFAULT_HEIGHT;
+			return;
 		}
 
 		const dropdownContent = dropdownContentRef.value as HTMLDivElement
 		const contentClass = (isGroup(items.value[0])) ? 'Dropdown__contentSubItems' : 'Dropdown__contentItem'
-		const itemsCount = (isGroup(items.value[0])) ? DEFAULT_GROUPS_COUNT : visibleItems.value as number
+		const itemsCount = (isGroup(items.value[0])) ? DEFAULT_GROUPS_COUNT : visibleSize.value as number
 	
 		
 		const contentItems = Array.from(dropdownContent.children).filter((el) => el.classList.contains(contentClass))
 
 		if(contentItems.length === 0) {
-			return DEFAULT_HEIGHT
+			contentHeight.value = DEFAULT_HEIGHT;
+			return;
 		}
 
-		const firstElement  = dropdownContent
-		const lastVisibleIndex = contentItems.length > itemsCount ? itemsCount - 1 : contentItems.length - 1
-		const lastElement = contentItems[lastVisibleIndex]
+		const contentElements = (contentItems.length >= itemsCount) ?
+								[dropdownContent, contentItems[itemsCount -1]] : 
+								[dropdownContent, contentItems[contentItems.length - 1]]
 
-		const firstElementTopPosition = firstElement.getBoundingClientRect().top
-		const lastElementBottomPosition = lastElement.getBoundingClientRect().bottom
-		return lastElementBottomPosition - firstElementTopPosition
+		
+		const topElementPosition = contentElements[0].getBoundingClientRect().top
+		const bottomElementPosition = contentElements[1].getBoundingClientRect().bottom
+		contentHeight.value = bottomElementPosition - topElementPosition
 	}
 
-const getDropdownHeight = () => {
-		if(height.value) {
-			return height.value
+const calculateDropdownHeight = () => {
+		if(visibleSize.value.toString().endsWith('px')) {
+			dropdownHeight.value = visibleSize.value as `${number}px`
+			return
 		}
 		const dropdownHeaderHeight = dropdownMenuRef.value.children[0].getBoundingClientRect().height;
 		const dropdownFooterHeight = dropdownMenuRef.value.children[2].getBoundingClientRect().height;	
-		return dropdownHeaderHeight + dropdownFooterHeight + getContentHeight()
+
+		dropdownHeight.value = `${dropdownHeaderHeight + dropdownFooterHeight + contentHeight.value}px` 
 }
 
 watch(isDropdownOpen, () => {
 	emit('update:modelValue', isDropdownOpen.value)
 	if (isDropdownOpen.value) {
 		nextTick(() => {
-			const {
-				dropdownHeight,
-				totalOffset
-			} =
-			calculateDropdownPosition(height.value ?? getDropdownHeight())
-			
-			dropdownHeightInPx.value = `${dropdownHeight}px`
-			totalOffsetInPx.value = `${totalOffset}px`
-
+			if (!visibleSize.value.toString().endsWith('px')) {
+				calculateContentHeight()
+			}
+			calculateDropdownHeight()
+			calculateDropdownPosition()
 		})
 	}
 })
@@ -541,7 +516,7 @@ useModalContext(root)
 	top:0;
 	width: 100%;
 	left: 0%;
-	max-height: calc(v-bind(dropdownHeightInPx) + calc(var(--design-gap-unit) * 2));
+	max-height: calc(v-bind(dropdownHeight) + var(--design-gap-unit));
 	border-radius: var(--design-border-radius-control);
 	overflow: hidden;
 	box-shadow: var(--dropdown-box-shadow);
@@ -555,7 +530,6 @@ useModalContext(root)
 .Dropdown__contentWrapper {
 	overflow: auto;
 	height: auto;
-	padding: var(--design-gap-unit);
 }
 
 .Dropdown__menu[related='true'] {
@@ -614,12 +588,12 @@ useModalContext(root)
 }
 
 .Dropdown__menu:not(.Dropdown__menu--up) {
-	margin-top: v-bind(totalOffsetInPx);
+	margin-top: v-bind(totalOffset);
 }
 
 .Dropdown__menu--up {
 	position: relative;
-	bottom: v-bind(totalOffsetInPx);
+	bottom: v-bind(totalOffset);
 }
 
 .Dropdown__icon.onAccent :deep(path) {

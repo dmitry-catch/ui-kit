@@ -20,16 +20,14 @@ interface SearchPopupProps {
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
 	searchVisible?: boolean,
-	/**  Ограничение размера выпадающего списка по высоте в px*/
-	height?: number | null
-	/**  Ограничение размера выпадающего списка по колличеству элементов*/
-	visibleItems?: number | null
-	/** Флаг для ленивой загрузки */
+	/**  Ограничение размера выпадающего списка по колличеству элементов или высоте в px*/
+	visibleSize?: string | number
+	/** Возможно ленивой загрузки */
 	lazy?: boolean
 }
 
 const props = defineProps<SearchPopupProps>()
-const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupPlaceholder, searchVisible, selected, height, visibleItems } =
+const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupPlaceholder, searchVisible, selected, visibleSize } =
 	toRefs(props)
 
 const emit = defineEmits<{
@@ -68,6 +66,7 @@ const slots = defineSlots<{
 		v-model:selected="selected"
 		class="SearchPopup"
 		variant="functional"
+		:offset="2"
 		:items="items"
 		:size="size"
 		related
@@ -76,8 +75,7 @@ const slots = defineSlots<{
 		multiple
 		:loading="loading"
 		:caret="!loading"
-		:height="height"
-		:visibleSize="visibleItems"
+		:visibleSize="visibleSize"
 		@click="() => emit('open')"
 	>
 		<template v-if="slots.listHeader || searchVisible" #menuHeader>
