@@ -50,7 +50,7 @@ export const handleInitialDateValue = (value: string | Date | undefined): Date |
 	} else return null
 }
 
-export const handleInternalValue = (value: Date | undefined | null): string | null => {
+export const handleInternalValue = (value: Date | undefined | null): String | null => {
 	if (value instanceof Date) {
 		const day = String(value.getDate()).padStart(2, '0')
 		const month = String(Number(value.getMonth()) + 1).padStart(2, '0')

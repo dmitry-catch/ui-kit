@@ -9,11 +9,11 @@ const fillData = (size: number) =>
 	Array(size)
 		.fill(0)
 		.map((_, idx) => ({
-			name: `Option ${
-				idx % 4 === 0 ? `some very very some very very some very very long string ${idx + 1}` : idx + 1
-			}`,
-			value: idx + 1
-		}))
+			 name: `Option ${((idx % 4) === 0) 
+								? `some very very some very very some very very long string ${idx + 1}` 
+								: idx + 1}`,
+								 value: idx + 1 
+							}))
 
 const selectOptions: SelectOptionType[] = fillData(20)
 
@@ -31,7 +31,7 @@ export default {
 		label: '',
 		icon: '',
 		placeholder: '',
-		description: ''
+		description: '',
 	},
 	argTypes: {
 		size: {

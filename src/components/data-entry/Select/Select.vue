@@ -36,7 +36,7 @@ interface SelectProps {
 	/** Добавляет счётчик символов и ограничение в попап поиск и просто ограничение в инпут поиск */
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
-	popupPlaceholder?: string
+	popupPlaceholder?: string,
 	/**  Ограничение размера выпадающего списка по высоте в px*/
 	height?: number | null
 	/**  Ограничение размера выпадающего списка по колличеству элементов*/
@@ -45,7 +45,7 @@ interface SelectProps {
 	lazy?: boolean
 }
 
-const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium' })
+const props = withDefaults(defineProps<SelectProps>(), { searchType: 'input', size: 'medium'})
 const {
 	icon,
 	searchType,

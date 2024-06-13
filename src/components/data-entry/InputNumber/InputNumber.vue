@@ -95,18 +95,18 @@ const onBlur = () => {
 			</span>
 
 			<input
-				v-model="internalValue"
 				type="number"
 				class="InputNumber__input"
 				:class="size"
+				v-model="internalValue"
+				@wheel="onWheel"
+				@keydown="onKeyDown"
+				@blur="onBlur"
 				:placeholder="placeholder"
 				:min="min"
 				:max="max"
 				:disabled="disabled"
 				:readonly="readonly"
-				@wheel="onWheel"
-				@keydown="onKeyDown"
-				@blur="onBlur"
 			/>
 			<span v-if="arrowed" class="InputNumber__arrows" :class="size">
 				<span

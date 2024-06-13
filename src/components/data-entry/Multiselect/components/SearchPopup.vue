@@ -19,7 +19,7 @@ interface SearchPopupProps {
 	searchMaxLength?: number
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
-	searchVisible?: boolean
+	searchVisible?: boolean,
 	/**  Ограничение размера выпадающего списка по высоте в px*/
 	height?: number | null
 	/**  Ограничение размера выпадающего списка по колличеству элементов*/
@@ -29,19 +29,8 @@ interface SearchPopupProps {
 }
 
 const props = defineProps<SearchPopupProps>()
-const {
-	items,
-	size,
-	disabled,
-	loading,
-	searchMinLength,
-	searchMaxLength,
-	popupPlaceholder,
-	searchVisible,
-	selected,
-	height,
-	visibleItems
-} = toRefs(props)
+const { items, size, disabled, loading, searchMinLength, searchMaxLength, popupPlaceholder, searchVisible, selected, height, visibleItems } =
+	toRefs(props)
 
 const emit = defineEmits<{
 	(e: 'clearInput'): void

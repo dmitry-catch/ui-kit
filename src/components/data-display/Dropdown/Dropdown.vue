@@ -41,7 +41,7 @@ interface DropdownProps {
 	related?: boolean
 	/** "Область просмотра"
 	 * Контейнер, относительно которого будет производиться observe */
-	viewport?: HTMLElement | null
+	viewport?: HTMLElement | null,
 	/**  Ограничение размера выпадающего списка по высоте в px*/
 	height?: number | null
 	/**  Ограничение размера выпадающего списка по колличеству элементов*/
@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 	offset: 4,
 	placement: 'start',
 	viewport: null,
-	visibleItems: 5
+	visibleItems: 5,
 })
 
 defineSlots<{
@@ -155,48 +155,54 @@ const dropdownMenuWrapperRef = ref()
 const dropdownContentRef = ref()
 const totalOffsetInPx = ref(`${offset.value}px`)
 const below = ref(true)
-const dropdownHeight = ref(height.value ?? 160)
+const dropdownHeight = ref(height.value  ??  160);
 const dropdownHeightInPx = ref(`${dropdownHeight.value}px`)
 
 const calculateDropdownPosition = (currentDropdownHeight: number) => {
-	if (!(dropdownMenuRef.value && dropdownFieldRef.value))
-		return {
-			dropdownHeight: currentDropdownHeight,
-			totalOffset: offset.value
-		}
+	if (!(dropdownMenuRef.value && dropdownFieldRef.value)) 
+			return {
+				dropdownHeight: currentDropdownHeight,
+				totalOffset:offset.value
+			}
 
+				
 	const rootHeight = root.value.getBoundingClientRect().height
-
+		
 	const dropdownFieldRect = dropdownFieldRef.value.getBoundingClientRect()
 
 	const spaceAbove = dropdownFieldRect.top
 	const spaceBelow = window.innerHeight - dropdownFieldRect.bottom
+	
+	below.value = isPositionedBelow(dropdownFieldRef.value, currentDropdownHeight) 
 
-	below.value = isPositionedBelow(dropdownFieldRef.value, currentDropdownHeight)
+	const dropdownHeight = below.value 
+		?  calculateDropdownHeight(spaceBelow, currentDropdownHeight, rootHeight)
+		:  calculateDropdownHeight(spaceAbove, currentDropdownHeight, rootHeight)	
 
-	const dropdownHeight = below.value
-		? calculateDropdownHeight(spaceBelow, currentDropdownHeight, rootHeight)
-		: calculateDropdownHeight(spaceAbove, currentDropdownHeight, rootHeight)
-
-	const totalOffset = below.value ? offset.value : rootHeight + offset.value
-
-	return { dropdownHeight, totalOffset }
+	const totalOffset = below.value
+		? offset.value
+		: rootHeight + offset.value
+	
+		return {dropdownHeight, totalOffset}
 }
 
-const isPositionedBelow = (element: HTMLElement, height: number) => {
-	const spaceBelow = getSpaceBelow(element)
-	if (isEnoughSpace(spaceBelow, height)) return true
+const isPositionedBelow = (element: HTMLElement, height: number) => {			
+			const spaceBelow = getSpaceBelow(element) 
+			if(isEnoughSpace(spaceBelow, height))
+				return true
 
-	const spaceAbove = getSpaceAbove(element)
-	if (isEnoughSpace(spaceAbove, height)) {
-		return false
-	}
+			const spaceAbove = getSpaceAbove(element)
+			if(isEnoughSpace(spaceAbove, height)) {
+				return false
+			}
 
-	return spaceBelow >= spaceAbove
+			return spaceBelow >= spaceAbove	
 }
 
 const calculateDropdownHeight = (wrapperHeight: number, componentHeight: number, marginHeight: number): number => {
-	return isEnoughSpace(wrapperHeight, componentHeight) ? componentHeight : wrapperHeight - marginHeight
+	return isEnoughSpace(wrapperHeight, componentHeight) 
+				? componentHeight 
+				: wrapperHeight - marginHeight
 }
 
 const getSpaceAbove = (element: HTMLElement) => element.getBoundingClientRect().top
@@ -206,49 +212,55 @@ const getSpaceBelow = (element: HTMLElement) => window.innerHeight - element.get
 const isEnoughSpace = (wrapperHeight: number, contentHeight: number) => wrapperHeight > contentHeight
 
 const getContentHeight = () => {
-	const DEFAULT_HEIGHT = 160
-	const DEFAULT_GROUPS_COUNT = 2
+		const DEFAULT_HEIGHT = 160
+		const DEFAULT_GROUPS_COUNT = 2
+		
+		if ( !items.value || items.value.length == 0 ) {
+			return DEFAULT_HEIGHT
+		}
 
-	if (!items.value || items.value.length == 0) {
-		return DEFAULT_HEIGHT
+		const dropdownContent = dropdownContentRef.value as HTMLDivElement
+		const contentClass = (isGroup(items.value[0])) ? 'Dropdown__contentSubItems' : 'Dropdown__contentItem'
+		const itemsCount = (isGroup(items.value[0])) ? DEFAULT_GROUPS_COUNT : visibleItems.value as number
+	
+		
+		const contentItems = Array.from(dropdownContent.children).filter((el) => el.classList.contains(contentClass))
+
+		if(contentItems.length === 0) {
+			return DEFAULT_HEIGHT
+		}
+
+		const firstElement  = dropdownContent
+		const lastVisibleIndex = contentItems.length > itemsCount ? itemsCount - 1 : contentItems.length - 1
+		const lastElement = contentItems[lastVisibleIndex]
+
+		const firstElementTopPosition = firstElement.getBoundingClientRect().top
+		const lastElementBottomPosition = lastElement.getBoundingClientRect().bottom
+		return lastElementBottomPosition - firstElementTopPosition
 	}
-
-	const dropdownContent = dropdownContentRef.value as HTMLDivElement
-	const contentClass = isGroup(items.value[0]) ? 'Dropdown__contentSubItems' : 'Dropdown__contentItem'
-	const itemsCount = isGroup(items.value[0]) ? DEFAULT_GROUPS_COUNT : (visibleItems.value as number)
-
-	const contentItems = Array.from(dropdownContent.children).filter((el) => el.classList.contains(contentClass))
-
-	if (contentItems.length === 0) {
-		return DEFAULT_HEIGHT
-	}
-
-	const firstElement = dropdownContent
-	const lastVisibleIndex = contentItems.length > itemsCount ? itemsCount - 1 : contentItems.length - 1
-	const lastElement = contentItems[lastVisibleIndex]
-
-	const firstElementTopPosition = firstElement.getBoundingClientRect().top
-	const lastElementBottomPosition = lastElement.getBoundingClientRect().bottom
-	return lastElementBottomPosition - firstElementTopPosition
-}
 
 const getDropdownHeight = () => {
-	if (height.value) {
-		return height.value
-	}
-	const dropdownHeaderHeight = dropdownMenuRef.value.children[0].getBoundingClientRect().height
-	const dropdownFooterHeight = dropdownMenuRef.value.children[2].getBoundingClientRect().height
-	return dropdownHeaderHeight + dropdownFooterHeight + getContentHeight()
+		if(height.value) {
+			return height.value
+		}
+		const dropdownHeaderHeight = dropdownMenuRef.value.children[0].getBoundingClientRect().height;
+		const dropdownFooterHeight = dropdownMenuRef.value.children[2].getBoundingClientRect().height;	
+		return dropdownHeaderHeight + dropdownFooterHeight + getContentHeight()
 }
 
 watch(isDropdownOpen, () => {
 	emit('update:modelValue', isDropdownOpen.value)
 	if (isDropdownOpen.value) {
 		nextTick(() => {
-			const { dropdownHeight, totalOffset } = calculateDropdownPosition(height.value ?? getDropdownHeight())
-
+			const {
+				dropdownHeight,
+				totalOffset
+			} =
+			calculateDropdownPosition(height.value ?? getDropdownHeight())
+			
 			dropdownHeightInPx.value = `${dropdownHeight}px`
 			totalOffsetInPx.value = `${totalOffset}px`
+
 		})
 	}
 })
@@ -411,104 +423,88 @@ useModalContext(root)
 						<slot name="menuHeader"></slot>
 					</div>
 					<div class="Dropdown__contentWrapper">
-						<div
-							ref="dropdownContentRef"
-							class="Dropdown__content"
-							:class="[{ Dropdown__contentDefault: $slots.default }]"
-							:size="size"
-						>
-							<div class="Dropdown__contentHeader" :size="size">
-								<slot name="contentHeader"></slot>
-							</div>
-							<slot>
-								<template v-if="items && items.length > 0">
-									<template v-for="(item, idx) in items" :key="idx">
-										<div
-											v-if="isGroup(item)"
-											v-bind="item.extraAttrs"
-											class="Dropdown__contentSubItems"
-										>
-											<div class="Dropdown__contentSubItemsLabel" :size="size">
-												<slot name="groupLabel" :group="item">{{ item.name }}</slot>
-											</div>
-											<div
-												v-for="(subItem, idx) in item.items"
-												:key="idx"
-												class="Dropdown__contentSubItemField"
-												:class="{
-													'Dropdown__item--focused':
-														focusedItemIdx === allItems.indexOf(subItem)
-												}"
-												@click="handleClick(subItem)"
-											>
-												<div
-													v-if="$slots.item"
-													v-bind="subItem.extraAttrs"
-													class="Dropdown__contentSubItem"
-													:class="[subItem.wrapperClass]"
-													:size="size"
-												>
-													<slot
-														name="item"
-														:item="subItem"
-														v-bind="subItem.extraAttrs"
-													></slot>
-												</div>
-												<DropdownItem
-													v-else
-													v-bind="subItem.extraAttrs"
-													:picked="selected?.includes(subItem)"
-													class="Dropdown__contentSubItem"
-													:class="[subItem.wrapperClass]"
-													:size="size"
-												>
-													{{ subItem.label }}
-												</DropdownItem>
-											</div>
+					<div ref="dropdownContentRef" class="Dropdown__content" :class="[{ Dropdown__contentDefault: $slots.default }]" :size="size">
+						<div class="Dropdown__contentHeader" :size="size">
+							<slot name="contentHeader"></slot>
+						</div>
+						<slot>
+							<template v-if="items && items.length > 0">
+								<template v-for="(item, idx) in items" :key="idx">
+									<div
+										v-if="isGroup(item)"
+										v-bind="item.extraAttrs"
+										class="Dropdown__contentSubItems"
+									>
+										<div class="Dropdown__contentSubItemsLabel" :size="size">
+											<slot name="groupLabel" :group="item">{{ item.name }}</slot>
 										</div>
-										<template v-else>
+										<div
+											v-for="(subItem, idx) in item.items"
+											:key="idx"
+											class="Dropdown__contentSubItemField"
+											:class="{
+												'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(subItem)
+											}"
+											@click="handleClick(subItem)"
+										>
 											<div
 												v-if="$slots.item"
-												v-bind="item.extraAttrs"
-												class="Dropdown__contentItem"
-												:class="[
-													item.wrapperClass,
-													{
-														'Dropdown__item--focused':
-															focusedItemIdx === allItems.indexOf(item)
-													}
-												]"
+												v-bind="subItem.extraAttrs"
+												class="Dropdown__contentSubItem"
+												:class="[subItem.wrapperClass]"
 												:size="size"
-												@click="handleClick(item)"
 											>
-												<slot name="item" :item="item"></slot>
+												<slot name="item" :item="subItem" v-bind="subItem.extraAttrs"></slot>
 											</div>
 											<DropdownItem
 												v-else
-												v-bind="item.extraAttrs"
-												:picked="selected?.includes(item)"
-												class="Dropdown__contentItem"
-												:class="[
-													item.wrapperClass,
-													{
-														'Dropdown__item--focused':
-															focusedItemIdx === allItems.indexOf(item)
-													}
-												]"
+												v-bind="subItem.extraAttrs"
+												:picked="selected?.includes(subItem)"
+												class="Dropdown__contentSubItem"
+												:class="[subItem.wrapperClass]"
 												:size="size"
-												@click="handleClick(item)"
 											>
-												{{ item.label }}
+												{{ subItem.label }}
 											</DropdownItem>
-										</template>
+										</div>
+									</div>
+									<template v-else>
+										<div
+											v-if="$slots.item"
+											v-bind="item.extraAttrs"
+											class="Dropdown__contentItem"
+											:class="[
+												item.wrapperClass,
+												{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
+											]"
+											:size="size"
+											@click="handleClick(item)"
+										>
+											<slot name="item" :item="item"></slot>
+										</div>
+										<DropdownItem
+											v-else
+											v-bind="item.extraAttrs"
+											:picked="selected?.includes(item)"
+											class="Dropdown__contentItem"
+											:class="[
+												item.wrapperClass,
+												{ 'Dropdown__item--focused': focusedItemIdx === allItems.indexOf(item) }
+											]"
+											:size="size"
+											@click="handleClick(item)"
+										>
+											{{ item.label }}
+										</DropdownItem>
 									</template>
 								</template>
-							</slot>
-							<div class="Dropdown__contentFooter" :size="size">
-								<slot name="contentFooter"></slot>
-							</div>
-						</div>
+							</template>
+						</slot>
+					<div class="Dropdown__contentFooter" :size="size">
+						<slot name="contentFooter"></slot>
 					</div>
+				</div>
+				</div>
 					<div class="Dropdown__menuFooter" :size="size">
 						<slot name="menuFooter"></slot>
 					</div>
@@ -542,7 +538,7 @@ useModalContext(root)
 	position: absolute;
 	display: flex;
 	flex-direction: column;
-	top: 0;
+	top:0;
 	width: 100%;
 	left: 0%;
 	max-height: calc(v-bind(dropdownHeightInPx) + calc(var(--design-gap-unit) * 2));
@@ -579,7 +575,8 @@ useModalContext(root)
 .Dropdown__contentSubItemsLabel,
 .Dropdown__contentSubItem,
 .Dropdown__menuFooter,
-.Dropdown__contentFooter .Dropdown__contentDefault {
+.Dropdown__contentFooter
+.Dropdown__contentDefault {
 	gap: calc(var(--design-gap-unit) / 2) 0;
 	background-color: var(--design-background-color-primary);
 }

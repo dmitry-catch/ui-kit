@@ -65,7 +65,7 @@ const blurHandler = (event: FocusEvent) => {
 </script>
 
 <template>
-	<label ref="root" class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }">
+	<label class="TextField Field text-medium" :class="{ 'Field--invalid': invalid }" ref="root">
 		<span v-if="slots.label || label || required" class="Field__label">
 			<slot name="label">{{ label }}</slot>
 			<span v-if="required" class="Field__requiredStar">*</span>
