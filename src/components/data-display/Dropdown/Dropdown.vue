@@ -153,7 +153,7 @@ const dropdownMenuRef = ref()
 const dropdownFieldRef = ref()
 const dropdownMenuWrapperRef = ref()
 const dropdownContentRef = ref()
-const totalPixelOffset = ref(`${offset.value}px`)
+const totalOffsetPx = ref(`${offset.value}px`)
 const below = ref(true)
 const dropdownHeight = ref(height.value ?? 0)
 const dropdownHeightPx = ref(`${dropdownHeight.value}px`)
@@ -249,7 +249,7 @@ watch(isDropdownOpen, () => {
 			const { dropdownHeight, totalOffset } = calculateDropdownPosition(height.value ?? getDropdownHeight())
 
 			dropdownHeightPx.value = `${dropdownHeight}px`
-			totalPixelOffset.value = `${totalOffset}px`
+			totalOffsetPx.value = `${totalOffset}px`
 		})
 	}
 })
@@ -618,12 +618,12 @@ useModalContext(root)
 }
 
 .Dropdown__menu:not(.Dropdown__menu--up) {
-	margin-top: v-bind(totalPixelOffset);
+	margin-top: v-bind(totalOffsetPx);
 }
 
 .Dropdown__menu--up {
 	position: relative;
-	bottom: v-bind(totalPixelOffset);
+	bottom: v-bind(totalOffsetPx);
 }
 
 .Dropdown__icon.onAccent :deep(path) {
