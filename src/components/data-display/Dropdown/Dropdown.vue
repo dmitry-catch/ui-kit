@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
 	caret: true,
 	size: 'medium',
 	autoClose: true,
-	offset: 2,
+	offset: 4,
 	placement: 'start',
 	viewport: null,
 	visibleItems: 5
@@ -153,10 +153,10 @@ const dropdownMenuRef = ref()
 const dropdownFieldRef = ref()
 const dropdownMenuWrapperRef = ref()
 const dropdownContentRef = ref()
-const totalOffsetPx = ref(`${offset.value}px`)
+const totalOffsetInPx = ref(`${offset.value}px`)
 const below = ref(true)
-const dropdownHeight = ref(height.value ?? 0)
-const dropdownHeightPx = ref(`${dropdownHeight.value}px`)
+const dropdownHeight = ref(height.value ?? 160)
+const dropdownHeightInPx = ref(`${dropdownHeight.value}px`)
 
 const calculateDropdownPosition = (currentDropdownHeight: number) => {
 	if (!(dropdownMenuRef.value && dropdownFieldRef.value))
@@ -206,7 +206,6 @@ const getSpaceBelow = (element: HTMLElement) => window.innerHeight - element.get
 const isEnoughSpace = (wrapperHeight: number, contentHeight: number) => wrapperHeight > contentHeight
 
 const getContentHeight = () => {
-	// DEFAULT_HEIGHT равен примерно пяти однострочным элементам по высоте
 	const DEFAULT_HEIGHT = 160
 	const DEFAULT_GROUPS_COUNT = 2
 
@@ -248,8 +247,8 @@ watch(isDropdownOpen, () => {
 		nextTick(() => {
 			const { dropdownHeight, totalOffset } = calculateDropdownPosition(height.value ?? getDropdownHeight())
 
-			dropdownHeightPx.value = `${dropdownHeight}px`
-			totalOffsetPx.value = `${totalOffset}px`
+			dropdownHeightInPx.value = `${dropdownHeight}px`
+			totalOffsetInPx.value = `${totalOffset}px`
 		})
 	}
 })
@@ -546,7 +545,7 @@ useModalContext(root)
 	top: 0;
 	width: 100%;
 	left: 0%;
-	max-height: calc(v-bind(dropdownHeightPx) + calc(var(--design-gap-unit) * 2));
+	max-height: calc(v-bind(dropdownHeightInPx) + calc(var(--design-gap-unit) * 2));
 	border-radius: var(--design-border-radius-control);
 	overflow: hidden;
 	box-shadow: var(--dropdown-box-shadow);
@@ -581,7 +580,7 @@ useModalContext(root)
 .Dropdown__contentSubItem,
 .Dropdown__menuFooter,
 .Dropdown__contentFooter .Dropdown__contentDefault {
-	gap: calc(0.5 * var(--design-gap-unit)) 0;
+	gap: calc(var(--design-gap-unit) / 2) 0;
 	background-color: var(--design-background-color-primary);
 }
 
@@ -618,12 +617,12 @@ useModalContext(root)
 }
 
 .Dropdown__menu:not(.Dropdown__menu--up) {
-	margin-top: v-bind(totalOffsetPx);
+	margin-top: v-bind(totalOffsetInPx);
 }
 
 .Dropdown__menu--up {
 	position: relative;
-	bottom: v-bind(totalOffsetPx);
+	bottom: v-bind(totalOffsetInPx);
 }
 
 .Dropdown__icon.onAccent :deep(path) {
@@ -652,9 +651,9 @@ useModalContext(root)
 .Dropdown__menu[size='extra-small'] :deep(.DropdownItem > *) {
 	--icon-size: 20px;
 	font-size: var(--design-font-size-footnote);
-	padding: calc(0.25 * var(--design-gap-unit));
+	padding: calc(var(--design-gap-unit) / 4);
 	line-height: var(--design-line-height-footnote);
-	gap: calc(0.5 * var(--design-gap-unit));
+	gap: calc(var(--design-gap-unit) / 2);
 }
 
 .Dropdown__menuHeader[size='extra-small'],
@@ -682,7 +681,7 @@ useModalContext(root)
 .Dropdown__menu[size='small'] :deep(.DropdownItem > *) {
 	font-size: var(--design-font-size-small);
 	padding: calc(0.5 * var(--design-gap-unit)) calc(3 * var(--design-gap-unit));
-	gap: calc(0.5 * var(--design-gap-unit));
+	gap: calc(var(--design-gap-unit) / 2);
 }
 
 .Dropdown__menuHeader[size='small'],

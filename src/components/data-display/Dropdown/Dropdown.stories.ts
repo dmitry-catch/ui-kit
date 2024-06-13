@@ -198,7 +198,7 @@ export const MiscellaneousContent: Story = {
 export const BottomedDropdown: Story = {
 	args: {
 		items: dropdownItems,
-		height: 400
+		visibleSize: `400px`
 	},
 	render: (args) => ({
 		components: { Dropdown },
@@ -220,7 +220,7 @@ export const BottomedDropdown: Story = {
 				<div><i>Footer</i></div>
 			</template>
 		</Dropdown>
-		`
+	  `
 	})
 }
 

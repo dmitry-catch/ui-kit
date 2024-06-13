@@ -20,7 +20,6 @@ interface SearchPopupProps {
 	/** Плейсхолдер для поиска во контекстном меню */
 	popupPlaceholder?: string
 	searchVisible?: boolean
-	offset?: number
 	/**  Ограничение размера выпадающего списка по высоте в px*/
 	height?: number | null
 	/**  Ограничение размера выпадающего списка по колличеству элементов*/
@@ -29,10 +28,7 @@ interface SearchPopupProps {
 	lazy?: boolean
 }
 
-const props = withDefaults(defineProps<SearchPopupProps>(), {
-	offset: 2
-})
-
+const props = defineProps<SearchPopupProps>()
 const {
 	items,
 	size,
@@ -43,7 +39,6 @@ const {
 	popupPlaceholder,
 	searchVisible,
 	selected,
-	offset,
 	height,
 	visibleItems
 } = toRefs(props)
@@ -84,7 +79,6 @@ const slots = defineSlots<{
 		v-model:selected="selected"
 		class="SearchPopup"
 		variant="functional"
-		:offset="offset"
 		:items="items"
 		:size="size"
 		related
