@@ -546,7 +546,7 @@ useModalContext(root)
 	top: 0;
 	width: 100%;
 	left: 0%;
-	max-height: calc(v-bind(dropdownHeightPx) + var(--design-gap-unit));
+	max-height: calc(v-bind(dropdownHeightPx) + calc(var(--design-gap-unit) * 2));
 	border-radius: var(--design-border-radius-control);
 	overflow: hidden;
 	box-shadow: var(--dropdown-box-shadow);
@@ -560,6 +560,7 @@ useModalContext(root)
 .Dropdown__contentWrapper {
 	overflow: auto;
 	height: auto;
+	padding: var(--design-gap-unit);
 }
 
 .Dropdown__menu[related='true'] {
