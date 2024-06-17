@@ -10,6 +10,7 @@ interface DatePickerProps {
 	label?: string
 	hint?: string
 	description?: string
+	modelValue?: string | Date | undefined
 }
 
 const props = withDefaults(defineProps<DatePickerProps>(), {
@@ -19,12 +20,11 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 	autofocus: false,
 	label: '',
 	hint: '',
-	description: ''
+	description: '',
+	modelValue: undefined
 })
 
-const { autofocus, disabled } = toRefs(props)
-
-const value = defineModel<string | Date | undefined | null>({ required: true })
+const { autofocus, modelValue, disabled } = toRefs(props)
 
 const root = ref<HTMLElement>()
 const inputRef = ref<HTMLElement>()
@@ -47,7 +47,7 @@ useModalContext(root)
 		</div>
 		<input
 			ref="inputRef"
-			v-model="value"
+			v-model="modelValue"
 			type="date"
 			:disabled="disabled"
 			:class="['input', { invalid: invalid }]"
@@ -63,7 +63,6 @@ useModalContext(root)
 	.input {
 		outline: none;
 		border-width: 1px;
-		text-transform: uppercase;
 	}
 	.input.invalid {
 		border: 1px solid var(--design-border-color-danger-primary);
