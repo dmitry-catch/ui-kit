@@ -34,7 +34,7 @@ describe(`Component ${Component.name}`, () => {
 		const activeItem = container.querySelectorAll('.Menu__subitems')
 		expect(activeItem).toBeTruthy()
 	})
-	it('should hide element', () => {
+	it('should hide element', async () => {
 		const { container } = render(Component, {
 			props: { collapsed: false, hide: ['1'] },
 			slots: {
