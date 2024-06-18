@@ -3,15 +3,12 @@ import { provide, toRefs } from 'vue'
 import { injectionKey } from './consts.js'
 
 interface SidenavProps {
-	/** Состояние свернуто/развернуто */
 	collapsed?: boolean
-	/** Список скрытых элементов и меню */
-	hide?: Array<string>
 }
 const props = withDefaults(defineProps<SidenavProps>(), {
 	collapsed: false
 })
-const { collapsed, hide } = toRefs(props)
+const { collapsed } = toRefs(props)
 
 const active = defineModel<string>('active')
 const open = defineModel<Array<string>>('open')
@@ -19,8 +16,7 @@ const open = defineModel<Array<string>>('open')
 provide(injectionKey, {
 	collapsed,
 	active,
-	open,
-	hide
+	open
 })
 
 defineSlots<{
@@ -77,8 +73,6 @@ defineSlots<{
 		height: 100%;
 		padding: calc(2 * var(--design-gap-unit));
 		padding-top: var(--design-gap-unit);
-		overflow-y: auto;
-		overflow-x: hidden;
 	}
 
 	.Sidenav__footer {

@@ -14,11 +14,7 @@ interface SidenavMenuProps {
 const props = defineProps<SidenavMenuProps>()
 const { icon, disabled } = toRefs(props)
 
-const { active, collapsed, open, hide } = inject(injectionKey)!
-
-const hided = computed(() => {
-	return hide.value?.includes(props.id)
-})
+const { active, collapsed, open } = inject(injectionKey)!
 
 const toggleMenu = () => {
 	if (!collapsed.value && !disabled.value) {
@@ -44,7 +40,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<div v-if="!hided" class="Menu" :class="{ active: isActive, disabled: disabled }">
+	<div class="Menu" :class="{ active: isActive, disabled: disabled }">
 		<div class="NavigationMenu" :class="{ disabled: disabled }" @click="toggleMenu">
 			<div class="NavigationMenu__title" :class="{ collapsed: collapsed, active: isActive, disabled: disabled }">
 				<slot name="icon">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, toRefs } from 'vue'
+import { inject, toRefs } from 'vue'
 import Icon from '../../../general/Icon/Icon.vue'
 import { injectionKey } from '../consts.js'
 import Tag from '../../../data-display/Tag/Tag.vue'
@@ -13,11 +13,7 @@ interface SidenavItemProps {
 const props = defineProps<SidenavItemProps>()
 const { icon, disabled, badge } = toRefs(props)
 
-const { collapsed, active, hide } = inject(injectionKey)!
-
-const hided = computed(() => {
-	return hide.value?.includes(props.id)
-})
+const { collapsed, active } = inject(injectionKey)!
 
 const toggleActive = () => {
 	if (!disabled.value) {
@@ -33,12 +29,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<div
-		v-if="!hided"
-		class="Item"
-		:class="{ active: active == id && !disabled, disabled: disabled }"
-		@click="toggleActive"
-	>
+	<div class="Item" :class="{ active: active == id && !disabled, disabled: disabled }" @click="toggleActive">
 		<div
 			class="Item__title text-medium secondary"
 			:class="{ collapsed: collapsed, active: active == id && !disabled, bold: icon, disabled: disabled }"
