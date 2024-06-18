@@ -36,7 +36,7 @@ describe(`Component ${Component.name}`, () => {
 	})
 	it('should hide element', () => {
 		const { container } = render(Component, {
-			props: { collapsed: false, hidden: ['1'] },
+			props: { collapsed: false, hide: ['1'] },
 			slots: {
 				default: `<SidenavItem id="1">Item 1</SidenavItem>`
 			}

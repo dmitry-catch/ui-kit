@@ -8,7 +8,7 @@ export default {
 		collapsed: false,
 		open: [],
 		active: '',
-		hidden: [],
+		hide: [],
 		header: 'Header',
 		footer: 'Footer',
 		style: {
@@ -51,7 +51,7 @@ export const Default: Story = {
 /** Скрыты элемент Item 1, меню Item 2 и элемент меню Item 3.2 */
 export const Hided: Story = {
 	args: {
-		hidden: ['1', '2', '3.2']
+		hide: ['1', '2', '3.2']
 	},
 	render: (args) => ({
 		components: { Sidenav, SidenavItem: Sidenav.Item, SidenavMenu: Sidenav.Menu, SidenavToggle: Sidenav.Toggle },

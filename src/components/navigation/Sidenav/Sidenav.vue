@@ -6,12 +6,12 @@ interface SidenavProps {
 	/** Состояние свернуто/развернуто */
 	collapsed?: boolean
 	/** Массив скрытых элементов и меню */
-	hidden?: Array<string>
+	hide?: Array<string>
 }
 const props = withDefaults(defineProps<SidenavProps>(), {
 	collapsed: false
 })
-const { collapsed, hidden } = toRefs(props)
+const { collapsed, hide } = toRefs(props)
 
 const active = defineModel<string>('active')
 const open = defineModel<Array<string>>('open')
@@ -20,7 +20,7 @@ provide(injectionKey, {
 	collapsed,
 	active,
 	open,
-	hidden
+	hide
 })
 
 defineSlots<{

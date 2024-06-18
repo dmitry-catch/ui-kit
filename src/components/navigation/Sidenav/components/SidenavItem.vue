@@ -13,9 +13,11 @@ interface SidenavItemProps {
 const props = defineProps<SidenavItemProps>()
 const { icon, disabled, badge } = toRefs(props)
 
-const { collapsed, active, hidden } = inject(injectionKey)!
+const { collapsed, active, hide } = inject(injectionKey)!
 
-const isHidden = computed(() => hidden.value?.includes(props.id))
+const hidden = computed(() => {
+	return hide.value?.includes(props.id)
+})
 
 const toggleActive = () => {
 	if (!disabled.value) {
@@ -32,7 +34,7 @@ const slots = defineSlots<{
 
 <template>
 	<div
-		v-if="!isHidden"
+		v-if="!hidden"
 		class="Item"
 		:class="{ active: active == id && !disabled, disabled: disabled }"
 		@click="toggleActive"

@@ -8,7 +8,7 @@ export interface InjectionTypes {
 	collapsed: Ref<boolean>
 	active: ModelRef<string | undefined>
 	open: ModelRef<Array<string> | undefined>
-	hidden: Ref<Array<string> | undefined>
+	hide: Ref<Array<string> | undefined>
 }
 
 type Sidenav = typeof Sidenav
