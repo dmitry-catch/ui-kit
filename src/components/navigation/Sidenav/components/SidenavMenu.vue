@@ -16,7 +16,7 @@ const { icon, disabled } = toRefs(props)
 
 const { active, collapsed, open, hide } = inject(injectionKey)!
 
-const hidden = computed(() => {
+const hided = computed(() => {
 	return hide.value?.includes(props.id)
 })
 
@@ -44,7 +44,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<div v-if="!hidden" class="Menu" :class="{ active: isActive, disabled: disabled }">
+	<div v-if="!hided" class="Menu" :class="{ active: isActive, disabled: disabled }">
 		<div class="NavigationMenu" :class="{ disabled: disabled }" @click="toggleMenu">
 			<div class="NavigationMenu__title" :class="{ collapsed: collapsed, active: isActive, disabled: disabled }">
 				<slot name="icon">

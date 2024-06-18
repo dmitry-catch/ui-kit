@@ -15,7 +15,7 @@ const { icon, disabled, badge } = toRefs(props)
 
 const { collapsed, active, hide } = inject(injectionKey)!
 
-const hidden = computed(() => {
+const hided = computed(() => {
 	return hide.value?.includes(props.id)
 })
 
@@ -34,7 +34,7 @@ const slots = defineSlots<{
 
 <template>
 	<div
-		v-if="!hidden"
+		v-if="!hided"
 		class="Item"
 		:class="{ active: active == id && !disabled, disabled: disabled }"
 		@click="toggleActive"
