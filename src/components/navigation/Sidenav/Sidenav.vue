@@ -5,7 +5,7 @@ import { injectionKey } from './consts.js'
 interface SidenavProps {
 	/** Состояние свернуто/развернуто */
 	collapsed?: boolean
-	/** Массив скрытых элементов и меню */
+	/** Список скрытых элементов и меню */
 	hide?: Array<string>
 }
 const props = withDefaults(defineProps<SidenavProps>(), {
