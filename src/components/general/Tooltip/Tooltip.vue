@@ -71,7 +71,7 @@ useModalContext(content)
 		<div class="tippedContent" data-testid="trigger" @mouseover="onHover" @mouseout="onLeave">
 			<slot name="default"> </slot>
 		</div>
-		<div class="TooltipWrapper" :style="{ position: 'fixed' }">
+		<div :style="{ position: 'fixed' }">
 			<div
 				v-if="!disabled"
 				ref="content"
@@ -101,11 +101,6 @@ useModalContext(content)
 .TooltipContainer {
 	overflow: visible;
 	position: relative;
-	
-	.TooltipWrapper {
-		z-index: 999;
-	}
-	
 	.Tooltip {
 		z-index: 1000;
 		transition: ease-in-out;
