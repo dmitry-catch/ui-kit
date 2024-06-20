@@ -101,11 +101,11 @@ useModalContext(content)
 .TooltipContainer {
 	overflow: visible;
 	position: relative;
-
+	
 	.TooltipWrapper {
 		z-index: 999;
 	}
-
+	
 	.Tooltip {
 		z-index: 1000;
 		transition: ease-in-out;
