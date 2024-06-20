@@ -55,9 +55,7 @@ useModalContext(root)
 		<div v-if="$slots.after" class="Field__afterWrapper after">
 			<slot name="after"></slot>
 		</div>
-		<span v-if="hint" class="hint text-small" :class="{ invalid: invalid }">
-			{{ hint }}
-		</span>
+		<span v-if="hint" class="hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
 	</div>
 </template>
 <style scoped>
