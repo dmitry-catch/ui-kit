@@ -39,7 +39,7 @@ provide('datepicker-root', root)
 useModalContext(root)
 </script>
 <template>
-	<div ref="root" class="DatePicker">
+	<ContentContainer ref="root" class="DatePicker">
 		<span v-if="label" class="label Field__label" :class="{ required: required }">{{ label }}</span>
 		<span v-if="description" class="Field__description text-small description">{{ description }}</span>
 		<div class="Field__beforeWrapper">
@@ -52,25 +52,18 @@ useModalContext(root)
 			:disabled="disabled"
 			:class="['input', { invalid: invalid }]"
 		/>
-		<div v-if="$slots.after" class="Field__afterWrapper after">
+		<div v-if="$slots.after" class="Field__afterWrapper">
 			<slot name="after"></slot>
 		</div>
 		<span v-if="hint" class="hint text-small" :class="{ invalid: invalid }">{{ hint }}</span>
-	</div>
+	</ContentContainer>
 </template>
 <style scoped>
 .DatePicker {
-	text-align: start;
-	padding: var(--design-gap-unit);
-	background: var(--design-background-color-primary);
 	.input {
-		padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 		outline: none;
 		border-width: 1px;
 		text-transform: uppercase;
-		border-radius: var(--design-border-radius-control);
-		width: calc(100% - 2 * var(--design-gap-unit));
-		background: var(--design-background-color-primary);
 	}
 	.input.invalid {
 		border: 1px solid var(--design-border-color-danger-primary);
@@ -96,17 +89,6 @@ useModalContext(root)
 	.description {
 		color: var(--design-text-color-secondary);
 		display: block;
-	}
-	.after {
-		display: inline-block;
-	}
-}
-.DatePicker.dense {
-	display: flex;
-	padding: 0;
-	.input {
-		padding: 0 var(--design-gap-unit);
-		font-size: var(--design-font-size-small);
 	}
 }
 </style>
