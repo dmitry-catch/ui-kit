@@ -142,15 +142,7 @@ onUnmounted(() => {
 			<DatePicker v-else v-model="date" class="dense" autofocus>
 				<template #after>
 					<Button class="icon functional">
-						<Icon
-							name="close"
-							@click="
-								() => {
-									date = null
-									searchOpened = false
-								}
-							"
-						></Icon>
+						<Icon name="close" @click="date = null"></Icon>
 					</Button>
 				</template>
 			</DatePicker>

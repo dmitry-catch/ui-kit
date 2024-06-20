@@ -71,7 +71,7 @@ useModalContext(root)
 		border-width: 1px;
 		text-transform: uppercase;
 		border-radius: var(--design-border-radius-control);
-		width: calc(100% - 4 * var(--design-gap-unit) - 2px);
+		width: calc(100% - 2 * var(--design-gap-unit));
 		background: var(--design-background-color-primary);
 	}
 	.input.invalid {
