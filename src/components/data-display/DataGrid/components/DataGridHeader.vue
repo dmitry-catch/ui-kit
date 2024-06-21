@@ -122,7 +122,6 @@ onUnmounted(() => {
 	document.removeEventListener('scroll', closeFilterList)
 })
 </script>
-
 <template>
 	<th class="DataGridHeader">
 		<div v-if="!searchOpened" class="DataGridHeader__name accent">{{ column.name }}</div>

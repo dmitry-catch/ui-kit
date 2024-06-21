@@ -22,7 +22,6 @@ import Select from './components/data-entry/Select/Select.vue'
 import DataList from './components/data-display/DataList/DataList.vue'
 import OrderableList from './components/data-display/OrderableList/OrderableList.vue'
 import DataGrid from './components/data-display/DataGrid/DataGrid.vue'
-import VersionPopup from './components/data-display/VersionPopup/VersionPopup.vue'
 import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
 import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import FileCard from './components/data-display/FileCard/FileCard.vue'
@@ -75,7 +74,6 @@ export {
 	//Data display category
 	DataGrid,
 	Pagination,
-	VersionPopup,
 	Toast,
 	SelectableOption,
 	CharCounter,
