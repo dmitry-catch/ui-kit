@@ -6,18 +6,14 @@ import Modal from '../../Modal/Modal.vue'
 import Icon from '../../Icon/Icon.vue'
 
 interface DialogLayoutProps {
-	/** Расположение модального окна по дефолту относительно документа, при значении true - относительно родителя */
-	relative?: boolean
 	/** Модальное окно занимает весь экран */
 	full?: boolean
 	/** Стейт показывающий, что относительное модальное окно открыто */
 	relativeModalOpen?: boolean
-	/** Стейт отвечающий за размер отступов внутри модального окна */
-	size?: 'medium' | 'small'
 }
 
 const props = defineProps<DialogLayoutProps>()
-const { full, relativeModalOpen, relative, size } = toRefs(props)
+const { full, relativeModalOpen } = toRefs(props)
 
 const emit = defineEmits<{
 	(e: 'close'): void
@@ -37,7 +33,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-	<Modal anchor="center" class="DialogLayout" :class="{ full }" :relative="relative" @onDialogKeyDown="handleKeyDown">
+	<Modal anchor="center" class="DialogLayout" :class="{ full }" @onDialogKeyDown="handleKeyDown">
 		<Surface class="Content">
 			<div class="header">
 				<div class="text-large accent"><slot name="header"></slot></div>
@@ -45,10 +41,10 @@ const slots = defineSlots<{
 					<Icon name="close" />
 				</Button>
 			</div>
-			<div class="content" :size="size">
+			<div class="content">
 				<slot></slot>
 			</div>
-			<div v-if="slots.controls" class="controls" :size="size">
+			<div v-if="slots.controls" class="controls">
 				<slot name="controls"></slot>
 			</div>
 			<div v-if="relativeModalOpen" class="relative">
@@ -79,16 +75,10 @@ const slots = defineSlots<{
 		justify-content: start;
 		padding-bottom: calc(2 * var(--design-gap-unit));
 	}
-	.content[size='small'] {
-		padding-bottom: var(--design-gap-unit);
-	}
 	.controls {
 		margin-top: calc(4 * var(--design-gap-unit));
 		display: flex;
 		gap: calc(2 * var(--design-gap-unit));
-	}
-	.controls[size='small'] {
-		margin-top: calc(3 * var(--design-gap-unit));
 	}
 }
 .DialogLayout.full {
