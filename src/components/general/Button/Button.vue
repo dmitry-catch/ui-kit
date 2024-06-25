@@ -6,7 +6,6 @@ import Spinner from '../Spinner/Spinner.vue'
 import type { ListBoxOption } from '../../data-display/ListBox/types.js'
 
 //TODO move from the 'class' prop predefined classes
-
 interface BtnProps {
 	/** Массив значений для выпадающего списка. */
 	dropdown?: ListBoxOption[]
