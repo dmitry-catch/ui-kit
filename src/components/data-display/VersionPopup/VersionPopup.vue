@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { toRefs, ref } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
 import { Tooltip } from '../../../main'
 
@@ -8,22 +8,21 @@ interface VersionPopupProps {
 	version?: string
 	uiKitVersion?: string
 }
-
+const open = ref(true)
 const props = defineProps<VersionPopupProps>()
 
 const { serviceName, version, uiKitVersion } = toRefs(props)
 </script>
 <template>
-	<Tooltip>
+	<Tooltip v-model="open">
 		<template #tooltip>
-			<div v-if="!$slots.default" class="VersionPopup">
+			<div class="VersionPopup">
 				<h3 class="header">Версия сервиса</h3>
 				<div class="content">
 					<span>Версия "{{ serviceName }}": {{ version }}</span>
 					<span>Версия Ui-kit: {{ uiKitVersion }}</span>
 				</div>
 			</div>
-			<slot v-if="$slots.default" name="default"></slot>
 		</template>
 		<Icon name="info" />
 	</Tooltip>

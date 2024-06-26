@@ -107,6 +107,7 @@ const toLastPage = () => updatePage(totalPages.value)
 	justify-content: space-between;
 	align-items: center;
 	padding: calc(2 * var(--design-gap-unit));
+	z-index: 999;
 }
 
 .Pagination__buttons {
