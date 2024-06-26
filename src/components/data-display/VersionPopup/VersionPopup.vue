@@ -29,8 +29,8 @@ const { serviceName, version, uiKitVersion } = toRefs(props)
 </template>
 <style scoped>
 .VersionPopup {
-	padding: var(--design-gap-unit) calc(3 * var(--design-gap-unit));
-	padding-left: var(--design-gap-unit);
+	padding: 8px 24px;
+	padding-left: 8px;
 	display: flex;
 	flex-direction: column;
 	gap: calc(2 * var(--design-gap-unit));
