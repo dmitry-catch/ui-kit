@@ -16,7 +16,7 @@ const { serviceName, version, uiKitVersion } = toRefs(props)
 <template>
 	<Tooltip v-model="open">
 		<template #tooltip>
-			<div class="VersionPopup">
+			<div class="VersionTip">
 				<h3 class="header">Версия сервиса</h3>
 				<div class="content">
 					<span>Версия "{{ serviceName }}": {{ version }}</span>
@@ -28,7 +28,7 @@ const { serviceName, version, uiKitVersion } = toRefs(props)
 	</Tooltip>
 </template>
 <style scoped>
-.VersionPopup {
+.VersionTip {
 	padding: 8px 24px;
 	padding-left: 8px;
 	display: flex;
