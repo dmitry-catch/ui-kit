@@ -10,6 +10,7 @@ interface VersionPopupProps {
 }
 
 const props = defineProps<VersionPopupProps>()
+
 const { serviceName, version, uiKitVersion } = toRefs(props)
 </script>
 <template>
