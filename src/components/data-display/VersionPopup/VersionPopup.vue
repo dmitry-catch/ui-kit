@@ -1,49 +1,57 @@
 <script setup lang="ts">
-import { toRefs, ref } from 'vue'
+import { ref, toRefs } from 'vue'
 import Icon from '../../general/Icon/Icon.vue'
-import { Tooltip } from '../../../main'
+import Button from '../../general/Button/Button.vue'
+import DialogLayout from '../../general/Dialog/components/DialogLayout.vue'
 
 interface VersionPopupProps {
 	serviceName?: string
 	version?: string
 	uiKitVersion?: string
 }
-const open = ref(true)
+
 const props = defineProps<VersionPopupProps>()
 
 const { serviceName, version, uiKitVersion } = toRefs(props)
+
+const infoOpen = ref(false)
+
+const handleInfoOpen = () => (infoOpen.value = true)
+const handleInfoClose = () => (infoOpen.value = false)
 </script>
 <template>
-	<Tooltip v-model="open">
-		<template #tooltip>
-			<div class="VersionTip">
-				<h3 class="header">Версия сервиса</h3>
-				<div class="content">
-					<span>Версия "{{ serviceName }}": {{ version }}</span>
-					<span>Версия Ui-kit: {{ uiKitVersion }}</span>
-				</div>
+	<div class="VersionPopup">
+		<DialogLayout v-if="infoOpen" relative class="modal" size="small" @close="handleInfoClose">
+			<template #header>Версия сервиса</template>
+			<div v-if="!$slots.default" class="textContainer">
+				<span class="text">Версия "{{ serviceName }}": {{ version }}</span>
+				<span class="text">Версия UI-Kit: {{ uiKitVersion }}</span>
 			</div>
-		</template>
-		<Icon name="info" />
-	</Tooltip>
+			<slot v-if="$slots.default" name="default"></slot>
+			<template #controls>
+				<Button class="accent" @click="handleInfoClose">Закрыть</Button>
+			</template>
+		</DialogLayout>
+		<Icon name="info" class="control" @click="handleInfoOpen" />
+	</div>
 </template>
 <style scoped>
-.VersionTip {
-	padding: 8px 24px;
-	padding-left: 8px;
-	display: flex;
-	flex-direction: column;
-	gap: calc(2 * var(--design-gap-unit));
-	.header {
-		text-align: start;
-	}
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: start;
-		span {
+.VersionPopup {
+	position: relative;
+	.modal {
+		border-radius: var(--design-border-radius-surface);
+		box-shadow: 0px 32px 64px 0px rgba(33, 44, 58, 0.16);
+		width: 492px;
+		bottom: calc(4 * var(--design-gap-unit));
+		.textContainer {
 			text-align: start;
+			display: flex;
+			flex-direction: column;
+			align-items: start;
 		}
+	}
+	.control {
+		cursor: pointer;
 	}
 }
 </style>

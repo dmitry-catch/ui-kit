@@ -11,7 +11,7 @@ export default {
 	render: (args) => ({
 		components: { VersionPopup },
 		setup: () => ({ args }),
-		template: `<div :style="{width: '400px', height: '250px',  display: 'flex',
+		template: `<div :style="{width: '400px', height: '800px',  display: 'flex',
 	   flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }">
             <VersionPopup v-bind="args"/>
         </div>`
