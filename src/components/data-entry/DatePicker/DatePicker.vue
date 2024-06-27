@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { toRefs, onMounted, ref, provide, watch } from 'vue'
+import { toRefs, onMounted, ref, provide } from 'vue'
 import { useModalContext } from '../../../utils/useModalContext.ts'
-import { handleInitialDateValue } from './utils.js'
 
 interface DatePickerProps {
 	disabled?: boolean
@@ -25,30 +24,15 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 
 const { autofocus, disabled } = toRefs(props)
 
-const value = defineModel<string | Date | undefined>({ required: true })
-const innerValue = ref<Date | null | string | undefined>(null)
+const value = defineModel<string | Date | undefined | null>({ required: true })
 
 const root = ref<HTMLElement>()
 const inputRef = ref<HTMLElement>()
 
 const focus = () => inputRef.value?.focus()
 
-const handleInitialDate = (value: Date | string | undefined | null) =>
-	handleInitialDateValue(value ?? '')
-		?.toISOString()
-		?.split('T')[0]
-
 onMounted(() => {
 	if (autofocus.value) focus()
-	innerValue.value = handleInitialDate(value.value)
-})
-
-watch(value, (newValue) => {
-	if (innerValue.value != handleInitialDate(newValue)) innerValue.value = handleInitialDate(newValue)
-})
-
-watch(innerValue, (newValue) => {
-	if (handleInitialDate(value.value) != newValue) value.value = handleInitialDate(newValue)
 })
 
 provide('datepicker-root', root)
@@ -63,7 +47,7 @@ useModalContext(root)
 		</div>
 		<input
 			ref="inputRef"
-			v-model="innerValue"
+			v-model="value"
 			type="date"
 			:disabled="disabled"
 			:class="['input', { invalid: invalid }]"
