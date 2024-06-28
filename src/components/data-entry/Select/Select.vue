@@ -253,16 +253,16 @@ const root = ref()
 				<template v-if="slots.listItem" #item="itemProps">
 					<slot name="listItem" :listItem="itemProps"></slot>
 				</template>
-				<template v-if="slots.listGroupLabel" #groupLabel="groupProps">
-					<slot name="listGroupLabel" :groupLabel="groupProps"></slot>
-				</template>
+				<template v-if="slots.listGroupLabel" #groupLabel="groupProps"
+					><slot name="listGroupLabel" :groupLabel="groupProps"></slot
+				></template>
 				<template v-if="slots.listFooter || items?.length == 0 || slots.loadMore" #contentFooter>
-					<span v-if="items?.length == 0 && !searchInput && !listContext.loading" class="itemHint">
-						Нет элементов
-					</span>
-					<span v-if="items?.length == 0 && searchInput" class="itemHint">
-						Нет совпадений «{{ searchInput }}»
-					</span>
+					<span v-if="items?.length == 0 && !searchInput && !listContext.loading" class="itemHint"
+						>Нет элементов</span
+					>
+					<span v-if="items?.length == 0 && searchInput" class="itemHint"
+						>Нет совпадений «{{ searchInput }}»</span
+					>
 					<slot v-if="items?.length == 0 && slots.empty" name="empty"></slot>
 					<slot name="listFooter"></slot>
 					<slot
