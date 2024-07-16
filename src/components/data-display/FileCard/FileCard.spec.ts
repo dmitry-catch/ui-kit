@@ -1,13 +1,11 @@
-import { nextTick } from 'vue'
 import { render, screen } from '@testing-library/vue'
 import { describe, expect, it, vi } from 'vitest'
 import { composeStory } from '../../../../storybook/utils/composeStory.js'
-import Meta, { Default, FileData } from './FileCard.stories.js'
+import Meta, { Default } from './FileCard.stories.js'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
 import { userEvent as user } from '@testing-library/user-event'
 
 const Component = composeStory(Default, Meta)
-const FileDataComponent = composeStory(FileData, Meta)
 
 describe(`Component ${Component.name}`, () => {
 	it('should render', () => render(Component))
@@ -24,9 +22,8 @@ describe(`Component ${Component.name}`, () => {
 		expect(button).toBeNull()
 	})
 
-	it('should display extension and name of the file', async () => {
+	it('should display extension and name of the file', () => {
 		const { getByText } = render(Component, { props: { file: Meta.args.file } })
-		await nextTick
 		const { extension, fileName } = extractFileNameAndExtension(Meta.args.file.name)
 		getByText(extension)
 		getByText(fileName)

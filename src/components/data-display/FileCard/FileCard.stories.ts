@@ -18,10 +18,3 @@ export default {
 type Story = StoryObj<typeof FileCard>
 
 export const Default: Story = {}
-
-export const FileData: Story = {
-	args: {
-		file: undefined,
-		fileData: { size: 1024 ** 2 * 10, fileName: 'TestFileData.png' }
-	}
-}

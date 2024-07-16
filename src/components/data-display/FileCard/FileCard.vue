@@ -1,61 +1,32 @@
 <script setup lang="ts">
-import { toRefs, onMounted, ref } from 'vue'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
 import { byteConverter } from '../../../utils/byteConverter'
+import { toRefs } from 'vue'
 import Button from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Spinner from '../../general/Spinner/Spinner.vue'
 
-interface FileData {
-	size: number
-	fileName: string
-}
-
 interface FileCardProps {
-	file?: File
+	file: File
 	variant?: 'delete' | 'upload'
 	loading?: boolean
-	/** При отсутсвии файла в карточку можно поместить данные файла для вывода, а именно size в байтах и fileName в формате строк */
-	fileData?: FileData
-	outline?: boolean
 }
 
 const props = withDefaults(defineProps<FileCardProps>(), {
-	variant: 'delete',
-	outline: true
+	variant: 'delete'
 })
 
 const emit = defineEmits<{
-	(e: 'delete', file: File | FileData | undefined): void
-	(e: 'upload', file: File | FileData | undefined): void
+	(e: 'delete', file: File): void
+	(e: 'upload', file: File): void
 }>()
 
-const { file, loading, variant, fileData, outline } = toRefs(props)
-const extension = ref<string>()
-const fileName = ref<string>()
-const size = ref<string | number>()
-const measurementUnit = ref<string>()
-
-onMounted(() => {
-	if (file.value) {
-		const fileNameData = extractFileNameAndExtension(file.value.name)
-		const fileMetadata = byteConverter(file.value.size)
-		extension.value = fileNameData.extension
-		fileName.value = fileNameData.fileName
-		size.value = fileMetadata.size
-		measurementUnit.value = fileMetadata.measurementUnit
-	} else if (fileData.value) {
-		const fileNameData = extractFileNameAndExtension(fileData.value.fileName)
-		const fileMetadata = byteConverter(fileData.value.size)
-		extension.value = fileNameData.extension
-		fileName.value = fileNameData.fileName
-		size.value = fileMetadata.size
-		measurementUnit.value = fileMetadata.measurementUnit
-	}
-})
+const { file, loading, variant } = toRefs(props)
+const { extension, fileName } = extractFileNameAndExtension(file.value.name)
+const { size, measurementUnit } = byteConverter(file.value.size)
 </script>
 <template>
-	<div class="FileCard" :outline="outline">
+	<div class="FileCard">
 		<span class="FileCard__extension">{{ extension }}</span>
 		<span class="FileCard__name">{{ fileName }}</span>
 		<span class="FileCard__size">{{ size }} {{ measurementUnit }}</span>
@@ -63,15 +34,11 @@ onMounted(() => {
 			<Button
 				v-if="!loading && variant == 'delete'"
 				class="icon functional FileCard__deleteBtn"
-				@click="emit('delete', file ? file : fileData)"
+				@click="emit('delete', file)"
 			>
 				<Icon name="trash" />
 			</Button>
-			<Button
-				v-if="!loading && variant == 'upload'"
-				class="icon functional"
-				@click="emit('upload', file ? file : fileData)"
-			>
+			<Button v-if="!loading && variant == 'upload'" class="icon functional" @click="emit('upload', file)">
 				<Icon name="upload" />
 			</Button>
 			<Spinner v-if="loading" variant="dark" />
@@ -85,9 +52,6 @@ onMounted(() => {
 	justify-content: start;
 	gap: calc(2 * var(--design-gap-unit));
 	padding: var(--design-gap-unit) 0;
-}
-
-.FileCard[outline='true'] {
 	border-bottom: 1px solid var(--design-border-color-baseline);
 	border-top: 1px solid var(--design-border-color-baseline);
 }
