@@ -31,7 +31,6 @@ const emit = defineEmits<{
 }>()
 
 const { file, loading, variant, fileData, outline } = toRefs(props)
-
 const extension = ref<string>()
 const fileName = ref<string>()
 const size = ref<string | number>()
