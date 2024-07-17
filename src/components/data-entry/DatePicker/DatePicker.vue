@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRefs, onMounted, ref, provide, watch } from 'vue'
-import { useModalContext } from '../../../utils/useModalContext'
+import { useModalContext } from '../../../utils/useModalContext.ts'
 import { handleInitialDateValue } from './utils.js'
 
 interface DatePickerProps {
@@ -23,11 +23,6 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
 	description: ''
 })
 
-const enum TIMEZONE_POSITION {
-	START = -4,
-	END = -1
-}
-
 const { autofocus, disabled } = toRefs(props)
 
 const value = defineModel<string | Date | undefined>({ required: true })
@@ -37,12 +32,6 @@ const root = ref<HTMLElement>()
 const inputRef = ref<HTMLElement>()
 
 const focus = () => inputRef.value?.focus()
-
-const getFullIsoDate = (currentDate: string | undefined) => {
-	if (currentDate === undefined) return currentDate
-	const timezone = new Date().toISOString().slice(TIMEZONE_POSITION.START, TIMEZONE_POSITION.END)
-	return `${currentDate}T00:00:00.${timezone}Z`
-}
 
 const handleInitialDate = (value: Date | string | undefined | null) =>
 	handleInitialDateValue(value ?? '')
@@ -59,7 +48,7 @@ watch(value, (newValue) => {
 })
 
 watch(innerValue, (newValue) => {
-	if (handleInitialDate(value.value) != newValue) value.value = getFullIsoDate(handleInitialDate(newValue))
+	if (handleInitialDate(value.value) != newValue) value.value = handleInitialDate(newValue)
 })
 
 provide('datepicker-root', root)
