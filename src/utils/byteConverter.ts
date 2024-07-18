@@ -3,8 +3,7 @@ interface ByteConverterResult {
 	measurementUnit: string
 }
 
-export const byteConverter = (bytes: number | undefined): ByteConverterResult => {
-	if (!bytes) return { size: 0, measurementUnit: 'B' }
+export const byteConverter = (bytes: number): ByteConverterResult => {
 	const fileSize = bytes
 	const kiloByte = 1024
 	const megaByte = kiloByte * 1024
