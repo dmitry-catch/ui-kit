@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs, onMounted, ref } from 'vue'
+import { toRefs, ref, computed } from 'vue'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
 import { FileDataType as FileData } from './types'
 import { byteConverter } from '../../../utils/byteConverter'
@@ -28,34 +28,18 @@ const emit = defineEmits<{
 
 const { file, loading, variant, fileData, outline } = toRefs(props)
 
-const extension = ref<string>()
-const fileName = ref<string>()
-const size = ref<string | number>()
-const measurementUnit = ref<string>()
-
-onMounted(() => {
-	if (file.value) {
-		const fileNameData = extractFileNameAndExtension(file.value.name)
-		const fileMetadata = byteConverter(file.value.size)
-		extension.value = fileNameData.extension
-		fileName.value = fileNameData.fileName
-		size.value = fileMetadata.size
-		measurementUnit.value = fileMetadata.measurementUnit
-	} else if (fileData.value) {
-		const fileNameData = extractFileNameAndExtension(fileData.value.fileName)
-		const fileMetadata = byteConverter(fileData.value.size)
-		extension.value = fileNameData.extension
-		fileName.value = fileNameData.fileName
-		size.value = fileMetadata.size
-		measurementUnit.value = fileMetadata.measurementUnit
-	}
-})
+const fileNameData = computed(() =>
+	file.value ? extractFileNameAndExtension(file.value?.name) : extractFileNameAndExtension(fileData.value?.name)
+)
+const fileMetadata = computed(() =>
+	file.value ? byteConverter(file.value?.size) : byteConverter(fileData.value?.size)
+)
 </script>
 <template>
 	<div class="FileCard" :outline="outline">
-		<span class="FileCard__extension">{{ extension }}</span>
-		<span class="FileCard__name">{{ fileName }}</span>
-		<span class="FileCard__size">{{ size }} {{ measurementUnit }}</span>
+		<span class="FileCard__extension">{{ fileNameData.extension }}</span>
+		<span class="FileCard__name">{{ fileNameData.fileName }}</span>
+		<span class="FileCard__size">{{ fileMetadata.size }} {{ fileMetadata.measurementUnit }}</span>
 		<div class="FileCard__controls">
 			<Button
 				v-if="!loading && variant == 'delete'"

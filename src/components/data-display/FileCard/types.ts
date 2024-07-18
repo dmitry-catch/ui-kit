@@ -1,5 +1,5 @@
 export interface FileDataType {
-	size?: number
+	size: number
 	name: string
 	uri?: string
 }

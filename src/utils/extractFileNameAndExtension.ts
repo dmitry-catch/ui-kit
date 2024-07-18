@@ -3,7 +3,7 @@ interface FileNameAndExtension {
 	extension: string
 }
 
-export const extractFileNameAndExtension = (str: string): FileNameAndExtension => {
+export const extractFileNameAndExtension = (str: string | undefined): FileNameAndExtension => {
 	const lastDotIndex = str.lastIndexOf('.')
 	if (lastDotIndex === -1) {
 		return { fileName: str, extension: '' }
