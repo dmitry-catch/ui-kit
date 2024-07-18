@@ -16,9 +16,9 @@ export default {
 		message: toastVariants[0].message,
 		type: toastVariants[0].type
 	}
-} satisfies Meta<typeof Toast>
+} satisfies Meta<typeof Tag>
 
-type Story = StoryObj<typeof Toast>
+type Story = StoryObj<typeof Tag>
 
 export const Default: Story = {}
 

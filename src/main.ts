@@ -26,6 +26,7 @@ import VersionPopup from './components/data-display/VersionPopup/VersionPopup.vu
 import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
 import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import FileCard from './components/data-display/FileCard/FileCard.vue'
+import FileDataType from './components/data-display/FileCard/types'
 import CharCounter from './components/data-display/CharCounter/CharCounter.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
 import InputNumber from './components/data-entry/InputNumber/InputNumber.vue'
@@ -39,7 +40,6 @@ import Placeholder from './components/data-display/Placeholder/Placeholder.vue'
 import Textarea from './components/data-entry/Textarea/Textarea.vue'
 import Toggle from './components/data-entry/Toggle/Toggle.vue'
 
-import type { FileDataType } from './components/data-display/FileCard/types'
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
 
