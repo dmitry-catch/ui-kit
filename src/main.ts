@@ -39,7 +39,6 @@ import Placeholder from './components/data-display/Placeholder/Placeholder.vue'
 import Textarea from './components/data-entry/Textarea/Textarea.vue'
 import Toggle from './components/data-entry/Toggle/Toggle.vue'
 
-import type { FileDataType } from './components/data-display/FileCard/types'
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
 
@@ -95,6 +94,5 @@ export {
 	FieldLocalization,
 	DateLocalization,
 	DataListGroupType,
-	DataListItemType,
-	FileDataType
+	DataListItemType
 }
