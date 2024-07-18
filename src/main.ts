@@ -26,7 +26,6 @@ import VersionPopup from './components/data-display/VersionPopup/VersionPopup.vu
 import DatePicker from './components/data-entry/DatePicker/DatePicker.vue'
 import Uploader from './components/data-entry/Uploader/Uploader.vue'
 import FileCard from './components/data-display/FileCard/FileCard.vue'
-import FileDataType from './components/data-display/FileCard/types'
 import CharCounter from './components/data-display/CharCounter/CharCounter.vue'
 import DateRangePicker from './components/data-entry/DateRangePicker/DateRangePicker.vue'
 import InputNumber from './components/data-entry/InputNumber/InputNumber.vue'
@@ -95,6 +94,5 @@ export {
 	FieldLocalization,
 	DateLocalization,
 	DataListGroupType,
-	DataListItemType,
-	FileDataType
+	DataListItemType
 }

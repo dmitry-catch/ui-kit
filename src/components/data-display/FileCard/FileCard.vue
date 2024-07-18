@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { toRefs, onMounted, ref } from 'vue'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
-import { FileDataType as FileData } from './types'
 import { byteConverter } from '../../../utils/byteConverter'
 import Button from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Spinner from '../../general/Spinner/Spinner.vue'
+
+interface FileData {
+	size: number
+	fileName: string
+}
 
 interface FileCardProps {
 	file?: File
