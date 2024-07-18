@@ -30,9 +30,8 @@ watchEffect(async () => {
 	fill: var(--icon-color, var(--design-text-color-accent, currentColor));
 }
 
-.Icon:global(svg) {
-	fill: var(--icon-color);
-	width: var(--icon-size);
-	height: var(--icon-size);
+.Icon svg {
+	width: 100%;
+	height: 100%;
 }
 </style>
