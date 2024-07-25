@@ -2,7 +2,6 @@
 import { ref, toRefs, watchEffect } from 'vue'
 
 const props = defineProps({ name: { required: true, type: String } })
-
 const { name } = toRefs(props)
 
 const svgContent = ref<string>('')
