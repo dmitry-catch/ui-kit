@@ -82,7 +82,6 @@ const fileMetadata = computed(() =>
 
 .FileCard__size {
 	color: var(--design-text-color-on-accent-secondary);
-	min-width: fit-content;
 }
 
 .FileCard__controls {
