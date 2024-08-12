@@ -67,20 +67,24 @@ const fileMetadata = computed(() =>
 	gap: calc(2 * var(--design-gap-unit));
 	padding: var(--design-gap-unit) 0;
 }
+
 .FileCard[outline='true'] {
 	border-bottom: 1px solid var(--design-border-color-baseline);
 	border-top: 1px solid var(--design-border-color-baseline);
 }
+
 .FileCard__extension {
 	background-color: var(--design-background-color-pantone);
 	color: var(--design-text-color-on-accent-primary);
 	padding: calc(0.75 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
 	border-radius: var(--design-border-radius-tag);
 }
+
 .FileCard__size {
 	color: var(--design-text-color-on-accent-secondary);
 	min-width: fit-content;
 }
+
 .FileCard__controls {
 	margin-left: auto;
 	display: flex;
