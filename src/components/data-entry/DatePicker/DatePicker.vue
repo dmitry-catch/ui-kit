@@ -2,7 +2,16 @@
 import { toRefs, onMounted, ref, provide, watch } from 'vue'
 import { useModalContext } from '../../../utils/useModalContext'
 import { handleInitialDateValue } from './utils.js'
-import type { DatePickerProps } from './types'
+
+interface DatePickerProps {
+	disabled?: boolean
+	required?: boolean
+	invalid?: boolean
+	autofocus?: boolean
+	label?: string
+	hint?: string
+	description?: string
+}
 
 const props = withDefaults(defineProps<DatePickerProps>(), {
 	disabled: false,

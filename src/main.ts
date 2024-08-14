@@ -39,18 +39,9 @@ import Placeholder from './components/data-display/Placeholder/Placeholder.vue'
 import Textarea from './components/data-entry/Textarea/Textarea.vue'
 import Toggle from './components/data-entry/Toggle/Toggle.vue'
 
-import type { FileDataType, FileCardProps, FileCardEmits } from './components/data-display/FileCard/types'
+import type { FileDataType } from './components/data-display/FileCard/types'
 import type { DateLocalization, FieldLocalization, Localization } from './types/localization.js'
 import type { DataListGroupType, DataListItemType } from './components/data-display/DataList/types.js'
-import type { DatePickerProps } from './components/data-entry/DatePicker/types'
-import type { DateRangePickerProps } from './components/data-entry/DateRangePicker/types'
-import type { InputNumberProps } from './components/data-entry/InputNumber/types'
-import type { MultiselectProps, MultiselectSlots, MultiselectEmits } from './components/data-entry/Multiselect/types'
-import type { SelectProps, SelectEmits, SelectSlots } from './components/data-entry/Select/types'
-import type { TextareaProps } from './components/data-entry/Textarea/types'
-import type { TextFieldProps } from './components/data-entry/TextField/types'
-import type { ToggleProps } from './components/data-entry/Toggle/types'
-import type { UploaderSlots, UploaderProps, UploaderEmits } from './components/data-entry/Uploader/types'
 
 export {
 	//General category
@@ -105,22 +96,5 @@ export {
 	DateLocalization,
 	DataListGroupType,
 	DataListItemType,
-	FileDataType,
-	FileCardProps,
-	FileCardEmits,
-	DatePickerProps,
-	DateRangePickerProps,
-	InputNumberProps,
-	MultiselectProps,
-	MultiselectSlots,
-	MultiselectEmits,
-	SelectProps,
-	SelectEmits,
-	SelectSlots,
-	ToggleProps,
-	TextFieldProps,
-	TextareaProps,
-	UploaderSlots,
-	UploaderProps,
-	UploaderEmits
+	FileDataType
 }

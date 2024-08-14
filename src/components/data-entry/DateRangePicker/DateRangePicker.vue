@@ -5,7 +5,18 @@ import { DateLocalizationRu } from '../../../consts/localization.ru.js'
 import { computed, ref, toRefs, watch } from 'vue'
 import { callSelectOnElement, handleYearInputEvent, isInputEventTriggersEffect } from '../DatePicker/utils.js'
 import { focusNextInput } from './utils.js'
-import type { DateRangePickerProps } from './types'
+
+interface DateRangePickerProps {
+	disabled?: boolean
+	required?: boolean
+	invalid?: boolean
+	hint?: string
+	label?: string
+	description?: string
+	from: string
+	to: string
+	value?: string
+}
 
 //TODO Fix runtime and type errors
 const props = withDefaults(defineProps<DateRangePickerProps>(), {

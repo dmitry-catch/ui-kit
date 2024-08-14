@@ -1,18 +1,30 @@
 <script setup lang="ts">
 import { toRefs, ref, computed } from 'vue'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
+import { FileDataType as FileData } from './types'
 import { byteConverter } from '../../../utils/byteConverter'
 import Button from '../../general/Button/Button.vue'
 import Icon from '../../general/Icon/Icon.vue'
 import Spinner from '../../general/Spinner/Spinner.vue'
-import type { FileCardEmits, FileCardProps } from './types'
+
+interface FileCardProps {
+	file?: File
+	variant?: 'delete' | 'upload'
+	loading?: boolean
+	/** При отсутсвии файла в карточку можно поместить данные файла для вывода, а именно size в байтах и fileName в формате строк */
+	fileData?: FileData
+	outline?: boolean
+}
 
 const props = withDefaults(defineProps<FileCardProps>(), {
 	variant: 'delete',
 	outline: true
 })
 
-const emit = defineEmits<FileCardEmits>()
+const emit = defineEmits<{
+	(e: 'delete', file: File | FileData | undefined): void
+	(e: 'upload', file: File | FileData | undefined): void
+}>()
 
 const { file, loading, variant, fileData, outline } = toRefs(props)
 

@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
-import type { ToggleProps } from './types'
+
+interface ToggleProps {
+	/** Не доступен для изменения */
+	disabled?: boolean
+	/** Занимает всю доступную ширину */
+	block?: boolean
+	/** Размер */
+	size?: 'extra-small' | 'small' | 'medium'
+}
 
 const props = withDefaults(defineProps<ToggleProps>(), {
 	size: 'medium'

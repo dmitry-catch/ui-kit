@@ -1,7 +1,23 @@
 <script setup lang="ts">
 import CharCounter from '../../data-display/CharCounter/CharCounter.vue'
 import { computed, onMounted, ref, toRefs } from 'vue'
-import type { TextFieldProps } from './types'
+
+interface TextFieldProps {
+	autofocus?: boolean
+	required?: boolean
+	invalid?: boolean
+	readonly?: boolean
+	label?: string
+	description?: string
+	minLength?: number
+	/** Добавляет счетчик символов. */
+	maxLength?: number
+	min?: number
+	max?: number
+	placeholder?: string
+	tabindex?: '0' | '1' | 0 | 1
+	modelValue: string
+}
 
 const props = withDefaults(defineProps<TextFieldProps>(), {
 	autofocus: false,
