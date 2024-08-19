@@ -1,12 +1,9 @@
-import type { FileDataType } from '../../data-display/FileCard/types'
-
 export interface UploaderEmits {
-	(e: 'update:modelValue', files: Array<File | FileDataType>): void
-	(e: 'delete', file: File | FileDataType): void
+	(e: 'update:modelValue', files: Array<File>): void
 }
 
 export interface UploaderProps {
-	modelValue: Array<File | FileDataType>
+	modelValue: Array<File>
 	/** Отвечает за возможность перетаскивания файлов внутрь компонента */
 	draggable?: boolean
 	invalid?: boolean

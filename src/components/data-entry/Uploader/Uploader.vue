@@ -4,7 +4,6 @@ import { byteConverter } from '../../../utils/byteConverter'
 import { extractFileNameAndExtension } from '../../../utils/extractFileNameAndExtension'
 import Button from '../../general/Button/Button.vue'
 import FileCard from '../../data-display/FileCard/FileCard.vue'
-import type { FileDataType } from '../../data-display/FileCard/types'
 import type { UploaderEmits, UploaderProps, UploaderSlots } from './types'
 
 // <!-- inject localization -->
@@ -18,7 +17,7 @@ defineSlots<UploaderSlots>()
 
 const { header, invalid, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
 
-const files = ref<File[] | FileDataType[]>([])
+const files = ref<Array<File>>([])
 const loadingStates = ref()
 const isInnerInvalid = ref<boolean>(false)
 const innerErrorMessage = ref<string | null>()
@@ -113,14 +112,12 @@ const isFileAcceptable = (acceptString: string | undefined, file: File): boolean
 const fileInputRef: Ref = ref()
 
 const chooseFile = () => fileInputRef.value.click()
-const deleteFile = (file: File | FileDataType | undefined) => {
-	if (!file) return
-	files.value = files.value.filter((fileIt: File | FileDataType) => fileIt.name != file.name)
+const deleteFile = (file: File) => {
+	files.value = files.value.filter((fileIt: File) => fileIt.name != file.name)
 	const newStates = { ...loadingStates.value }
 	delete newStates[file.name]
 	loadingStates.value = newStates
 	fileInputRef.value.value = ''
-	emit('delete', file)
 }
 
 watch(files, () => {
@@ -132,7 +129,7 @@ watch(files, () => {
 
 onMounted(() => {
 	files.value = props.modelValue
-	loadingStates.value = files.value.reduce((object, file: File | FileDataType) => {
+	loadingStates.value = files.value.reduce((object, file: File) => {
 		return { ...object, [file.name]: false }
 	}, {})
 })
@@ -182,7 +179,6 @@ const root = ref()
 				v-for="file in files"
 				:key="file.size"
 				:file="file"
-				:fileData="file"
 				:loading="loadingStates[file.name]"
 				@delete="deleteFile"
 			/>
