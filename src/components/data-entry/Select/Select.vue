@@ -122,12 +122,12 @@ const root = ref()
 		<span v-if="description" class="secondary">
 			{{ description }}
 		</span>
-		<div class="Select__content" :class="{ disabled, invalid }" @click="openList">
-			<Button v-if="searchType == 'input'" class="functional icon" :disabled="disabled" @click.stop="setFocus">
+		<div class="Select__content" :class="{ disabled, invalid }">
+			<Button v-if="searchType == 'input'" class="functional icon" :disabled="disabled" @click="setFocus">
 				<Icon :name="icon ? icon : 'search'" />
 			</Button>
 			<Icon v-if="icon && searchType != 'input'" :name="icon" />
-			<div class="Select__innerContent" @click="loadList">
+			<div class="Select__innerContent" @click=";[loadList(), openList()]">
 				<span v-if="!pickedItem && searchType != 'input'" class="secondary">
 					{{ placeholder }}
 				</span>
