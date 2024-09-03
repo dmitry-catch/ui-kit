@@ -18,7 +18,7 @@ defineSlots<UploaderSlots>()
 
 const { header, invalid, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
 
-const files = defineModel<File[] | FileDataType[]>([])
+const files = ref<File[] | FileDataType[]>([])
 const loadingStates = ref()
 const isInnerInvalid = ref<boolean>(false)
 const innerErrorMessage = ref<string | null>()
@@ -126,6 +126,8 @@ const deleteFile = (file: File | FileDataType | undefined) => {
 watch(files, () => {
 	innerErrorMessage.value = null
 	isInnerInvalid.value = false
+
+	emit('update:modelValue', files.value)
 })
 
 onMounted(() => {

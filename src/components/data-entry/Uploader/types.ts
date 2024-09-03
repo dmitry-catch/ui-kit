@@ -1,6 +1,7 @@
 import type { FileDataType } from '../../data-display/FileCard/types'
 
 export interface UploaderEmits {
+	(e: 'update:modelValue', files: Array<File | FileDataType>): void
 	(e: 'delete', file: File | FileDataType): void
 }
 
