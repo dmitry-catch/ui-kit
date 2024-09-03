@@ -249,6 +249,7 @@ const root = ref()
 	position: relative;
 	cursor: pointer;
 }
+
 .Select__innerContent {
 	width: 100%;
 	text-align: start;
