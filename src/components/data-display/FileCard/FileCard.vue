@@ -41,7 +41,7 @@ const fileMetadata = computed(() =>
 				class="icon functional"
 				@click="emit('upload', file ? file : fileData)"
 			>
-				<Icon name="download" />
+				<Icon name="upload" />
 			</Button>
 			<Spinner v-if="loading" variant="dark" />
 		</div>
