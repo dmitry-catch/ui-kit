@@ -123,7 +123,7 @@ const slots = defineSlots<{
 			<slot name="listItem" :listItem="item"></slot>
 		</template>
 		<template v-else #item="{ item }">
-			<div class="SearchPopup__checkbox" :size="size">
+			<div class="SearchPopup__checkbox">
 				<span class="SearchPopup__checkboxVisible" :visible="selected.includes(item)">
 					<Icon class="SearchPopup__checkboxChecked" name="check"></Icon>
 				</span>
@@ -157,13 +157,11 @@ const slots = defineSlots<{
 	margin-right: var(--design-gap-unit);
 }
 
-/* Search Popup checkbox styles with sizes */
 .SearchPopup__checkbox {
 	display: flex;
 	gap: calc(1.5 * var(--design-gap-unit));
 	align-content: center;
 }
-
 .SearchPopup__checkboxVisible {
 	width: var(--design-current-line-height);
 	height: var(--design-current-line-height);
@@ -172,39 +170,16 @@ const slots = defineSlots<{
 	display: inline-block;
 	box-sizing: border-box;
 }
-
-.SearchPopup__checkbox[size='small'] .SearchPopup__checkboxVisible {
-	width: var(--design-line-height-small);
-	height: var(--design-line-height-small);
-}
-
-.SearchPopup__checkbox[size='extra-small'] .SearchPopup__checkboxVisible {
-	width: var(--design-line-height-footnote);
-	height: var(--design-line-height-footnote);
-}
-/* ---------------------------------------------- */
-
-/* Search Popup checkboxChecked styles with sizes */
 .SearchPopup__checkboxChecked {
 	visibility: hidden;
 	--icon-color: var(--design-background-color-on-accent-primary);
-	--icon-size: calc(var(--design-current-line-height) - 2px);
-}
-
-.SearchPopup__checkbox[size='small'] .SearchPopup__checkboxChecked {
-	/* 2px compensattion from checkbox border */
-	--icon-size: calc(var(--design-line-height-small) - 2px);
-}
-.SearchPopup__checkbox[size='extra-small'] .SearchPopup__checkboxChecked {
-	/* 2px compensattion from checkbox border */
-	--icon-size: calc(var(--design-line-height-footnote) - 2px);
+	--icon-size: var(--design-current-line-height);
 }
 
 .SearchPopup__checkboxVisible[visible='true'] > .SearchPopup__checkboxChecked {
 	visibility: initial;
 	background: var(--design-background-color-accent-primary);
 }
-/* ---------------------------------------------- */
 
 .SearchPopup__itemHint {
 	display: block;
