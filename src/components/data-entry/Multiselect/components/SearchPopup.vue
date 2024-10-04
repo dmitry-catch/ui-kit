@@ -199,6 +199,7 @@ const slots = defineSlots<{
 	/* 2px compensattion from checkbox border */
 	--icon-size: calc(var(--design-line-height-footnote) - 2px);
 }
+
 .SearchPopup__checkboxVisible[visible='true'] > .SearchPopup__checkboxChecked {
 	visibility: initial;
 	background: var(--design-background-color-accent-primary);
