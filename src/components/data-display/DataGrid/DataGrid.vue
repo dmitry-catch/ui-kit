@@ -6,7 +6,6 @@ import { useFilterContext } from './utils/useFilterContext.js'
 import { useSortingContext } from './utils/useSortingContext.js'
 import { DataGridColumn } from './types.js'
 import DataGridRowGroup from './components/DataGridRowGroup.vue'
-import Spinner from '../../general/Spinner/Spinner.vue'
 
 export interface Props {
 	columns: Array<DataGridColumn>
@@ -15,17 +14,13 @@ export interface Props {
 	allowSelection: boolean
 	selectedRows: Array<any>
 	allowPagination: boolean
-	loading?: boolean
-	spinnerOverlay?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	rowKey: (item: any) => item.id,
 	allowSelection: false,
 	selectedRows: () => [],
-	allowPagination: false,
-	loading: false,
-	spinnerOverlay: false
+	allowPagination: false
 })
 
 const emit = defineEmits([
@@ -92,7 +87,7 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 				>
 				</DataGridHeaderRow>
 			</thead>
-			<tbody v-if="!loading || (loading && spinnerOverlay)" class="DataGrid__tbody">
+			<tbody class="DataGrid__tbody">
 				<DataGridRowGroup
 					v-for="item in dataSource"
 					:key="rowKey(item)"
@@ -107,14 +102,6 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 				</DataGridRowGroup>
 			</tbody>
 		</table>
-		<Spinner
-			v-if="loading"
-			class="DataGrid__spinner"
-			:class="{ overlay: spinnerOverlay }"
-			variant="dark"
-			size="extra-large"
-			center
-		/>
 	</div>
 </template>
 
@@ -151,12 +138,6 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 .DataGrid__header {
 	position: sticky;
 	top: 0;
-}
-
-.DataGrid__spinner.overlay {
-	background-color: var(--design-text-color-on-accent-primary);
-	opacity: 80%;
-	z-index: 1;
 }
 
 .DataGrid__thead,
