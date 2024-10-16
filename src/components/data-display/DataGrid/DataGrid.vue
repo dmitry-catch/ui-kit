@@ -81,7 +81,7 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 </script>
 
 <template>
-	<div ref="root" class="DataGrid" :class="{ loading: loading }">
+	<div ref="root" class="DataGrid">
 		<table class="DataGrid__table" :allowPagination="allowPagination">
 			<thead class="DataGrid__thead">
 				<DataGridHeaderRow
@@ -107,9 +107,14 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 				</DataGridRowGroup>
 			</tbody>
 		</table>
-		<div v-if="loading" class="DataGrid__spinnerSurface" :class="{ overlay: spinnerOverlay }">
-			<Spinner class="DataGrid__spinner" variant="dark" size="extra-large" />
-		</div>
+		<Spinner
+			v-if="loading"
+			class="DataGrid__spinner"
+			:class="{ overlay: spinnerOverlay }"
+			variant="dark"
+			size="extra-large"
+			center
+		/>
 	</div>
 </template>
 
@@ -124,12 +129,6 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 	height: fit-content;
 	overflow: auto;
 }
-
-.DataGrid.loading {
-	position: relative;
-	min-height: 100%;
-}
-
 .DataGrid__table {
 	width: 100%;
 	height: 100%;
@@ -154,19 +153,10 @@ watch(internalColumns, (newValue) => emit('update:columns', newValue))
 	top: 0;
 }
 
-.DataGrid__spinnerSurface {
-	position: absolute;
-	inset: 0;
-}
-
-.DataGrid__spinnerSurface.overlay {
+.DataGrid__spinner.overlay {
 	background-color: var(--design-text-color-on-accent-primary);
 	opacity: 80%;
 	z-index: 1;
-}
-
-.DataGrid__spinner {
-	transform: translate(0px, 294px);
 }
 
 .DataGrid__thead,

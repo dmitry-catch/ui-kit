@@ -136,18 +136,23 @@ const root = ref()
 			<slot name="description"></slot>
 		</span>
 
-		<div class="Multiselect__content" :class="{ disabled, invalid }">
+		<div class="Multiselect__content" :size="size" :class="{ disabled, invalid }">
 			<Icon v-if="icon" :name="icon" />
 			<div class="Multiselect__innerContent" @click=";[loadList(), openList()]">
 				<span v-if="modelValue?.length == 0" class="secondary">
 					{{ placeholder }}
 				</span>
-				<span v-if="shownName" class="Multiselect_name">
+				<span v-if="shownName" class="Multiselect__name">
 					<span class="Multiselect__nameInner">
 						{{ shownName }}
 					</span>
-					<Button v-if="shownName" class="icon functional" :disabled="disabled" @click="clearInput">
-						<Icon name="close" />
+					<Button
+						v-if="shownName"
+						class="icon functional Multiselect__contentRemove"
+						:disabled="disabled"
+						@click="clearInput"
+					>
+						<Icon class="Multiselect__contentRemoveIcon" name="close" />
 					</Button>
 				</span>
 			</div>
@@ -197,6 +202,7 @@ const root = ref()
 	</div>
 </template>
 <style scoped>
+/* Multiselect styles with sizes */
 .Multiselect {
 	width: 100%;
 	display: flex;
@@ -204,43 +210,49 @@ const root = ref()
 	justify-content: center;
 	gap: var(--design-gap-unit);
 }
+
+.Multiselect[size='small']:deep(*) {
+	font-size: var(--design-font-size-small);
+	line-height: var(--design-line-height-small);
+}
+
+.Multiselect[size='extra-small']:deep(*) {
+	font-size: var(--design-font-size-footnote);
+	line-height: var(--design-line-height-footnote);
+}
+/* ------------------------------ */
+
 .Multiselect__Label {
 	display: flex;
 	gap: var(--design-gap-unit);
 }
+
+/* Multiselect content styles with sizes */
 .Multiselect__content {
+	box-sizing: content-box;
 	height: 32px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	gap: var(--design-gap-unit);
-	max-width: auto;
 	border-radius: var(--design-border-radius-control);
 	border: 1px solid var(--design-border-color-baseline);
 	background: var(--design-background-color-primary);
-	padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit)) 0 calc(2 * var(--design-gap-unit));
+	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
 	position: relative;
 	cursor: pointer;
 }
 
-.Multiselect_name {
-	display: flex;
-	width: fit-content;
+.Multiselect__content[size='extra-small'] {
+	height: calc(0.5 * 32px);
+	padding: calc(0.5 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
+	gap: calc(0.5 * var(--design-gap-unit));
+}
+
+.Multiselect__content[size='small'] {
+	height: calc(0.75 * 32px);
+	padding: calc(0.75 * var(--design-gap-unit)) calc(1.75 * var(--design-gap-unit));
 	gap: calc(0.75 * var(--design-gap-unit));
-	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
-	background-color: var(--design-background-color-on-accent-primary);
-	border-radius: var(--design-border-radius-control);
-	max-width: 100%;
-}
-.Multiselect__nameInner {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-.Multiselect__innerContent {
-	width: 100%;
-	height: 100%;
-	text-align: start;
 }
 
 .Multiselect__content.disabled * {
@@ -252,24 +264,76 @@ const root = ref()
 .Multiselect__content.invalid:focus-within {
 	box-shadow: 0px 0px 0px 3px rgba(210, 40, 53, 0.2);
 }
-.Multiselect[size='extra-small'] > .Multiselect__content {
-	height: calc(0.5 * 32px);
-	padding: calc(0.5 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
-	gap: calc(0.5 * var(--design-gap-unit));
-}
-.Multiselect[size='small'] > .Multiselect__content {
-	height: calc(0.75 * 32px);
-	padding: calc(0.75 * var(--design-gap-unit)) calc(1.75 * var(--design-gap-unit));
+/* -----------------------------------------  */
+
+/* Multiselect content name styles with sizes */
+.Multiselect__name {
+	display: flex;
+	width: fit-content;
 	gap: calc(0.75 * var(--design-gap-unit));
+	padding: calc(0.5 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
+	background-color: var(--design-background-color-on-accent-primary);
+	border-radius: var(--design-border-radius-control);
+	max-width: 100%;
+	align-items: center;
 }
-.Multiselect[size='small']:deep(*) {
-	font-size: var(--design-font-size-small);
-	line-height: var(--design-line-height-small);
+
+.Multiselect__content[size='extra-small'] .Multiselect__name {
+	padding: calc(0.05 * var(--design-gap-unit)) calc(1.5 * var(--design-gap-unit));
 }
-.Multiselect[size='extra-small']:deep(*) {
-	font-size: var(--design-font-size-footnote);
-	line-height: var(--design-line-height-footnote);
+
+.Multiselect__content[size='small'] .Multiselect__name {
+	padding: calc(0.25 * var(--design-gap-unit)) calc(2 * var(--design-gap-unit));
 }
+/* -----------------------------------------  */
+
+.Multiselect__nameInner {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.Multiselect__innerContent {
+	display: block;
+	width: 100%;
+	text-align: start;
+}
+
+/* Multiselect content removeButton styles with sizes  */
+.Multiselect__content .Multiselect__contentRemove {
+	/* non standard icon sizes from dropdown - to match dropdown chevorn icon size */
+	--icon-size: 24px;
+	height: var(--icon-size);
+	width: var(--icon-size);
+}
+
+.Multiselect__content[size='small'] .Multiselect__contentRemove {
+	/* non standard icon sizes from dropdown - to match dropdown chevorn icon size */
+	--icon-size: 20px;
+	height: var(--icon-size);
+	width: var(--icon-size);
+}
+
+.Multiselect__content[size='extra-small'] .Multiselect__contentRemove {
+	/* non standard icon sizes from dropdown - to match dropdown chevorn icon size */
+	--icon-size: 18px;
+	height: var(--icon-size);
+	width: var(--icon-size);
+}
+/* ------------------------------------------- */
+
+/* Multiselect content removeButton Icon styles with sizes */
+.Multiselect__content .Multiselect__contentRemoveIcon {
+	--icon-size: 24px;
+}
+
+.Multiselect__content[size='small'] .Multiselect__contentRemoveIcon {
+	--icon-size: 20px;
+}
+
+.Multiselect__content[size='extra-small'] .Multiselect__contentRemoveIcon {
+	--icon-size: 18px;
+}
+/* ------------------------------------------- */
 
 .Multiselect__searchPopup:deep(.SearchPopup__input) {
 	padding-bottom: 0px;
