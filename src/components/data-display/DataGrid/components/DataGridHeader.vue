@@ -21,7 +21,7 @@ import { useClickOutside } from '../../../../utils/useClickOutside.js'
 import { useSortingContext } from '../utils/useSortingContext.js'
 import { MouseEvent } from 'happy-dom'
 import DatePicker from '../../../data-entry/DatePicker/DatePicker.vue'
-import { isCustomHeaderColumn, isDateColumn, isEnumColumn, isTypedColumn } from '../utils/index.js'
+import { isDateColumn, isEnumColumn, isTypedColumn } from '../utils/index.js'
 
 interface DataGridHeaderProps {
 	column: DataGridColumn
@@ -124,13 +124,7 @@ onUnmounted(() => {
 </script>
 <template>
 	<th class="DataGridHeader">
-		<div
-			v-if="!searchOpened"
-			class="DataGridHeader__name accent"
-			:class="{ danger: isCustomHeaderColumn(column) && column.headerVariant === 'highlighted' }"
-		>
-			{{ column.name }}
-		</div>
+		<div v-if="!searchOpened" class="DataGridHeader__name accent">{{ column.name }}</div>
 		<div
 			v-if="searchOpened"
 			class="DataGridHeader__eventInterceptor"

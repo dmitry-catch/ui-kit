@@ -15,10 +15,6 @@ export type CustomizedGridColumn<T = any> = BaseGridColumn & {
 	cellComponent: CellComponent<T>
 }
 
-export type CustomHeaderGridColumn = BaseGridColumn & {
-	headerVariant: 'highlighted'
-}
-
 export type EnumGridColumn<T = any> = TypedGridColumn & {
 	type: 'enum'
 	template: (value: T) => string

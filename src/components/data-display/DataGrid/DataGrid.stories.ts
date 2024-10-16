@@ -37,12 +37,6 @@ export const Default: Story = {
 					value: false,
 					date: new Date(2023, 3, 2),
 					type: 'date'
-				},
-				{
-					name: 'highlighted',
-					field: 'highlighted',
-					headerVariant: 'highlighted',
-					value: false
 				}
 			])
 
