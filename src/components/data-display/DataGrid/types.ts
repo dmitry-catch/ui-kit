@@ -1,5 +1,4 @@
 import { Component } from 'vue'
-import { BinaryFilterExpression } from '@forecsys/collections'
 
 export type BaseGridColumn = object & {
 	name: string
@@ -29,14 +28,3 @@ export type EnumGridColumn<T = any> = TypedGridColumn & {
 export type DataGridColumn<T = any> = BaseGridColumn | TypedGridColumn | EnumGridColumn<T> | CustomizedGridColumn<T>
 
 export type DataGridCellContentProps = { column: DataGridColumn; item: any }
-
-export interface ItemCheckboxClickEmit {
-	id: unknown
-	value: boolean
-	groupFilters?: BinaryFilterExpression[]
-}
-
-export interface GroupCheckboxClickEmit {
-	value: boolean
-	filters?: BinaryFilterExpression[]
-}

@@ -14,7 +14,6 @@ interface DataGridRowProps {
 }
 
 const props = defineProps<DataGridRowProps>()
-const emit = defineEmits(['itemCheckboxClick'])
 
 const { item, columns, detailsColumn, selectColumn } = toRefs(props)
 const detailsVisible = ref(false)
@@ -31,13 +30,12 @@ const selected = computed({
 		}
 	}
 })
-const itemCheckboxClick = (value: boolean) => emit('itemCheckboxClick', { id: item.value.id, value })
 </script>
 
 <template>
 	<tr class="DataGridRow">
 		<td class="DataGridRow__cell DataGridRow__selectCell">
-			<Checkbox v-if="selectColumn" v-model="selected" @update:modelValue="itemCheckboxClick"></Checkbox>
+			<Checkbox v-if="selectColumn" v-model="selected"></Checkbox>
 		</td>
 		<td v-if="detailsColumn" class="DataGridRow__cell DataGridRow__detailsCell">
 			<span class="DataGridRow__detailsToggler">

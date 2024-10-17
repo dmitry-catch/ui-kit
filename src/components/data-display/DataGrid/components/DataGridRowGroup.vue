@@ -1,30 +1,26 @@
 <script setup lang="ts">
 import { computed, ref, toRefs } from 'vue'
-import { GroupExtended, isGroup } from '@forecsys/collections'
+import { Group, isGroup } from '@forecsys/collections'
 import DataGroupToggler from '../../../non-public/DataGroupToggler/DataGroupToggler.vue'
 import DataGridRow from './DataGridRow.vue'
-import type { DataGridColumn, GroupCheckboxClickEmit, ItemCheckboxClickEmit } from '../types.js'
+import { DataGridColumn } from '../types.js'
 
 interface DataGridRowGroupProps {
 	columns: Array<DataGridColumn>
 	item: any
 	detailsColumn?: boolean
 	selectColumn?: boolean
-	selectedGroups?: string[]
 }
 
 const props = defineProps<DataGridRowGroupProps>()
-const emit = defineEmits(['itemClick', 'groupCheckboxClick', 'itemCheckboxClick'])
+const emit = defineEmits(['itemClick'])
 
-const { item, columns, detailsColumn, selectedGroups } = toRefs(props)
-const group = computed(() => item.value as GroupExtended<any>)
+const { item, columns, detailsColumn } = toRefs(props)
+const group = computed(() => item.value as Group<any>)
 const isItem = computed(() => !isGroup(item.value))
 
 const opened = ref(true)
 const itemClick = (data: any) => emit('itemClick', data)
-const groupCheckboxClick = (data: GroupCheckboxClickEmit) => emit('groupCheckboxClick', data)
-const itemCheckboxClick = (data: ItemCheckboxClickEmit) =>
-	emit('itemCheckboxClick', { ...data, groupFilters: data.groupFilters || group.value.filters })
 </script>
 
 <template>
@@ -35,20 +31,13 @@ const itemCheckboxClick = (data: ItemCheckboxClickEmit) =>
 		:detailsColumn="detailsColumn"
 		:selectColumn="selectColumn"
 		@click="itemClick(item)"
-		@itemCheckboxClick="itemCheckboxClick"
 	>
 		<template #rowDetails="{ item }">
 			<slot name="rowDetails" :item="item"></slot>
 		</template>
 	</DataGridRow>
 	<template v-else>
-		<DataGroupToggler
-			v-model="opened"
-			class="DataGridRowGroup__toggler"
-			:group="group"
-			:selectedGroups="selectedGroups"
-			@groupCheckboxClick="groupCheckboxClick"
-		></DataGroupToggler>
+		<DataGroupToggler v-model="opened" class="DataGridRowGroup__toggler" :group="group"></DataGroupToggler>
 		<template v-if="opened">
 			<DataGridRowGroup
 				v-for="(item, idx) of group.data"
@@ -57,10 +46,7 @@ const itemCheckboxClick = (data: ItemCheckboxClickEmit) =>
 				:columns="columns"
 				:detailsColumn="detailsColumn"
 				:selectColumn="selectColumn"
-				:selectedGroups="selectedGroups"
 				@itemClick="itemClick"
-				@groupCheckboxClick="groupCheckboxClick"
-				@itemCheckboxClick="itemCheckboxClick"
 			>
 				<template #rowDetails="{ item }">
 					<slot name="rowDetails" :item="item"></slot>

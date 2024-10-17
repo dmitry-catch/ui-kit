@@ -4,7 +4,7 @@ import { and, FilterExpression } from '@forecsys/collections'
 import DataGridHeaderRow from './components/DataGridHeaderRow.vue'
 import { useFilterContext } from './utils/useFilterContext.js'
 import { useSortingContext } from './utils/useSortingContext.js'
-import type { DataGridColumn, GroupCheckboxClickEmit, ItemCheckboxClickEmit } from './types.js'
+import { DataGridColumn } from './types.js'
 import DataGridRowGroup from './components/DataGridRowGroup.vue'
 import Spinner from '../../general/Spinner/Spinner.vue'
 
@@ -17,7 +17,6 @@ export interface Props {
 	allowPagination: boolean
 	loading?: boolean
 	spinnerOverlay?: boolean
-	selectedGroups?: string[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,8 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 	selectedRows: () => [],
 	allowPagination: false,
 	loading: false,
-	spinnerOverlay: false,
-	selectedGroups: () => []
+	spinnerOverlay: false
 })
 
 const emit = defineEmits([
@@ -36,13 +34,11 @@ const emit = defineEmits([
 	'update:group',
 	'update:order',
 	'update:settings',
-	'update:columns',
-	'groupCheckboxClick',
-	'itemCheckboxClick'
+	'update:columns'
 ])
 
 const slots = useSlots()
-const { columns, dataSource, rowKey, allowSelection, selectedRows, selectedGroups } = toRefs(props)
+const { columns, dataSource, rowKey, allowSelection, selectedRows } = toRefs(props)
 const hasDetails = computed(() => Boolean(slots.rowDetails))
 const contentColumnsCount = computed(() => columns.value.length)
 const columnsCount = computed(() => columns.value.length + Number(hasDetails.value) + 1)
@@ -82,9 +78,6 @@ const internalColumns = ref(columns.value)
 
 watch(columns, () => (internalColumns.value = columns.value))
 watch(internalColumns, (newValue) => emit('update:columns', newValue))
-
-const groupCheckboxClick = (data: GroupCheckboxClickEmit) => emit('groupCheckboxClick', data)
-const itemCheckboxClick = (data: ItemCheckboxClickEmit) => emit('itemCheckboxClick', data)
 </script>
 
 <template>
@@ -107,9 +100,6 @@ const itemCheckboxClick = (data: ItemCheckboxClickEmit) => emit('itemCheckboxCli
 					:columns="internalColumns"
 					:detailsColumn="hasDetails"
 					:selectColumn="allowSelection"
-					:selectedGroups="selectedGroups"
-					@groupCheckboxClick="groupCheckboxClick"
-					@itemCheckboxClick="itemCheckboxClick"
 				>
 					<template #rowDetails="{ item }">
 						<slot name="rowDetails" :item="item"></slot>
