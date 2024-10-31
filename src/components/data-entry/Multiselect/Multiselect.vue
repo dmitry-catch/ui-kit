@@ -89,7 +89,7 @@ const onSearch = () => {
 	if (searchType.value && searchType.value != 'auto')
 		optionsHandler(
 			options.value.filter((option: SelectOptionType<TValue>) =>
-				(option?.name?.toString() ?? '').toLowerCase().includes(searchInput.value?.toLowerCase())
+				option.name.toLowerCase().includes(searchInput.value?.toLowerCase())
 			)
 		)
 }
