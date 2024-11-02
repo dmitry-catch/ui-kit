@@ -1,8 +1,7 @@
 /*
 	Text colors
  */
-:root,
-:host {
+:root {
 	--design-text-color-secondary: #626974;
 	--design-text-color-hover-secondary: #cacdd0;
 	--design-text-color-primary: #212c3a;
@@ -21,8 +20,7 @@
 /**
 	Borders
  */
-:root,
-:host {
+:root {
 	--design-border-color-primary: #cacdd0;
 	--design-border-color-secondary: #a6abb0;
 	--design-border-color-tertiary: #e0e0e0;
@@ -41,8 +39,7 @@
 /**
 	Backgrounds
  */
-:root,
-:host {
+:root {
 	--design-background-color-disabled-primary: #cacdd0;
 	--design-background-color-primary: #fafafa;
 	--design-background-color-secondary: #fafafa;
@@ -70,8 +67,7 @@
 /**
 	Additional colors
  */
-:root,
-:host {
+:root {
 	--design-additional-color-1: #39b3ef;
 	--design-additional-color-2: #3e8af0;
 	--design-additional-color-3: #6b7af6;
@@ -84,6 +80,5 @@
 /**
 	Gradients
  */
-:root,
-:host {
+:root {
 }

@@ -1,5 +1,4 @@
-:root,
-:host {
+:root {
 	--design-border-radius-control: 4px;
 	--design-border-radius-icon-button: 50%;
 	--design-border-radius-surface: 16px;

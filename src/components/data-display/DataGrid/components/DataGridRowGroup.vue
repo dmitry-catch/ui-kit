@@ -43,6 +43,7 @@ const itemCheckboxClick = (data: ItemCheckboxClickEmit) =>
 	</DataGridRow>
 	<template v-else>
 		<DataGroupToggler
+			:key="group.key"
 			v-model="opened"
 			class="DataGridRowGroup__toggler"
 			:group="group"

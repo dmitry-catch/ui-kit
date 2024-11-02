@@ -3,8 +3,7 @@
 	src: url(../fonts/Inter/Inter-VariableFont_slnt_wght.ttf);
 }
 
-:root,
-:host {
+:root {
 	--design-font-family: 'Inter', sans-serif;
 	--design-font-family-accent: var(--design-font-family);
 
