@@ -68,8 +68,7 @@ b {
 .text-small,
 .text-footnote,
 .text-hint,
-:root,
-:host {
+body {
 	color: var(--design-text-color-primary);
 	font-weight: 400;
 	font-family: var(--design-font-family);
@@ -82,8 +81,7 @@ b {
 }
 
 .text-medium,
-:root,
-:host {
+body {
 	--design-current-font-size: var(--design-font-size-medium, 16px);
 	--design-current-line-height: var(--design-line-height-medium, 24px);
 }
