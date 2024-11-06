@@ -132,7 +132,8 @@ const openDropdown = () => {
 
 const outsideClickHandler = (evt: MouseEvent) => {
 	const target = evt.target as HTMLElement
-	if (!dropdownContentRef.value?.contains(target) && isDropdownOpen.value) {
+	const popoverContent = document.querySelector('.Popover__content')
+	if (!popoverContent?.contains(target) && isDropdownOpen.value) {
 		closeDropdown('outside')
 	}
 }
@@ -479,7 +480,7 @@ useModalContext(root)
 													}
 												]"
 												:size="size"
-												@click.capture="handleClick(item)"
+												@click="handleClick(item)"
 											>
 												<slot name="item" :item="item"></slot>
 											</div>
