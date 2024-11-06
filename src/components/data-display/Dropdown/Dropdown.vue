@@ -156,7 +156,7 @@ const outsideClickHandler = (evt: Event, anyTree: boolean = false) => {
 
 	if (isOwnTree || (anyTree && !suppressAnyTree)) {
 		const target = evt.target as HTMLElement
-		if (!dropdownMenuRef.value?.contains(evt.target) && isDropdownOpen.value) {
+		if (!dropdownContentRef.value?.contains(target) && isDropdownOpen.value) {
 			closeDropdown('outside')
 		}
 	}
