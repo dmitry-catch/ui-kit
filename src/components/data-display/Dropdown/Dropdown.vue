@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch, nextTick, onMounted, onUnmounted, computed, onBeforeUnmount } from 'vue'
+import { ref, toRefs, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import { useModalContext } from '../../../utils/useModalContext'
 import Icon from '../../general/Icon/Icon.vue'
 import DropdownItem from './DropdownItem/DropdownItem.vue'
@@ -118,7 +118,6 @@ const toggleDropdown = () => {
 }
 
 const closeDropdown = (closeType: 'keyboard' | 'outside' | 'item') => {
-	console.info('closeDropdown', closeType)
 	if (autoClose.value === true || (Array.isArray(autoClose.value) && autoClose.value.includes(closeType))) {
 		emit('beforeClose')
 		isDropdownOpen.value = false
@@ -130,35 +129,11 @@ const closeDropdown = (closeType: 'keyboard' | 'outside' | 'item') => {
 const openDropdown = () => {
 	isDropdownOpen.value = true
 }
-let notOwnTreeCloseTimeout: NodeJS.Timeout | null = null
-let suppressAnyTree = false
-const outsideClickHandler = (evt: Event, anyTree: boolean = false) => {
-	if (isDropdownOpen.value === false) return
-	const currentTarget = evt.currentTarget as Document | ShadowRoot | HTMLElement | null
-	const isOwnTree = currentTarget?.contains(dropdownContentRef.value) ?? false
-	if (isOwnTree) {
-		if (notOwnTreeCloseTimeout) {
-			clearTimeout(notOwnTreeCloseTimeout)
-			notOwnTreeCloseTimeout = null
-		}
 
-		suppressAnyTree = true
-		setTimeout(() => (suppressAnyTree = false), 200)
-	} else {
-		if (!notOwnTreeCloseTimeout) {
-			notOwnTreeCloseTimeout = setTimeout(() => {
-				outsideClickHandler(evt, true)
-				notOwnTreeCloseTimeout = null
-			}, 10)
-			return
-		}
-	}
-
-	if (isOwnTree || (anyTree && !suppressAnyTree)) {
-		const target = evt.target as HTMLElement
-		if (!dropdownContentRef.value?.contains(target) && isDropdownOpen.value) {
-			closeDropdown('outside')
-		}
+const outsideClickHandler = (evt: MouseEvent) => {
+	const target = evt.target as HTMLElement
+	if (!dropdownContentRef.value?.contains(target) && isDropdownOpen.value) {
+		closeDropdown('outside')
 	}
 }
 
@@ -379,24 +354,14 @@ watch(isDropdownOpen, (newValue) => {
 	}
 })
 
-const getDocumentRoot = (element: Node): Node => {
-	if (element.parentNode == null) return element
-
-	return getDocumentRoot(element.parentNode)
-}
-
-onMounted(async () => {
+onMounted(() => {
 	isDropdownOpen.value = modelValue.value ?? false
 	document.addEventListener('mousedown', outsideClickHandler)
-	const documentRoot = getDocumentRoot(root.value)
-	documentRoot.addEventListener('mousedown', outsideClickHandler)
 })
 
-onBeforeUnmount(async () => {
+onUnmounted(() => {
 	observer?.disconnect()
 	document.removeEventListener('mousedown', outsideClickHandler)
-	const documentRoot = getDocumentRoot(root.value)
-	documentRoot.removeEventListener('mousedown', outsideClickHandler)
 })
 
 useModalContext(root)
