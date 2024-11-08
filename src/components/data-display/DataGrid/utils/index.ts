@@ -4,8 +4,6 @@ import {
 	CustomizedGridColumn,
 	DataGridColumn,
 	EnumGridColumn,
-	FilterableGridColumn,
-	SortableGridColumn,
 	TypedGridColumn
 } from '../types.js'
 
@@ -23,14 +21,6 @@ export const isCustomizedColumn = (column: DataGridColumn): column is Customized
 
 export const isCustomHeaderColumn = (column: DataGridColumn): column is CustomHeaderGridColumn => {
 	return 'headerVariant' in column
-}
-
-export const isFilterableColumn = (column: DataGridColumn): column is FilterableGridColumn => {
-	return 'filterable' in column
-}
-
-export const isSortableColumn = (column: DataGridColumn): column is SortableGridColumn => {
-	return 'sortable' in column
 }
 
 export const isEnumColumn = (column: DataGridColumn): column is EnumGridColumn => {

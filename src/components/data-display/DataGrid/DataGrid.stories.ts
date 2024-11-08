@@ -42,9 +42,7 @@ export const Default: Story = {
 					name: 'highlighted',
 					field: 'highlighted',
 					headerVariant: 'highlighted',
-					value: false,
-					filterable: false,
-					sortable: false
+					value: false
 				}
 			])
 

@@ -21,14 +21,7 @@ import { useClickOutside } from '../../../../utils/useClickOutside.js'
 import { useSortingContext } from '../utils/useSortingContext.js'
 import { MouseEvent } from 'happy-dom'
 import DatePicker from '../../../data-entry/DatePicker/DatePicker.vue'
-import {
-	isCustomHeaderColumn,
-	isDateColumn,
-	isEnumColumn,
-	isTypedColumn,
-	isFilterableColumn,
-	isSortableColumn
-} from '../utils/index.js'
+import { isCustomHeaderColumn, isDateColumn, isEnumColumn, isTypedColumn } from '../utils/index.js'
 
 interface DataGridHeaderProps {
 	column: DataGridColumn
@@ -128,16 +121,6 @@ onMounted(() => {
 onUnmounted(() => {
 	document.removeEventListener('scroll', closeFilterList)
 })
-
-const showSortButton = (column: DataGridColumn) => {
-	if (isSortableColumn(column)) return column.sortable
-	return true
-}
-
-const showFilterButton = (column: DataGridColumn) => {
-	if (isFilterableColumn(column)) return column.filterable
-	return true
-}
 </script>
 <template>
 	<th class="DataGridHeader">
@@ -179,7 +162,7 @@ const showFilterButton = (column: DataGridColumn) => {
 		</div>
 		<div class="DataGridHeader__actions">
 			<Button
-				v-if="showFilterButton(column) && (searchable || isDateColumn(column)) && !searchOpened"
+				v-if="(searchable || isDateColumn(column)) && !searchOpened"
 				class="DataGridHeader__action DataGridHeader__actionSearch icon functional"
 				@click="searchOpened = !searchOpened"
 			>
@@ -187,7 +170,7 @@ const showFilterButton = (column: DataGridColumn) => {
 				<Icon v-else :class="{ accent: Boolean(date) }" name="calendar"></Icon>
 			</Button>
 			<div
-				v-if="showFilterButton(column) && isEnumColumn(column)"
+				v-if="isEnumColumn(column)"
 				:ref="(element) => (filterListButton = element)"
 				class="DataGridHeader__eventInterceptor"
 			>
@@ -198,11 +181,7 @@ const showFilterButton = (column: DataGridColumn) => {
 					<Icon name="filter"></Icon>
 				</Button>
 			</div>
-			<Button
-				v-if="showSortButton(column)"
-				class="DataGridHeader__action DataGridHeader__actionSort icon functional"
-				@click="clickSort"
-			>
+			<Button class="DataGridHeader__action DataGridHeader__actionSort icon functional" @click="clickSort">
 				<Icon v-if="existingSort == null" name="sort"></Icon>
 				<Icon v-else-if="existingSort.direction === 'asc'" name="sort_ascending"></Icon>
 				<Icon v-else-if="existingSort.direction === 'desc'" name="sort_decending"></Icon>

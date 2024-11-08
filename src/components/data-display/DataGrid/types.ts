@@ -20,14 +20,6 @@ export type CustomHeaderGridColumn = BaseGridColumn & {
 	headerVariant: 'highlighted'
 }
 
-export type FilterableGridColumn = BaseGridColumn & {
-	filterable: boolean
-}
-
-export type SortableGridColumn = BaseGridColumn & {
-	sortable: boolean
-}
-
 export type EnumGridColumn<T = any> = TypedGridColumn & {
 	type: 'enum'
 	template: (value: T) => string
