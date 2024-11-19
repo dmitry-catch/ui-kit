@@ -18,7 +18,7 @@ const slots = defineSlots<UploaderSlots>()
 
 const { header, invalid, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
 
-const files = defineModel<File[] | FileDataType[]>({ default: [] })
+const files = defineModel<File[] | FileDataType[]>([])
 const loadingStates = ref()
 const isInnerInvalid = ref<boolean>(false)
 const innerErrorMessage = ref<string | null>()
