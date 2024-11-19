@@ -25,6 +25,6 @@ export interface UploaderProps {
 
 export interface UploaderSlots {
 	hint?: string
-	error?: (props: { message?: string }) => any
+	error?: string
 	actionButton?: () => any
 }

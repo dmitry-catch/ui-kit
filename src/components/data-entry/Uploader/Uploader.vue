@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<UploaderProps>(), {
 })
 const emit = defineEmits<UploaderEmits>()
 
-const slots = defineSlots<UploaderSlots>()
+defineSlots<UploaderSlots>()
 
 const { header, invalid, multiple, disabled, fileSizeLimit, accept, length, loading, draggable } = toRefs(props)
 
@@ -169,8 +169,11 @@ const root = ref()
 				</Button>
 			</div>
 		</div>
-		<span v-if="invalid || isInnerInvalid" class="danger hint">
-			<slot name="error" :message="innerErrorMessage!">{{ innerErrorMessage }}</slot>
+		<span v-if="$slots.error || innerErrorMessage" :class="{ danger: invalid }" class="hint">
+			<slot name="error"></slot>
+		</span>
+		<span v-if="innerErrorMessage" :class="{ danger: isInnerInvalid }" class="hint">
+			{{ innerErrorMessage }}
 		</span>
 		<div v-if="files.length > 0 && draggable" class="Uploader__fileDeck">
 			<FileCard
