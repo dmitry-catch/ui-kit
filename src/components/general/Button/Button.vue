@@ -102,6 +102,23 @@ const clickOutside = (event: Event) => {
 	border-color: var(--button-border-color-secondary);
 }
 
+.Btn.disabled .Btn__actual,
+.Btn.accent.disabled .Btn__actual,
+.Btn.minimal.disabled .Btn__actual,
+.Btn.Icon.disabled .Btn__actual {
+	--button-text-color-primary: var(--design-text-color-on-accent-secondary);
+	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
+
+	--button-background-color-primary: var(--design-background-color-disabled-primary);
+	--button-background-color-secondary: var(--design-background-color-disabled-primary);
+
+	--button-border-color-primary: var(--design-border-color-primary);
+	--button-border-color-secondary: var(--design-border-color-primary);
+
+	--icon-color: var(--design-text-color-secondary);
+	cursor: not-allowed;
+}
+
 .Btn.accent .Btn__actual {
 	--button-border-color-primary: var(--design-border-color-accent-primary);
 	--button-border-color-secondary: var(--design-border-color-accent-secondary);
@@ -212,22 +229,5 @@ const clickOutside = (event: Event) => {
 	padding: calc(var(--design-gap-unit) / 2) calc(var(--design-gap-unit) * 2);
 	font-size: var(--design-font-size-footnote);
 	--icon-size: 18px;
-}
-
-.Btn.disabled .Btn__actual,
-.Btn.accent.disabled .Btn__actual,
-.Btn.minimal.disabled .Btn__actual,
-.Btn.Icon.disabled .Btn__actual {
-	--button-text-color-primary: var(--design-text-color-on-accent-secondary);
-	--button-text-color-secondary: var(--design-text-color-on-accent-secondary);
-
-	--button-background-color-primary: var(--design-background-color-disabled-primary);
-	--button-background-color-secondary: var(--design-background-color-disabled-primary);
-
-	--button-border-color-primary: var(--design-border-color-primary);
-	--button-border-color-secondary: var(--design-border-color-primary);
-
-	--icon-color: var(--design-text-color-secondary);
-	cursor: not-allowed;
 }
 </style>
