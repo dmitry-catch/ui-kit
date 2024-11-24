@@ -103,7 +103,7 @@ useModalContext(content)
 	position: relative;
 
 	.TooltipWrapper {
-		z-index: 1002;
+		z-index: 999;
 	}
 
 	.Tooltip {
