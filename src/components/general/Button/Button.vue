@@ -35,11 +35,10 @@ const clickOutside = (event: Event) => {
 </script>
 
 <template>
-	<div ref="root" class="Btn" :loading="loading" :class="{ disabled, block }">
+	<div ref="root" class="Btn" :class="{ disabled, block }">
 		<button
 			class="Btn__actual accent"
 			:class="[props.size, { block }]"
-			:loading="loading"
 			:disabled="disabled"
 			@click="toggleDropdown"
 		>
@@ -89,7 +88,6 @@ const clickOutside = (event: Event) => {
 	box-sizing: border-box;
 	height: min-content;
 	white-space: nowrap;
-	cursor: pointer;
 }
 
 .Btn__actual:focus-visible {
@@ -103,10 +101,7 @@ const clickOutside = (event: Event) => {
 	background-color: var(--button-background-color-secondary);
 	border-color: var(--button-border-color-secondary);
 }
-.Btn__actual[loading='true']:hover,
-.Btn__actual[loading='true']:active {
-	cursor: wait;
-}
+
 .Btn.accent .Btn__actual {
 	--button-border-color-primary: var(--design-border-color-accent-primary);
 	--button-border-color-secondary: var(--design-border-color-accent-secondary);
@@ -173,10 +168,6 @@ const clickOutside = (event: Event) => {
 	cursor: pointer;
 	border: none;
 	padding: 0;
-}
-
-.Btn.functional[loading='true'] .Btn__actual[loading='true'] {
-	cursor: wait;
 }
 
 .Btn.functional.disabled .Btn__actual {
