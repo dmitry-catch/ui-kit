@@ -81,13 +81,12 @@ useModalContext(root)
 <style scoped>
 .DatePicker {
 	text-align: start;
-	display: flex;
-	flex-direction: column;
-	gap: var(--design-gap-unit);
+	padding: var(--design-gap-unit);
+	background: var(--design-background-color-primary);
 	.input {
 		padding: var(--design-gap-unit) calc(2 * var(--design-gap-unit));
 		outline: none;
-		border: 1px solid var(--design-border-color-secondary);
+		border-width: 1px;
 		text-transform: uppercase;
 		border-radius: var(--design-border-radius-control);
 		width: calc(100% - 4 * var(--design-gap-unit) - 2px);
