@@ -199,7 +199,6 @@ const IconNames: string[] = [
 	'mic',
 	'mic_off',
 	'mission',
-	'minus_circled',
 	'mobile',
 	'moon',
 	'more_horizontal',
