@@ -60,7 +60,7 @@ useModalContext(root)
 	<div ref="root" class="DatePicker">
 		<span v-if="label" class="label Field__label" :class="{ required: required }">{{ label }}</span>
 		<span v-if="description" class="Field__description text-small description">{{ description }}</span>
-		<div v-if="$slots.before" class="Field__beforeWrapper">
+		<div class="Field__beforeWrapper">
 			<slot name="before"></slot>
 		</div>
 		<input
