@@ -53,7 +53,7 @@ import type { ToggleProps } from './components/data-entry/Toggle/types'
 import type { UploaderSlots, UploaderProps, UploaderEmits } from './components/data-entry/Uploader/types'
 
 export {
-	// General category
+	//General category
 	/** @deprecated use Button instead */
 	Btn,
 	Button,
