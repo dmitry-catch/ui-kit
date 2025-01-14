@@ -188,7 +188,7 @@ const root = ref()
 					>
 						<Button class="functional" @click="loadList">Загрузить еще</Button>
 					</slot>
-					<Spinner v-if="listContext.loading" class="Multiselect__loading" variant="dark" />
+					<Spinner v-if="listContext.loading" class="Multiselect__loading" />
 				</template>
 				<template v-if="$slots.listDefault" #listDefault><slot name="listDefault"></slot></template>
 				<template v-if="$slots.listFooter" #listFooter><slot name="listFooter"></slot></template>

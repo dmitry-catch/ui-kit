@@ -8,8 +8,8 @@ interface SpinnerProps {
 	inverse?: boolean
 	/** Скрытие отображения заднего фонa */
 	backdrop?: boolean
-	/** 3 варианта спиннера */
-	variant?: 'light' | 'dark' | 'dotted'
+	/** 2 варианта окраски спиннера */
+	variant?: 'light' | 'dark'
 	size?: 'large' | 'medium' | 'small' | 'extra-small' | 'extra-large'
 	speed?: 'fast' | 'normal' | 'slow'
 	vertical?: boolean
@@ -61,16 +61,6 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 	border-top-color: var(--design-background-color-primary);
 	animation: spin 1.2s ease-in-out infinite;
 }
-
-.Spinner__wheel[variant='dotted'] {
-	width: calc(var(--design-font-size-footnote) * 2);
-	height: calc(var(--design-font-size-footnote) * 2);
-	background-image: url(./assets/spinner-dotted-loader.svg);
-	background-size: contain;
-	background-repeat: no-repeat;
-	border: none;
-}
-
 .Spinner__wheel.inverse {
 	border: 2px solid var(--design-background-color-primary);
 	border-top-color: var(--design-border-color-accent-primary);
@@ -98,7 +88,6 @@ const { variant, size, speed, inverse, center, backdrop } = toRefs(props)
 	background-repeat: no-repeat;
 	border: none;
 }
-
 .Spinner__wheel[size='large'] {
 	height: calc(var(--design-font-size-large) * 2);
 	width: calc(var(--design-font-size-large) * 2);

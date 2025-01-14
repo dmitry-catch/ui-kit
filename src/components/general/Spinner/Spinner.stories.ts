@@ -48,13 +48,6 @@ export const DarkInverse: Story = {
 		inverse: true
 	}
 }
-
-export const Dotted: Story = {
-	args: {
-		variant: 'dotted'
-	}
-}
-
 export const Center: Story = {
 	args: {
 		center: true

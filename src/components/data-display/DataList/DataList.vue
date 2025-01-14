@@ -82,7 +82,7 @@ const slots = defineSlots<{
 
 <template>
 	<div ref="root" class="DataList" :size="size">
-		<Spinner v-if="loading" class="DataList__loading" variant="dark" size="extra-large" :center="true" />
+		<Spinner v-if="loading" class="DataList__loading" />
 		<template v-else>
 			<div class="DataList__menuHeader" :size="size">
 				<slot name="header"></slot>
@@ -138,7 +138,7 @@ const slots = defineSlots<{
 							>
 								<Button class="functional" @click="loadList(data)">Загрузить еще</Button>
 							</slot>
-							<Spinner v-if="listContext.loading" class="DataList__loading" variant="dark" />
+							<Spinner v-if="listContext.loading" class="DataList__loading" />
 						</div>
 					</template>
 				</template>

@@ -43,12 +43,10 @@ const clickOutside = (event: Event) => {
 			:disabled="disabled"
 			@click="toggleDropdown"
 		>
+			<Spinner v-if="loading" />
 			<slot name="before"></slot>
 			<slot></slot>
 			<slot name="after"></slot>
-
-			<Spinner v-if="loading" variant="dotted" />
-
 			<Icon v-if="hasDropdown" class="Btn__dropdownIcon" name="chevron_down"></Icon>
 		</button>
 		<ListBox v-if="hasDropdown && dropdownOpened" :options="dropdown" @closeRequest="clickOutside">

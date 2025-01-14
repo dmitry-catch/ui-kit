@@ -212,7 +212,7 @@ const root = ref()
 					>
 						<Button class="functional" @click="loadList">Загрузить еще</Button>
 					</slot>
-					<Spinner v-if="listContext.loading" class="Select__loading" variant="dark" />
+					<Spinner v-if="listContext.loading" class="Select__loading" />
 				</template>
 				<template v-if="slots.menuFooter" #menuFooter>
 					<slot name="menuFooter"></slot>

@@ -68,7 +68,7 @@ onMounted(() => {
 					:loadGroup="loadGroup"
 					><Button class="functional" @click="loadGroup()">Загрузить еще</Button>
 				</slot>
-				<Spinner v-if="groupContext.loading" variant="dark" />
+				<Spinner v-if="groupContext.loading" />
 			</div>
 		</div>
 	</div>
