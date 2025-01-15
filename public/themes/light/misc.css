@@ -1,0 +1,11 @@
+:root,
+:host {
+	--design-border-radius-control: 4px;
+	--design-border-radius-icon-button: 50%;
+	--design-border-radius-surface: 16px;
+	--design-border-radius-avatar: 50%;
+	--design-border-radius-tag: 16px;
+	--design-focus-outline: 3px solid var(--design-border-color-focus);
+	--dropdown-box-shadow: 0 0 10px rgba(0, 0, 0, 0.06), 0 4px 4px rgba(0, 0, 0, 0.12);
+	--dropdown-z-index: 1000;
+}

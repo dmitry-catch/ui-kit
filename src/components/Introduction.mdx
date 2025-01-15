@@ -1,0 +1,204 @@
+import Package from '../../package.json'
+
+<blockquote>
+	Current Version is <b>{Package.version}</b>
+</blockquote>
+<br />
+
+## Категории компонентов
+
+-   **general.** Базовые компоненты. Часто используются внутри других.
+-   **navigation.** Компоненты используемые для навигации.
+-   **layout.** Контейнеры, скелеты - все то, что влияет на расположения компонентов на странице.
+-   **data-entry.** Взаимодействуют с данными, редактируют их, удаляют и прочее.
+-   **data-display.** Отображение данных: таблицы, списки, теги и прочее.
+-   **non-public.** Непубличные компоненты, которые имеют шанс стать публичными. Используются внутри других.
+    <br />
+
+## Developers
+
+### Структура проекта
+
+<ul>
+	<li>
+		<b>components</b> - содержит категории компонентов ui kit
+	</li>
+	<ul>
+		<li>
+			<b>data-display</b>
+		</li>
+		<li>
+			<b>data-entry</b>
+		</li>
+		<li>
+			<b>general</b>
+		</li>
+		<li>
+			<b>navigation</b>
+		</li>
+		<li>
+			<b>layout</b>
+		</li>
+		<li>
+			<b>non-public</b>
+		</li>
+	</ul>
+	<li>
+		<b>consts</b> - общие константы
+	</li>
+	<li>
+		<b>styles</b> - общие стили
+	</li>
+	<li>
+		<b>types</b> - общие типы
+	</li>
+	<li>
+		<b>utils</b> - универсальные утилиты
+	</li>
+	<li>
+		<b>main.ts</b> - публичное API библиотеки
+	</li>
+</ul>
+
+### Структура компонентов
+
+В библиотеке используется подход один компонент = одна папка. Каждый такая папка имеет следующую структуру:
+
+-   **Vue** (DataGrid.vue) - с блоками в следующем порядке style, template, script;
+-   **Stories** (DataGrid.stories.ts) - сторисы. Желательно добавить все состояния, в котором отображаются все внутренние компоненты;
+-   **Spec** (DataGrid.spec.ts) - тесты;
+-   (опционально) **Markdown** (DataGrid.md) - документация по компоненту. В сторис его нужно добавлять вручную;
+-   (опционально) **consts** - файл или папка. Специфичные константы компонента;
+-   (опционально) **types** - файл или папка. Специфичные типы компонента;
+-   (опционально) **utils** - файл или папка. Специфичные функции, хуки компонента;
+-   (опционально) **components** - папка с vue компонентами, которые используются только относительно родителя.
+-   (опционально) **папки-компоненты** (DataList) - для одноранговых компонентов со своими сторисами, которые могут также экспортироваться.
+
+### New stories
+
+Для добавления нового стори используйте базовый шаблон:
+
+```typescript
+//./NewComponent.stories.ts
+
+import { Meta, StoryObj } from '@storybook/vue3'
+import NewComponent from './NewComponent.vue'
+
+export default {
+	component: NewComponent
+} satisfies Meta<typeof NewComponent>
+
+type Story = StoryObj<typeof NewComponent>
+
+export const Default: Story = {}
+
+export const AnotherStory: Story = {
+	args: {
+		//...
+	}
+}
+```
+
+Рассмотрим более подробный пример:
+
+```typescript
+import { Meta, StoryObj } from '@storybook/vue3'
+// Импорт интересующего нас компонента
+import NewComponent from './NewComponent.vue'
+// Импорт документации по компоненту в формате raw. Пишется по необходимости. Заменяет описание [1].
+import Readme from './NewComponent.md?raw'
+
+/**
+ * [1] В формате markdown можно писать здесь комментарии-описание об компоненте.
+ */
+export default {
+	// Объявление мета-информации по компоненту из которого сторбук генерирует документацию.
+	component: NewComponent,
+	// Содержит общие для всех сторисов аргументы
+	args: {
+		// название обычного слота
+		default: 'I am default slot'
+	},
+	// Этот блок может пригодиться в случае добавление readme описания
+	parameters: {
+		docs: {
+			description: {
+				component: Readme
+			}
+		}
+	}
+	// Чтобы мета-информация была типизированна, используется конструкция ниже
+} satisfies Meta<typeof NewComponent>
+
+// Тип для последующих сторисов
+type Story = StoryObj<typeof NewComponent>
+
+// Обычная история, в котором компонент инициализируется без передачи аргументов
+export const Default: Story = {}
+
+// История, в котором передаются аргументы
+export const AnotherStory: Story = {
+	args: {
+		//...
+	}
+}
+
+// Перегрузка рендера сториса. Он подобен обычному вью компоненту, в котором задается setup (в нем можно использовать
+// ref и прочее), template и т.д.
+export const icon: Story = {
+	render: (args) => ({
+		components: { NewComponent },
+		setup: () => ({ args }),
+		template: `
+      <NewComponent v-bind="args">
+        <div> Hello here </div>
+      </NewComponent>`
+	}),
+	args: {
+		class: 'icon',
+		default: undefined
+	}
+}
+```
+
+### New tests
+
+Для добавления нового файла теста используйте базовый шаблон:
+
+```typescript
+//./NewComponent.spec.ts
+
+import { render } from '@testing-library/vue'
+import { describe, it } from 'vitest'
+import { composeStory } from '@storybook/testing-vue3'
+
+import Meta, { Default } from './NewComponent.stories.js'
+
+const Component = composeStory(Default, Meta)
+
+describe(`Component ${Meta.component.__name}`, () => {
+	it('should render', () => render(Component()))
+})
+```
+
+Пример работы со вью компонентом напрямую и заданными в сторисе пропсами. Также можно работать со вью компонентом в обход сторисов.
+
+```typescript
+it('should display default slot', () => {
+	render(Meta.component, {
+		slots: {
+			default: Meta.args.default
+		}
+	})
+	const buttonElement = screen.getByRole('button')
+	expect(buttonElement.textContent).eq(Meta.args.default)
+})
+```
+
+Больше примеров доступны по [ссылке](https://testing-library.com/docs/vue-testing-library/examples).
+
+Для взаимодействия с dom используйте [user-event](https://testing-library.com/docs/user-event/intro/).
+
+## Ссылки
+
+Больше примеров смотрите в коде, в официальной [документации](https://storybook.js.org/docs) и [туториале](https://storybook.js.org/tutorials/intro-to-storybook/vue/en/get-started/)

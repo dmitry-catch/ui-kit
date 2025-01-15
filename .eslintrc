@@ -1,0 +1,62 @@
+{
+	"parser": "vue-eslint-parser",
+	"parserOptions": {
+		"parser": "@typescript-eslint/parser",
+		"ecmaVersion": 13,
+		"sourceType": "module",
+		"project": true,
+		"extraFileExtensions": [".vue"]
+	},
+	"plugins": ["@typescript-eslint", "sonarjs", "import"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:sonarjs/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:vue/vue3-recommended",
+		"plugin:vue-scoped-css/vue3-recommended",
+		"prettier"
+	],
+	"rules": {
+		"import/extensions": ["warn", "always"],
+		"vue/multi-word-component-names": "off",
+		"vue/attribute-hyphenation": ["error", "never"],
+		"vue/v-on-event-hyphenation": ["error", "never"],
+		"@typescript-eslint/no-explicit-any": "warn",
+		"@typescript-eslint/no-unused-vars": "warn",
+		"sonarjs/no-duplicate-string": "warn",
+		"vue/require-v-for-key": "warn",
+		"vue/valid-v-for": "warn",
+		"vue/no-template-shadow": "warn",
+		"vue/require-default-prop": "off",
+		"vue/return-in-computed-property": "warn",
+		"vue/component-tags-order": [
+			"error",
+			{
+				"order": ["script", "template", "style"]
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": "src/**/*.+(ts|vue)",
+			"excludedFiles": "*.+(stories|spec).ts",
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["*.stories.*", "*.spec.*"],
+								"message": "Import from .spec. and .stories. no allowed for UI KIT."
+							}
+						]
+					}
+				]
+			}
+		}
+	],
+	"env": {
+		"browser": true,
+		"es2021": true
+	}
+}

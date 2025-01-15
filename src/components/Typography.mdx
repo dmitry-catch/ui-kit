@@ -1,0 +1,86 @@
+import { ColorItem, ColorPalette, Typeset } from '@storybook/blocks'
+import { Table } from '../../storybook/components/Table'
+
+export const typography = {
+	type: {
+		primary: 'Inter, sans-serif'
+	},
+	weight: {
+		black: 600
+	},
+	size: {
+		l2: 24,
+		l1: 20,
+		m3: 18,
+		m2: 18,
+		m1: 16,
+		s3: 14,
+		s2: 12,
+		s1: 11
+	}
+}
+
+export const SampleText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+
+# Typography
+
+**Font: Inter, sans-serif**
+
+**Weights: 400(regular), 600(accent)**
+
+<Typeset
+	fontSizes={[
+		typography.size.l2,
+		typography.size.l1,
+		typography.size.m3,
+		typography.size.m2,
+		typography.size.m1,
+		typography.size.s3,
+		typography.size.s2,
+		typography.size.s1
+	]}
+	sampleText={SampleText}
+	fontFamily={typography.type.primary}
+/>
+
+## Classes
+
+### Headers
+
+<Table
+	headers={['Tag', 'Font size (px)', 'Line height (px)', 'Font weight']}
+	rows={[
+		['h1', 24, 32, 600],
+		['h2', 20, 28, 600],
+		['h3', 18, 28, 600],
+		['h4', 16, 24, 600],
+		['h5', 14, 24, 600],
+		['h6', 12, 20, 600]
+	]}
+/>
+
+### Sizes
+
+<Table
+	headers={['Class name', 'Font size (px)', 'Line height (px)', 'Font weight']}
+	rows={[
+		['.text-large', 18, 28, 400],
+		['.text-medium', 16, 24, 400],
+		['.text-small', 14, 24, 400],
+		['.text-footnote', 12, 20, 400],
+		['.text-hint', 11, 20, 400]
+	]}
+/>
+
+### Bold
+
+<Table headers={['Class name', 'Font weight']} rows={[['.accent', 600]]} />
+
+### Colors
+
+<ColorPalette>
+	<ColorItem title=".text-on-accent" colors={{ ['--design-text-color-on-accent-primary']: '#f6f7f7' }} />
+	<ColorItem title=".secondary" colors={{ ['--design-text-color-secondary']: '#626974' }} />
+	<ColorItem title=".warning" colors={{ ['----design-text-color-warning']: '#f3b216' }} />
+	<ColorItem title=".danger" colors={{ ['--design-text-color-danger']: '#f12828' }} />
+</ColorPalette>

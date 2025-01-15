@@ -1,0 +1,120 @@
+@font-face {
+	font-family: 'Inter';
+	src: url(../fonts/Inter/Inter-VariableFont_slnt_wght.ttf);
+}
+
+:root,
+:host {
+	--design-font-family: 'Inter', sans-serif;
+	--design-font-family-accent: var(--design-font-family);
+
+	--design-font-size-hint: 11px;
+	--design-line-height-hint: 20px;
+
+	--design-font-size-footnote: 12px;
+	--design-line-height-footnote: 20px;
+
+	--design-font-size-small: 14px;
+	--design-line-height-small: 24px;
+
+	--design-font-size-medium: 16px;
+	--design-line-height-medium: 24px;
+
+	--design-font-size-large: 18px;
+	--design-line-height-large: 28px;
+
+	--design-gap-unit: 8px;
+}
+:where(h1, h2, h3, h4) {
+	color: var(--design-text-color-primary);
+	font-family: var(--design-font-family);
+	font-weight: 600;
+}
+
+:where(h1) {
+	font-size: 24px;
+	line-height: 32px;
+}
+
+:where(h2) {
+	font-size: 20px;
+	line-height: 28px;
+}
+
+:where(h3) {
+	font-size: 18px;
+	line-height: 28px;
+}
+
+:where(h4, h5, h6) {
+	font-size: 16px;
+	line-height: 24px;
+}
+
+* {
+	color: var(--design-text-color-primary);
+	font-weight: 400;
+	font-family: var(--design-font-family);
+	font-size: var(--design-current-font-size);
+	line-height: var(--design-current-line-height);
+}
+
+b {
+	font-weight: 600;
+}
+
+.text-large,
+.text-medium,
+.text-small,
+.text-footnote,
+.text-hint,
+:root,
+:host {
+	color: var(--design-text-color-primary);
+	font-weight: 400;
+	font-family: var(--design-font-family);
+	font-size: var(--design-current-font-size);
+	line-height: var(--design-current-line-height);
+}
+.text-large {
+	--design-current-font-size: var(--design-font-size-large, 18px);
+	--design-current-line-height: var(--design-line-height-large, 28px);
+}
+
+.text-medium,
+:root,
+:host {
+	--design-current-font-size: var(--design-font-size-medium, 16px);
+	--design-current-line-height: var(--design-line-height-medium, 24px);
+}
+
+.text-small {
+	--design-current-font-size: var(--design-font-size-small, 14px);
+	--design-current-line-height: var(--design-line-height-small, 24px);
+}
+
+.text-footnote {
+	--design-current-font-size: var(--design-font-size-footnote, 12px);
+	--design-current-line-height: var(--design-line-height-footnote, 20px);
+}
+
+.text-hint {
+	--design-current-font-size: var(--design-font-size-hint, 11px);
+	--design-current-line-height: var(--design-line-height-hint, 20px);
+}
+
+.accent:not(h1, h2, h3, h4, h5, h6) {
+	font-weight: 600;
+}
+.text-on-accent {
+	color: var(--design-text-color-on-accent-primary);
+}
+.secondary {
+	color: var(--design-text-color-secondary);
+}
+.warning {
+	color: var(--design-text-color-warning);
+}
+.danger {
+	color: var(--design-text-color-danger);
+}

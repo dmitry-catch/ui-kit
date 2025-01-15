@@ -1,0 +1,56 @@
+import { ColorItem, ColorPalette } from '@storybook/blocks'
+
+import { CSSVariables } from '../../storybook/consts/CSSVariables.ts'
+import { Table } from '../../storybook/components/Table'
+
+# CSS Variables
+
+## Colors
+
+### Text
+
+<ColorPalette>
+	{Object.entries(CSSVariables.colors.text).map(([key, value]) => (
+		<ColorItem key={key} title={key.split('-').slice(5).join('-')} colors={{ [key]: value }} />
+	))}
+</ColorPalette>
+
+### Borders
+
+<ColorPalette>
+	{Object.entries(CSSVariables.colors.borders).map(([key, value]) => (
+		<ColorItem key={key} title={key.split('-').slice(5).join('-')} colors={{ [key]: value }} />
+	))}
+</ColorPalette>
+
+### Backgrounds
+
+<ColorPalette>
+	{Object.entries(CSSVariables.colors.backgrounds).map(([key, value]) => (
+		<ColorItem key={key} title={key.split('-').slice(5).join('-')} colors={{ [key]: value }} />
+	))}
+</ColorPalette>
+
+### Backdrop
+
+<ColorPalette>
+	{Object.entries(CSSVariables.colors.backdrop).map(([key, value]) => (
+		<ColorItem key={key} title={key.split('-').slice(5).join('-')} colors={{ [key]: value }} />
+	))}
+</ColorPalette>
+
+### Additional
+
+<ColorPalette>
+	{Object.entries(CSSVariables.colors.additional).map(([key, value]) => (
+		<ColorItem key={key} title={key.split('-').slice(5).join('-')} colors={{ [key]: value }} />
+	))}
+</ColorPalette>
+
+## Misc
+
+<Table headers={['Name', 'Value']} rows={Object.entries(CSSVariables.misc)} />
+
+## Typography
+
+<Table headers={['Name', 'Value']} rows={Object.entries(CSSVariables.typography)} />

@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"outDir": "dist",
+		"strict": true,
+		"skipLibCheck": true,
+		"jsx": "react-jsx",
+		"types": ["vite/client"]
+	}
+}

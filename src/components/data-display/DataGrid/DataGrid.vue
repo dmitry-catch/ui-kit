@@ -1,0 +1,189 @@
+<script setup lang="ts">
+import { computed, provide, ref, toRefs, useSlots, watch } from 'vue'
+import { and, FilterExpression } from '@forecsys/collections'
+import DataGridHeaderRow from './components/DataGridHeaderRow.vue'
+import { useFilterContext } from './utils/useFilterContext.js'
+import { useSortingContext } from './utils/useSortingContext.js'
+import type { DataGridColumn, GroupCheckboxClickEmit, ItemCheckboxClickEmit } from './types.js'
+import DataGridRowGroup from './components/DataGridRowGroup.vue'
+import Spinner from '../../general/Spinner/Spinner.vue'
+
+export interface Props {
+	columns: Array<DataGridColumn>
+	dataSource: Array<any>
+	rowKey: (data: any) => string
+	allowSelection: boolean
+	selectedRows: Array<any>
+	allowPagination: boolean
+	loading?: boolean
+	spinnerOverlay?: boolean
+	selectedGroups?: string[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+	rowKey: (item: any) => item.id,
+	allowSelection: false,
+	selectedRows: () => [],
+	allowPagination: false,
+	loading: false,
+	spinnerOverlay: false,
+	selectedGroups: () => []
+})
+
+const emit = defineEmits([
+	'update:filters',
+	'update:sort',
+	'update:group',
+	'update:order',
+	'update:settings',
+	'update:columns',
+	'groupCheckboxClick',
+	'itemCheckboxClick'
+])
+
+const slots = useSlots()
+const { columns, dataSource, rowKey, allowSelection, selectedRows, selectedGroups } = toRefs(props)
+const hasDetails = computed(() => Boolean(slots.rowDetails))
+const contentColumnsCount = computed(() => columns.value.length)
+const columnsCount = computed(() => columns.value.length + Number(hasDetails.value) + 1)
+const rowsCount = computed(() => dataSource.value.length)
+provide('datagrid-selectedRows', selectedRows)
+const { filters } = useFilterContext({ forceId: true })
+
+watch(
+	() => [filters],
+	() =>
+		emit(
+			'update:filters',
+			Object.values(filters.value).reduce(and, {
+				value: true,
+				operation: 'value'
+			} as FilterExpression)
+		),
+	{ deep: true }
+)
+
+const { sorting } = useSortingContext({ forceId: true })
+watch(
+	() => [sorting],
+	() => emit('update:sort', sorting.value),
+	{ deep: true }
+)
+
+watch(
+	() => [filters, sorting],
+	() => {
+		emit('update:settings', { filters: filters.value, sorting: sorting.value })
+	},
+	{ deep: true }
+)
+
+const internalColumns = ref(columns.value)
+
+watch(columns, () => (internalColumns.value = columns.value))
+watch(internalColumns, (newValue) => emit('update:columns', newValue))
+
+const groupCheckboxClick = (data: GroupCheckboxClickEmit) => emit('groupCheckboxClick', data)
+const itemCheckboxClick = (data: ItemCheckboxClickEmit) => emit('itemCheckboxClick', data)
+</script>
+
+<template>
+	<div ref="root" class="DataGrid" :class="{ loading: loading }">
+		<table class="DataGrid__table" :allowPagination="allowPagination">
+			<thead class="DataGrid__thead">
+				<DataGridHeaderRow
+					v-model:columns="internalColumns"
+					class="DataGrid__header"
+					:detailsColumn="hasDetails"
+					:selectColumn="allowSelection"
+				>
+				</DataGridHeaderRow>
+			</thead>
+			<tbody v-if="!loading || (loading && spinnerOverlay)" class="DataGrid__tbody">
+				<DataGridRowGroup
+					v-for="item in dataSource"
+					:key="rowKey(item)"
+					:item="item"
+					:columns="internalColumns"
+					:detailsColumn="hasDetails"
+					:selectColumn="allowSelection"
+					:selectedGroups="selectedGroups"
+					@groupCheckboxClick="groupCheckboxClick"
+					@itemCheckboxClick="itemCheckboxClick"
+				>
+					<template #rowDetails="{ item }">
+						<slot name="rowDetails" :item="item"></slot>
+					</template>
+				</DataGridRowGroup>
+			</tbody>
+		</table>
+		<div v-if="loading" class="DataGrid__spinnerSurface" :class="{ overlay: spinnerOverlay }">
+			<Spinner class="DataGrid__spinner" variant="dark" size="extra-large" />
+		</div>
+	</div>
+</template>
+
+<style>
+.DataGrid {
+	/*noinspection CssInvalidFunction*/
+	--datagrid-table-cell-padding: var(
+		--design-table-cell-padding,
+		var(--design-gap-unit) calc(2 * var(--design-gap-unit))
+	);
+	width: 100%;
+	height: fit-content;
+	overflow: auto;
+}
+
+.DataGrid.loading {
+	position: relative;
+	min-height: 100%;
+}
+
+.DataGrid__table {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	--datagrid-rows-count: v-bind(rowsCount);
+	--datagrid-columns-count: v-bind(columnsCount);
+	--datagrid-content-columns-count: v-bind(contentColumnsCount);
+	grid-auto-rows: min-content;
+	grid-template-columns:
+		repeat(calc(var(--datagrid-columns-count) - var(--datagrid-content-columns-count)), min-content)
+		repeat(var(--datagrid-content-columns-count), minmax(min-content, auto));
+	background: var(--design-background-color-primary);
+	overflow: unset;
+}
+
+.DataGrid__table[allowPagination='true'] {
+	max-height: calc(100% - 72px);
+}
+
+.DataGrid__header {
+	position: sticky;
+	top: 0;
+}
+
+.DataGrid__spinnerSurface {
+	position: absolute;
+	inset: 0;
+}
+
+.DataGrid__spinnerSurface.overlay {
+	background-color: var(--design-text-color-on-accent-primary);
+	opacity: 80%;
+	z-index: 1;
+}
+
+.DataGrid__spinner {
+	transform: translate(0px, 294px);
+}
+
+.DataGrid__thead,
+.DataGrid__tbody {
+	display: contents;
+}
+.DataGrid__eventInterceptor {
+	display: contents;
+}
+</style>
