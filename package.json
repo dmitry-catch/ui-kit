@@ -1,0 +1,60 @@
+{
+	"name": "ui-kit",
+	"version": "0.1.128",
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"module": "./dist/main.js",
+	"types": "./dist/src/main.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/main.js",
+			"types": "./dist/src/main.d.ts"
+		},
+		"./themes/*": "./dist/themes/*",
+		"./themes/style.css": "./dist/style.css"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"build:watch": "vite build --watch",
+		"storybook:dev": "npm run dev -w storybook",
+		"storybook:build": "npm run build -w storybook",
+		"test": "vitest run",
+		"tsc": "vue-tsc --noEmit",
+		"test:run": "vitest run",
+		"test:watch": "vitest",
+		"lint": "eslint --ignore-path .gitignore \"**/*.+(ts|tsx|vue)\"",
+		"lint:fix": "eslint --ignore-path .gitignore \"**/*.+(ts|tsx|vue)\" --fix",
+		"format:check": "prettier --check \"./**/*\" --ignore-unknown",
+		"format:write": "prettier --write \"./**/*\" --ignore-unknown"
+	},
+	"devDependencies": {
+		"@testing-library/jest-dom": "^6.4.2",
+		"@testing-library/user-event": "^14.5.2",
+		"@testing-library/vue": "^8.0.3",
+		"@typescript-eslint/eslint-plugin": "^6.11.0",
+		"@typescript-eslint/parser": "^6.11.0",
+		"@vitejs/plugin-vue": "^4.2.1",
+		"eslint": "^8.54.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-import": "^2.29.0",
+		"eslint-plugin-sonarjs": "^0.23.0",
+		"eslint-plugin-vue": "^9.18.1",
+		"eslint-plugin-vue-scoped-css": "^2.5.1",
+		"happy-dom": "^9.10.2",
+		"prettier": "^2.8.8",
+		"typescript": "^5.2.2",
+		"vite": "^5.1.6",
+		"vite-plugin-dts": "^3.7.3",
+		"vitest": "^1.4.0"
+	},
+	"peerDependencies": {
+		"@forecsys/collections": "^1.0.3",
+		"vue": "^3.4.15"
+	},
+	"workspaces": [
+		"storybook"
+	]
+}
